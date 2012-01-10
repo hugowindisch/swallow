@@ -1,1 +1,20 @@
-Swagup is an html framework and a graphic authoring tool written in swagup.
+Swagup is a collection of commonjs packages that implement a graphic model.
+
+The graphic model can be used for supporting DOM graphics, Canvas graphics,
+WebGL graphics or any other type of graphics.
+
+A graphic editor (written in swagup) allows to graphically create applications
+using swagup components. The editor itself is a swagup component.
+
+
+--------------
++ the visual model is web agnostic, defines position, events, dirt
++ any component can expose one or more visual elements (through a standard
+component interface)
+
++ stuff like theming can be defined inside a component (example, a UI component
+can support theming for all its visuals (listbox, menu, whatever))
+
++ think about skinning (defining a skin for an existing component)
+
+
