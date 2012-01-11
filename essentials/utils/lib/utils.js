@@ -5,7 +5,7 @@
 
     Copyright (c) Hugo Windisch 2012 All Rights Reserved    
 */
-exports.forAllProperties = function (object, f) {
+exports.forEachProperty = function (object, f) {
     var p;
     if (object) {
         for (p in object) {
@@ -14,5 +14,11 @@ exports.forAllProperties = function (object, f) {
             }
         }
     }
-}
+};
+exports.isString = function (s) {
+    return typeof (s) === 'string';
+};
+exports.isNumber = function (n) {
+    return typeof (n) === 'number';
+};
 

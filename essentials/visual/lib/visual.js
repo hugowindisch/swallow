@@ -59,14 +59,15 @@ A position can be a named position inside our parent or an unmanaged position.
 
 */
 
-var forAllProperties = require('./utils').forAllProperties,
+var utils = require('utils'),
+    forEachProperty = utils.forEachProperty,
     dirty = require('./dirty'),
     setDirty = dirty.setDirty;
 
 function setContainmentDepth(v, depth) {
     v.containmentDepth = depth;
     if (v.children) {
-        forAllProperties(v.children, function (c) {
+        forEachProperty(v.children, function (c) {
             // sets the containment depth of the children
             setContainmentDepth(c, depth + 1);
         });
@@ -82,12 +83,13 @@ function setContainmentDepth(v, depth) {
 function Visual() {
     this.containmentDepth = -1;
     this.container = null;
+    setDirty(this, 'constructed');
 }
 Visual.prototype.getSize = function () {
 };
 Visual.prototype.setPosition = function (position) {
     this.position = position;
-    setDirty(this);
+    setDirty(this, 'positionChanged');
 };
 
 Visual.prototype.addChild = function (child, name) {
@@ -96,11 +98,15 @@ Visual.prototype.addChild = function (child, name) {
     }
     if (this.children === undefined) {
         this.children = {};
+        this.numChildren = 0;
     }
     this.children[name] = child;
     child.name = name;
+    child.depth = this.numChildren;
+    this.numChildren += 1;
     setContainmentDepth(child, this.containmentDepth + 1);
-    setDirty(child);
+    // parent changed
+    setDirty(child, 'parentChanged');
 };
 Visual.prototype.removeChild = function (child) {
     // we become a container
@@ -116,12 +122,43 @@ Visual.prototype.removeChild = function (child) {
         }
         child.parent = null;
         setContainmentDepth(child, -1);
+        setDirty(child, 'parentChanged');
     }
+};
+Visual.prototype.getChildAtDepth = function (d) {
+    forEachProperty(this.children, function (c) {
+        if (c.depth === d) {
+            return c;
+        }
+    });
+};
+Visual.prototype.swapDepths = function (d1, d2) {
+    var o1 = utils.isNumber(d1) ? this.getChildAtDepth(d1) : this.children[d1],
+        o2 = utils.isNumber(d2) ? this.getChildAtDepth(d2) : this.children[d2],
+        d = o1.depth;
+    o1.depth = o2.depth;
+    o2.depth = d;
+    setDirty(this.childrenDepthShuffled);
+};
+Visual.prototype.increaseDepth = function (d) {
+};
+Visual.prototype.decreaseDepth = function (d) {
+};
+Visual.prototype.toMaxDepth = function (d) {
+};
+Visual.prototype.toMinDepth = function (d) {
 };
 /**
     Called to update the visual part.
+    
+    why is an object with zero or more of the following properties:
+        constructed, positionChanged, parentChanged, childrenDepthShuffled
+        
+    NOTE: this should not be overriden in components. This should only be
+    implemented in subclasses that port the Visual to a new rendering
+    system (ex: DOM, Canvas, WebGL)
 */
-Visual.prototype.update = function () {
+Visual.prototype.update = function (why) {
 };
 
 /**
@@ -129,10 +166,11 @@ Visual.prototype.update = function () {
 */
 Visual.prototype.createChildren = function (info) {
     var that = this;
-    forAllProperties(info.items, function (it, name) {
-        var v = it.visual;
+    forEachProperty(info.items, function (it, name) {
+        var v = it.visual,
+            Constr = require(v.factory)[v.type];
         that.addChild(
-            require(v.factory).createVisual(v.type, v.data),
+            new Constr(v.data),
             name
         );
     });
@@ -146,12 +184,7 @@ Visual.prototype.createChildren = function (info) {
 
 // export all what we want to export for the module
 exports.Visual = Visual;
-exports.createVisual = function (type, data) {
-    if (type === 'visual') {
-        return new Visual();
-    }
-};
 exports.getVisualNames = function () {
-    return [ 'visual' ];
+    return [ 'Visual' ];
 };
 

@@ -16,11 +16,11 @@ function DirtyList() {
 /**
     Flags an element as dirty.
 */
-DirtyList.prototype.setDirty = function (o) {
+DirtyList.prototype.setDirty = function (o, why) {
     if (!o.isDirty) {
         var depth = o.containmentDepth,
             dirty = this.dirty;
-        o.isDirty = true;
+        o.isDirty = {};
             
         if (!dirty[depth]) {
             dirty[depth] = [o];
@@ -28,7 +28,10 @@ DirtyList.prototype.setDirty = function (o) {
             dirty[depth].push(o);
         }
     }
-}
+    if (why) {
+        o.isDirty[why] = true;
+    }
+};
 
 /**
     Cleans all dirt.
@@ -37,24 +40,26 @@ DirtyList.prototype.update = function () {
     var i, 
         l,
         dirty,
-        o;
+        o,
+        why;
         
-    while((l = this.dirty.length) > 0) {
+    while ((l = this.dirty.length) > 0) {
         dirty = this.dirty;      
         this.dirty = [];
         for (i = 0; i < l; i += 1) {
             o = dirty[i];
-            delete o.isDirty;  
-            o.update();
+            why = o.isDirty;
+            delete o.isDirty;
+            o.update(why);
         }
     }
-}
+};
 
-var dirty = new DirtyList;
-exports.setDirty = function () {
-    dirty.setDirty;
+var dirty = new DirtyList();
+exports.setDirty = function (o, why) {
+    dirty.setDirty(o, why);
 };
 exports.update = function () {
-    dirty.update;
+    dirty.update();
 };
 
