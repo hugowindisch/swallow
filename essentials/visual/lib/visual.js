@@ -60,9 +60,11 @@ A position can be a named position inside our parent or an unmanaged position.
 */
 
 var utils = require('utils'),
+    events = require('events'),
     forEachProperty = utils.forEachProperty,
     dirty = require('./dirty'),
-    setDirty = dirty.setDirty;
+    setDirty = dirty.setDirty,
+    EventEmitter = events.EventEmitter;
 
 function setContainmentDepth(v, depth) {
     v.containmentDepth = depth;
@@ -85,6 +87,7 @@ function Visual() {
     this.container = null;
     setDirty(this, 'constructed');
 }
+Visual.prototype = new EventEmitter();
 Visual.prototype.getSize = function () {
 };
 Visual.prototype.setPosition = function (position) {
