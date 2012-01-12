@@ -24,7 +24,6 @@ TODO
 
 - create a way for a component to know that it is the main one running (like some kind of args)
 - create the layouting code and a way to convert positions to styles
-- create the eventing stuff and use the html thing to see how visuals, events, and the dirty list are interconnected
 
 DONE
 ----
@@ -32,4 +31,5 @@ DONE
 - create a basic domvisual that uses stylesheets (maybe 2 classes one for the component, the other for the group)
 - create a domvisual that can be used as a topmost element so someone can create a topmost wrapper
 - manage the notion of "depth" or ordering in a correct way
+- create the eventing stuff and use the html thing to see how visuals, events, and the dirty list are interconnected
 

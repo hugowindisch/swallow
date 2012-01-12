@@ -6,6 +6,7 @@
 var visual = require('visual'),
     utils = require('utils'),
     dirty = require('/visual/lib/dirty'),
+    updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
     Visual = visual.Visual,
     forEachProperty = utils.forEachProperty;
     
@@ -52,8 +53,15 @@ function updateChildrenDepthShuffled(v) {
     }
 }
 function DOMVisual(element) {
+    var that = this;
     this.element = element;
     this.cssClasses = {};
+    Visual.call(this);
+    // this might not be the best idea, maybe overriding addListener would
+    // be better.
+    this.addListener('addListener', function () {
+        updateDOMEventHooks(that);
+    });
 }
 DOMVisual.prototype = new Visual();
 DOMVisual.prototype.superAddChild = DOMVisual.prototype.addChild;
