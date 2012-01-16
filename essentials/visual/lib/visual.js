@@ -63,6 +63,7 @@ var utils = require('utils'),
     events = require('events'),
     forEachProperty = utils.forEachProperty,
     dirty = require('./dirty'),
+    position = require('./position'),
     setDirty = dirty.setDirty,
     EventEmitter = events.EventEmitter;
 
@@ -90,11 +91,58 @@ function Visual() {
 Visual.prototype = new EventEmitter();
 Visual.prototype.getSize = function () {
 };
+/**
+    Sets the dimension  of the visual
+    (the dimensions are defined as an Array ... compatible with glmatrix)
+    
+    'auto' for any of this will make the dimension determined
+    by the content of the box.
+*/
+Visual.prototype.setDimensions = function (vec3) {
+    this.dimensions = vec3;
+    setDirty('dimensionsChanged');    
+};
+/**
+    Sets the position. The position is either a string
+    (referring to a position name in the parent layout) OR
+    a position object created with one of the following constructors:
+        position.FlowPosition
+        position.AbsolutePosition
+        position.TransformPosition
+        
+    Note that a position is not necessarily a matrix. It is a way
+    to compute a matrix (or style) given the size of the parent container.
+*/
 Visual.prototype.setPosition = function (position) {
     this.position = position;
     setDirty(this, 'positionChanged');
 };
-
+Visual.prototype.getPosition = function () {
+    return this.position;
+};
+/**
+    Applies a position to the element (i.e. convert it to something that
+    works in the target rendering system, e.g. the DOM)
+*/
+Visual.prototype.applyPosition = function (containerDimensions, layoutDimensions, position) {
+    // we only know how to do this in subclasses
+    throw new Error('a Visual is abstract and cannot be displayed');
+};
+/**
+    When a visual is a group it will use a layout object to move its
+    children when it is itself moved.
+    The layout can be manipulated programmatically. This allows to
+    implement stuff like separator bars that work in harmony with
+    everything else.
+*/
+Visual.prototype.setLayout = function (layout) {
+    if (this.layout !== layout) {
+        this.layout = layout;
+    }
+};
+Visual.prototype.getLayout = function () {
+    return this.layout;
+};
 Visual.prototype.addChild = function (child, name) {
     if (child.parent) {
         child.parent.removeChild(child);
@@ -155,7 +203,8 @@ Visual.prototype.toMinDepth = function (d) {
     Called to update the visual part.
     
     why is an object with zero or more of the following properties:
-        constructed, positionChanged, parentChanged, childrenDepthShuffled
+        constructed, positionChanged, parentChanged, childrenDepthShuffled,
+        dimensionsChanged
         
     NOTE: this should not be overriden in components. This should only be
     implemented in subclasses that port the Visual to a new rendering
@@ -179,15 +228,17 @@ Visual.prototype.createChildren = function (info) {
     });
 };
 
-/**
-    Layouts multiple children.
-*/
-
 
 
 // export all what we want to export for the module
 exports.Visual = Visual;
+// this should not be there: a Visual is abstract. It should not be exposed
+// to the editor
 exports.getVisualNames = function () {
     return [ 'Visual' ];
 };
-
+exports.Layout = position.Layout;
+exports.applyLayout = position.applyLayout;
+exports.FlowPosition = position.FlowPosition;
+exports.AbsolutePosition = position.AbsolutePosition;
+exports.TransformPosition = position.TransformPosition;

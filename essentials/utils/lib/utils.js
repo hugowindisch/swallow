@@ -15,10 +15,34 @@ exports.forEachProperty = function (object, f) {
         }
     }
 };
+function typeOf(value) {
+    var s = typeof value;
+    if (s === 'object') {
+        if (value) {
+            if (value instanceof Array) {
+                s = 'array';
+            }
+        } else {
+            s = 'null';
+        }
+    }
+    return s;
+}
+exports.typeOf = typeOf;
+
 exports.isString = function (s) {
-    return typeof (s) === 'string';
+    return typeOf(s) === 'string';
 };
 exports.isNumber = function (n) {
-    return typeof (n) === 'number';
+    return typeOf(n) === 'number';
+};
+exports.isArray = function (a) {
+    return typeOf(a) === 'array';
+};
+exports.isObject = function (o) {
+    return typeOf(o) === 'object';
+};
+exports.isFunction = function (f) {
+    return typeOf(f) === 'function';
 };
 

@@ -18,10 +18,21 @@ can support theming for all its visuals (listbox, menu, whatever))
 + think about skinning (defining a skin for an existing component)
 
 
++ THE XMLHTTPREQUEST SHOULD BE IMPLEMENTED USING A NODE INTERFACE (so stuff
+    that use node style loading will work)
+
 ==========
 TODO
 ----
 
+- in a domvisual we should be able to throw an exception if a layout needing
+    css3 is needed when no css3 is available. For visual styling there is
+    no big problem (it should degrade gracefully) but for positionning things
+    can simply NOT work. Supporting CSS2 and CSS3 in an app may requiring
+    disabling some sections of the app that require transforms.
+    OR: some components (ex: a sliding menu) should define alternate versions
+    and choose the right one in any case.
+    
 - create a way for a component to know that it is the main one running (like some kind of args)
 - create the layouting code and a way to convert positions to styles
 

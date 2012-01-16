@@ -9,7 +9,8 @@ var visual = require('visual'),
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
     Visual = visual.Visual,
     forEachProperty = utils.forEachProperty;
-    
+
+
 function updateConstructed(v) {
 }
 
@@ -91,6 +92,22 @@ DOMVisual.prototype.setClass = function (cssClassName) {
 };
 DOMVisual.prototype.clearClass = function (cssClassName) {
     delete this.cssClasses[cssClassName];
+};
+/**
+    Applies a position to the element (i.e. convert it to something that
+    works in the target rendering system, e.g. the DOM)
+*/
+DOMVisual.prototype.applyPosition = function (matrix, newdimensions) {
+    var style = this.element.style;
+    if (newdimensions) {
+        style.width = newdimensions[0];
+        style.height = newdimensions[1];
+    }
+    if (matrix) {
+        // let'say we don't initially support css3
+        style.left = matrix[12];
+        style.top = matrix[13];
+    }
 };
 
 DOMVisual.prototype.update = function (why) {
