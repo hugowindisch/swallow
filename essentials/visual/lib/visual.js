@@ -61,6 +61,7 @@ A position can be a named position inside our parent or an unmanaged position.
 
 var utils = require('utils'),
     events = require('events'),
+    glmatrix = require('glmatrix'),
     forEachProperty = utils.forEachProperty,
     dirty = require('./dirty'),
     position = require('./position'),
@@ -83,9 +84,12 @@ function setContainmentDepth(v, depth) {
     It has a position.
     It can render itself in its container (DOM, canvas, webgl)
 */
-function Visual() {
-    this.containmentDepth = -1;
+function Visual(config) {
+    this.containmentDepth = 0;
     this.container = null;
+    this.setConfig(config);
+    // set default dimension
+    this.setDimensions([1, 1, 0]);
     setDirty(this, 'constructed');
 }
 Visual.prototype = new EventEmitter();
@@ -100,7 +104,7 @@ Visual.prototype.getSize = function () {
 */
 Visual.prototype.setDimensions = function (vec3) {
     this.dimensions = vec3;
-    setDirty('dimensionsChanged');    
+    setDirty(this, 'dimensionsChanged');    
 };
 /**
     Sets the position. The position is either a string
@@ -135,15 +139,17 @@ Visual.prototype.applyPosition = function (containerDimensions, layoutDimensions
     implement stuff like separator bars that work in harmony with
     everything else.
 */
-Visual.prototype.setLayout = function (layout) {
-    if (this.layout !== layout) {
-        this.layout = layout;
-    }
+Visual.prototype.setLayout = function (groupData) {
+    this.layout = new (position.Layout)(groupData.dimensions, groupData.positions);
+    setDirty(this, 'layout');
 };
 Visual.prototype.getLayout = function () {
     return this.layout;
 };
 Visual.prototype.addChild = function (child, name) {
+    if (this.children && this.children[name]) {
+        throw new Error("Child " + name + " already exists.");
+    }
     if (child.parent) {
         child.parent.removeChild(child);
     }
@@ -172,7 +178,7 @@ Visual.prototype.removeChild = function (child) {
             delete this.numChildren;
         }
         child.parent = null;
-        setContainmentDepth(child, -1);
+        setContainmentDepth(child, 0);
         setDirty(child, 'parentChanged');
     }
 };
@@ -189,7 +195,7 @@ Visual.prototype.swapDepths = function (d1, d2) {
         d = o1.depth;
     o1.depth = o2.depth;
     o2.depth = d;
-    setDirty(this.childrenDepthShuffled);
+    setDirty(this, 'childrenDepthShuffled');
 };
 Visual.prototype.increaseDepth = function (d) {
 };
@@ -216,19 +222,52 @@ Visual.prototype.update = function (why) {
 /**
     Creates multiple children from a description like:
 */
-Visual.prototype.createChildren = function (info) {
-    var that = this;
-    forEachProperty(info.items, function (it, name) {
-        var v = it.visual,
-            Constr = require(v.factory)[v.type];
-        that.addChild(
-            new Constr(v.data),
-            name
-        );
+Visual.prototype.createChildren = function (groupData) {
+    var that = this,
+        isFunction = utils.isFunction,
+        isString = utils.isString;
+    forEachProperty(groupData.children, function (it, name) {
+        var Constr = require(it.factory)[it.type],
+            child = new Constr(it.config);
+
+        // set the position of the child (this will override whatever
+        // position that the child set in its constructor)
+        if (isString(it.position)) {
+            child.setPosition(it.position);
+        }
+        // add the child to the children list
+        that.addChild(child, name);
     });
 };
 
+/**
+    Creates the content of this visual element from editor data.
+*/
+Visual.prototype.createGroup = function (groupData) {
+    // set position
+    this.setDimensions(groupData.dimensions);
+    // set layout
+    this.setLayout(groupData);
+    // construct our children
+    this.createChildren(groupData);
+};
 
+/**
+    Sets data. The data will be partitioned as:
+    {
+        "package.Visual": {
+            }
+    }
+*/
+Visual.prototype.setConfig = function (config) {
+//    var d = config['visual.Visual'];
+//    if (d) {
+//    }
+};
+
+/**
+    Gets data sheet (this allows the editor to edit this visual element)
+*/
 
 // export all what we want to export for the module
 exports.Visual = Visual;
@@ -242,3 +281,4 @@ exports.applyLayout = position.applyLayout;
 exports.FlowPosition = position.FlowPosition;
 exports.AbsolutePosition = position.AbsolutePosition;
 exports.TransformPosition = position.TransformPosition;
+

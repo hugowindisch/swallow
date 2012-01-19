@@ -32,6 +32,18 @@ var utils = require('utils'),
             getDOMElement: function (vis) {
                 return document;
             }            
+        },
+        resize: {
+            createHandler: function (vis) {
+                return function (evt) {
+                    vis.emit('resize', evt);
+                    dirty.update();
+                    updateDOMEventHooks(vis);
+                };
+            },
+            getDOMElement: function (vis) {
+                return window;
+            }            
         }
     };
 
@@ -51,8 +63,9 @@ function enforceDOMHooks(v) {
 /**
     Unhooks a dom handler.
 */
-function removeDOMHook(v, event, element) {
-    var hooks = v.domHooks;
+function removeDOMHook(v, event, hook) {
+    var hooks = v.domHooks,
+        element = hook.getDOMElement(v);
     // we must be unhooked from keydown
     if (hooks && hooks[event]) {
         element.removeEventListener(event, hooks[event]);
@@ -63,11 +76,11 @@ function removeDOMHook(v, event, element) {
 /**
     Hooks a dom handler.
 */
-function addDOMHook(v, event, fcn, element) {
+function addDOMHook(v, event, hook) {
     var hooks = enforceDOMHooks(v);
     if (!hooks[event]) {
-        hooks[event] = { handleEvent: fcn };
-        element.addEventListener(event, hooks.keydown, false);
+        hooks[event] = { handleEvent: hook.createHandler(v) };
+        hook.getDOMElement(v).addEventListener(event, hooks[event], false);
     }
 }
 
@@ -81,9 +94,9 @@ updateDOMEventHooks = function (v) {
     forEachProperty(hookMap, function (value, key) {
         var listeners = v.listeners(key);
         if (listeners.length > 0) {
-            addDOMHook(v, key, value.createHandler(v), value.getDOMElement(v));
+            addDOMHook(v, key, value);
         } else {
-            removeDOMHook(v, key, value.getDOMElement(v));
+            removeDOMHook(v, key, value);
         }        
     });
 };

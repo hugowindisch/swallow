@@ -3,6 +3,9 @@
     
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
+var utils = require('utils'),
+    isNumber = utils.isNumber,
+    isArray = utils.isArray;
 
 /**
     Practically we probably only need only one dirty list.
@@ -17,7 +20,10 @@ function DirtyList() {
     Flags an element as dirty.
 */
 DirtyList.prototype.setDirty = function (o, why) {
-    if (!o.isDirty) {
+    if (!isNumber(o.containmentDepth)) {
+        throw new Error("invalid visual");
+    }
+    if (!o.hasOwnProperty('isDirty')) {
         var depth = o.containmentDepth,
             dirty = this.dirty;
         o.isDirty = {};
@@ -39,18 +45,31 @@ DirtyList.prototype.setDirty = function (o, why) {
 DirtyList.prototype.update = function () {
     var i, 
         l,
+        j,
+        k,
+        ll,
         dirty,
         o,
         why;
         
+    function clean(o) {
+        var why = o.isDirty;
+        delete o.isDirty;
+        o.update(why);
+    }
     while ((l = this.dirty.length) > 0) {
         dirty = this.dirty;      
         this.dirty = [];
         for (i = 0; i < l; i += 1) {
             o = dirty[i];
-            why = o.isDirty;
-            delete o.isDirty;
-            o.update(why);
+            if (isArray(o)) {
+                ll = o.length;
+                for (k = 0; k < ll; k += 1) {
+                    clean(o[k]);
+                }
+            } else if (o) {
+                clean(o);
+            }
         }
     }
 };

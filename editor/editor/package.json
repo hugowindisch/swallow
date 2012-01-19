@@ -1,3 +1,8 @@
 {
-    "name": "editor"
+    "name": "editor",
+    "version": "0.0.1",
+    "dependencies": {
+        "visual": "0.0.1",
+        "domvisual": "0.0.1"
+    }
 }

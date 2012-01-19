@@ -6,10 +6,24 @@
 var visual = require('visual'),
     utils = require('utils'),
     dirty = require('/visual/lib/dirty'),
+    position = require('/visual/lib/position'),
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
     Visual = visual.Visual,
-    forEachProperty = utils.forEachProperty;
+    forEachProperty = utils.forEachProperty,
+    isObject = utils.isObject;
 
+/*
+    We will try to go without jQuery in here (i.e. support jQuery but not
+    force it)
+*/
+function updateCssClass(v) {
+    var cssClass = "";
+    forEachProperty(v.cssClasses, function (c, name) {
+        cssClass += name;
+        cssClass += ' ';
+    });
+    v.element.setAttribute('class', cssClass);
+}
 
 function updateConstructed(v) {
 }
@@ -53,16 +67,26 @@ function updateChildrenDepthShuffled(v) {
         }
     }
 }
-function DOMVisual(element) {
+
+function updateLayout(v) {
+    var layout = v.layout;
+    if (layout) {
+        position.applyLayout(v.dimensions, layout, v.children);
+    }
+}
+
+function DOMVisual(config, element) {
     var that = this;
     this.element = element;
     this.cssClasses = {};
-    Visual.call(this);
+    this.setClass('domvisual');
+    Visual.call(this, config);
     // this might not be the best idea, maybe overriding addListener would
     // be better.
     this.addListener('addListener', function () {
         updateDOMEventHooks(that);
     });
+    this.setConfig(config);
 }
 DOMVisual.prototype = new Visual();
 DOMVisual.prototype.superAddChild = DOMVisual.prototype.addChild;
@@ -88,6 +112,7 @@ DOMVisual.prototype.removeChild = function (child) {
 DOMVisual.prototype.setClass = function (cssClassName) {
     // why trigger dom changes immediately, keep this cached
     this.cssClasses[cssClassName] = true;
+    dirty.setDirty(this, 'cssClass');
     
 };
 DOMVisual.prototype.clearClass = function (cssClassName) {
@@ -100,37 +125,71 @@ DOMVisual.prototype.clearClass = function (cssClassName) {
 DOMVisual.prototype.applyPosition = function (matrix, newdimensions) {
     var style = this.element.style;
     if (newdimensions) {
-        style.width = newdimensions[0];
-        style.height = newdimensions[1];
+        this.setDimensions(newdimensions);
+        style.width = newdimensions[0] + 'px';
+        style.height = newdimensions[1] + 'px';
     }
     if (matrix) {
         // let'say we don't initially support css3
-        style.left = matrix[12];
-        style.top = matrix[13];
+        style.left = matrix[12] + 'px';
+        style.top = matrix[13] + 'px';
     }
+    // this is not accurate because for flow positions we don't want
+    // to be absolute
+    style.position = 'absolute';
+    dirty.setDirty(this, 'layout');
 };
 
 DOMVisual.prototype.update = function (why) {
-    if (why.constructed) {
-        updateConstructed(this);
-    }
-    if (why.positionChanged) {
-        updatePositionChanged(this);
-    }
-    if (why.parentChanged) {
-        updateParentChanged(this);
-    }
-    if (why.childrenDepthShuffled) {
-        updateChildrenDepthShuffled(this);
+    // if we don't have an element, we are probably a prototype
+    if (this.element) {        
+        if (why.cssClass) {
+            updateCssClass(this);
+        }
+        if (why.constructed) {
+            updateConstructed(this);
+        }
+        if (why.positionChanged) {
+            updatePositionChanged(this);
+        }
+        if (why.parentChanged) {
+            updateParentChanged(this);
+        }
+        if (why.childrenDepthShuffled) {
+            updateChildrenDepthShuffled(this);
+        }
+        // this means that our actual position changed
+        if (why.layout) {
+            updateLayout(this);
+        }
     }
 };
+DOMVisual.prototype.setConfig = function (config) {
+    var conf, i, classes;
+    if (isObject(config)) {
+        conf = config['domvisual.DOMVisual'];
+        if (conf) {
+            classes = conf.cssClass;
+            if (classes) {
+                for (i = 0; i < classes.length; i += 1) {
+                    this.setClass(classes[i]);
+                }
+            }
+        }
+    }
+//    var d = config['domvisual.DOMVisual'];
+//    if (d) {
+//    }
+};
+
 
 /////////////////
 // a general container
-function DOMElement() {
-    DOMVisual.call(this, document.createElement('div'));
+function DOMElement(config) {
+    DOMVisual.call(this, config, document.createElement('div'));
 }
 DOMElement.prototype = new DOMVisual();
+
 
 /////////////////////
 // an html container
@@ -138,7 +197,7 @@ DOMElement.prototype = new DOMVisual();
 // ANOTHER option would be to have 2 html elements in an DOMHtml, one
 // for html and another on top of it for the regular children... this would
 // make everything more easy
-function DOMHtml() {
+function DOMHtml(config) {
 }
 DOMHtml.prototype = new DOMVisual();
 DOMHtml.prototype.addChild = function () {
@@ -150,7 +209,7 @@ DOMHtml.prototype.removeChild = function () {
 
 /////////////////
 // an img element
-function DOMImg() {
+function DOMImg(config) {
 }
 DOMImg.prototype = new DOMVisual();
 
@@ -172,7 +231,46 @@ exports.DOMVideo = DOMVideo;
     We will have to do more than that but we need something to
     setup the topmost container.
 */
-exports.createTopmostContainer = function () {
-    return new DOMVisual(document.getElementsByTagName('body')[0]);
+exports.createFullScreenApplication = function (child) {
+    var bodyElement = document.getElementsByTagName('body')[0],
+        thisElement = document.createElement('div'),
+        viz = new DOMVisual({}, thisElement);
+    // do some stupid stuff here:
+    bodyElement.appendChild(thisElement);
+    if (!child.dimensions) {
+        throw new Error("dimensions should be defined by now!");
+    }
+    viz.setLayout(
+        {
+    
+            dimensions: [100, 100, 0],
+            positions: {
+                root: {
+                    type: "TransformPosition",
+                    matrix: [ 100, 0, 0, 0,   0, 100, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
+                    scalemode: "distort"
+                }
+            }
+        }
+    );
+    viz.addChild(child, 'root');
+    child.setPosition('root');
+    viz.name = 'stage';
+    viz.element.style.left = 0;
+    viz.element.style.right = 0;
+    viz.element.style.top = 0;
+    viz.element.style.bottom = 0;
+    viz.element.style.position = 'absolute';
+    function updateTopLayout() {
+        viz.dimensions = [viz.element.offsetWidth, viz.element.offsetHeight, 0];
+        dirty.setDirty(viz, 'layout');
+    }
+    viz.on('resize', function () {
+        updateTopLayout();
+        // update will be automatically called.
+    });
+    updateTopLayout();    
+    dirty.update();
+    return child;
 };
 

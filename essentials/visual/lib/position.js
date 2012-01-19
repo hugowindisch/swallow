@@ -75,6 +75,34 @@ What can trigger a CONTENTSIZEDIRTY?
 
 *****************
 layout = mindfuck
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+MOre thoughts:
+- autoWidth, autoHeight:
+    this is a property of the content NOT a property of the POSITION
+- no matter the autowidth, autoHeight, we always have a dimension and do
+    the swagup layout according to that
+- we can (if we want) 
+
+
+So we have, per element:
+a MATRIX (that may or not have some scaling)
+a SIZE (that is our dimensions)
+getContentDimensions()
+
+
+THIS IS USEFUL IF WE DEFINE OUR POSITION AS FLOW... IT SAYS: FLOW ACCORDING TO
+OUR CONTENT
+    autoWidth 
+    autoHeight
+    
+    ... so maybe it should ONLY be used for FLOW
+(so the decsion of APPLYING dimensions to the 
+
+But we could always interrogate our content size and resize ourselves according to
+that
+
+
 */
 var utils = require('utils'),
     glmatrix = require('glmatrix'),
@@ -95,54 +123,6 @@ function convertScaleToSize(matrix, contentDimension) {
     return { matrix: matrix, dimensions: resdim };
 }
 
-/**
-    This is a layout that essentially consists in a collection of named
-    positions.
-*/
-function Layout(dimensions) {
-    this.dimensions = dimensions;
-    this.positions = {};
-}
-
-Layout.prototype.setPosition = function (name, position) {
-    this.positions[name] = position;
-};
-
-/**
-    Applies the layout.
-    In the context of DOM this will transform 'positions' to actual styles.
-    
-    
-    
-    flow position:
-        Nothing to do I think 
-        
-    absolute position:
-        This may change width/height (i.e. SIZE the content)
-        
-*/
-function applyLayout(containerDimensions, layout, visuals) {
-    var positions = layout.positions,
-        layoutDimensions = layout.dimensions;
-    forEachProperty(visuals, function (v) {
-        var pos = v.getPosition(),
-            computed;
-        if (isString(pos)) {
-            pos = positions[pos];
-        }
-        // if we know what to do with that
-        if (isObject(pos)) {
-            computed = pos.compute(containerDimensions, layoutDimensions, v.dimensions);
-            if (computed) {
-                v.applyPosition(computed.matrix, computed.dimensions);
-            }
-// this should not be needed            
-/*            if (pos.dirtyLayout()) {
-                setDirty(v, 'visualSizeChanged');
-            }*/
-        }
-    });
-}
 
 /**
     This is like the positioning styles.
@@ -308,12 +288,12 @@ AbsolutePosition.prototype.compute = function (
             delta = containerDimensions[0] - layoutDimensions[0];
             outm[12] = matrix[12];
             outd[0] = (matrix[0] + delta) / matrix[0];
-        } else {
+        } /*else {
             // .. ?? .. does this mean something
-        }
-    } else {
+        }*/
+    } /*else {
         // THIS IS POSSIBLE    ??
-    }
+    }*/
 
     // if size mode is wanted, we want to 'unscale' the matrix... i.e.
     // extract the scaling and transform it to a sizing of the content
@@ -484,6 +464,71 @@ TransformPosition.prototype.computecover = function (
     
     return out;
 };
+
+/**
+    This is a layout that essentially consists in a collection of named
+    positions.
+*/
+function Layout(dimensions, positionData) {
+    this.dimensions = dimensions;
+    this.positions = {};
+    this.build(positionData);
+}
+
+Layout.prototype.build = function (positionData) {
+    var that = this;
+    forEachProperty(positionData, function (pos, posname) {
+        switch (pos.type) {
+        case 'AbsolutePosition':
+            that.setPosition(posname, new AbsolutePosition(pos.matrix, pos.snapping, true));
+            break;
+        case 'FlowPosition':
+            that.setPosition(posname, new FlowPosition(pos.matrix, pos.inline, true));
+            break;
+        case 'TransformPosition':
+            that.setPosition(posname, new TransformPosition(pos.matrix, pos.scalemode, true));
+            break;
+        default:
+            throw new Error("Invalid position type " + pos.type);
+        }
+    });    
+};
+
+Layout.prototype.setPosition = function (name, position) {
+    this.positions[name] = position;
+};
+
+/**
+    Applies the layout.
+    In the context of DOM this will transform 'positions' to actual styles.
+    
+    
+    
+    flow position:
+        Nothing to do I think 
+        
+    absolute position:
+        This may change width/height (i.e. SIZE the content)
+        
+*/
+function applyLayout(containerDimensions, layout, visuals) {
+    var positions = layout.positions,
+        layoutDimensions = layout.dimensions;
+    forEachProperty(visuals, function (v) {
+        var pos = v.getPosition(),
+            computed;
+        if (isString(pos)) {
+            pos = positions[pos];
+        }
+        // if we know what to do with that
+        if (isObject(pos)) {
+            computed = pos.compute(containerDimensions, layoutDimensions, v.dimensions);
+            if (computed) {
+                v.applyPosition(computed.matrix, computed.dimensions);
+            }
+        }
+    });
+}
 
 
 // library interface
