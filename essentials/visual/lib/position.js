@@ -112,18 +112,6 @@ var utils = require('utils'),
     isObject = utils.isObject,
     forEachProperty = utils.forEachProperty;
 
-function convertScaleToSize(matrix, contentDimension) {
-    var v1 = [matrix[0], matrix[4], matrix[8]],
-        v2 = [matrix[1], matrix[5], matrix[9]],
-        l1 = glmatrix.vec3.length(v1),
-        l2 = glmatrix.vec3.length(v2),
-        resmat = glmatrix.mat4.scale(matrix, [1 / l1, 1 / l2, 0], []),
-        resdim = [ contentDimension[0] * l1, contentDimension[1] * l2, 0];
-        
-    return { matrix: matrix, dimensions: resdim };
-}
-
-
 /**
     This is like the positioning styles.
     ... not super certain how to handle SIZE, snapping, etc.
@@ -145,8 +133,7 @@ FlowPosition.prototype.dirtyLayout = function () {
 };
 FlowPosition.prototype.compute = function (
     containerDimensions, 
-    layoutDimensions,
-    contentDimensions
+    layoutDimensions
 ) {
     return null;
 };
@@ -176,132 +163,83 @@ FlowPosition.prototype.compute = function (
    
 
 */
-function AbsolutePosition(matrix, snapping, dontScale) {
+function AbsolutePosition(matrix, snapping) {
     this.matrix = matrix; // should be non rotated
     this.snapping = snapping;
-    this.dontScale = (dontScale === true);
 }
 AbsolutePosition.prototype.dirtyLayout = function () {
     return true;
 };
 AbsolutePosition.prototype.compute = function (
     containerDimensions, 
-    layoutDimensions,
-    contentDimensions
+    layoutDimensions
 ) {
     var snapping = this.snapping,
         matrix = this.matrix,
-        box = {
-            left: null,
-            top: null, 
-            right: null, 
-            bottom: null, 
-            width: null, 
-            height: null
-        },
         outm = glmatrix.mat4.identity(),
-        outd = {},
         delta;
-/**        
-// we already so much need software layouting that doing this using automatic
-// css stuff is futile...        
-    // note : autosize absolutely prevents both sides from being hooked
-    // I will not support the center based options for now
-    if (snapping.leftTo === 'right') {
-        // both left and right snapped to right (the width will not change)
-        if (snapping.rightTo === 'right') {
-            // width unchanged,
-            // left unchanged
-            // hook right side
-            box.right = layoutDimensions[0] - (matrix[0] + matrix[12]);
-        } else if (righttTo === 'left') {
-            delta = containerDimensions[0] - layoutDimensions[0];
-            box.left = matrix[12] + delta;
-            box.width = matrix[0] + delta;
-        } else {
-// IT IS POSIBLE THAT    
-            box.left     
-        }
         
-    } else if (snapping.leftTo === 'left') {
-        if (snapping.rightTo === 'left') {
-            // really nothing to do here
-        } else if (snapping.rightTo === 'right') {
-            box.left = matrix[12];
-            box.right = layoutDimensions[0] - (matrix[12] + matrix[0]);
-            // box.width is implicitly changed... we could
-            // change it be
-        }
-    } else {
-// THIS IS POSSIBLE    
-    }
-*/
-// NOTE: this could be all done by scaling and scaling removed aftwards
-/*    if (snapping.leftTo === 'right') {
-        // both left and right snapped to right (the width will not change)
-        if (snapping.rightTo === 'right') {
-            // width unchanged,
-            // left unchanged
-            // hook right side
-            outm[12] = containerDimensions[0] - (layoutDimensions[0] - matrix[12]); 
-        } else if (righttTo === 'left') {
-            delta = containerDimensions[0] - layoutDimensions[0];
-            outm[12] = matrix[12] + delta;
-            outd[0] = matrix[0] + delta;
-        } else {
-            delta = containerDimensions[0] - layoutDimensions[0];
-            outm[12] = matrix[12] + delta;            
-        }
-    } else if (snapping.leftTo === 'left') {
-        if (snapping.rightTo === 'left') {
-            // really nothing to do here
-        } else if (snapping.rightTo === 'right') {
-            delta = containerDimensions[0] - layoutDimensions[0];
-            outm[12] = matrix[12];
-            outd[0] = matrix[0] + delta;
-        } else {
-            // .. ?? .. does this mean something
-        }
-    } else {
-        // THIS IS POSSIBLE    ??
-    }*/
-// Here I simply compute a matrix. If we don't want scaling (but sizing),
-// we can only remove it!    
     if (snapping.leftTo === 'right') {
         // both left and right snapped to right (the width will not change)
         if (snapping.rightTo === 'right') {
             // width unchanged,
             // left unchanged
             // hook right side
-            outm[12] = containerDimensions[0] - (layoutDimensions[0] - matrix[12]); 
+            outm[0] = matrix[0];
+            outm[12] = containerDimensions[0] - (layoutDimensions[0] - matrix[12]);
         } else if (snapping.righttTo === 'left') {
             delta = containerDimensions[0] - layoutDimensions[0];
             outm[12] = matrix[12] + delta;
-            outm[0] = containerDimensions[0] / layoutDimensions[0];
+            outm[0] = matrix[0] - 2 * delta;
         } else {
+            outm[0] = matrix[0];
             outm[12] = matrix[12] + delta;            
         }
     } else if (snapping.leftTo === 'left') {
         if (snapping.rightTo === 'left') {
             // really nothing to do here
+            outm[0] = matrix[0];
+            outm[12] = matrix[12];
         } else if (snapping.rightTo === 'right') {
             delta = containerDimensions[0] - layoutDimensions[0];
             outm[12] = matrix[12];
-            outd[0] = (matrix[0] + delta) / matrix[0];
+            outm[0] = matrix[0] + delta;
         } /*else {
             // .. ?? .. does this mean something
         }*/
-    } /*else {
-        // THIS IS POSSIBLE    ??
-    }*/
-
-    // if size mode is wanted, we want to 'unscale' the matrix... i.e.
-    // extract the scaling and transform it to a sizing of the content
-    if (this.dontScale) {
-        return convertScaleToSize(outm, contentDimensions);
     }
 
-    return { matrix: outm, dimensions: outd };
+    if (snapping.topTo === 'bottom') {
+        // both top and bottom snapped to bottom (the width will not change)
+        if (snapping.bottomTo === 'bottom') {
+            // width unchanged,
+            // top unchanged
+            // hook bottom side
+            outm[1] = matrix[1];
+            outm[13] = containerDimensions[1] - (layoutDimensions[1] - matrix[13]); 
+        } else if (snapping.bottomtTo === 'top') {
+            delta = containerDimensions[1] - layoutDimensions[1];
+            outm[13] = matrix[13] + delta;
+            outm[5] = matrix[1] - 2 * delta;
+        } else {
+            outm[1] = matrix[1];
+            outm[13] = matrix[13] + delta;            
+        }
+    } else if (snapping.topTo === 'top') {
+        if (snapping.bottomTo === 'top') {
+            // really nothing to do here
+            outm[1] = matrix[1];
+            outm[13] = matrix[13];
+        } else if (snapping.bottomTo === 'bottom') {
+            delta = containerDimensions[1] - layoutDimensions[1];
+            outm[13] = matrix[13];
+            outm[5] = matrix[5] + delta;
+        } /*else {
+            // .. ?? .. does this mean something
+        }*/
+    }
+
+    return outm;
 };
 
 /**
@@ -331,10 +269,9 @@ AbsolutePosition.prototype.compute = function (
     - dirty the layout of this children if 'size' is used
         
 */
-function TransformPosition(matrix, scalemode, dontScale) {
+function TransformPosition(matrix, scalemode) {
     this.matrix = matrix;
     this.scalemode = scalemode || 'distort';
-    this.dontScale = (dontScale === true);
 }
 TransformPosition.prototype.dirtyLayout = function () {
     return this.scalemode === 'size';
@@ -344,34 +281,9 @@ TransformPosition.prototype.dirtyLayout = function () {
 */
 TransformPosition.prototype.compute = function (
     containerDimensions, 
-    layoutDimensions,
-    contentDimension
+    layoutDimensions
 ) {
-    var matrix = this['compute' + this.scalemode](containerDimensions, layoutDimensions);
-    function test(mat) {
-        var v1 = [0, 0, 0],
-            v2 = [1, 1, 0];
-        window.console.log('original ' + layoutDimensions.toString());
-        window.console.log('destination ' + containerDimensions.toString());
-        window.console.log(glmatrix.mat4.multiplyVec3(mat, v1, []));
-        window.console.log(glmatrix.mat4.multiplyVec3(mat, v2, []));
-    }
-    test(this.matrix);
-    test(matrix);
-    
-    // at this point, we have a matrix that takes a unity rectangle and
-    // moves it to its expected position. The problem is that the content
-    // that we want to position is not 1x1 so we mut add some scaling to the matrix
-    glmatrix.mat4.scale(matrix, [1 / contentDimension[0], 1 / contentDimension[1], 1]);
-    test(matrix);
-    
-    // if size mode is wanted, we want to 'unscale' the matrix... i.e.
-    // extract the scaling and transform it to a sizing of the content
-    if (this.dontScale) {
-        return convertScaleToSize(matrix, contentDimension);
-    }
-    
-    return { matrix: matrix };
+    return this['compute' + this.scalemode](containerDimensions, layoutDimensions);    
 };
 
 function computeScaling(
@@ -480,13 +392,13 @@ Layout.prototype.build = function (positionData) {
     forEachProperty(positionData, function (pos, posname) {
         switch (pos.type) {
         case 'AbsolutePosition':
-            that.setPosition(posname, new AbsolutePosition(pos.matrix, pos.snapping, true));
+            that.setPosition(posname, new AbsolutePosition(pos.matrix, pos.snapping));
             break;
         case 'FlowPosition':
-            that.setPosition(posname, new FlowPosition(pos.matrix, pos.inline, true));
+            that.setPosition(posname, new FlowPosition(pos.matrix, pos.inline));
             break;
         case 'TransformPosition':
-            that.setPosition(posname, new TransformPosition(pos.matrix, pos.scalemode, true));
+            that.setPosition(posname, new TransformPosition(pos.matrix, pos.scalemode));
             break;
         default:
             throw new Error("Invalid position type " + pos.type);
@@ -497,6 +409,18 @@ Layout.prototype.build = function (positionData) {
 Layout.prototype.setPosition = function (name, position) {
     this.positions[name] = position;
 };
+
+
+function convertScaleToSize(matrix, contentDimension) {
+    var v1 = [matrix[0], matrix[4], matrix[8]],
+        v2 = [matrix[1], matrix[5], matrix[9]],
+        l1 = glmatrix.vec3.length(v1),
+        l2 = glmatrix.vec3.length(v2),        
+        resmat = glmatrix.mat4.scale(matrix, [1 / l1, 1 / l2, 0], []),
+        resdim = [ l1, l2, 0];
+        
+    return { matrix: resmat, dimensions: resdim };
+}
 
 /**
     Applies the layout.
@@ -516,15 +440,23 @@ function applyLayout(containerDimensions, layout, visuals) {
         layoutDimensions = layout.dimensions;
     forEachProperty(visuals, function (v) {
         var pos = v.getPosition(),
-            computed;
+            res,
+            matrix;
         if (isString(pos)) {
             pos = positions[pos];
         }
         // if we know what to do with that
         if (isObject(pos)) {
-            computed = pos.compute(containerDimensions, layoutDimensions, v.dimensions);
-            if (computed) {
-                v.applyPosition(computed.matrix, computed.dimensions);
+            matrix = pos.compute(containerDimensions, layoutDimensions);
+            if (matrix) {
+                if (!v.scalingEnabled) {
+                    res = convertScaleToSize(matrix, v.dimensions);
+                    v.applyPosition(res.matrix, res.dimensions);
+                } else {
+                    // this is probably NOT best done here
+                    glmatrix.mat4.scale(matrix, [1 / v.dimensions[0], 1 / v.dimensions[1], 1]);
+                    v.applyPosition(matrix);
+                }
             }
         }
     });

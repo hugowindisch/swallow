@@ -96,6 +96,18 @@ Visual.prototype = new EventEmitter();
 Visual.prototype.getSize = function () {
 };
 /**
+    Allows scaling. When a visual is moved to a given position, it
+    is resized. The resizing part of the transformation can either be 
+    interpreted as a scaling or as a resizing.
+*/
+Visual.prototype.enableScaling = function (enable) {
+    enable = (enable === true);
+    if (this.scalingEnabled !== enable) {
+        this.scalingEnabled = enable;
+        setDirty(this, 'layout');
+    }
+};
+/**
     Sets the dimension  of the visual
     (the dimensions are defined as an Array ... compatible with glmatrix)
     
@@ -234,6 +246,9 @@ Visual.prototype.createChildren = function (groupData) {
         // position that the child set in its constructor)
         if (isString(it.position)) {
             child.setPosition(it.position);
+        }
+        if (it.enableScaling === true) {
+            child.enableScaling(true);
         }
         // add the child to the children list
         that.addChild(child, name);

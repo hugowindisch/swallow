@@ -5,16 +5,28 @@ exports.definition = {
         Editor: {
             // authoring dimension
             dimensions: [ 640, 400, 0],
+            /*positions: {
+                toolbox: {
+                    type: "AbsolutePosition",
+                    matrix: [ 200, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'bottom' }
+                },
+                viewer: {
+                    type: "AbsolutePosition",
+                    matrix: [ 440, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   200, 0, 0, 0 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                }                
+            },*/
             positions: {
                 toolbox: {
                     type: "TransformPosition",
                     matrix: [ 200, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
-                    scalemode: "distort"
+                    scalemode: 'distort'
                 },
                 viewer: {
                     type: "TransformPosition",
                     matrix: [ 440, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   200, 0, 0, 0 ],
-                    scalemode: "distort"
+                    scalemode: 'distort'
                 }                
             },
             children: {
@@ -22,7 +34,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "toolbox",        // maybe: NO position should be layout by the natural flowing
-                    dontScale: true,    // here is where dontScale should go: on the content
+                    enableScaling: false,
                     depth: 0,
                     config: {
                         "domvisual.DOMVisual": {
@@ -34,7 +46,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "viewer",
-                    dontScale: true,    // here is where dontScale should go: on the content
+                    enableScaling: false,
                     depth: 1,
                     config: {
                         "domvisual.DOMVisual": {
@@ -43,7 +55,7 @@ exports.definition = {
                     }                
                 }
             }
-         },
+        },
         // the left toolbox
 // THIS, USING FLOW POSITIONS AND AUTO SIZE IS SOMEHOW THE MOST COMPLICATED THING FOR
 // THE EDITOR... MAYBE WE SHOULD ONLY USE CSS FOR THIS KIND OF STUFF
