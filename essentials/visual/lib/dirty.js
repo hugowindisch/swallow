@@ -4,6 +4,7 @@
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 var utils = require('utils'),
+    forEachProperty = utils.forEachProperty,
     isNumber = utils.isNumber,
     isArray = utils.isArray;
 
@@ -81,4 +82,8 @@ exports.setDirty = function (o, why) {
 exports.update = function () {
     dirty.update();
 };
-
+exports.setChildrenDirty = function (o, why) {
+    forEachProperty(o.children, function (c) {
+        dirty.setDirty(c, why);
+    });
+};

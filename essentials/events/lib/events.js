@@ -4,11 +4,10 @@
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 function ensureEvents(ee) {
-    var ret = ee._events;
-    if (!ret) {
-        ret = ee._events = {};
+    if (!ee.hasOwnProperty('_events')) {
+        ee._events = {};
     }
-    return ret;
+    return ee._events;
 }
 // I decided to adopt Node's event emitting API and implemented it here
 function EventEmitter() {

@@ -215,20 +215,20 @@ AbsolutePosition.prototype.compute = function (
             // width unchanged,
             // top unchanged
             // hook bottom side
-            outm[1] = matrix[1];
+            outm[5] = matrix[5];
             outm[13] = containerDimensions[1] - (layoutDimensions[1] - matrix[13]); 
         } else if (snapping.bottomtTo === 'top') {
             delta = containerDimensions[1] - layoutDimensions[1];
             outm[13] = matrix[13] + delta;
-            outm[5] = matrix[1] - 2 * delta;
+            outm[5] = matrix[5] - 2 * delta;
         } else {
-            outm[1] = matrix[1];
+            outm[5] = matrix[5];
             outm[13] = matrix[13] + delta;            
         }
     } else if (snapping.topTo === 'top') {
         if (snapping.bottomTo === 'top') {
             // really nothing to do here
-            outm[1] = matrix[1];
+            outm[5] = matrix[5];
             outm[13] = matrix[13];
         } else if (snapping.bottomTo === 'bottom') {
             delta = containerDimensions[1] - layoutDimensions[1];
@@ -435,31 +435,30 @@ function convertScaleToSize(matrix, contentDimension) {
         This may change width/height (i.e. SIZE the content)
         
 */
-function applyLayout(containerDimensions, layout, visuals) {
+function applyLayout(containerDimensions, layout, v) {
     var positions = layout.positions,
-        layoutDimensions = layout.dimensions;
-    forEachProperty(visuals, function (v) {
-        var pos = v.getPosition(),
-            res,
-            matrix;
-        if (isString(pos)) {
-            pos = positions[pos];
-        }
-        // if we know what to do with that
-        if (isObject(pos)) {
-            matrix = pos.compute(containerDimensions, layoutDimensions);
-            if (matrix) {
-                if (!v.scalingEnabled) {
-                    res = convertScaleToSize(matrix, v.dimensions);
-                    v.applyPosition(res.matrix, res.dimensions);
-                } else {
-                    // this is probably NOT best done here
-                    glmatrix.mat4.scale(matrix, [1 / v.dimensions[0], 1 / v.dimensions[1], 1]);
-                    v.applyPosition(matrix);
-                }
+        layoutDimensions = layout.dimensions,
+        pos = v.getPosition(),
+        res,
+        matrix;
+    if (isString(pos)) {
+        pos = positions[pos];
+    }
+    // if we know what to do with that
+    if (isObject(pos)) {
+        matrix = pos.compute(containerDimensions, layoutDimensions);
+        if (matrix) {
+            if (!v.scalingEnabled) {
+                res = convertScaleToSize(matrix, v.dimensions);
+                v.setMatrix(res.matrix);
+                v.setDimensions(res.dimensions);
+            } else {
+                // this is probably NOT best done here
+                glmatrix.mat4.scale(matrix, [1 / v.dimensions[0], 1 / v.dimensions[1], 1]);
+                v.setMatrix(matrix);
             }
         }
-    });
+    }
 }
 
 

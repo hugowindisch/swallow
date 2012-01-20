@@ -3,7 +3,6 @@
     
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-
 var utils = require('utils'),
     dirty = require('/visual/lib/dirty'),
     updateDOMEventHooks,
@@ -43,6 +42,18 @@ var utils = require('utils'),
             },
             getDOMElement: function (vis) {
                 return window;
+            }            
+        },
+        click: {
+            createHandler: function (vis) {
+                return function (evt) {
+                    vis.emit('click', evt);
+                    dirty.update();
+                    updateDOMEventHooks(vis);
+                };
+            },
+            getDOMElement: function (vis) {            
+                return vis.element;
             }            
         }
     };

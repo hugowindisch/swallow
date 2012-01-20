@@ -31,14 +31,14 @@ exports.definition = {
             },
             children: {
                 toolbox: {
-                    factory: "domvisual",
-                    type: "DOMElement",
+                    factory: "editor",   // BAD: WORKAROUND
+                    type: "Toolbox",
                     position: "toolbox",        // maybe: NO position should be layout by the natural flowing
                     enableScaling: false,
                     depth: 0,
                     config: {
                         "domvisual.DOMVisual": {
-                            "cssClass": [ "swagup", "editor", "toolbox" ]
+                            "cssClass": [ "toolbox" ]
                         }
                     }                
                 },
@@ -50,7 +50,7 @@ exports.definition = {
                     depth: 1,
                     config: {
                         "domvisual.DOMVisual": {
-                            "cssClass": [ "swagup", "editor", "viewer" ]
+                            "cssClass": [ "viewer" ]
                         }
                     }                
                 }
@@ -59,12 +59,71 @@ exports.definition = {
         // the left toolbox
 // THIS, USING FLOW POSITIONS AND AUTO SIZE IS SOMEHOW THE MOST COMPLICATED THING FOR
 // THE EDITOR... MAYBE WE SHOULD ONLY USE CSS FOR THIS KIND OF STUFF
-        ToolBox: {
+        Toolbox: {
             // this could be empty, if all our content is flowed
             dimensions: [ 200, 480, 0],
             positions: {
+                tools: {
+                    type: "AbsolutePosition",
+                    matrix: [ 200, 0, 0, 0,   0, 100, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
+                },
+                tooldata: {
+                    type: "AbsolutePosition",
+                    matrix: [ 200, 0, 0, 0,   0, 380, 0, 0,    0, 0, 1, 0,   0, 100, 0, 0 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                }                
             },
             children: {
+                tools: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "tools",
+                    enableScaling: false,
+                    depth: 0,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "tools" ]
+                        }
+                    }                
+                },
+                tooldata: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "tooldata",
+                    enableScaling: false,
+                    depth: 1,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "tooldata" ]
+                        }
+                    }                
+                }
+            }
+        },
+        Tool: {
+            // this could be empty, if all our content is flowed
+            dimensions: [ 20, 20, 0],
+            positions: {
+                image: {
+                    type: "AbsolutePosition",
+                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                }
+            },
+            children: {
+                image: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "image",
+                    enableScaling: false,
+                    depth: 0,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "tools" ]
+                        }
+                    }                
+                }
             }
         },
         // the right viewer

@@ -65,8 +65,11 @@ var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     dirty = require('./dirty'),
     position = require('./position'),
+    applyLayout = position.applyLayout,
     setDirty = dirty.setDirty,
-    EventEmitter = events.EventEmitter;
+    setChildrenDirty = dirty.setChildrenDirty,
+    EventEmitter = events.EventEmitter,
+    defaultNameIndex = 0;
 
 function setContainmentDepth(v, depth) {
     v.containmentDepth = depth;
@@ -86,7 +89,6 @@ function setContainmentDepth(v, depth) {
 */
 function Visual(config) {
     this.containmentDepth = 0;
-    this.container = null;
     this.setConfig(config);
     // set default dimension
     this.setDimensions([1, 1, 0]);
@@ -94,6 +96,14 @@ function Visual(config) {
 }
 Visual.prototype = new EventEmitter();
 Visual.prototype.getSize = function () {
+};
+/**
+    Returns a default (unique) name
+*/
+Visual.prototype.getDefaultName = function () {
+    var ret = 'visual' + defaultNameIndex;
+    defaultNameIndex += 1;
+    return ret;
 };
 /**
     Allows scaling. When a visual is moved to a given position, it
@@ -104,7 +114,7 @@ Visual.prototype.enableScaling = function (enable) {
     enable = (enable === true);
     if (this.scalingEnabled !== enable) {
         this.scalingEnabled = enable;
-        setDirty(this, 'layout');
+        setDirty(this, 'position');
     }
 };
 /**
@@ -116,7 +126,11 @@ Visual.prototype.enableScaling = function (enable) {
 */
 Visual.prototype.setDimensions = function (vec3) {
     this.dimensions = vec3;
-    setDirty(this, 'dimensionsChanged');    
+    setDirty(this, 'dimensions');    
+};
+Visual.prototype.setMatrix = function (mat4) {
+    this.matrix = mat4;
+    setDirty(this, 'matrix');
 };
 /**
     Sets the position. The position is either a string
@@ -125,13 +139,14 @@ Visual.prototype.setDimensions = function (vec3) {
         position.FlowPosition
         position.AbsolutePosition
         position.TransformPosition
+    OR nothing
         
     Note that a position is not necessarily a matrix. It is a way
     to compute a matrix (or style) given the size of the parent container.
 */
 Visual.prototype.setPosition = function (position) {
     this.position = position;
-    setDirty(this, 'positionChanged');
+    setDirty(this, 'position');
 };
 Visual.prototype.getPosition = function () {
     return this.position;
@@ -172,10 +187,11 @@ Visual.prototype.addChild = function (child, name) {
     this.children[name] = child;
     child.name = name;
     child.depth = this.numChildren;
+    child.parent = this;
     this.numChildren += 1;
     setContainmentDepth(child, this.containmentDepth + 1);
     // parent changed
-    setDirty(child, 'parentChanged');
+    setDirty(child, 'container');
 };
 Visual.prototype.removeChild = function (child) {
     // we become a container
@@ -191,7 +207,7 @@ Visual.prototype.removeChild = function (child) {
         }
         child.parent = null;
         setContainmentDepth(child, 0);
-        setDirty(child, 'parentChanged');
+        setDirty(child, 'container');
     }
 };
 Visual.prototype.getChildAtDepth = function (d) {
@@ -207,7 +223,7 @@ Visual.prototype.swapDepths = function (d1, d2) {
         d = o1.depth;
     o1.depth = o2.depth;
     o2.depth = d;
-    setDirty(this, 'childrenDepthShuffled');
+    setDirty(this, 'childrendepth');
 };
 Visual.prototype.increaseDepth = function (d) {
 };
@@ -229,6 +245,62 @@ Visual.prototype.toMinDepth = function (d) {
     system (ex: DOM, Canvas, WebGL)
 */
 Visual.prototype.update = function (why) {
+    var container;
+    // Here we REMAKE our representation according to what has changed
+    // why is "WHAT HAS CHANGED" NOT "WHAT NEEDS TO BE REFRESHED"
+    if (why.matrix) {
+        this.updateMatrixRepresentation();
+    }
+    if (why.dimensions) {
+        // dirty position of all children
+        setChildrenDirty(this, 'position');
+        
+        // update dim representation of ourself
+        this.updateDimensionsRepresentation();
+    }
+    if (why.position) {
+        // recompute matrix & dimension from 'position'
+        container = this.parent;
+        if (container && container.layout) {
+            applyLayout(container.dimensions, container.layout, this);
+        }
+    }
+    if (why.childrendepth) {
+        // regenerate the order of our children
+        this.updateChildrenDepthRepresentation();
+    }
+    if (why.content) {
+        this.updateContentRepresentation();
+    }
+    if (why.layout) {
+        // dirty position of all children
+        setChildrenDirty(this, 'position');
+    }
+    if (why.container) {
+        // this is somehow fucked up, we've been moved to another container
+        this.updateContainerRepresentation();
+        // dirty our position
+        setDirty(this, 'position');
+    }
+};
+
+/**
+    Stub implementations.
+*/
+Visual.prototype.updateMatrixRepresentation = function () {
+    throw new Error("Not supported in abstract base class Visual");
+};
+Visual.prototype.updateDimensionsRepresentation = function () {
+    throw new Error("Not supported in abstract base class Visual");
+};
+Visual.prototype.updateChildrenDepthRepresentation = function () {
+    throw new Error("Not supported in abstract base class Visual");
+};
+Visual.prototype.updateContentRepresentation = function () {
+    throw new Error("Not supported in abstract base class Visual");
+};
+Visual.prototype.updateContainerRepresentation = function () {
+    throw new Error("Not supported in abstract base class Visual");
 };
 
 /**
@@ -239,8 +311,18 @@ Visual.prototype.createChildren = function (groupData) {
         isFunction = utils.isFunction,
         isString = utils.isString;
     forEachProperty(groupData.children, function (it, name) {
-        var Constr = require(it.factory)[it.type],
-            child = new Constr(it.config);
+        var fact = require(it.factory),
+            Constr,
+            child;
+
+        if (!fact) {
+            throw new Error('unknown factory ' + it.factory);
+        }
+        Constr = fact[it.type];
+        if (!Constr) {
+            throw new Error('unknown constructor ' + it.type + ' in factory ' + it.factory);
+        }
+        child = new Constr(it.config);
 
         // set the position of the child (this will override whatever
         // position that the child set in its constructor)

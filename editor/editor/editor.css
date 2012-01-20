@@ -1,0 +1,15 @@
+.domvisual > .toolbox {
+    background-color: green;
+}
+
+.domvisual > .viewer {
+    background-color: blue;
+}
+
+.toolbox > .tools {
+    background-color: red;
+}
+
+.toolbox > .tooldata {
+    background-color: olive;
+}
