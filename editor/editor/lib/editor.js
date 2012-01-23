@@ -20,6 +20,13 @@ function Editor(data) {
     this.createGroup(groups.Editor);
     this.setData(data);
     this.addPlugins(defaultPlugins);
+    
+// setup some fake stuff
+////////////////////////
+    var gr = new (require('./model').Group)();
+    this.children.viewer.setGroup(gr);
+    gr.cmdAddPosition('test1', 'xyzfake');
+    
 }
 Editor.prototype = new (domvisual.DOMElement)();
 
@@ -60,7 +67,7 @@ Editor.prototype.addTool = function (
     var newTool = new (tool.Tool)({'editor.Tool': { imgUrl: img }});
     // we want to flow this thing
     this.children.toolbox.children.tools.addChild(newTool, this.getDefaultName());
-    newTool.setHtmlFlowing({inline: true, autoWidth: true, autoHeight: true});
+    newTool.setHtmlFlowing({inline: true});
     newTool.addListener('click', function (evt) {
         alert('click');    
     });
@@ -96,6 +103,7 @@ Editor.prototype.selectTool = function (tool) {
 exports.Editor = Editor;
 exports.Toolbox = require('./toolbox').Toolbox;
 exports.Tool = tool.Tool;
+exports.GroupViewer = require('./groupviewer').GroupViewer;
 
 // note: this should be last
 // we want this to be able to run as a standalone application

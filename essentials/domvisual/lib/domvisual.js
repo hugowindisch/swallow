@@ -88,9 +88,9 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
         if (!htmlFlowing) {
             style.left = this.matrix[12] + 'px';
             style.top = this.matrix[13] + 'px';
-        } else {
-            style.left = 'auto';
-            style.top = 'auto';
+        } else {        
+            style.left = null; //'auto';
+            style.top = null; //'auto';
         }
     }
 };
@@ -104,9 +104,9 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
             style.position = 'absolute';
             style.display = 'block';
         } else {
-            style.width = htmlFlowing.autoWidth ? 'auto' : this.dimensions[0] + 'px';
-            style.height = htmlFlowing.autoHeight ? 'auto' : this.dimensions[1] + 'px';
-            style.position = 'absolute';
+            style.width = htmlFlowing.autoWidth ? null : this.dimensions[0] + 'px';
+            style.height = htmlFlowing.autoHeight ? null : this.dimensions[1] + 'px';
+            style.position = 'relative';
             style.display = htmlFlowing.inline ? 'inline-block' : 'block';
         }
     }

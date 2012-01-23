@@ -43,8 +43,8 @@ exports.definition = {
                     }                
                 },
                 viewer: {
-                    factory: "domvisual",
-                    type: "DOMElement",
+                    factory: "editor",
+                    type: "GroupViewer",
                     position: "viewer",
                     enableScaling: false,
                     depth: 1,
@@ -127,11 +127,28 @@ exports.definition = {
             }
         },
         // the right viewer
-        Viewer: {
+        GroupViewer: {
             dimensions: [ 440, 480, 0],
             positions: {
+                editArea: {
+                    type: "AbsolutePosition",
+                    matrix: [ 440, 0, 0, 0,   0, 480, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                }
             },
             children: {
+                editArea: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "editArea",
+                    enableScaling: false,
+                    depth: 0,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "tools" ]
+                        }
+                    }                
+                }
             }
         }
     }
