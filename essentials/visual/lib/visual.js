@@ -139,9 +139,44 @@ Visual.prototype.setDimensions = function (vec3) {
     this.dimensions = vec3;
     setDirty(this, 'dimensions');    
 };
+/**
+    Sets the matrix.
+*/
 Visual.prototype.setMatrix = function (mat4) {
     this.matrix = mat4;
     setDirty(this, 'matrix');
+};
+/**
+    Returns the matrix.
+*/
+Visual.prototype.getMatrix = function () {
+    return this.matrix;
+};
+/**
+    Returns the 'display' matrix. This can be overridden in subclasses
+    that do nothing with the real matrix but and display the element differently.
+    The only known case of this is when an element uses the normal html
+    flowing or scrolling: the real positionning is determined by the html engine.
+    
+    This should be private (well...)
+*/
+Visual.prototype.getDisplayMatrix = function () {
+    return this.matrix;
+};
+/**
+    Returns the full display matrix (i.e. the combined matrix of all parents).
+*/
+Visual.prototype.getFullDisplayMatrix = function (inverse) {
+    dirty.update();
+    var mat = glmatrix.mat4.set(this.getDisplayMatrix(), []),
+        parent;
+    for (parent = this.parent; parent; parent = parent.parent) {
+        mat = glmatrix.mat4.multiply(mat, parent.getDisplayMatrix());
+    }
+    if (inverse) {
+        glmatrix.mat4.inverse(mat);
+    }
+    return mat;
 };
 /**
     Sets the position. The position is either a string

@@ -5,6 +5,7 @@
 
 var visual = require('visual'),
     domvisual = require('domvisual'),
+    glmatrix = require('glmatrix'),
     utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     groups = require('./definition').definition.groups;
@@ -15,9 +16,63 @@ function GroupViewer(config) {
     domvisual.DOMElement.call(this, config);
     this.createGroup(groups.GroupViewer);
     //this.setData(data);
-    //this.addPlugins(defaultPlugins);
+    this.setupSelectionBox();
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
+GroupViewer.prototype.setupSelectionBox = function () {
+    var that = this,
+        decorations = this.children.decorations,
+        selectionBox,
+        startpos,
+        endpos;
+    function updateSelectionBox() {
+        var minv = [], maxv = [], i, mat = glmatrix.mat4.identity();
+        if (!selectionBox) {
+            selectionBox = new (domvisual.DOMElement)({});
+            decorations.addChild(selectionBox, 'selectionBox');
+        }
+        // compute a positive rectangle        
+        for (i = 0; i < 2; i += 1) {
+            minv[i] = startpos[i];
+            if (endpos[i] < minv[i]) {
+                maxv[i] = minv[i];
+                minv[i] = endpos[i];
+            } else {
+                maxv[i] = endpos[i];
+            }
+        }
+        // set the dimensions of the selection box
+        selectionBox.setDimensions([maxv[0] - minv[0], maxv[1] - minv[1], maxv[2] - minv[2]]);
+        mat[12] = minv[0];
+        mat[13] = minv[1];
+        mat[14] = minv[2];
+        selectionBox.setMatrix(mat);
+    }
+    function removeSelectionBox() {
+        decorations.removeChild(selectionBox);
+        selectionBox = null;
+    }
+    // we want to add mouse events to the decoration child
+    function mouseMove(evt) {
+        var mat = that.getFullDisplayMatrix(true);
+        endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]);
+        updateSelectionBox();        
+    }
+    function mouseUp(evt) {
+        decorations.removeListener('mousemovec', mouseMove);
+        removeSelectionBox();
+    }
+    function mouseDown(evt) {
+        var mat = that.getFullDisplayMatrix(true);
+        startpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]);
+        endpos = startpos;
+        decorations.on('mousemovec', mouseMove);
+        decorations.once('mouseupc', mouseUp);
+        updateSelectionBox();    
+    }
+    decorations.on('mousedown', mouseDown);
+    
+};
 GroupViewer.prototype.setGroup = function (group) {
     var that = this,
         commandChain = group.getCommandChain();

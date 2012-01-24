@@ -413,9 +413,9 @@ function convertScaleToSize(matrix, contentDimension) {
         v2 = [matrix[1], matrix[5], matrix[9]],
         l1 = glmatrix.vec3.length(v1),
         l2 = glmatrix.vec3.length(v2),        
-        resmat = glmatrix.mat4.scale(matrix, [1 / l1, 1 / l2, 0], []),
+        resmat = glmatrix.mat4.scale(matrix, [1 / l1, 1 / l2, 1], []),
         resdim = [ l1, l2, 0];
-        
+
     return { matrix: resmat, dimensions: resdim };
 }
 

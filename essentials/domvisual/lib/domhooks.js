@@ -9,54 +9,87 @@ var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     hookMap = {
         keydown: {
-            createHandler: function (vis) {
-                return function (evt) {
-                    vis.emit('keydown', evt);
-                    dirty.update();
-                    updateDOMEventHooks(vis);
-                };
-            },
             getDOMElement: function (vis) {
                 return document;
             }            
         },
         keyup: {
-            createHandler: function (vis) {
-                return function (evt) {
-                    vis.emit('keyup', evt);
-                    dirty.update();
-                    updateDOMEventHooks(vis);
-                };
-            },
             getDOMElement: function (vis) {
                 return document;
             }            
         },
         resize: {
-            createHandler: function (vis) {
-                return function (evt) {
-                    vis.emit('resize', evt);
-                    dirty.update();
-                    updateDOMEventHooks(vis);
-                };
-            },
             getDOMElement: function (vis) {
                 return window;
             }            
         },
         click: {
-            createHandler: function (vis) {
-                return function (evt) {
-                    vis.emit('click', evt);
-                    dirty.update();
-                    updateDOMEventHooks(vis);
-                };
-            },
+            getDOMElement: function (vis) {            
+                return vis.element;
+            }            
+        },
+        mousedown: {
+            getDOMElement: function (vis) {            
+                return vis.element;
+            }            
+        },
+        mouseup: {
+            getDOMElement: function (vis) {            
+                return vis.element;
+            }            
+        },
+        mouseupc: {
+            capture: true,
+            domEvent: 'mouseup',
+            getDOMElement: function (vis) {
+                // should be done on the topmost node
+                var el = vis.element;
+                while (el.parentNode) {
+                    el = el.parentNode;
+                }       
+                return el;
+            }            
+        },
+        mouseover: {
+            getDOMElement: function (vis) {            
+                return vis.element;
+            }            
+        },
+        mousemove: {
+            getDOMElement: function (vis) {            
+                return vis.element;
+            }            
+        },
+        mousemovec: {
+            capture: true,
+            domEvent: 'mousemove',
+            getDOMElement: function (vis) {
+                // should be done on the topmost node
+                var el = vis.element;
+                while (el.parentNode) {
+                    el = el.parentNode;
+                }       
+                return el;
+            }            
+        },
+        mouseout: {
             getDOMElement: function (vis) {            
                 return vis.element;
             }            
         }
     };
+
+/**
+    Creates a handler for a given event name.
+*/
+function createHandler(name, vis) {
+    return function (evt) {
+        vis.emit(name, evt);
+        dirty.update();
+        updateDOMEventHooks(vis);
+    };
+}
+
 
 /**
     Checks if interactions are allowed on a given visual.
@@ -89,10 +122,15 @@ function enforceDOMHooks(v) {
 */
 function removeDOMHook(v, event, hook) {
     var hooks = v.domHooks,
-        element = hook.getDOMElement(v);
+        element;   
     // we must be unhooked from keydown
     if (hooks && hooks[event]) {
-        element.removeEventListener(event, hooks[event]);
+        element = hook.getDOMElement(v);
+        element.removeEventListener(
+            hook.domEvent ? hook.domEvent : event, 
+            hooks[event],
+            hook.capture === true
+        );
         delete hooks[event];
     }
 }
@@ -102,9 +140,13 @@ function removeDOMHook(v, event, hook) {
 */
 function addDOMHook(v, event, hook) {
     var hooks = enforceDOMHooks(v);
-    if (!hooks[event]) {
-        hooks[event] = { handleEvent: hook.createHandler(v) };
-        hook.getDOMElement(v).addEventListener(event, hooks[event], false);
+    if (!hooks[event]) {    
+        hooks[event] = { handleEvent: createHandler(event, v) };
+        hook.getDOMElement(v).addEventListener(
+            hook.domEvent ? hook.domEvent : event, 
+            hooks[event], 
+            hook.capture === true
+        );
     }
 }
 

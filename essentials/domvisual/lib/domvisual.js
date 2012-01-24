@@ -7,6 +7,7 @@ var visual = require('visual'),
     utils = require('utils'),
     dirty = require('/visual/lib/dirty'),
     position = require('/visual/lib/position'),
+    glmatrix = require('glmatrix'),
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
     Visual = visual.Visual,
     forEachProperty = utils.forEachProperty,
@@ -242,7 +243,7 @@ exports.createFullScreenApplication = function (child) {
             positions: {
                 root: {
                     type: "TransformPosition",
-                    matrix: [ 100, 0, 0, 0,   0, 100, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
+                    matrix: [ 100, 0, 0, 0,   0, 100, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     scalemode: "distort"
                 }
             }
@@ -251,6 +252,7 @@ exports.createFullScreenApplication = function (child) {
     viz.addChild(child, 'root');
     child.setPosition('root');
     viz.name = 'stage';
+    viz.matrix = glmatrix.mat4.identity();
     viz.element.style.left = 0;
     viz.element.style.right = 0;
     viz.element.style.top = 0;
