@@ -118,6 +118,17 @@ Visual.prototype.enableScaling = function (enable) {
     }
 };
 /**
+    Allows (or disallows) user interactions (mouse, keyboard). Disallowing
+    interactions can be used to display a component as a passive preview.
+    By default, interactions are always enabled.
+    
+    // this function is implemented by subclasses
+*/
+Visual.prototype.enableInteractions = function (enable) {
+    throw new Error('enableInteractions should be implemented by concrete subclasses.');
+};
+
+/**
     Sets the dimension  of the visual
     (the dimensions are defined as an Array ... compatible with glmatrix)
     
@@ -209,6 +220,12 @@ Visual.prototype.removeChild = function (child) {
         setContainmentDepth(child, 0);
         setDirty(child, 'container');
     }
+};
+Visual.prototype.removeAllChildren = function () {
+    var that = this;
+    forEachProperty(this.children, function (c) {
+        that.removeChild(c);
+    });
 };
 Visual.prototype.getChildAtDepth = function (d) {
     forEachProperty(this.children, function (c) {

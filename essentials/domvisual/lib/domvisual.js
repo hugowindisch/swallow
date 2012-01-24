@@ -45,6 +45,14 @@ DOMVisual.prototype.removeChild = function (child) {
     this.element.removeChild(child.element);
     this.superRemoveChild(child);
 };
+DOMVisual.prototype.enableInteractions = function (enable) {
+    delete this.disableEventHooks;
+    if (!enable) {
+        this.disableEventHooks = true;
+    }
+    updateDOMEventHooks(this);
+};
+
 // we do style through css when dealing with html content
 DOMVisual.prototype.setClass = function (cssClassName) {
     // why trigger dom changes immediately, keep this cached

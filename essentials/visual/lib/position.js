@@ -394,9 +394,6 @@ Layout.prototype.build = function (positionData) {
         case 'AbsolutePosition':
             that.setPosition(posname, new AbsolutePosition(pos.matrix, pos.snapping));
             break;
-        case 'FlowPosition':
-            that.setPosition(posname, new FlowPosition(pos.matrix, pos.inline));
-            break;
         case 'TransformPosition':
             that.setPosition(posname, new TransformPosition(pos.matrix, pos.scalemode));
             break;

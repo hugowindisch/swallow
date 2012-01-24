@@ -23,9 +23,43 @@ function Editor(data) {
     
 // setup some fake stuff
 ////////////////////////
-    var gr = new (require('./model').Group)();
+    var grData = {
+        dimensions: [ 200, 200, 0],
+        positions: {
+            pos1: {
+                type: "AbsolutePosition",
+                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
+                snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+            },
+            pos2: {
+                type: "AbsolutePosition",
+                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   20, 20, 0, 0 ],
+                snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+            },
+            pos3: {
+                type: "AbsolutePosition",
+                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   40, 0, 0, 0 ],
+                snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+            },
+        },
+        children: {
+            pos1: {
+                factory: "domvisual",
+                type: "DOMElement",
+                position: "pos1",
+                enableScaling: false,
+                depth: 0,
+                config: {
+                    "domvisual.DOMVisual": {
+                        "cssClass": [ "thing" ]
+                    }
+                }                
+            }
+        }
+    },
+        gr = new (require('./model').Group)(grData);
     this.children.viewer.setGroup(gr);
-    gr.cmdAddPosition('test1', 'xyzfake');
+//    gr.cmdAddPosition('test1', 'xyzfake');
     
 }
 Editor.prototype = new (domvisual.DOMElement)();

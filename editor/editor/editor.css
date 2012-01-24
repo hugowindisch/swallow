@@ -13,3 +13,18 @@
 .toolbox > .tooldata {
     background-color: olive;
 }
+
+.domvisual > .editArea {
+    background-color: orange;
+}
+
+.domvisual > .positionbox {
+    background-color: transparent;
+    border-color: white;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.domvisual > .transparent {
+    background-color: transparent;
+}

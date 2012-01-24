@@ -51,9 +51,10 @@ var edit = require('./edit');
         }
 
 */
-function Group() {
+function Group(documentData) {
+    documentData = documentData || { positions: {}, children: {}, dimensions: [300, 300, 0]};
     this.commandChain = new (edit.CommandChain)();
-    this.documentData = { positions: {}, children: {}, dimensions: [300, 300, 0]};
+    this.documentData = documentData;
 }
 // these are getters (stuff that inspect the Group model)
 Group.prototype.getCommandChain = function () {

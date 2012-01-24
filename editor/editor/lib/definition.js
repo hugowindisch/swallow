@@ -137,7 +137,31 @@ exports.definition = {
                 }
             },
             children: {
-                editArea: {
+                visuals: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: null,
+                    enableScaling: false,
+                    depth: 0,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "editArea" ]
+                        }
+                    }                
+                },
+                positions: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: null,
+                    enableScaling: false,
+                    depth: 1,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "transparent" ]
+                        }
+                    }                
+                },
+                decorations: {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "editArea",
@@ -145,7 +169,7 @@ exports.definition = {
                     depth: 0,
                     config: {
                         "domvisual.DOMVisual": {
-                            "cssClass": [ "tools" ]
+                            "cssClass": [ "transparent" ]
                         }
                     }                
                 }

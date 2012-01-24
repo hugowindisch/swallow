@@ -58,6 +58,19 @@ var utils = require('utils'),
         }
     };
 
+/**
+    Checks if interactions are allowed on a given visual.
+*/
+function eventHooksEnabled(v) {
+    if (v.disableEventHooks) {
+        return false;
+    }
+    if (v.parent) {
+        return eventHooksEnabled(v.parent);
+    }
+    return true;
+}
+
 
 /**
     Adds dom event hooks to v if necessary.
@@ -102,9 +115,10 @@ function addDOMHook(v, event, hook) {
     or not).
 */   
 updateDOMEventHooks = function (v) {
+    var enabled = eventHooksEnabled(v);
     forEachProperty(hookMap, function (value, key) {
         var listeners = v.listeners(key);
-        if (listeners.length > 0) {
+        if (enabled && listeners.length > 0) {
             addDOMHook(v, key, value);
         } else {
             removeDOMHook(v, key, value);
