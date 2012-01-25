@@ -101,7 +101,13 @@ function eventHooksEnabled(v) {
     if (v.parent) {
         return eventHooksEnabled(v.parent);
     }
-    return true;
+    // we disconnect everything when the stage is not reachable.
+    // this should remove DOM hooks for visuals that were removed
+    // (BUT depends on events being fired to cleanup... which could be bad)
+    // (we could deeply dirty domHooks when the parent changes)
+    // FIXME (at lest, investigate me)
+    
+    return true; // v.name === 'stage';
 }
 
 

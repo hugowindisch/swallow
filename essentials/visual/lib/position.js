@@ -408,13 +408,15 @@ Layout.prototype.setPosition = function (name, position) {
 };
 
 
-function convertScaleToSize(matrix, contentDimension) {
+function convertScaleToSize(matrix) {
     var v1 = [matrix[0], matrix[4], matrix[8]],
         v2 = [matrix[1], matrix[5], matrix[9]],
+        v3 = [matrix[2], matrix[6], matrix[10]],
         l1 = glmatrix.vec3.length(v1),
-        l2 = glmatrix.vec3.length(v2),        
-        resmat = glmatrix.mat4.scale(matrix, [1 / l1, 1 / l2, 1], []),
-        resdim = [ l1, l2, 0];
+        l2 = glmatrix.vec3.length(v2),
+        l3 = glmatrix.vec3.length(v3),
+        resmat = glmatrix.mat4.scale(matrix, [1 / l1, 1 / l2, 1 / l3], glmatrix.mat4.create()),
+        resdim = [ l1, l2, l3];
 
     return { matrix: resmat, dimensions: resdim };
 }
@@ -442,11 +444,13 @@ function applyLayout(containerDimensions, layout, v) {
         pos = positions[pos];
     }
     // if we know what to do with that
+    // note: it is totally valid not to have a position. When we don't have
+    // a position, our dimensions and matrix remain as they are.
     if (isObject(pos)) {
         matrix = pos.compute(containerDimensions, layoutDimensions);
         if (matrix) {
             if (!v.scalingEnabled) {
-                res = convertScaleToSize(matrix, v.dimensions);
+                res = convertScaleToSize(matrix);
                 v.setMatrix(res.matrix);
                 v.setDimensions(res.dimensions);
             } else {
@@ -465,4 +469,4 @@ exports.applyLayout = applyLayout;
 exports.FlowPosition = FlowPosition;
 exports.AbsolutePosition = AbsolutePosition;
 exports.TransformPosition = TransformPosition;
-
+exports.convertScaleToSize = convertScaleToSize;

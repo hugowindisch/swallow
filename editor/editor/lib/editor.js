@@ -8,7 +8,6 @@
 var visual = require('visual'),    
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
-    tool = require('./tool'),
     defaultPlugins = [
         require('./plugin/select').setup
     ];
@@ -24,21 +23,21 @@ function Editor(data) {
 // setup some fake stuff
 ////////////////////////
     var grData = {
-        dimensions: [ 200, 200, 0],
+        dimensions: [ 200, 200, 1],
         positions: {
             pos1: {
                 type: "AbsolutePosition",
-                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
+                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                 snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
             },
             pos2: {
                 type: "AbsolutePosition",
-                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   20, 20, 0, 0 ],
+                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   20, 20, 0, 1 ],
                 snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
             },
             pos3: {
                 type: "AbsolutePosition",
-                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   40, 0, 0, 0 ],
+                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   40, 0, 0, 1 ],
                 snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
             },
         },
@@ -88,55 +87,24 @@ Editor.prototype.addPlugins = function (plugins) {
     }
 };
 
-/*
-    Adds a tool to the     
-    the editor (at this time tools can only be added)
-*/
-Editor.prototype.addTool = function (
-    img,
-    seleted,
-    deselected
-) {
-    console.log('addTool ' + img);
-    var newTool = new (tool.Tool)({'editor.Tool': { imgUrl: img }});
-    // we want to flow this thing
-    this.children.toolbox.children.tools.addChild(newTool, this.getDefaultName());
-    newTool.setHtmlFlowing({inline: true});
-    newTool.addListener('click', function (evt) {
-        alert('click');    
-    });
 
-};
-/*
-    Sets the contents of the data panel
+/**
+    Returns the group viewer.
 */
-Editor.prototype.addToolData = function (toolData) {
+Editor.prototype.getViewer = function () {
+    return this.children.viewer;
 };
 
 /**
-    Sets the current viewer.
-(why not let change the viewer... but...
-aren't tools related to the viewer?)
+    Returns the tool box.
 */
-Editor.prototype.setViewer = function () {
-};
-
-//////////////
-// Implementation
-Editor.prototype.selectTool = function (tool) {
-    if (tool !== this.selectedTool) {
-        // deselect the currently selected tool
-        
-        // clear the tool data panel
-        
-        // select the new tool
-        this.selectedTool = tool;
-    }
+Editor.prototype.getToolbox = function () {
+    return this.children.toolbox;
 };
 
 exports.Editor = Editor;
 exports.Toolbox = require('./toolbox').Toolbox;
-exports.Tool = tool.Tool;
+exports.Tool = require('./tool').Tool;
 exports.GroupViewer = require('./groupviewer').GroupViewer;
 
 // note: this should be last
@@ -144,4 +112,5 @@ exports.GroupViewer = require('./groupviewer').GroupViewer;
 if (require.main === module) {
     domvisual.createFullScreenApplication(new Editor());
 }
+
 

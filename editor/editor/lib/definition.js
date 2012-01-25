@@ -61,7 +61,7 @@ exports.definition = {
 // THE EDITOR... MAYBE WE SHOULD ONLY USE CSS FOR THIS KIND OF STUFF
         Toolbox: {
             // this could be empty, if all our content is flowed
-            dimensions: [ 200, 480, 0],
+            dimensions: [ 200, 480, 1],
             positions: {
                 tools: {
                     type: "AbsolutePosition",

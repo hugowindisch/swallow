@@ -232,7 +232,10 @@ Group.prototype.cmdSetDimensions = function (dimensions) {
 /**
     The master document is consituted of many different groups.
 */
-function Document() {
+// we don't want this. we will be editing one group at a time
+// that's it one group, one file nothing more.
+// there will be many group files in a project
+/*function Document() {
     this.commandChain = new (edit.CommandChain)();
     this.documentData = {};
 }
@@ -289,6 +292,6 @@ Document.prototype.cmdRenameGroup = function (name, newname) {
         "Rename group " + name + ' as ' + newname,
         { model: this, name: name, newname: newname }
     );    
-};
+}; */
 exports.Group = Group;
-exports.Document = Document;
+

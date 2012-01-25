@@ -81,6 +81,27 @@ function setContainmentDepth(v, depth) {
     }
 }
 
+function matrixIsTranslateOnly(matrix) {
+    function isOne(n) {
+        return Math.round(n * 1000) === 10000;
+    }
+    function isZero(n) {
+        return Math.round(n * 1000) === 0;
+    }
+    return (
+        isOne(matrix[0]) && 
+        isOne(matrix[5]) &&
+        isOne(matrix[10]) && 
+        
+        isZero(matrix[1]) &&
+        isZero(matrix[2]) &&
+        isZero(matrix[4]) &&
+        isZero(matrix[6]) &&
+        isZero(matrix[8]) &&
+        isZero(matrix[9])
+    );                        
+}
+
 /**
     A visual.
     A visual can contain other visuals.
@@ -135,22 +156,48 @@ Visual.prototype.enableInteractions = function (enable) {
     'auto' for any of this will make the dimension determined
     by the content of the box.
 */
-Visual.prototype.setDimensions = function (vec3) {
-    this.dimensions = vec3;
+Visual.prototype.setDimensions = function (v3) {
+    this.dimensions = v3;
     setDirty(this, 'dimensions');    
 };
 /**
     Sets the matrix.
+    Note that setting the matrix directly can have no effect if this visual
+    has a 'position' (the position will regenerate the matrix).
 */
-Visual.prototype.setMatrix = function (mat4) {
-    this.matrix = mat4;
+Visual.prototype.setMatrix = function (m4) {
+    this.matrix = m4;
     setDirty(this, 'matrix');
+};
+/**
+    Sets the matrix with a matrix that is normalized to scale a unity
+    rect to the position and dimensions that we need. The matrix is transformed
+    by removing our scaling factor.
+    Note that setting the matrix directly can have no effect if this visual
+    has a 'position' (the position will regenerate the matrix).
+*/
+Visual.prototype.setNormalizedMatrix = function (m4) {
+    var dimensions = this.dimensions;
+    this.setMatrix(
+        glmatrix.mat4.scale(
+            m4, 
+            [1 / dimensions[0], 1 / dimensions[1], 1],
+            glmatrix.mat4.create()
+        )
+    );
 };
 /**
     Returns the matrix.
 */
 Visual.prototype.getMatrix = function () {
     return this.matrix;
+};
+
+/**
+    Checks that only translation is needed on this visual.
+*/
+Visual.prototype.isOnlyTranslated = function () {
+    matrixIsTranslateOnly(this.matrix);
 };
 /**
     Returns the 'display' matrix. This can be overridden in subclasses
@@ -171,7 +218,7 @@ Visual.prototype.getFullDisplayMatrix = function (inverse) {
     var mat = glmatrix.mat4.set(this.getDisplayMatrix(), []),
         parent;
     for (parent = this.parent; parent; parent = parent.parent) {
-        mat = glmatrix.mat4.multiply(mat, parent.getDisplayMatrix());
+        glmatrix.mat4.multiply(parent.getDisplayMatrix(), mat, mat);
     }
     if (inverse) {
         glmatrix.mat4.inverse(mat);
@@ -430,4 +477,5 @@ exports.applyLayout = position.applyLayout;
 exports.FlowPosition = position.FlowPosition;
 exports.AbsolutePosition = position.AbsolutePosition;
 exports.TransformPosition = position.TransformPosition;
-
+exports.matrixIsTranslateOnly = matrixIsTranslateOnly;
+exports.convertScaleToSize = position.convertScaleToSize;

@@ -11,7 +11,8 @@ var visual = require('visual'),
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
     Visual = visual.Visual,
     forEachProperty = utils.forEachProperty,
-    isObject = utils.isObject;
+    isObject = utils.isObject,
+    setDirty = dirty.setDirty;
 
 function DOMVisual(config, element) {
     var that = this;
@@ -58,7 +59,7 @@ DOMVisual.prototype.enableInteractions = function (enable) {
 DOMVisual.prototype.setClass = function (cssClassName) {
     // why trigger dom changes immediately, keep this cached
     this.cssClasses[cssClassName] = true;
-    dirty.setDirty(this, 'content');
+    setDirty(this, 'content');
     
 };
 DOMVisual.prototype.clearClass = function (cssClassName) {
@@ -81,9 +82,19 @@ DOMVisual.prototype.clearClass = function (cssClassName) {
 DOMVisual.prototype.setHtmlFlowing = function (flowing) {
     if (this.htmlFlowing !== flowing) {
         this.htmlFlowing = flowing;
-        dirty.setDirty(this, 'matrix');
-        dirty.setDirty(this, 'dimensions');
+        setDirty(this, 'matrix');
+        setDirty(this, 'dimensions');
     }
+};
+
+/**
+    Enables children clipping.
+    available modes are
+        visible hidden scroll
+*/
+DOMVisual.prototype.setChildrenClipping = function (mode) {
+    this.childrenClipping = mode;
+    setDirty(this, 'content');
 };
 
 /**
@@ -91,15 +102,37 @@ DOMVisual.prototype.setHtmlFlowing = function (flowing) {
 */
 DOMVisual.prototype.updateMatrixRepresentation = function () {
     if (this.element && this.name !== 'stage') {    
-        var style = this.element.style,
-            htmlFlowing = this.htmlFlowing;
+        var matrix = this.matrix,
+            style = this.element.style,
+            htmlFlowing = this.htmlFlowing,
+            transform;
         // full matrix not yet supported
         if (!htmlFlowing) {
-            style.left = this.matrix[12] + 'px';
-            style.top = this.matrix[13] + 'px';
+            // we can either use left & top (if html5 is not supported)
+            // or use matrices but in this case, all scaling will be
+            // removed
+            if (this.isOnlyTranslated()) {
+                style.left = matrix[12] + 'px';
+                style.top = matrix[13] + 'px';
+                style.webkitBackfaceVisibility = null;
+                style.MozTransformOrigin = style.webkitTransformOrigin = style.transformOrigin = null;
+                style.MozTransform = style.webkitTransform = style.transform = null;
+            } else {
+                // we need the whole css3 transform shebang
+// FIXME: I did not have internet and I want the full matrix thing
+                // 3d transform                
+                transform = 'translate(' + matrix[12] + 'px, ' + matrix[13] + 'px) ';
+                transform += 'scale(' + matrix[0] + ',' + matrix[5] + ')';
+                style.webkitBackfaceVisibility = 'hidden';
+                style.MozTransformOrigin = style.webkitTransformOrigin = style.transformOrigin = '0 0 0';
+                style.MozTransform = style.webkitTransform = style.transform = transform;
+            }
         } else {        
             style.left = null; //'auto';
             style.top = null; //'auto';
+            style.webkitBackfaceVisibility = null;
+            style.MozTransformOrigin = style.webkitTransformOrigin = style.transformOrigin = null;
+            style.MozTransform = style.webkitTransform = style.transform = null;
         }
     }
 };
@@ -145,12 +178,20 @@ DOMVisual.prototype.updateChildrenDepthRepresentation = function () {
 };
 DOMVisual.prototype.updateContentRepresentation = function () {
     if (this.element) {
-        var cssClass = "";
+        var cssClass = "",
+            childrenClipping = this.childrenClipping,
+            element = this.element,
+            style = element.style;        
         forEachProperty(this.cssClasses, function (c, name) {
             cssClass += name;
             cssClass += ' ';
         });
-        this.element.setAttribute('class', cssClass);
+        element.setAttribute('class', cssClass);
+        if (this.childrenClipping) {
+            style.overflow = this.childrenClipping;
+        } else {
+            style.overflow = null;
+        }
     }
 };
 

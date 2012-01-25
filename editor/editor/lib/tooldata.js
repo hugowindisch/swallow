@@ -7,4 +7,13 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups;
 
 function ToolData() {
+
 }
+
+
+/*
+    Sets the contents of the data panel
+*/
+ToolData.prototype.addToolData = function (toolData) {
+};
+
