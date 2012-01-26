@@ -24,7 +24,22 @@ exports.setup = function (editor) {
         'paint',
         function (fcnPopTool) {
             console.log('selected');
-            viewer.enableBoxSelection(null, null, null);
+            viewer.enableBoxSelection(
+                null,
+                null,
+                function (mat, nmat) {
+                    var group = viewer.getGroup();
+                    group.cmdAddPosition(
+                        group.getUniquePositionName(),
+                        {
+                            matrix: mat,
+                            type: "AbsolutePosition",
+                            snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                        }   
+                    );
+                }
+            );
+            
         },
         function () {
             console.log('deSelected');

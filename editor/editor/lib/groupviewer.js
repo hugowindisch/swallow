@@ -14,7 +14,6 @@ var visual = require('visual'),
     convertScaleToSize = visual.convertScaleToSize;
     
 
-
 function GroupViewer(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config);
@@ -135,6 +134,12 @@ GroupViewer.prototype.enableBoxSelection = function (
     }
 };
 
+/**
+    Returns the currently edited group.
+*/
+GroupViewer.prototype.getGroup = function () {
+    return this.group;
+};
 
 /**
     Zoom to a given position.
@@ -187,6 +192,7 @@ GroupViewer.prototype.setGroup = function (group) {
     if (this.unhookFromGroup) {
         this.unhookFromGroup();
     }
+    this.group = group;
     this.documentData = documentData;
     function onDo(name, message, hint) {
 /*        switch (name) {

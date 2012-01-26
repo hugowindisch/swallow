@@ -61,6 +61,19 @@ Group.prototype.getCommandChain = function () {
     return this.commandChain;
 };
 // these are the commands (stuff that actually modifies the Group model)
+Group.prototype.getUniquePositionName = function () {
+    var i = 0,
+        positions = this.documentData.positions,
+        name;
+    while (true) {
+        name = 'pos' + i;
+        if (!positions[name]) {
+            return name;
+        }
+        i += 1;        
+    }
+    // this point cannot be reached
+};
 /**
     Adds a new position to the model.
 */
