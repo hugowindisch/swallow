@@ -65,6 +65,25 @@ DOMVisual.prototype.setClass = function (cssClassName) {
 DOMVisual.prototype.clearClass = function (cssClassName) {
     delete this.cssClasses[cssClassName];
 };
+
+DOMVisual.prototype.getDisplayMatrix = function () {
+    var scrollX = this.element.scrollLeft,
+        scrollY = this.element.scrollTop,
+        mat;
+        
+    if (scrollX || scrollY) {
+        mat = glmatrix.mat4.translate(
+            this.matrix, 
+            [-scrollX, -scrollY, 0],
+            glmatrix.mat4.create()
+        );
+    } else {
+        mat = this.matrix;
+    }
+    return mat;
+};
+
+
 /**
     Flow relegates the positionning to the html engine, flowing
     the content.
@@ -94,6 +113,14 @@ DOMVisual.prototype.setHtmlFlowing = function (flowing) {
 */
 DOMVisual.prototype.setChildrenClipping = function (mode) {
     this.childrenClipping = mode;
+    setDirty(this, 'content');
+};
+
+/**
+    Sets scrolling.
+*/
+DOMVisual.prototype.setScroll = function (v3) {
+    this.scroll = v3;
     setDirty(this, 'content');
 };
 
@@ -192,6 +219,10 @@ DOMVisual.prototype.updateContentRepresentation = function () {
         } else {
             style.overflow = null;
         }
+        if (this.scroll) {
+            element.scrollLeft = this.scroll[0];
+            element.scrollTop = this.scroll[1];
+        }
     }
 };
 
@@ -208,9 +239,6 @@ DOMVisual.prototype.setConfig = function (config) {
             }
         }
     }
-};
-DOMVisual.prototype.updateContainerRepresentation = function () {
-    // FIXME: not supported yet (not sure this should even exist)
 };
 
 /////////////////

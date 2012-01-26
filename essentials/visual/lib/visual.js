@@ -102,6 +102,13 @@ function matrixIsTranslateOnly(matrix) {
     );                        
 }
 
+function updateChildrenPositions(v) {
+    forEachProperty(v.children, function (c) {
+        applyLayout(v.dimensions, v.layout, c);
+    });
+}
+
+
 /**
     A visual.
     A visual can contain other visuals.
@@ -113,7 +120,6 @@ function Visual(config) {
     this.setConfig(config);
     // set default dimension
     this.setDimensions([1, 1, 0]);
-    setDirty(this, 'constructed');
 }
 Visual.prototype = new EventEmitter();
 Visual.prototype.getSize = function () {
@@ -135,7 +141,10 @@ Visual.prototype.enableScaling = function (enable) {
     enable = (enable === true);
     if (this.scalingEnabled !== enable) {
         this.scalingEnabled = enable;
-        setDirty(this, 'position');
+        var parent = this.parent;
+        if (parent) {
+            applyLayout(parent.dimensions, parent.layout, this);
+        }
     }
 };
 /**
@@ -158,7 +167,9 @@ Visual.prototype.enableInteractions = function (enable) {
 */
 Visual.prototype.setDimensions = function (v3) {
     this.dimensions = v3;
-    setDirty(this, 'dimensions');    
+    setDirty(this, 'dimensions');
+    // Keep all children in synch (in terms of position and matrix)
+    updateChildrenPositions(this);
 };
 /**
     Sets the matrix.
@@ -239,7 +250,10 @@ Visual.prototype.getFullDisplayMatrix = function (inverse) {
 */
 Visual.prototype.setPosition = function (position) {
     this.position = position;
-    setDirty(this, 'position');
+    var parent = this.parent;
+    if (parent) {
+        applyLayout(parent.dimensions, parent.layout, this);
+    }
 };
 Visual.prototype.getPosition = function () {
     return this.position;
@@ -261,7 +275,7 @@ Visual.prototype.applyPosition = function (containerDimensions, layoutDimensions
 */
 Visual.prototype.setLayout = function (groupData) {
     this.layout = new (position.Layout)(groupData.dimensions, groupData.positions);
-    setDirty(this, 'layout');
+    updateChildrenPositions(this);
 };
 Visual.prototype.getLayout = function () {
     return this.layout;
@@ -283,8 +297,8 @@ Visual.prototype.addChild = function (child, name) {
     child.parent = this;
     this.numChildren += 1;
     setContainmentDepth(child, this.containmentDepth + 1);
-    // parent changed
-    setDirty(child, 'container');
+    // immediately redimension this child
+    applyLayout(this.dimensions, this.layout, child);
 };
 Visual.prototype.removeChild = function (child) {
     // we become a container
@@ -300,7 +314,6 @@ Visual.prototype.removeChild = function (child) {
         }
         child.parent = null;
         setContainmentDepth(child, 0);
-        setDirty(child, 'container');
     }
 };
 Visual.prototype.removeAllChildren = function () {
@@ -345,41 +358,22 @@ Visual.prototype.toMinDepth = function (d) {
 */
 Visual.prototype.update = function (why) {
     var container;
+    // NOTE: it is NOT ok to dirty in here
     // Here we REMAKE our representation according to what has changed
     // why is "WHAT HAS CHANGED" NOT "WHAT NEEDS TO BE REFRESHED"
-    if (why.matrix) {
-        this.updateMatrixRepresentation();
-    }
-    if (why.dimensions) {
-        // dirty position of all children
-        setChildrenDirty(this, 'position');
-        
-        // update dim representation of ourself
-        this.updateDimensionsRepresentation();
-    }
-    if (why.position) {
-        // recompute matrix & dimension from 'position'
-        container = this.parent;
-        if (container && container.layout) {
-            applyLayout(container.dimensions, container.layout, this);
-        }
-    }
     if (why.childrendepth) {
         // regenerate the order of our children
         this.updateChildrenDepthRepresentation();
     }
+    if (why.matrix) {
+        this.updateMatrixRepresentation();
+    }
+    if (why.dimensions) {        
+        // update dim representation of ourself
+        this.updateDimensionsRepresentation();
+    }
     if (why.content) {
         this.updateContentRepresentation();
-    }
-    if (why.layout) {
-        // dirty position of all children
-        setChildrenDirty(this, 'position');
-    }
-    if (why.container) {
-        // this is somehow fucked up, we've been moved to another container
-        this.updateContainerRepresentation();
-        // dirty our position
-        setDirty(this, 'position');
     }
 };
 
@@ -396,9 +390,6 @@ Visual.prototype.updateChildrenDepthRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 Visual.prototype.updateContentRepresentation = function () {
-    throw new Error("Not supported in abstract base class Visual");
-};
-Visual.prototype.updateContainerRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 

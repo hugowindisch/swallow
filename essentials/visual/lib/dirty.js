@@ -25,19 +25,34 @@ DirtyList.prototype.setDirty = function (o, why) {
         throw new Error("invalid visual");
     }
     if (!o.hasOwnProperty('isDirty')) {
-        var depth = o.containmentDepth,
-            dirty = this.dirty;
         o.isDirty = {};
-            
+        this.dirty.push(o);
+    }
+    if (why) {
+        o.isDirty[why] = true;
+    }
+};
+
+/**
+    Returns a depth sorted dirty list
+*/
+DirtyList.prototype.getDepthSortedList = function () {
+    var dirty = [], 
+        i,
+        thisdirty = this.dirty,
+        l = thisdirty.length,
+        o,
+        depth;
+    for (i = 0; i < l; i += 1) {
+        o = thisdirty[i];
+        depth = o.containmentDepth || 0;
         if (!dirty[depth]) {
             dirty[depth] = [o];
         } else {
             dirty[depth].push(o);
         }
     }
-    if (why) {
-        o.isDirty[why] = true;
-    }
+    return dirty;
 };
 
 /**
@@ -52,16 +67,17 @@ DirtyList.prototype.update = function () {
         dirty,
         o,
         why;
-        
-    function clean(o) {
+
+    function clean(o) {    
         var why = o.isDirty;
         delete o.isDirty;
         o.update(why);
     }
-    while ((l = this.dirty.length) > 0) {
-        dirty = this.dirty;      
+    dirty = this.getDepthSortedList();
+    while ((l = dirty.length) > 0) {        
         this.dirty = [];
-        for (i = 0; i < l; i += 1) {
+        // we go bottom up
+        for (i = l - 1; i >= 0; i -= 1) {
             o = dirty[i];
             if (isArray(o)) {
                 ll = o.length;
@@ -72,6 +88,7 @@ DirtyList.prototype.update = function () {
                 clean(o);
             }
         }
+        dirty = this.getDepthSortedList();
     }
 };
 

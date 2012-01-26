@@ -435,28 +435,30 @@ function convertScaleToSize(matrix) {
         
 */
 function applyLayout(containerDimensions, layout, v) {
-    var positions = layout.positions,
-        layoutDimensions = layout.dimensions,
-        pos = v.getPosition(),
-        res,
-        matrix;
-    if (isString(pos)) {
-        pos = positions[pos];
-    }
-    // if we know what to do with that
-    // note: it is totally valid not to have a position. When we don't have
-    // a position, our dimensions and matrix remain as they are.
-    if (isObject(pos)) {
-        matrix = pos.compute(containerDimensions, layoutDimensions);
-        if (matrix) {
-            if (!v.scalingEnabled) {
-                res = convertScaleToSize(matrix);
-                v.setMatrix(res.matrix);
-                v.setDimensions(res.dimensions);
-            } else {
-                // this is probably NOT best done here
-                glmatrix.mat4.scale(matrix, [1 / v.dimensions[0], 1 / v.dimensions[1], 1]);
-                v.setMatrix(matrix);
+    if (layout) {
+        var positions = layout.positions,
+            layoutDimensions = layout.dimensions,
+            pos = v.getPosition(),
+            res,
+            matrix;
+        if (isString(pos)) {
+            pos = positions[pos];
+        }
+        // if we know what to do with that
+        // note: it is totally valid not to have a position. When we don't have
+        // a position, our dimensions and matrix remain as they are.
+        if (isObject(pos)) {
+            matrix = pos.compute(containerDimensions, layoutDimensions);
+            if (matrix) {
+                if (!v.scalingEnabled) {
+                    res = convertScaleToSize(matrix);
+                    v.setMatrix(res.matrix);
+                    v.setDimensions(res.dimensions);
+                } else {
+                    // this is probably NOT best done here
+                    glmatrix.mat4.scale(matrix, [1 / v.dimensions[0], 1 / v.dimensions[1], 1]);
+                    v.setMatrix(matrix);
+                }
             }
         }
     }
