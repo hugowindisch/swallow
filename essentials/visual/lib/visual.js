@@ -71,6 +71,16 @@ var utils = require('utils'),
     EventEmitter = events.EventEmitter,
     defaultNameIndex = 0;
 
+
+function forVisualAndAllChildrenDeep(v, fcn) {
+    fcn(v);
+    if (v.children) {
+        forEachProperty(v.children, function (v) {
+            forVisualAndAllChildrenDeep(v, fcn);
+        });
+    }
+}
+
 function setContainmentDepth(v, depth) {
     v.containmentDepth = depth;
     if (v.children) {
@@ -470,3 +480,4 @@ exports.AbsolutePosition = position.AbsolutePosition;
 exports.TransformPosition = position.TransformPosition;
 exports.matrixIsTranslateOnly = matrixIsTranslateOnly;
 exports.convertScaleToSize = position.convertScaleToSize;
+exports.forVisualAndAllChildrenDeep = forVisualAndAllChildrenDeep;

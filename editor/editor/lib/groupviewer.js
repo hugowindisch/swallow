@@ -26,10 +26,10 @@ function GroupViewer(config) {
     this.createGroup(groups.GroupViewer);
     
     
-    this.selectionBox = new (selectionbox.SelectionBox)({});
-    this.selectionBox.setMatrix(mat4.translate(mat4.identity(), [100, 100, 0]));
-    this.selectionBox.setDimensions([200, 200, 1]);
-    this.children.decorations.addChild(this.selectionBox, 'selectionBox');
+    this.selectionControlBox = new (selectionbox.SelectionBox)({});
+    this.selectionControlBox.setMatrix(mat4.translate(mat4.identity(), [100, 100, 0]));
+    this.selectionControlBox.setDimensions([200, 200, 1]);
+    this.children.decorations.addChild(this.selectionControlBox, 'selectionControlBox');
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
 

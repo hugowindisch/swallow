@@ -19,6 +19,8 @@ function DOMVisual(config, element) {
     this.element = element;
     this.cssClasses = {};
     this.setClass('domvisual');
+    this.connectedToTheStage = false;
+    this.disableEventHooks = false;
     Visual.call(this, config);
     // this might not be the best idea, maybe overriding addListener would
     // be better.
@@ -39,6 +41,14 @@ DOMVisual.prototype.addChild = function (child, name) {
     // is maybe a little bit ugly, but until I find better, it will do
     this.superAddChild(child, name);
     this.element.appendChild(child.element);
+    var connectedToTheStage = this.connectedToTheStage,
+        disableEventHooks = this.disableEventHooks;
+    visual.forVisualAndAllChildrenDeep(child, function (c) {
+        c.connectedToTheStage = connectedToTheStage;
+        c.disableEventHooks = disableEventHooks;
+        // here we should revalidate the hooks for this child
+        updateDOMEventHooks(c);
+    });
 };
 DOMVisual.prototype.removeChild = function (child) {
     // it is easier to track element containement immediately instead
@@ -46,13 +56,21 @@ DOMVisual.prototype.removeChild = function (child) {
     // is maybe a little bit ugly, but until I find better, it will do
     this.element.removeChild(child.element);
     this.superRemoveChild(child);
+    var connectedToTheStage = this.connectedToTheStage,
+        disableEventHooks = this.disableEventHooks;
+    visual.forVisualAndAllChildrenDeep(child, function (c) {
+        c.connectedToTheStage = false;
+        // here we should revalidate the hooks for this child
+        updateDOMEventHooks(c);
+    });
 };
 DOMVisual.prototype.enableInteractions = function (enable) {
-    delete this.disableEventHooks;
-    if (!enable) {
-        this.disableEventHooks = true;
-    }
-    updateDOMEventHooks(this);
+    var disable = !enable;
+    visual.forVisualAndAllChildrenDeep(this, function (c) {
+        c.disableEventHooks = disable;
+        // here we should revalidate the hooks for this child
+        updateDOMEventHooks(c);
+    });
 };
 
 // we do style through css when dealing with html content
@@ -318,6 +336,7 @@ exports.createFullScreenApplication = function (child) {
             }
         }
     );
+    viz.connectedToTheStage = true;
     viz.addChild(child, 'root');
     child.setPosition('root');
     viz.name = 'stage';

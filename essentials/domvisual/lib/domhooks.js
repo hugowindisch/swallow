@@ -92,26 +92,6 @@ function createHandler(name, vis) {
 
 
 /**
-    Checks if interactions are allowed on a given visual.
-*/
-function eventHooksEnabled(v) {
-    if (v.disableEventHooks) {
-        return false;
-    }
-    if (v.parent) {
-        return eventHooksEnabled(v.parent);
-    }
-    // we disconnect everything when the stage is not reachable.
-    // this should remove DOM hooks for visuals that were removed
-    // (BUT depends on events being fired to cleanup... which could be bad)
-    // (we could deeply dirty domHooks when the parent changes)
-    // FIXME (at lest, investigate me)
-    
-    return true; // v.name === 'stage';
-}
-
-
-/**
     Adds dom event hooks to v if necessary.
 */
 function enforceDOMHooks(v) {
@@ -162,8 +142,9 @@ function addDOMHook(v, event, hook) {
     dom event hooks accordingly (i.e. connect us to the keyboard and mouse
     or not).
 */   
+
 updateDOMEventHooks = function (v) {
-    var enabled = eventHooksEnabled(v);
+    var enabled = v.connectedToTheStage && !v.disableEventHooks;
     forEachProperty(hookMap, function (value, key) {
         var listeners = v.listeners(key);
         if (enabled && listeners.length > 0) {
