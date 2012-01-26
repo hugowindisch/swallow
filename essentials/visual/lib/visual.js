@@ -187,7 +187,7 @@ Visual.prototype.setMatrix = function (m4) {
     Note that setting the matrix directly can have no effect if this visual
     has a 'position' (the position will regenerate the matrix).
 */
-Visual.prototype.setNormalizedMatrix = function (m4) {
+/*Visual.prototype.setNormalizedMatrix = function (m4) {
     var dimensions = this.dimensions;
     this.setMatrix(
         glmatrix.mat4.scale(
@@ -196,7 +196,7 @@ Visual.prototype.setNormalizedMatrix = function (m4) {
             glmatrix.mat4.create()
         )
     );
-};
+};*/
 /**
     Returns the matrix.
 */

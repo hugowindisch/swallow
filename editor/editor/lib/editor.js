@@ -106,6 +106,7 @@ exports.Editor = Editor;
 exports.Toolbox = require('./toolbox').Toolbox;
 exports.Tool = require('./tool').Tool;
 exports.GroupViewer = require('./groupviewer').GroupViewer;
+exports.SelectionBox = require('./selectionbox').SelectionBox;
 
 // note: this should be last
 // we want this to be able to run as a standalone application

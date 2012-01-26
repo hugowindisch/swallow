@@ -7,6 +7,7 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     glmatrix = require('glmatrix'),
     utils = require('utils'),
+    selectionbox = require('./selectionbox'),
     forEachProperty = utils.forEachProperty,
     groups = require('./definition').definition.groups,
     vec3 = glmatrix.vec3,
@@ -23,6 +24,12 @@ function GroupViewer(config) {
     this.groupBorderPix = 1000;
     // create visual stuff
     this.createGroup(groups.GroupViewer);
+    
+    
+    this.selectionBox = new (selectionbox.SelectionBox)({});
+    this.selectionBox.setMatrix(mat4.translate(mat4.identity(), [100, 100, 0]));
+    this.selectionBox.setDimensions([200, 200, 1]);
+    this.children.decorations.addChild(this.selectionBox, 'selectionBox');
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
 

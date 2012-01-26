@@ -174,7 +174,100 @@ exports.definition = {
                     }                
                 }
             }
-        }
+        },
+        // the right viewer
+        SelectionBox: {
+            dimensions: [ 400, 400, 0],
+            positions: {
+                selectionArea: {
+                    type: "AbsolutePosition",
+                    matrix: [ 440, 0, 0, 0,   0, 480, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                },
+                topLeft: {
+                    type: "AbsolutePosition",
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   -10, -10, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                topRight: {
+                    type: "AbsolutePosition",
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, -10, 0, 1 ],
+                    snapping: { leftTo: 'right', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
+                },
+                bottomLeft: {
+                    type: "AbsolutePosition",
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   -10, 400, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'bottom', bottomTo: 'bottom' }
+                },
+                bottomRight: {
+                    type: "AbsolutePosition",
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, 400, 0, 1 ],
+                    snapping: { leftTo: 'right', rightTo: 'right', topTo: 'bottom', bottomTo: 'bottom' }
+                }
+            },
+            children: {
+                selectionArea: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "selectionArea",
+                    enableScaling: false,
+                    depth: 0,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "transparent" ]
+                        }
+                    }                
+                },
+                topLeft: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "topLeft",
+                    enableScaling: false,
+                    depth: 0,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "editArea" ]
+                        }
+                    }                
+                },
+                topRight: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "topRight",
+                    enableScaling: false,
+                    depth: 0,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "editArea" ]
+                        }
+                    }                
+                },
+                bottomLeft: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "bottomLeft",
+                    enableScaling: false,
+                    depth: 0,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "editArea" ]
+                        }
+                    }                
+                },
+                bottomRight: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "bottomRight",
+                    enableScaling: false,
+                    depth: 0,
+                    config: {
+                        "domvisual.DOMVisual": {
+                            "cssClass": [ "editArea" ]
+                        }
+                    }                
+                }                
+            }
+        }        
     }
 };
 
