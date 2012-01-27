@@ -37,7 +37,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "class": [ "toolbox" ]
+                        "class": [ "editorEditortoolbox" ]
                     }                
                 },
                 viewer: {
@@ -47,7 +47,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 1,
                     config: {
-                        "class": [ "viewer" ]
+                        "class": [ "editor_Editor_viewer" ]
                     }                
                 }
             }
@@ -78,7 +78,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "class": [ "tools" ]
+                        "class": [ "editor_Toolbox_tools" ]
                     }                
                 },
                 tooldata: {
@@ -88,7 +88,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 1,
                     config: {
-                        "class": [ "tooldata" ]
+                        "class": [ "editor_Toolbox_tooldata" ]
                     }                
                 }
             }
@@ -111,7 +111,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "class": [ "tools" ]
+                        "class": [ "editor_Tool_image" ]
                     }                
                 }
             }
@@ -134,7 +134,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "class": [ "editArea" ]
+                        "class": [ "editor_GroupViewer_visuals" ]
                     }                
                 },
                 positions: {
@@ -165,7 +165,7 @@ exports.definition = {
             positions: {
                 selectionArea: {
                     type: "AbsolutePosition",
-                    matrix: [ 440, 0, 0, 0,   0, 480, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    matrix: [ 400, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
                 },
                 topLeft: {
@@ -197,7 +197,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "class": [ "transparent" ]
+                        "class": [ "editor_SelectionBox_selectionArea" ]
                     }                
                 },
                 topLeft: {
@@ -207,7 +207,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "class": [ "editArea" ]
+                        "class": [ "editor_SelectionBox_knob" ]
                     }                
                 },
                 topRight: {
@@ -217,7 +217,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "class": [ "editArea" ]
+                        "class": [ "editor_SelectionBox_knob" ]
                     }                
                 },
                 bottomLeft: {
@@ -227,7 +227,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "class": [ "editArea" ]
+                        "class": [ "editor_SelectionBox_knob" ]
                     }                
                 },
                 bottomRight: {
@@ -237,7 +237,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "class": [ "editArea" ]
+                        "class": [ "editor_SelectionBox_knob" ]
                     }                
                 }                
             }

@@ -19,7 +19,6 @@ function DOMVisual(config, groupData, element) {
     var that = this;
     this.element = element;
     this.cssClasses = {};
-    this.setClass('domvisual');
     this.connectedToTheStage = false;
     this.disableEventHooks = false;
     Visual.call(this, config, groupData);

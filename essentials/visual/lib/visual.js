@@ -520,3 +520,4 @@ exports.TransformPosition = position.TransformPosition;
 exports.matrixIsTranslateOnly = matrixIsTranslateOnly;
 exports.convertScaleToSize = position.convertScaleToSize;
 exports.forVisualAndAllChildrenDeep = forVisualAndAllChildrenDeep;
+

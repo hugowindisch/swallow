@@ -43,7 +43,7 @@ GroupViewer.prototype.enableBoxSelection = function (
     var that = this,
         decorations = this.children.decorations,
         visuals = this.children.visuals,
-        selectionBox,
+        mouseBox,
         startpos,
         endpos,
         matrix,
@@ -80,19 +80,19 @@ GroupViewer.prototype.enableBoxSelection = function (
         this.resetBoxSelection();
         delete this.resetBoxSelection;
     }
-    function updateSelectionBox(nmatrix) {
+    function updateMouseBox(nmatrix) {
         var zoomMat = that.zoomMat,
             res = convertScaleToSize(mat4.multiply(zoomMat, nmatrix, mat4.create()));
-        if (!selectionBox) {
-            selectionBox = new (domvisual.DOMElement)({});
-            decorations.addChild(selectionBox, 'selectionBox');
+        if (!mouseBox) {
+            mouseBox = new (domvisual.DOMElement)({ "class": "editor_GroupViewer_mouseBox"});
+            decorations.addChild(mouseBox, 'mouseBox');
         }
-        selectionBox.setDimensions(res.dimensions);
-        selectionBox.setMatrix(res.matrix);
+        mouseBox.setDimensions(res.dimensions);
+        mouseBox.setMatrix(res.matrix);
     }
-    function removeSelectionBox() {
-        decorations.removeChild(selectionBox);
-        selectionBox = null;
+    function removeMouseBox() {
+        decorations.removeChild(mouseBox);
+        mouseBox = null;
     }
     // we want to add mouse events to the decoration child
     function mouseMove(evt) {
@@ -101,7 +101,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
         matrix = twoPositionsToMatrix(startpos, endpos);
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);
-        updateSelectionBox(nmatrix);
+        updateMouseBox(nmatrix);
         if (selection) {
             selection(matrix, nmatrix, startpos, endpos);
         }
@@ -109,7 +109,7 @@ GroupViewer.prototype.enableBoxSelection = function (
     function mouseUp(evt) {
         evt.preventDefault();
         decorations.removeListener('mousemovec', mouseMove);
-        removeSelectionBox();
+        removeMouseBox();
         if (selectionEnd) {
             selectionEnd(matrix, nmatrix, startpos, endpos);
         }
@@ -123,7 +123,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         decorations.once('mouseupc', mouseUp);
         matrix = twoPositionsToMatrix(startpos, endpos);
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);        
-        updateSelectionBox(nmatrix);
+        updateMouseBox(nmatrix);
         if (selectionStart) {
             selectionStart(matrix, nmatrix, startpos, endpos);
         }
@@ -297,7 +297,7 @@ GroupViewer.prototype.regenerateAll = function () {
 
         pos.setDimensions(res.dimensions);
         pos.setMatrix(res.matrix);
-        pos.setClass('positionbox');
+        pos.setClass('editor_GroupViewer_position');
         children.positions.addChild(pos, name);
     });    
     // decorations
