@@ -37,9 +37,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "toolbox" ]
-                        }
+                        "class": [ "toolbox" ]
                     }                
                 },
                 viewer: {
@@ -49,9 +47,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 1,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "viewer" ]
-                        }
+                        "class": [ "viewer" ]
                     }                
                 }
             }
@@ -82,9 +78,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "tools" ]
-                        }
+                        "class": [ "tools" ]
                     }                
                 },
                 tooldata: {
@@ -94,9 +88,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 1,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "tooldata" ]
-                        }
+                        "class": [ "tooldata" ]
                     }                
                 }
             }
@@ -119,9 +111,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "tools" ]
-                        }
+                        "class": [ "tools" ]
                     }                
                 }
             }
@@ -144,9 +134,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "editArea" ]
-                        }
+                        "class": [ "editArea" ]
                     }                
                 },
                 positions: {
@@ -156,9 +144,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 1,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "transparent" ]
-                        }
+                        "class": [ "transparent" ]
                     }                
                 },
                 decorations: {
@@ -168,9 +154,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "transparent" ]
-                        }
+                        "class": [ "transparent" ]
                     }                
                 }
             }
@@ -213,9 +197,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "transparent" ]
-                        }
+                        "class": [ "transparent" ]
                     }                
                 },
                 topLeft: {
@@ -225,9 +207,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "editArea" ]
-                        }
+                        "class": [ "editArea" ]
                     }                
                 },
                 topRight: {
@@ -237,9 +217,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "editArea" ]
-                        }
+                        "class": [ "editArea" ]
                     }                
                 },
                 bottomLeft: {
@@ -249,9 +227,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "editArea" ]
-                        }
+                        "class": [ "editArea" ]
                     }                
                 },
                 bottomRight: {
@@ -261,9 +237,7 @@ exports.definition = {
                     enableScaling: false,
                     depth: 0,
                     config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "editArea" ]
-                        }
+                        "class": [ "editArea" ]
                     }                
                 }                
             }

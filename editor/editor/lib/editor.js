@@ -13,11 +13,9 @@ var visual = require('visual'),
     ];
 
 
-function Editor(data) {
+function Editor(config) {
     // call the baseclass
-    domvisual.DOMElement.call(this, data);
-    this.createGroup(groups.Editor);
-    this.setData(data);
+    domvisual.DOMElement.call(this, config, groups.Editor);
     this.addPlugins(defaultPlugins);
     
 // setup some fake stuff
@@ -49,9 +47,7 @@ function Editor(data) {
                 enableScaling: false,
                 depth: 0,
                 config: {
-                    "domvisual.DOMVisual": {
-                        "cssClass": [ "thing" ]
-                    }
+                    "class": [ "thing" ]
                 }                
             }
         }
@@ -62,16 +58,6 @@ function Editor(data) {
     
 }
 Editor.prototype = new (domvisual.DOMElement)();
-
-
-Editor.prototype.setData = function (data) {
-    // clear the data panel
-    
-    // add all what's needed
-//    var d = data['editor.Editor'];
-//    if (d) {
-//    }
-};
 
 
 // Editor interface

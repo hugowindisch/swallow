@@ -12,22 +12,22 @@ var visual = require('visual'),
     Visual = visual.Visual,
     forEachProperty = utils.forEachProperty,
     isObject = utils.isObject,
+    isArray = utils.isArray,
     setDirty = dirty.setDirty;
 
-function DOMVisual(config, element) {
+function DOMVisual(config, groupData, element) {
     var that = this;
     this.element = element;
     this.cssClasses = {};
     this.setClass('domvisual');
     this.connectedToTheStage = false;
     this.disableEventHooks = false;
-    Visual.call(this, config);
+    Visual.call(this, config, groupData);
     // this might not be the best idea, maybe overriding addListener would
     // be better.
     this.addListener('addListener', function () {
         updateDOMEventHooks(that);
     });
-    this.setConfig(config);
 }
 DOMVisual.prototype = new Visual();
 DOMVisual.prototype.superAddChild = DOMVisual.prototype.addChild;
@@ -75,10 +75,17 @@ DOMVisual.prototype.enableInteractions = function (enable) {
 
 // we do style through css when dealing with html content
 DOMVisual.prototype.setClass = function (cssClassName) {
-    // why trigger dom changes immediately, keep this cached
-    this.cssClasses[cssClassName] = true;
+    var i, l;
+    if (isArray(cssClassName)) {
+        l = cssClassName.length;
+        for (i = 0; i < l; i += 1) {
+            this.cssClasses[cssClassName[i]] = true;
+        }
+    } else {
+        // why trigger dom changes immediately, keep this cached
+        this.cssClasses[cssClassName] = true;
+    }
     setDirty(this, 'content');
-    
 };
 DOMVisual.prototype.clearClass = function (cssClassName) {
     delete this.cssClasses[cssClassName];
@@ -244,25 +251,14 @@ DOMVisual.prototype.updateContentRepresentation = function () {
     }
 };
 
-DOMVisual.prototype.setConfig = function (config) {
-    var conf, i, classes;
-    if (isObject(config)) {
-        conf = config['domvisual.DOMVisual'];
-        if (conf) {
-            classes = conf.cssClass;
-            if (classes) {
-                for (i = 0; i < classes.length; i += 1) {
-                    this.setClass(classes[i]);
-                }
-            }
-        }
-    }
+DOMVisual.prototype.getConfigurationSheet = function () {
+    return { "class": {} };
 };
 
 /////////////////
 // a general container
-function DOMElement(config) {
-    DOMVisual.call(this, config, document.createElement('div'));
+function DOMElement(config, groupData) {
+    DOMVisual.call(this, config, groupData, document.createElement('div'));
 }
 DOMElement.prototype = new DOMVisual();
 
@@ -274,6 +270,7 @@ DOMElement.prototype = new DOMVisual();
 // for html and another on top of it for the regular children... this would
 // make everything more easy
 function DOMHtml(config) {
+    DOMVisual.call(this, config, null, document.createElement('div'));
 }
 DOMHtml.prototype = new DOMVisual();
 DOMHtml.prototype.addChild = function () {
@@ -286,19 +283,21 @@ DOMHtml.prototype.removeChild = function () {
 /////////////////
 // an img element
 function DOMImg(config) {
-    DOMVisual.call(this, config, document.createElement('img'));
-    if (config && config['domvisual.DOMImg'] && config['domvisual.DOMImg'].url) {
-        this.setUrl(config['domvisual.DOMImg'].url);
-    }
+    DOMVisual.call(this, config, null, document.createElement('img'));
 }
 DOMImg.prototype = new DOMVisual();
 DOMImg.prototype.setUrl = function (url) {
     this.element.src = url;
+    //setDirty(this, 'content');
+};
+DOMImg.prototype.getConfigurationSheet = function () {
+    return { "class": {}, "url": {} };
 };
 
 /////////////////
 // A video tag
-function DOMVideo() {
+function DOMVideo(config) {
+    DOMVisual.call(this, config, null, document.createElement('video'));
 }
 DOMVideo.prototype = new DOMVisual();
 
@@ -307,6 +306,7 @@ exports.getVisualNames = function () {
     return [ 'DOMElement', 'DOMImg', 'DOMVideo' ];
 };
 exports.DOMElement = DOMElement;
+exports.DOMHtml = DOMHtml;
 exports.DOMImg = DOMImg;
 exports.DOMVideo = DOMVideo;
 
@@ -317,7 +317,7 @@ exports.DOMVideo = DOMVideo;
 exports.createFullScreenApplication = function (child) {
     var bodyElement = document.getElementsByTagName('body')[0],
         thisElement = document.createElement('div'),
-        viz = new DOMVisual({}, thisElement);
+        viz = new DOMVisual({}, null, thisElement);
     // do some stupid stuff here:
     bodyElement.appendChild(thisElement);
     if (!child.dimensions) {

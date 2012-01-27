@@ -8,11 +8,9 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups,
     tool = require('./tool');
 
-function Toolbox(data) {
+function Toolbox(config) {
     // call the baseclass
-    domvisual.DOMElement.call(this, data);
-    this.createGroup(groups.Toolbox);
-    //this.setData(data);
+    domvisual.DOMElement.call(this, config, groups.Toolbox);
 }
 Toolbox.prototype = new (domvisual.DOMElement)();
 
@@ -26,7 +24,7 @@ Toolbox.prototype.addTool = function (
     selected,
     deselected
 ) {
-    var newTool = new (tool.Tool)({'editor.Tool': { imgUrl: img }}),
+    var newTool = new (tool.Tool)({imgUrl: img }),
         that = this;
     // we want to flow this thing
     this.children.tools.addChild(newTool, this.getDefaultName());

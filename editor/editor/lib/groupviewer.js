@@ -17,14 +17,11 @@ var visual = require('visual'),
 
 function GroupViewer(config) {
     // call the baseclass
-    domvisual.DOMElement.call(this, config);
+    domvisual.DOMElement.call(this, config, groups.GroupViewer);
     // maybe this will be part of the config
     this.setChildrenClipping('scroll');
     // border around the group in pixels (when not scaled)
-    this.groupBorderPix = 1000;
-    // create visual stuff
-    this.createGroup(groups.GroupViewer);
-    
+    this.groupBorderPix = 1000;    
     
     this.selectionControlBox = new (selectionbox.SelectionBox)({});
     this.selectionControlBox.setMatrix(mat4.translate(mat4.identity(), [100, 100, 0]));

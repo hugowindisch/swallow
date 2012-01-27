@@ -125,11 +125,17 @@ function updateChildrenPositions(v) {
     It has a position.
     It can render itself in its container (DOM, canvas, webgl)
 */
-function Visual(config) {
+function Visual(config, groupData) {
     this.containmentDepth = 0;
-    this.setConfig(config);
     // set default dimension
     this.setDimensions([1, 1, 0]);
+    // construct optional goup, and setup optional config
+    if (groupData) {
+        this.createGroup(groupData);
+    }
+    if (config) {
+        this.setConfiguration(config);
+    }
 }
 Visual.prototype = new EventEmitter();
 Visual.prototype.getSize = function () {
@@ -450,21 +456,54 @@ Visual.prototype.createGroup = function (groupData) {
 };
 
 /**
-    Sets data. The data will be partitioned as:
+    Sets the configuration of this visual.
+    The config is somthing like:
+    
     {
-        "package.Visual": {
-            }
+        data1: somestuff,
+        data2: somestuff,
+        etc: somestuff
     }
+    
+    (calling the baseclass, if you need to do so, you can always have a data
+    that is baseclassdata: {} )
 */
-Visual.prototype.setConfig = function (config) {
-//    var d = config['visual.Visual'];
-//    if (d) {
-//    }
+Visual.prototype.setConfiguration = function (config) {
+    if (utils.isObject(config)) {
+        var configSheet = this.getConfigurationSheet(),
+            that = this;
+        forEachProperty(config, function (cnf, name) {
+            var fcn,
+                fname = 'set' + name[0].toUpperCase() + name.slice(1);
+            // validate that this thing works
+            if (configSheet[name]) {
+                fcn = that[fname];
+                if (!utils.isFunction(fcn)) {
+                    throw new Error('Configuration function not found: ' + fname);
+                }
+                fcn.call(that, cnf);
+            } else {
+                throw new Error("The configuration has an unexpected member: " + name);
+            }
+        });
+    }
 };
 
 /**
     Gets data sheet (this allows the editor to edit this visual element)
+    getConfigurationSheet
+    
+
+    // should create a viwer that has a     
+    Sheet: {
+        myData: {
+            fcnCreateDataViewer(data)
+            fcnGetData(dataViewer)
+        }
+    }
 */
+Visual.prototype.getConfigurationSheet = function (config) {
+};
 
 // export all what we want to export for the module
 exports.Visual = Visual;

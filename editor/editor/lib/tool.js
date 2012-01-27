@@ -9,23 +9,14 @@ var visual = require('visual'),
 
 function Tool(config) {
     // call the baseclass
-    domvisual.DOMElement.call(this, config);
-    this.createGroup(groups.Tool);
-    this.setConfigg(config);
+    domvisual.DOMElement.call(this, config, groups.Tool);
 }
 Tool.prototype = new (domvisual.DOMElement)();
-Tool.prototype.setConfigg = function (config) {
-// this is very heavy for what it accomplishes
-    var conf, imgUrl;
-    if (config) {
-        conf = config['editor.Tool'];
-        if (conf) {
-            imgUrl = conf.imgUrl;
-            if (imgUrl) {
-                this.children.image.setUrl(imgUrl);
-            }
-        }
-    }
+Tool.prototype.getConfigurationSheet = function () {
+    return { imgUrl: {} };
+};
+Tool.prototype.setImgUrl = function (url) {
+    this.children.image.setUrl(url);
 };
 
 

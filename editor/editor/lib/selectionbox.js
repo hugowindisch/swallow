@@ -11,8 +11,7 @@ var visual = require('visual'),
 
 function SelectionBox(config) {
     // call the baseclass
-    domvisual.DOMElement.call(this, config);
-    this.createGroup(groups.SelectionBox);
+    domvisual.DOMElement.call(this, config, groups.SelectionBox);
 
     var children = this.children,
         that = this;
