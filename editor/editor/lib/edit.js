@@ -11,6 +11,34 @@ function Command(doCmd, undoCmd, name, message, hint) {
     this.message = message;
     this.hint = hint;
 }
+function CommandGroup(name, message, hint) {
+    this.name = name;
+    this.message = message;
+    this.hint = hint;
+    this.commands = [];
+}
+
+CommandGroup.prototype.doCmd = function () {
+    var i, 
+        commands = this.commands,
+        l = commands.length;
+    for (i = 0; i < l; i += 1) {
+        commands[i].doCmd();
+    }
+};
+CommandGroup.prototype.undoCmd = function () {
+    var i, 
+        commands = this.commands,
+        l = commands.length;
+    for (i = l - 1; i >= 0; i -= 1) {
+        commands[i].undoCmd();
+    }
+};
+CommandGroup.prototype.add = function (cmd) {
+    this.commands.push(cmd);
+    return this;
+};
+
 /**
     A command chain can do/undo/redo and emits do/undo/redo events while doing
     so.
@@ -21,34 +49,26 @@ function CommandChain() {
     this.undoneCommands = [];
 }
 CommandChain.prototype = new (events.EventEmitter)(); 
-CommandChain.prototype.doCommand = function (
-    doCmd,
-    undoCmd,
-    name,
-    message,
-    hint
-) {
-    this.commands.push(new Command(doCmd, undoCmd, message, hint));
+CommandChain.prototype.doCommand = function (cmd) {
+    this.commands.push(cmd);
     this.undoneCommands = [];
-    doCmd(hint);
-    this.emit('do', name, message, hint);
+    cmd.doCmd();
+    this.emit('do', cmd.name, cmd.message, cmd.hint);
 };
 CommandChain.prototype.undo = function () {
     if (this.commands.length > 0) {
-        var cmd = this.commands.pop(),
-            hint = cmd.hint;
+        var cmd = this.commands.pop();
         this.undoneCommands.push(cmd);
-        cmd.undoCmd(hint);
-        this.emit('undo', cmd.name, cmd.message, hint);
+        cmd.undoCmd();
+        this.emit('undo', cmd.name, cmd.message, cmd.hint);
     }
 };
 CommandChain.prototype.redo = function () {
     if (this.undoneCommands.length > 0) {
-        var cmd = this.undoneCommands.pop(),
-            hint = cmd.hint;
+        var cmd = this.undoneCommands.pop();
         this.commands.push(cmd);
-        cmd.doCmd(hint);
-        this.emit('redo', cmd.name, cmd.message, hint);
+        cmd.doCmd();
+        this.emit('redo', cmd.name, cmd.message, cmd.hint);
     }
 };
 CommandChain.prototype.getUndoMessage = function () {
@@ -67,5 +87,7 @@ CommandChain.prototype.getRedoMessage = function () {
     }
     return null;
 };
+exports.Command = Command;
+exports.CommandGroup = CommandGroup;
 exports.CommandChain = CommandChain;
 

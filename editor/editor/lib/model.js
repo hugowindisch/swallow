@@ -2,7 +2,13 @@
     model.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-var edit = require('./edit');
+var glmatrix = require('glmatrix'),
+    mat4 = glmatrix.mat4,
+    vec3 = glmatrix.vec3,
+    edit = require('./edit'),
+    Command = edit.Command,
+    CommandGroup = edit.CommandGroup,
+    CommandChain = edit.CommandChain;
 /**
     A document can have multiple groups. Each of them have an independent
     command chain.
@@ -53,7 +59,7 @@ var edit = require('./edit');
 */
 function Group(documentData) {
     documentData = documentData || { positions: {}, children: {}, dimensions: [300, 300, 0]};
-    this.commandChain = new (edit.CommandChain)();
+    this.commandChain = new CommandChain();
     this.documentData = documentData;
 }
 // these are getters (stuff that inspect the Group model)
@@ -75,11 +81,24 @@ Group.prototype.getUniquePositionName = function () {
     // this point cannot be reached
 };
 /**
+    Calls doCmd on the command chain.
+*/
+Group.prototype.doCommand = function (cmd) {
+    return this.commandChain.doCommand(cmd);
+};
+/**
+    Creates a command group (that allows to atomically perform multiple
+    commands at once)
+*/
+Group.prototype.cmdCommandGroup = function (name, message, hint) {
+    return new CommandGroup(name, message, hint);
+};
+/**
     Adds a new position to the model.
 */
 Group.prototype.cmdAddPosition = function (name, position) {
     var that = this;
-    this.commandChain.doCommand(
+    return new Command(
         function () {
             var documentData = that.documentData;
             documentData.positions[name] = position;
@@ -88,6 +107,7 @@ Group.prototype.cmdAddPosition = function (name, position) {
             var documentData = that.documentData;
             delete documentData.positions[name];
         },
+        'cmdAddPosition',
         "Add position " + name,
         { model: this, name: name, position: position }
     );
@@ -95,7 +115,7 @@ Group.prototype.cmdAddPosition = function (name, position) {
 Group.prototype.cmdRemovePosition = function (name) {
     var that = this,
         position;
-    this.commandChain.doCommand(
+    return new Command(
         function () {            
             var documentData = that.documentData;
             position = documentData.positions[name];
@@ -105,32 +125,48 @@ Group.prototype.cmdRemovePosition = function (name) {
             var documentData = that.documentData;
             documentData.positions[name] = position;
         },
+        'cmdRemovePosition',
         "Remove position " + name,
         { model: this, name: name, position: position }
     );
 };
 Group.prototype.cmdUpdatePosition = function (name, position) {
-    var that = this;
-    this.commandChain.doCommand(
+    var that = this,
+        oldPosition = this.documentData.positions[name];
+    return new Command(
         function () {
-            var newpos = position,
-                documentData = that.documentData,
-                postion = documentData.positions[name];
-            documentData.positions[name] = newpos;
+            var documentData = that.documentData;
+            documentData.positions[name] = position;
         },
         function () {
-            var newpos = position,
-                documentData = that.documentData,
-                postion = documentData.positions[name];
-            documentData.positions[name] = newpos;
+            var documentData = that.documentData;
+            documentData.positions[name] = oldPosition;
         },
+        'cmdUpdatePosition',
         "Update position " + name,
         { model: this, name: name, position: position }
     );
 };
+Group.prototype.cmdTransformPosition = function (name, transform) {
+    var that = this,
+        matrix = this.documentData.positions[name].matrix;
+    return new Command(
+        function () {
+            var documentData = that.documentData;
+            documentData.positions[name].matrix = mat4.multiply(transform, matrix, mat4.create());
+        },
+        function () {
+            var documentData = that.documentData;
+            documentData.positions[name].matrix = matrix;
+        },
+        'cmdTransformPosition',
+        "Transform position " + name,
+        { model: this, name: name, transform: transform }
+    );
+};
 Group.prototype.cmdRenamePosition = function (name, newname) {
     var that = this;
-    this.commandChain.doCommand(
+    return new Command(
         function () {
             var documentData = that.documentData;
             documentData.positions[newname] = documentData.positions[name];
@@ -141,6 +177,7 @@ Group.prototype.cmdRenamePosition = function (name, newname) {
             documentData.positions[name] = documentData.positions[newname];
             delete documentData.positions[newname];
         },
+        'cmdRenamePosition',
         "Rename position " + name + ' as ' + newname,
         { model: this, name: name, newname: newname }
     );
@@ -153,7 +190,7 @@ Group.prototype.cmdRenamePosition = function (name, newname) {
 */
 Group.prototype.cmdAddVisual = function (name, visual) {
     var that = this;
-    this.commandChain.doCommand(
+    return new Command(
         function () {
             var documentData = that.documentData;
             documentData.children[name] = visual;
@@ -162,6 +199,7 @@ Group.prototype.cmdAddVisual = function (name, visual) {
             var documentData = that.documentData;
             delete documentData.children[name];
         },
+        'cmdAddVisual',
         "Add visual " + name,
         { model: this, name: name, visual: visual }
     );
@@ -169,7 +207,7 @@ Group.prototype.cmdAddVisual = function (name, visual) {
 Group.prototype.cmdRemoveVisual = function (name) {
     var that = this,
         visual;
-    this.commandChain.doCommand(
+    return new Command(
         function () {            
             var documentData = that.documentData;
             visual = documentData.children[name];
@@ -179,13 +217,14 @@ Group.prototype.cmdRemoveVisual = function (name) {
             var documentData = that.documentData;
             documentData.children[name] = visual;
         },
+        'cmdRemoveVisual',
         "Remove visual " + name,
         { model: this, name: name, visual: visual }
     );
 };
 Group.prototype.cmdUpdateVisual = function (name, visual) {
     var that = this;
-    this.commandChain.doCommand(
+    return new Command(
         function () {
             var newpos = visual,
                 documentData = that.documentData,
@@ -198,13 +237,14 @@ Group.prototype.cmdUpdateVisual = function (name, visual) {
                 postion = documentData.children[name];
             documentData.children[name] = newpos;
         },
+        'cmdUpdateVisual',
         "Update visual " + name,
         { model: this, name: name, visual: visual }
     );
 };
 Group.prototype.cmdRenameVisual = function (name, newname) {
     var that = this;
-    this.commandChain.doCommand(
+    return new Command(
         function () {
             var documentData = that.documentData;
             documentData.children[newname] = documentData.children[name];
@@ -215,6 +255,7 @@ Group.prototype.cmdRenameVisual = function (name, newname) {
             documentData.children[name] = documentData.children[newname];
             delete documentData.children[newname];
         },
+        'cmdRenameVisual',
         "Rename visual " + name + ' as ' + newname,
         { model: this, name: name, newname: newname }
     );    
@@ -223,7 +264,7 @@ Group.prototype.cmdRenameVisual = function (name, newname) {
 ///////////////////////
 Group.prototype.cmdSetDimensions = function (dimensions) {
     var that = this;
-    this.commandChain.doCommand(
+    return new Command(
         function () {
             var documentData = that.documentData,
                 dim = documentData.dimensionsm;
@@ -236,6 +277,7 @@ Group.prototype.cmdSetDimensions = function (dimensions) {
             documentData.dimensions = dimensions;
             dimensions = dim;
         },
+        'cmdSetDimensions',
         "Set dimensions",
         { model: this, dimensions: dimensions }
     );

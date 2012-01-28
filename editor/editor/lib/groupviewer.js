@@ -16,17 +16,33 @@ var visual = require('visual'),
     
 
 function GroupViewer(config) {
+    var that = this;
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.GroupViewer);
     // maybe this will be part of the config
     this.setChildrenClipping('scroll');
     // border around the group in pixels (when not scaled)
     this.groupBorderPix = 1000;    
+    this.selection = {};
     
+    // setup the selection control box
     this.selectionControlBox = new (selectionbox.SelectionBox)({});
     this.selectionControlBox.setMatrix(mat4.translate(mat4.identity(), [100, 100, 0]));
     this.selectionControlBox.setDimensions([200, 200, 1]);
     this.children.decorations.addChild(this.selectionControlBox, 'selectionControlBox');
+    // add handlers for the selectionControlBox
+    this.selectionControlBox.transformContentMatrix = function (matrix) {
+        return mat4.multiply(that.zoomMat, matrix, mat4.create());
+    };
+    this.selectionControlBox.on('transform', function (transform) {
+        var group = that.group,
+            cg = that.group.cmdCommandGroup('transform', 'Transform a group');
+        // transform the whole selection
+        forEachProperty(that.selection, function (sel, name) {
+            cg.add(group.cmdTransformPosition(name, transform));
+        });
+        group.doCommand(cg);
+    });
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
 
@@ -170,12 +186,12 @@ GroupViewer.prototype.pushZoom = function (matrix) {
     mat[13] *= z;
     mat[14] *= z;
     this.zoomStack.push(mat);
-    this.regenerateAll();
+    this.updateAll();
 };
 GroupViewer.prototype.popZoom = function () {
     if (this.zoomStack.length > 1) {
         this.zoomStack.pop();
-        this.regenerateAll();
+        this.updateAll();
     }
 };
 
@@ -183,6 +199,22 @@ GroupViewer.prototype.popZoom = function () {
     Selection.
 */
 GroupViewer.prototype.select = function (matrix) {
+};
+
+/**
+    Add a given position to the selection.
+*/
+GroupViewer.prototype.addToSelection = function (name) {
+    var sel = this.documentData.positions[name];
+    if (sel) {
+        this.selection[name] = sel;
+    }
+};
+GroupViewer.prototype.removeFromSelection = function (name) {
+    delete this.selection[name];
+};
+GroupViewer.prototype.clearSelection = function (name) {
+    this.selection = {};
 };
 
 
@@ -199,12 +231,15 @@ GroupViewer.prototype.setGroup = function (group) {
     this.group = group;
     this.documentData = documentData;
     function onDo(name, message, hint) {
-/*        switch (name) {
-        default:
-            // regenerate all
-            that.regenerateAll();
-        }*/
-        that.regenerateAll();
+        switch (name) {
+        case 'cmdAddPosition':
+            that.clearSelection();
+            that.addToSelection(hint.name);
+            break;
+        case 'shutTheFuckUpJSLint':
+            break;
+        }
+        that.updateAll();
     }
     // hook ourselves
     commandChain.on('do', onDo);
@@ -220,7 +255,82 @@ GroupViewer.prototype.setGroup = function (group) {
     
     this.zoomStack = [mat4.translate(mat4.identity(), [borderPix, borderPix, 0], mat4.create())];
     // regenerate everything
-    this.regenerateAll();
+    this.updateAll();
+};
+/**
+    3 useful functions for dealing with selections.
+*/
+function getEnclosingRect(m) {
+    var i, v1, v2, v3, t, minpt = [], maxpt = [], mn, mx, min = Math.min, max = Math.max;
+    for (i = 0; i < 3; i += 1) {
+        t = m[12 + i];
+        v1 = m[i] + t;
+        v2 = m[i + 4] + t;
+        v3 = m[i + 8] + t;
+        mn = min(v1, v2, v3, t);
+        mx = max(v1, v2, v3, t);
+        if (maxpt[i] === undefined || mn < minpt[i]) {
+            minpt[i] = mn;
+        }
+        if (maxpt[i] === undefined || mx > maxpt[i]) {
+            maxpt[i] = mx;
+        }
+    }
+    return [minpt, maxpt];
+}
+
+function unionRect(r1, r2) {
+    var min = Math.min, max = Math.max,
+        r1min = r1[0], r2min = r2[0],
+        r1max = r1[1], r2max = r2[1];
+    return [
+        [min(r1min[0], r2min[0]), min(r1min[1], r2min[1]), min(r1min[2], r2min[2])],
+        [max(r1max[0], r2max[0]), max(r1max[1], r2max[1]), max(r1max[2], r2max[2])]
+    ];
+}
+
+function rectToMatrix(r) {
+    var m = mat4.identity(),
+        rmin = r[0],
+        rmax = r[1],
+        rmin0, 
+        rmin1, 
+        rmin2;
+    m[12] = rmin0 = rmin[0];
+    m[13] = rmin1 = rmin[1];
+    m[14] = rmin2 = rmin[2];
+    m[0] = rmax[0] - rmin0;
+    m[5] = rmax[1] - rmin1;
+    m[10] = rmax[2] - rmin2;
+    return m;
+}
+
+/**
+    Updates the representation of the selection box.
+*/
+GroupViewer.prototype.updateSelectionControlBox = function () {
+    var r,
+        unionr,
+        matrix,
+        res;
+    // compute the graphic size of the selection    
+    forEachProperty(this.selection, function (box, name) {
+        r = getEnclosingRect(box.matrix);
+        if (!unionr) {
+            unionr = r;
+        } else {
+            unionr = unionRect(r, unionr);
+        }
+    });
+    // show the selection box
+    if (unionr) {
+        this.selectionControlBox.setContentMatrix(rectToMatrix(unionr));
+        this.selectionControlBox.setVisible(true);
+    } else {
+        // the selection is empty, hide the box
+        this.selectionControlBox.setVisible(false);
+    }
+    
 };
 /**
     Regenerates the whole thing.
@@ -241,7 +351,7 @@ To display something in model coordinates in the visuals layer, there is nothing
     special to do
 
 */
-GroupViewer.prototype.regenerateAll = function () {
+GroupViewer.prototype.updateAll = function () {
     if (!this.documentData) {
         return;
     }
@@ -304,6 +414,9 @@ GroupViewer.prototype.regenerateAll = function () {
     children.decorations.setPosition(null);
     children.decorations.setDimensions(extendedDimensions);
     children.decorations.setMatrix(mat4.identity());
+    
+    // selection control box
+    this.updateSelectionControlBox();
 
     this.setScroll(zoomTranslate);
 };

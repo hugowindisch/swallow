@@ -29,14 +29,14 @@ exports.setup = function (editor) {
                 null,
                 function (mat, nmat) {
                     var group = viewer.getGroup();
-                    group.cmdAddPosition(
+                    group.doCommand(group.cmdAddPosition(
                         group.getUniquePositionName(),
                         {
                             matrix: mat,
                             type: "AbsolutePosition",
                             snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
                         }   
-                    );
+                    ));
                 }
             );
             

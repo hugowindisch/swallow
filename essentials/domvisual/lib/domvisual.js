@@ -21,6 +21,7 @@ function DOMVisual(config, groupData, element) {
     this.cssClasses = {};
     this.connectedToTheStage = false;
     this.disableEventHooks = false;
+    this.visible = true;
     Visual.call(this, config, groupData);
     // this might not be the best idea, maybe overriding addListener would
     // be better.
@@ -149,6 +150,16 @@ DOMVisual.prototype.setScroll = function (v3) {
 };
 
 /**
+    Sets visibility.
+*/
+DOMVisual.prototype.setVisible = function (visible) {
+    if (this.visible !== visible) {
+        this.visible = visible;
+        setDirty(this, 'dimensions');
+    }
+};
+
+/**
     DOM update (we essentially treat the DOM as an output thing)
 */
 DOMVisual.prototype.updateMatrixRepresentation = function () {
@@ -195,12 +206,16 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
             style.width = this.dimensions[0] + 'px';
             style.height = this.dimensions[1] + 'px';
             style.position = 'absolute';
-            style.display = 'block';
+            style.display = this.visible ? 'block' : 'none';
         } else {
             style.width = htmlFlowing.autoWidth ? null : this.dimensions[0] + 'px';
             style.height = htmlFlowing.autoHeight ? null : this.dimensions[1] + 'px';
             style.position = 'relative';
-            style.display = htmlFlowing.inline ? 'inline-block' : 'block';
+            if (this.visible) {
+                style.display = htmlFlowing.inline ? 'inline-block' : 'block';
+            } else {
+                style.display = 'none';
+            }
         }
     }
 };
