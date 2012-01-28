@@ -28,7 +28,7 @@ function SelectionBox(config) {
             // snapshot the dimensions
             var matrix = that.contentMatrix,
                 dimensions = vec3.create([matrix[0], matrix[5], matrix[10]]),
-                mat = that.parent.getFullDisplayMatrix(true),
+                mat = that.getFDM(),
                 startpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]),
                 transform = mat4.identity(),
                 endpos;
@@ -37,7 +37,7 @@ function SelectionBox(config) {
             evt.stopPropagation();
                 
             function mouseMove(evt) {
-                mat = that.parent.getFullDisplayMatrix(true);
+                mat = that.getFDM();
                 evt.preventDefault();
                 evt.stopPropagation();
                 endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
@@ -141,6 +141,11 @@ SelectionBox.prototype.setContentMatrix = function (matrix) {
     this.contentMatrix = matrix;
     this.updateRepresentation(this.contentMatrix);
 };
+// hack (for the fact that we are not transfomed the same way as the content we manipulate)
+SelectionBox.prototype.getFDM = function () {
+    return this.parent.getFullDisplayMatrix(true);
+};
+// hack (for the fact that we are not transfomed the same way as the content we manipulate)
 SelectionBox.prototype.transformContentMatrix = function (matrix) {
     return matrix;
 };

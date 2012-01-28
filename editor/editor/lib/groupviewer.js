@@ -34,6 +34,9 @@ function GroupViewer(config) {
     this.selectionControlBox.transformContentMatrix = function (matrix) {
         return mat4.multiply(that.zoomMat, matrix, mat4.create());
     };
+    this.selectionControlBox.getFDM = function () {
+        return that.children.visuals.getFullDisplayMatrix(true);
+    };
     this.selectionControlBox.on('transform', function (transform) {
         var group = that.group,
             cg = that.group.cmdCommandGroup('transform', 'Transform a group');
