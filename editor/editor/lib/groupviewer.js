@@ -14,6 +14,62 @@ var visual = require('visual'),
     mat4 = glmatrix.mat4,
     convertScaleToSize = visual.convertScaleToSize;
     
+/**
+    Useful functions for dealing with selections.
+*/
+function getEnclosingRect(m) {
+    var i, v1, v2, v3, t, minpt = [], maxpt = [], mn, mx, min = Math.min, max = Math.max;
+    for (i = 0; i < 3; i += 1) {
+        t = m[12 + i];
+        v1 = m[i] + t;
+        v2 = m[i + 4] + t;
+        v3 = m[i + 8] + t;
+        mn = min(v1, v2, v3, t);
+        mx = max(v1, v2, v3, t);
+        if (maxpt[i] === undefined || mn < minpt[i]) {
+            minpt[i] = mn;
+        }
+        if (maxpt[i] === undefined || mx > maxpt[i]) {
+            maxpt[i] = mx;
+        }
+    }
+    return [minpt, maxpt];
+}
+
+function unionRect(r1, r2) {
+    var min = Math.min, max = Math.max,
+        r1min = r1[0], r2min = r2[0],
+        r1max = r1[1], r2max = r2[1];
+    return [
+        [min(r1min[0], r2min[0]), min(r1min[1], r2min[1]), min(r1min[2], r2min[2])],
+        [max(r1max[0], r2max[0]), max(r1max[1], r2max[1]), max(r1max[2], r2max[2])]
+    ];
+}
+
+function intersects(r1, r2) {
+    var r1min = r1[0], r2min = r2[0],
+        r1max = r1[1], r2max = r2[1];
+    return (r1min[0] <= r2max[0] && r1max[0] >= r2min[0]) &&
+        (r1min[1] <= r2max[1] && r1max[1] >= r2min[1]) &&
+        (r1min[2] <= r2max[2] && r1max[2] >= r2min[2]);
+}
+
+function rectToMatrix(r) {
+    var m = mat4.identity(),
+        rmin = r[0],
+        rmax = r[1],
+        rmin0, 
+        rmin1, 
+        rmin2;
+    m[12] = rmin0 = rmin[0];
+    m[13] = rmin1 = rmin[1];
+    m[14] = rmin2 = rmin[2];
+    m[0] = rmax[0] - rmin0;
+    m[5] = rmax[1] - rmin1;
+    m[10] = rmax[2] - rmin2;
+    return m;
+}
+
 
 function GroupViewer(config) {
     var that = this;
@@ -201,7 +257,16 @@ GroupViewer.prototype.popZoom = function () {
 /**
     Selection.
 */
-GroupViewer.prototype.select = function (matrix) {
+GroupViewer.prototype.selectByMatrix = function (matrix) {
+    var documentData = this.documentData,
+        selrect = getEnclosingRect(matrix),
+        selection = this.selection;
+    forEachProperty(documentData.positions, function (c, name) {
+        var r = getEnclosingRect(c.matrix);
+        if (intersects(selrect, r)) {
+            selection[name] = c;
+        }
+    });
 };
 
 /**
@@ -260,53 +325,6 @@ GroupViewer.prototype.setGroup = function (group) {
     // regenerate everything
     this.updateAll();
 };
-/**
-    3 useful functions for dealing with selections.
-*/
-function getEnclosingRect(m) {
-    var i, v1, v2, v3, t, minpt = [], maxpt = [], mn, mx, min = Math.min, max = Math.max;
-    for (i = 0; i < 3; i += 1) {
-        t = m[12 + i];
-        v1 = m[i] + t;
-        v2 = m[i + 4] + t;
-        v3 = m[i + 8] + t;
-        mn = min(v1, v2, v3, t);
-        mx = max(v1, v2, v3, t);
-        if (maxpt[i] === undefined || mn < minpt[i]) {
-            minpt[i] = mn;
-        }
-        if (maxpt[i] === undefined || mx > maxpt[i]) {
-            maxpt[i] = mx;
-        }
-    }
-    return [minpt, maxpt];
-}
-
-function unionRect(r1, r2) {
-    var min = Math.min, max = Math.max,
-        r1min = r1[0], r2min = r2[0],
-        r1max = r1[1], r2max = r2[1];
-    return [
-        [min(r1min[0], r2min[0]), min(r1min[1], r2min[1]), min(r1min[2], r2min[2])],
-        [max(r1max[0], r2max[0]), max(r1max[1], r2max[1]), max(r1max[2], r2max[2])]
-    ];
-}
-
-function rectToMatrix(r) {
-    var m = mat4.identity(),
-        rmin = r[0],
-        rmax = r[1],
-        rmin0, 
-        rmin1, 
-        rmin2;
-    m[12] = rmin0 = rmin[0];
-    m[13] = rmin1 = rmin[1];
-    m[14] = rmin2 = rmin[2];
-    m[0] = rmax[0] - rmin0;
-    m[5] = rmax[1] - rmin1;
-    m[10] = rmax[2] - rmin2;
-    return m;
-}
 
 /**
     Updates the representation of the selection box.

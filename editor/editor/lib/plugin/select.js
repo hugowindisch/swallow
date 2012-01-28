@@ -10,12 +10,18 @@ exports.setup = function (editor) {
         'editor/lib/plugin/select.png',
         'select',
         function (fcnPopTool) {
-            console.log('selected');
-            // only modal tools should bother doing this
-            viewer.enableBoxSelection(null, null, null);
+            viewer.enableBoxSelection(
+                null,
+                null,
+                function (mat, nmat) {
+                    // this should be determined by the keys
+                    viewer.clearSelection(nmat);
+                    viewer.selectByMatrix(nmat);
+                    viewer.updateSelectionControlBox();
+                }
+            );
         },
         function () {
-            console.log('deSelected');
         }
     );
     // paint
@@ -23,7 +29,6 @@ exports.setup = function (editor) {
         'editor/lib/plugin/select.png',
         'paint',
         function (fcnPopTool) {
-            console.log('selected');
             viewer.enableBoxSelection(
                 null,
                 null,
@@ -39,10 +44,8 @@ exports.setup = function (editor) {
                     ));
                 }
             );
-            
         },
         function () {
-            console.log('deSelected');
         }
     );
     // zoom rect
@@ -60,7 +63,6 @@ exports.setup = function (editor) {
             );
         },
         function () {
-            console.log('deSelected');
         }
     );
     // zoom out
