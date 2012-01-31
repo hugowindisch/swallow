@@ -156,10 +156,11 @@ HorizontalMenu.prototype.updateChildren = function () {
     // find available accelerators
     this.findAccelerators();
 };
+
 HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
     var that = this,
         name = String(index),
-        c = this.addHtmlChild(
+        c = this.addTextChild(
             'span', 
             item.getText(),
             { "class": "baseui_MenuItem" },
@@ -186,6 +187,7 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
         }
     });
 };
+
 HorizontalMenu.prototype.setItems = function (items) {
     if (isFunction(items)) {
         this.getItems = items;

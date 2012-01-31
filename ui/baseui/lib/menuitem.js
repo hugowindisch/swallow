@@ -4,6 +4,7 @@
 */
 var utils = require('utils'),
     domvisual = require('domvisual'),
+    events = require('events'),
     makeKeyString = domvisual.makeKeyString,
     decorateVk = domvisual.decorateVk,
     isFunction = utils.isFunction;
@@ -49,7 +50,7 @@ function MenuItem(
     }
     // action
     if (isFunction(action)) {
-        this.action = action;
+        this.actionFcn = action;
     }
     
     // accelerator
@@ -90,11 +91,17 @@ function MenuItem(
         this.checkedMode = checkedMode;
     }
 }
+MenuItem.prototype = new (events.EventEmitter)();
 MenuItem.prototype.getText = function () {
     return this.text;
 };
 MenuItem.prototype.action = function () {
-    // intentionally empty
+    // call the function
+    if (this.actionFcn) {
+        this.actionFcn();
+    }
+    // emit an event (this is intentionally after)
+    this.emit('action');
 };
 MenuItem.prototype.getAccelerator = function () {
     return this.accelerator;
