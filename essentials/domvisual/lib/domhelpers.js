@@ -1,11 +1,22 @@
-
-/** this is probably useless
-function getComputedWidth(element) {
-    var browserName=navigator.appName;
+/*
+function getComputedDimensions(element) {
+    var browserName=navigator.appName,
+        ret = {},
+        cs;
     if (browserName === "Microsoft Internet Explorer") {
-        return element.offsetWidth;
+        return [
+            element.offsetWidth,
+            element.offsetHeight,
+            1
+        ];
     } else {
-        return document.defaultView.getComputedStyle(element, "").getPropertyValue("width");
+        cs = document.defaultView.getComputedStyle(element, "");
+        return [
+            cs.getPropertyValue("width"),
+            cs.getPropertyValue("height"),
+            1
+        ];
     }
 }
+exports.getComputedDimensions = getComputedDimensions;
 */

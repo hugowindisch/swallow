@@ -75,5 +75,9 @@ Toolbar.prototype.createItemHtml = function (item, index, numIndex) {
     }
 };
 
+Toolbar.prototype.getConfigurationSheet = function () {
+    return { items: {} };
+};
+
 
 exports.Toolbar = Toolbar;

@@ -278,8 +278,11 @@ DOMVisual.prototype.getConfigurationSheet = function () {
 /**
     Returns the computed matrix of this element
     (if the element uses html flowing)
+    This can go wrong (the values may not be already good... apparently)
 */
 DOMVisual.prototype.getComputedMatrix = function () {
+    // this retrieves stuff for the dom, so we must be clean
+    dirty.update();
     var ret = glmatrix.mat4.identity(),
         element = this.element;
     ret[12] = element.offsetLeft;
@@ -289,10 +292,13 @@ DOMVisual.prototype.getComputedMatrix = function () {
 
 
 /**
-    Returns the computed matrix of this element
+    Returns the computed dimension of this element
     (if the element uses html flowing)
+    This can go wrong (the values may not be already good... apparently)    
 */
 DOMVisual.prototype.getComputedDimensions = function () {
+    // this retrieves stuff for the dom, so we must be clean
+    dirty.update();
     var element = this.element;
     return [ element.offsetWidth, element.offsetHeight, 1];
 };
@@ -369,9 +375,6 @@ exports.createFullScreenApplication = function (child) {
         viz = new DOMVisual({}, null, thisElement);
     // do some stupid stuff here:
     bodyElement.appendChild(thisElement);
-    if (!child.dimensions) {
-        throw new Error("dimensions should be defined by now!");
-    }
     viz.setLayout(
         {
     

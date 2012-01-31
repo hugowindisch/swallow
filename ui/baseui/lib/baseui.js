@@ -35,15 +35,16 @@ Toolbar (just a different way of representing menu items)
 var domvisual = require('domvisual'),
     menuitem = require('./menuitem');
 
-//exports.Toolbar = require('./toolbar').Toolbar;
-//exports.VerticalMenu = require('./verticalmemu').VerticalMenu;
+exports.Toolbar = require('./toolbar').Toolbar;
+exports.VerticalMenu = require('./verticalmenu').VerticalMenu;
 exports.HorizontalMenu = require('./horizontalmenu').HorizontalMenu;
+exports.Folder = require('./folder').Folder;
 exports.MenuItem = menuitem.MenuItem;
 exports.Accelerator = menuitem.Accelerator;
 
 // note: this should be last
 // we want this to be able to run as a standalone application
-(function () {
+/**(function () {
     var MenuItem = exports.MenuItem,
         HorizontalMenu = exports.HorizontalMenu,
         Accelerator = exports.Accelerator,
@@ -69,4 +70,20 @@ exports.Accelerator = menuitem.Accelerator;
             ]
         }));
     }
+}());*/
+
+(function () {
+    var Folder = exports.Folder;
+    if (require.main === module) {
+        domvisual.createFullScreenApplication(new Folder({ 
+            text: "hello",
+            internal: {
+                factory: 'baseui',
+                type: 'Folder',
+                config: { text: 'another', internal: { factory: 'domvisual', type: 'DOMElement' } }
+            }
+        }));
+    }
 }());
+
+
