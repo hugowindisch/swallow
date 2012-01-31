@@ -5,85 +5,131 @@
 */
 var utils = require('utils'),
     dirty = require('/visual/lib/dirty'),
+    keycodes = require('./keycodes'),
+    numToVk = keycodes.numToVk,
+    makeKeyString = keycodes.makeKeyString,
+    decorateVk = keycodes.decorateVk,
     updateDOMEventHooks,
     forEachProperty = utils.forEachProperty,
-    hookMap = {
-        keydown: {
-            getDOMElement: function (vis) {
-                return document;
-            }            
+    hookMap;
+
+/**
+    Filters a key event to uniformize it. 
+*/
+function FilterKeyEvent(evt) {
+    var ret = {
+            keyCode: evt.keyCode,
+            ctrlKey: evt.ctrlKey,
+            shiftKey: evt.shiftKey,
+            metaKey: evt.metaKey,
+            altKey: evt.altKey
         },
-        keyup: {
-            getDOMElement: function (vis) {
-                return document;
-            }            
+        vk = numToVk(evt.keyCode);
+        
+    ret.keyString = makeKeyString(
+        vk,
+        evt.altKey,
+        evt.shiftKey,
+        evt.ctrlKey,
+        evt.metaKey
+    );
+    ret.decoratedVk = decorateVk(
+        vk,
+        evt.altKey,
+        evt.shiftKey,
+        evt.ctrlKey,
+        evt.metaKey
+    );
+    ret.preventDefault = function () { evt.preventDefault(); };
+    ret.stopPropagation = function () { evt.stopPropagation(); };
+    // prevent...
+    return ret;
+}
+
+/**
+    Returns the topmost element.
+*/
+function getTopmostElement(vis) {
+    // should be done on the topmost node
+    var el = vis.element;
+    while (el.parentNode) {
+        el = el.parentNode;
+    }       
+    return el;
+}
+
+/**
+    Our event hooks
+*/
+hookMap = {
+    keydown: {
+        getDOMElement: function (vis) {
+            return document;
         },
-        resize: {
-            getDOMElement: function (vis) {
-                return window;
-            }            
+        filterEvent: FilterKeyEvent
+    },
+    keyup: {
+        getDOMElement: function (vis) {
+            return document;
         },
-        click: {
-            getDOMElement: function (vis) {            
-                return vis.element;
-            }            
-        },
-        mousedown: {
-            getDOMElement: function (vis) {            
-                return vis.element;
-            }            
-        },
-        mouseup: {
-            getDOMElement: function (vis) {            
-                return vis.element;
-            }            
-        },
-        mouseupc: {
-            capture: true,
-            domEvent: 'mouseup',
-            getDOMElement: function (vis) {
-                // should be done on the topmost node
-                var el = vis.element;
-                while (el.parentNode) {
-                    el = el.parentNode;
-                }       
-                return el;
-            }            
-        },
-        mouseover: {
-            getDOMElement: function (vis) {            
-                return vis.element;
-            }            
-        },
-        mousemove: {
-            getDOMElement: function (vis) {            
-                return vis.element;
-            }            
-        },
-        mousemovec: {
-            capture: true,
-            domEvent: 'mousemove',
-            getDOMElement: function (vis) {
-                // should be done on the topmost node
-                var el = vis.element;
-                while (el.parentNode) {
-                    el = el.parentNode;
-                }       
-                return el;
-            }            
-        },
-        mouseout: {
-            getDOMElement: function (vis) {            
-                return vis.element;
-            }            
-        }
-    };
+        filterEvent: FilterKeyEvent
+    },
+    resize: {
+        getDOMElement: function (vis) {
+            return window;
+        }            
+    },
+    click: {
+        getDOMElement: function (vis) {            
+            return vis.element;
+        }            
+    },
+    mousedown: {
+        getDOMElement: function (vis) {            
+            return vis.element;
+        }            
+    },
+    mouseup: {
+        getDOMElement: function (vis) {            
+            return vis.element;
+        }            
+    },
+    mouseupc: {
+        capture: true,
+        domEvent: 'mouseup',
+        getDOMElement: getTopmostElement
+    },
+    mouseover: {
+        getDOMElement: function (vis) {            
+            return vis.element;
+        }            
+    },
+    mousemove: {
+        getDOMElement: function (vis) {            
+            return vis.element;
+        }            
+    },
+    mousemovec: {
+        capture: true,
+        domEvent: 'mousemove',
+        getDOMElement: getTopmostElement
+    },
+    mouseout: {
+        getDOMElement: function (vis) {            
+            return vis.element;
+        }            
+    }
+};
+
 
 /**
     Creates a handler for a given event name.
 */
-function createHandler(name, vis) {
+function createHandler(name, vis, filter) {
     return function (evt) {
+        if (filter) {
+            evt = filter(evt);
+        }
         vis.emit(name, evt);
         dirty.update();
         updateDOMEventHooks(vis);
@@ -127,7 +173,7 @@ function removeDOMHook(v, event, hook) {
 function addDOMHook(v, event, hook) {
     var hooks = enforceDOMHooks(v);
     if (!hooks[event]) {    
-        hooks[event] = { handleEvent: createHandler(event, v) };
+        hooks[event] = { handleEvent: createHandler(event, v, hook.filterEvent) };
         hook.getDOMElement(v).addEventListener(
             hook.domEvent ? hook.domEvent : event, 
             hooks[event], 

@@ -1,0 +1,15 @@
+.baseui_MenuItem {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.baseui_MenuItem_highlighted {
+    background-color: yellow;
+    color: black;
+}
+
+.baseui_VerticalMenu {
+    background-color: 'red';
+}
+

@@ -1,5 +1,5 @@
 {
-    "name": "editor",
+    "name": "baseui",
     "version": "0.0.1",
     "dependencies": {
         "visual": "0.0.1",
@@ -7,6 +7,5 @@
         "glmatrix": "0.0.1",
         "events": "0.0.1",
         "utils": "0.0.1"
-        
     }
 }

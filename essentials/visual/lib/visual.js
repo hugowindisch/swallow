@@ -140,6 +140,7 @@ function Visual(config, groupData) {
 Visual.prototype = new EventEmitter();
 Visual.prototype.getSize = function () {
 };
+
 /**
     Returns a default (unique) name
 */
@@ -148,6 +149,7 @@ Visual.prototype.getDefaultName = function () {
     defaultNameIndex += 1;
     return ret;
 };
+
 /**
     Allows scaling. When a visual is moved to a given position, it
     is resized. The resizing part of the transformation can either be 
@@ -163,6 +165,7 @@ Visual.prototype.enableScaling = function (enable) {
         }
     }
 };
+
 /**
     Allows (or disallows) user interactions (mouse, keyboard). Disallowing
     interactions can be used to display a component as a passive preview.

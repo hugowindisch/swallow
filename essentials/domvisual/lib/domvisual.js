@@ -9,6 +9,7 @@ var visual = require('visual'),
     position = require('/visual/lib/position'),
     glmatrix = require('glmatrix'),
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
+    keycodes = require('./keycodes'),
     Visual = visual.Visual,
     forEachProperty = utils.forEachProperty,
     isObject = utils.isObject,
@@ -88,7 +89,10 @@ DOMVisual.prototype.setClass = function (cssClassName) {
     setDirty(this, 'content');
 };
 DOMVisual.prototype.clearClass = function (cssClassName) {
-    delete this.cssClasses[cssClassName];
+    if (this.cssClasses[cssClassName]) {
+        delete this.cssClasses[cssClassName];
+        setDirty(this, 'content');
+    }
 };
 
 DOMVisual.prototype.getDisplayMatrix = function () {
@@ -182,7 +186,9 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
             } else {
                 // we need the whole css3 transform shebang
 // FIXME: I did not have internet and I want the full matrix thing
-                // 3d transform                
+                // 3d transform
+                style.left = '0px';
+                style.top = '0px';
                 transform = 'translate(' + matrix[12] + 'px, ' + matrix[13] + 'px) ';
                 transform += 'scale(' + matrix[0] + ',' + matrix[5] + ')';
                 style.webkitBackfaceVisibility = 'hidden';
@@ -210,9 +216,9 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
         } else {
             style.width = htmlFlowing.autoWidth ? null : this.dimensions[0] + 'px';
             style.height = htmlFlowing.autoHeight ? null : this.dimensions[1] + 'px';
-            style.position = 'relative';
+            style.position = null;
             if (this.visible) {
-                style.display = htmlFlowing.inline ? 'inline-block' : 'block';
+                style.display = htmlFlowing.inline ? 'inline-block' : null;
             } else {
                 style.display = 'none';
             }
@@ -269,30 +275,60 @@ DOMVisual.prototype.getConfigurationSheet = function () {
     return { "class": {} };
 };
 
+/**
+    Returns the computed matrix of this element
+    (if the element uses html flowing)
+*/
+DOMVisual.prototype.getComputedMatrix = function () {
+    var ret = glmatrix.mat4.identity(),
+        element = this.element;
+    ret[12] = element.offsetLeft;
+    ret[13] = element.offsetTop;
+    return ret;
+};
+
+
+/**
+    Returns the computed matrix of this element
+    (if the element uses html flowing)
+*/
+DOMVisual.prototype.getComputedDimensions = function () {
+    var element = this.element;
+    return [ element.offsetWidth, element.offsetHeight, 1];
+};
+
+
+/**
+    For adding a child that is implemented as plain html.
+*/
+DOMVisual.prototype.addHtmlChild = function (tag, text, config, name) {
+    var element = document.createElement(tag),
+        child = new DOMVisual(config, null, element);
+    element.innerHTML = text;
+    child.setHtmlFlowing({inline: false, autoWidth: true, autoHeight: true});
+    this.addChild(child, name);
+    return child;
+};
+
+/**
+    For adding a child that is implemented as plain text.
+*/
+DOMVisual.prototype.addTextChild = function (tag, text, config, name) {
+    var element = document.createElement(tag),
+        child = new DOMVisual(config, null, element);
+    element.innerText = text;
+    child.setHtmlFlowing({inline: false, autoWidth: true, autoHeight: true});
+    this.addChild(child, name);
+    return child;
+};
+
+
 /////////////////
 // a general container
 function DOMElement(config, groupData) {
     DOMVisual.call(this, config, groupData, document.createElement('div'));
 }
 DOMElement.prototype = new DOMVisual();
-
-
-/////////////////////
-// an html container
-// this will NOT support addChild
-// ANOTHER option would be to have 2 html elements in an DOMHtml, one
-// for html and another on top of it for the regular children... this would
-// make everything more easy
-function DOMHtml(config) {
-    DOMVisual.call(this, config, null, document.createElement('div'));
-}
-DOMHtml.prototype = new DOMVisual();
-DOMHtml.prototype.addChild = function () {
-    throw new Error("addChild NOT supported in DOMHtml, use DOMElement instead");
-};
-DOMHtml.prototype.removeChild = function () {
-    throw new Error("removeChild NOT supported in DOMHtml, use DOMElement instead");
-};
 
 /////////////////
 // an img element
@@ -320,7 +356,6 @@ exports.getVisualNames = function () {
     return [ 'DOMElement', 'DOMImg', 'DOMVideo' ];
 };
 exports.DOMElement = DOMElement;
-exports.DOMHtml = DOMHtml;
 exports.DOMImg = DOMImg;
 exports.DOMVideo = DOMVideo;
 
@@ -371,4 +406,5 @@ exports.createFullScreenApplication = function (child) {
     dirty.update();
     return child;
 };
-
+exports.makeKeyString = keycodes.makeKeyString;
+exports.decorateVk = keycodes.decorateVk;
