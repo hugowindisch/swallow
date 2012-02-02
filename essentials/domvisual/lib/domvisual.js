@@ -127,11 +127,10 @@ DOMVisual.prototype.getDisplayMatrix = function () {
     }
     use null or undefined to disable flow
 */
-DOMVisual.prototype.setHtmlFlowing = function (flowing) {
-    if (this.htmlFlowing !== flowing) {
-        this.htmlFlowing = flowing;
-        setDirty(this, 'matrix');
-        setDirty(this, 'dimensions');
+DOMVisual.prototype.setHtmlFlowing = function (styles) {
+    if (this.htmlFlowing !== styles) {
+        this.htmlFlowing = styles;
+        setDirty(this, 'matrix', 'dimensions');
     }
 };
 
@@ -214,12 +213,17 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
             style.position = 'absolute';
             style.display = this.visible ? 'block' : 'none';
         } else {
-            style.width = htmlFlowing.autoWidth ? null : this.dimensions[0] + 'px';
-            style.height = htmlFlowing.autoHeight ? null : this.dimensions[1] + 'px';
+            // clear our stuff
+            style.width = null;
+            style.height = null;
             style.position = null;
-            if (this.visible) {
-                style.display = htmlFlowing.inline ? 'inline-block' : null;
-            } else {
+            style.display = null;
+            // let the htmlFlowing apply its stuff
+            forEachProperty(htmlFlowing, function (v, n) {
+                style[n] = v;
+            });
+            // override visibility
+            if (!this.visible) {
                 style.display = 'none';
             }
         }
@@ -248,19 +252,34 @@ DOMVisual.prototype.updateChildrenDepthRepresentation = function () {
     }
 */
 };
-DOMVisual.prototype.updateContentRepresentation = function () {
-    if (this.element) {
-        var cssClass = "",
-            childrenClipping = this.childrenClipping,
-            element = this.element,
-            style = element.style;        
+DOMVisual.prototype.updateStyleRepresentation = function () {
+    var cssClass,
+        element = this.element,
+        style;
+    
+    if (element) {
+        cssClass = this.getStyleData().join(' ');
+        style = element.style;
         forEachProperty(this.cssClasses, function (c, name) {
             cssClass += name;
             cssClass += ' ';
         });
         element.setAttribute('class', cssClass);
-        if (this.childrenClipping) {
-            style.overflow = this.childrenClipping;
+    }
+};
+
+DOMVisual.prototype.updateContentRepresentation = function () {
+};
+
+DOMVisual.prototype.updateDone = function () {
+    var element = this.element,
+        style,
+        childrenClipping;
+    if (element) {
+        style = element.style;
+        childrenClipping = this.childrenClipping;
+        if (childrenClipping) {
+            style.overflow = childrenClipping;
         } else {
             style.overflow = null;
         }
@@ -271,8 +290,9 @@ DOMVisual.prototype.updateContentRepresentation = function () {
     }
 };
 
+
 DOMVisual.prototype.getConfigurationSheet = function () {
-    return { "class": {} };
+    return { "class": {}, "style": {} };
 };
 
 /**
@@ -311,7 +331,7 @@ DOMVisual.prototype.addHtmlChild = function (tag, text, config, name) {
     var element = document.createElement(tag),
         child = new DOMVisual(config, null, element);
     element.innerHTML = text;
-    child.setHtmlFlowing({inline: false, autoWidth: true, autoHeight: true});
+    child.setHtmlFlowing({});
     this.addChild(child, name);
     return child;
 };
@@ -323,10 +343,31 @@ DOMVisual.prototype.addTextChild = function (tag, text, config, name) {
     var element = document.createElement(tag),
         child = new DOMVisual(config, null, element);
     element.innerText = text;
-    child.setHtmlFlowing({inline: false, autoWidth: true, autoHeight: true});
+    child.setHtmlFlowing({});
     this.addChild(child, name);
     return child;
 };
+
+/**
+    Sets the html of a DOMVisual. This removes all children.
+    (note: we could have an option to keep the children... since we can
+    easily remove them first, and re add them after).
+*/
+DOMVisual.prototype.setInnerHTML = function (html) {
+    this.removeAllChildren();
+    this.element.innerHTML = html;
+    setDirty(this, 'matrix', 'dimensions', 'style', 'content');    
+};
+
+/**
+    Sets the text of a DOMVisual. This removes all children.
+*/    
+DOMVisual.prototype.setInnerText = function (text) {
+    this.removeAllChildren();
+    this.element.innerText = text;
+    setDirty(this, 'matrix', 'dimensions', 'style', 'content');    
+};
+
 
 
 /////////////////

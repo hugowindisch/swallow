@@ -60,8 +60,7 @@ Folder.prototype.updateChildren = function () {
             tc = this.addTextChild('div', t, { 'class': 'baseui_Drawer_title_closed' }, 'title');
             c = new Constr(o.config);
             this.addChild(c, 'content');
-            //c.setHtmlFlowing({ autoWidth: false, autoHeight: false, inline: false});
-            c.setHtmlFlowing({ autoWidth: true, autoHeight: true, inline: false});            
+            c.setHtmlFlowing({ display: 'inline-block'});
             c.setVisible(false);
             tc.on('click', function () {
                 that.toggleExpansion();

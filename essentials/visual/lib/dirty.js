@@ -20,16 +20,22 @@ function DirtyList() {
 /**
     Flags an element as dirty.
 */
-DirtyList.prototype.setDirty = function (o, why) {
-    if (!isNumber(o.containmentDepth)) {
-        throw new Error("invalid visual");
-    }
-    if (!o.hasOwnProperty('isDirty')) {
-        o.isDirty = {};
-        this.dirty.push(o);
-    }
-    if (why) {
-        o.isDirty[why] = true;
+DirtyList.prototype.setDirty = function (o) {
+    var i, l = arguments.length;
+    if (l > 1) {
+        if (!isNumber(o.containmentDepth)) {
+            throw new Error("invalid visual");
+        }
+        if (!o.hasOwnProperty('isDirty')) {
+            o.isDirty = {};
+            this.dirty.push(o);
+        }
+        // why?
+        for (i = 1; i < l; i += 1) {
+            o.isDirty[arguments[i]] = true;
+        }
+    } else {
+        throw new Error('setDirty called with no reason');
     }
 };
 

@@ -66,6 +66,7 @@ var utils = require('utils'),
     dirty = require('./dirty'),
     position = require('./position'),
     themes = require('./themes'),
+    isString = utils.isString,
     applyLayout = position.applyLayout,
     setDirty = dirty.setDirty,
     setChildrenDirty = dirty.setChildrenDirty,
@@ -221,7 +222,8 @@ Visual.prototype.setMatrix = function (m4) {
     Returns the matrix.
 */
 Visual.prototype.getMatrix = function () {
-    return this.matrix;
+    var matrix = this.matrix || glmatrix.mat4.identity();
+    return matrix;
 };
 
 /**
@@ -239,7 +241,7 @@ Visual.prototype.isOnlyTranslated = function () {
     This should be private (well...)
 */
 Visual.prototype.getDisplayMatrix = function () {
-    return this.matrix;
+    return this.getMatrix();
 };
 /**
     Returns the full display matrix (i.e. the combined matrix of all parents).
@@ -392,9 +394,14 @@ Visual.prototype.update = function (why) {
         // update dim representation of ourself
         this.updateDimensionsRepresentation();
     }
+    if (why.style) {
+        // update dim representation of ourself
+        this.updateStyleRepresentation();
+    }
     if (why.content) {
         this.updateContentRepresentation();
     }
+    this.updateDone();
 };
 
 /**
@@ -409,8 +416,14 @@ Visual.prototype.updateDimensionsRepresentation = function () {
 Visual.prototype.updateChildrenDepthRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
+Visual.prototype.updateStyleRepresentation = function () {
+    throw new Error("Not supported in abstract base class Visual");
+};
 Visual.prototype.updateContentRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
+};
+Visual.prototype.updateDone = function () {
+    // do nothing, don't complain
 };
 
 /**
@@ -517,7 +530,7 @@ Visual.prototype.getConfigurationSheet = function (config) {
 Visual.prototype.setSkin = function (theme) {
     // this dirties at least our content
     themes.applySkin(this, theme);
-    setDirty(this, 'content');
+    setDirty(this, 'style');
 };
 
 /**
@@ -528,8 +541,9 @@ Visual.prototype.setSkinStyle = function (styleName, style) {
     o[styleName] = style;
     themes.applySkin(this, o);
     // this dirties our content
-    setDirty(this, 'content');
+    setDirty(this, 'style');
 };
+
 /**
     Retrieves a theme style.
     (this is an array of information like css styles or something)
@@ -538,6 +552,31 @@ Visual.prototype.getSkinStyle = function (styleName) {
     return themes.getStyle(this.theme, styleName);
 };
 
+/**
+    sets the style of this visual. This is either a string,
+    in which case it refers to a named style in the parent's
+    theme/skin, or a style (as defined in themes.js).
+*/    
+Visual.prototype.setStyle = function (style) {
+    if (style !== this.style) {
+        this.style = style;
+        setDirty(this, 'style');
+    }
+};
+
+/**
+    Returns the style data for this visual.
+*/
+Visual.prototype.getStyleData = function () {
+    var style = this.style, parentTheme;
+    if (isString(style)) {
+        parentTheme = this.parent.theme;
+        if (parentTheme) {
+            style = parentTheme[style];
+        }
+    }
+    return themes.getStyleData(style);
+};
 
 // export all what we want to export for the module
 exports.Visual = Visual;

@@ -9,6 +9,7 @@
 
 {
     stylename: {
+        description: "description of the purpose of this style",
         basedOn: [
             // take the line styles from here
             { factory: xxx, type:, style: stylename }
@@ -46,10 +47,10 @@ function bindStyle(theme, style) {
     var that = this, i, l, deps = style.basedOn, bindings, dep, module, Constr, t;
     if (deps) {
         // this also prevents infinite
-        delete theme.basedOn;
+        delete style.basedOn;
         l = deps.length;
         bindings = [];
-        theme.bindings = bindings;
+        style.bindings = bindings;
         for (i = 0; i < l; i += 1) {
             dep = deps[i];
             module = require(dep.factory);
@@ -121,10 +122,10 @@ function applySkin(o, theme) {
     applyTheme(o.theme, theme);
 }
 
-function getStyle(theme, stylename) {
+function getStyleData(style) {
     var results = [];
-    function gS(theme, stylename) {
-        var s = theme[stylename], bindings, i, l, binding, data;
+    function gS(s) {
+        var bindings, i, l, binding, data;
         if (s) {
             bindings = s.bindings;
             // do the dependencies first
@@ -132,26 +133,19 @@ function getStyle(theme, stylename) {
                 l = bindings.length;
                 for (i = 0; i < l; i += 1) {
                     binding = bindings[i];
-                    gS(binding.theme, binding.style);
+                    gS(binding.theme[binding.style]);
                 }
             }
             // then add the new stuff
             data = s.data;
             if (data) {
-                if (isArray(data)) {
-                    l = data.length;
-                    for (i = 0; i < l; i += 1) {
-                        results.push(data[i]);
-                    }                    
-                } else {
-                    results.push(data);
-                }
+                results = results.concat(data);
             }
         }
     }
-    gS(theme, stylename);
+    gS(style);
     return results;
 }
-exports.getStyle = getStyle;
+exports.getStyleData = getStyleData;
 exports.applySkin = applySkin;
 exports.Theme = Theme;

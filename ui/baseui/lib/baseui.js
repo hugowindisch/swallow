@@ -33,12 +33,15 @@ Toolbar (just a different way of representing menu items)
 */
 
 var domvisual = require('domvisual'),
-    menuitem = require('./menuitem');
+    menuitem = require('./menuitem'),
+    glmatrix = require('glmatrix');
 
 exports.Toolbar = require('./toolbar').Toolbar;
 exports.VerticalMenu = require('./verticalmenu').VerticalMenu;
 exports.HorizontalMenu = require('./horizontalmenu').HorizontalMenu;
 exports.Folder = require('./folder').Folder;
+exports.Theme = require('./theme').Theme;
+exports.Button = require('./button').Button;
 exports.MenuItem = menuitem.MenuItem;
 exports.Accelerator = menuitem.Accelerator;
 
@@ -72,7 +75,7 @@ exports.Accelerator = menuitem.Accelerator;
     }
 }());*/
 
-(function () {
+/*(function () {
     var Folder = exports.Folder;
     if (require.main === module) {
         domvisual.createFullScreenApplication(new Folder({ 
@@ -83,6 +86,23 @@ exports.Accelerator = menuitem.Accelerator;
                 config: { text: 'another', internal: { factory: 'domvisual', type: 'DOMElement' } }
             }
         }));
+    }
+}());*/
+
+
+(function () {
+    var Button = exports.Button,
+        root,
+        but;
+    if (require.main === module) {
+        root = new (domvisual.DOMElement)({});        
+        but = new Button({text: "Hello!!!"});
+        but.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 100, 0]));
+        but.setDimensions([100, 32, 1]);
+        root.addChild(but);
+        
+        
+        domvisual.createFullScreenApplication(root);
     }
 }());
 

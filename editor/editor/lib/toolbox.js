@@ -28,7 +28,7 @@ Toolbox.prototype.addTool = function (
         that = this;
     // we want to flow this thing
     this.children.tools.addChild(newTool, this.getDefaultName());
-    newTool.setHtmlFlowing({inline: true});
+    newTool.setHtmlFlowing({display: 'inline-block'});
     newTool.whenSelected = selected;
     newTool.whenDeselected = deselected;
     newTool.addListener('click', function (evt) {
