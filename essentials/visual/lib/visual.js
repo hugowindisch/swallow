@@ -61,10 +61,11 @@ A position can be a named position inside our parent or an unmanaged position.
 
 var utils = require('utils'),
     events = require('events'),
-    glmatrix = require('glmatrix'),
+    glmatrix = require('glmatrix'),    
     forEachProperty = utils.forEachProperty,
     dirty = require('./dirty'),
     position = require('./position'),
+    themes = require('./themes'),
     applyLayout = position.applyLayout,
     setDirty = dirty.setDirty,
     setChildrenDirty = dirty.setChildrenDirty,
@@ -508,6 +509,36 @@ Visual.prototype.setConfiguration = function (config) {
 Visual.prototype.getConfigurationSheet = function (config) {
 };
 
+/**
+    Applies a skin (a per-instance theme).
+    This is intentionally named setTheme, allowing the 'config' system to
+    setup the skin.
+*/
+Visual.prototype.setSkin = function (theme) {
+    // this dirties at least our content
+    themes.applySkin(this, theme);
+    setDirty(this, 'content');
+};
+
+/**
+    Sets a skin style (a per instance theme style)
+*/
+Visual.prototype.setSkinStyle = function (styleName, style) {
+    var o = {};
+    o[styleName] = style;
+    themes.applySkin(this, o);
+    // this dirties our content
+    setDirty(this, 'content');
+};
+/**
+    Retrieves a theme style.
+    (this is an array of information like css styles or something)
+*/
+Visual.prototype.getSkinStyle = function (styleName) {
+    return themes.getStyle(this.theme, styleName);
+};
+
+
 // export all what we want to export for the module
 exports.Visual = Visual;
 // this should not be there: a Visual is abstract. It should not be exposed
@@ -523,4 +554,4 @@ exports.TransformPosition = position.TransformPosition;
 exports.matrixIsTranslateOnly = matrixIsTranslateOnly;
 exports.convertScaleToSize = position.convertScaleToSize;
 exports.forVisualAndAllChildrenDeep = forVisualAndAllChildrenDeep;
-
+exports.Theme = themes.Theme;
