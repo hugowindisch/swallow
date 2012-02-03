@@ -8,6 +8,7 @@ var visual = require('visual'),
     utils = require('utils'),
     verticalmenu = require('./verticalmenu'),
     glmatrix = require('glmatrix'),
+    forEachProperty = utils.forEachProperty,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction;
@@ -15,6 +16,7 @@ var visual = require('visual'),
 
 function HorizontalMenu(config) {
     var that = this;
+    // set default dimensions
     domvisual.DOMElement.call(this, config);
 
     // Menu variables
@@ -56,6 +58,12 @@ HorizontalMenu.prototype.theme = new (visual.Theme)({
             // take the line styles from here
             { factory: 'baseui', type: 'Theme', style: 'highLightedMenuTitleBackground' },
             { factory: 'baseui', type: 'Theme', style: 'highLightedMenuTitleText' }
+        ]
+    },
+    menuBar: {
+        basedOn: [
+            // take the line styles from here
+            { factory: 'baseui', type: 'Theme', style: 'menuBar' }
         ]
     }
 });
@@ -121,7 +129,8 @@ HorizontalMenu.prototype.findAccelerators = function (evt) {
 */
 HorizontalMenu.prototype.highlightItem = function (itemName) {
     var c,
-        toHighlight = this.children[itemName],
+        bar = this.children.bar,
+        toHighlight = bar.children[itemName],
         subItems,
         subMenu,
         smMat,
@@ -160,6 +169,13 @@ HorizontalMenu.prototype.highlightItem = function (itemName) {
 HorizontalMenu.prototype.updateChildren = function () {
     // we want to remove all our children
     this.removeAllChildren();
+    this.addHtmlChild(
+        'div',
+        '',
+        {'style': 'menuBar' },
+        'bar'
+    ).setHtmlFlowing({position: 'absolute', left: '0px', top: '0px', right: '0px', bottom: 'auto' });
+
     
     // we now want to iterate our items and create children for them
     var items = this.getItems(),
@@ -177,15 +193,18 @@ HorizontalMenu.prototype.updateChildren = function () {
 HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
     var that = this,
         name = String(index),
-        c = this.addTextChild(
-            'span', 
+        bar = this.children.bar,
+        c = bar.addTextChild(
+            'div', 
             item.getText(),
-            { "style": "normal" },
+            { style: 'normal' },
             name
-        );
+        ),
+        height = this.dimensions[1] + 'px';
     // keep a reference to the item
     c.item = item;
     
+    c.setHtmlFlowing({ height: height, display: 'inline-block' });
     // to this child we want to add a handler
     c.on('click', function () {
         console.log('click');
@@ -218,6 +237,19 @@ HorizontalMenu.prototype.getItems = function () {
 };
 HorizontalMenu.prototype.getConfigurationSheet = function () {
     return { items: {} };
+};
+HorizontalMenu.prototype.setDimensions = function (dimensions) {
+    domvisual.DOMElement.prototype.setDimensions.call(this, dimensions);
+    // mixing html flowing with absolute positioning is a war...
+    // outer stuff grows according to inner stuff... But what we want
+    // here is the other way around. So we fight.
+    var height = dimensions[1] + 'px',
+        children = this.children;
+    if (children && children.bar) {
+        forEachProperty(children.bar.children, function (c) {
+            c.setHtmlFlowing({height: height, display: 'inline-block'});
+        });
+    }
 };
 exports.HorizontalMenu = HorizontalMenu;
 

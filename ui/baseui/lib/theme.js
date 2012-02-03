@@ -40,6 +40,9 @@ Theme.prototype.theme = new (require('visual').Theme)({
     highLightedMenuTitleText: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_menuItemSpacing' ]
     },
+    menuBar: {
+        data: [ 'baseui_theme_menuBar' ]
+    },
     // vertical menu
     menuBox: {
         data: [ 'baseui_theme_outlineSmallRounded', 'baseui_theme_menuBoxColor' ]

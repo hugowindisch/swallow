@@ -281,14 +281,6 @@ Visual.prototype.getPosition = function () {
     return this.position;
 };
 /**
-    Applies a position to the element (i.e. convert it to something that
-    works in the target rendering system, e.g. the DOM)
-*/
-Visual.prototype.applyPosition = function (containerDimensions, layoutDimensions, position) {
-    // we only know how to do this in subclasses
-    throw new Error('a Visual is abstract and cannot be displayed');
-};
-/**
     When a visual is a group it will use a layout object to move its
     children when it is itself moved.
     The layout can be manipulated programmatically. This allows to

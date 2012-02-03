@@ -129,7 +129,7 @@ exports.Accelerator = menuitem.Accelerator;
             ]
         });
         men.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 300, 0]));
-        men.setDimensions([400, 200, 1]);
+        men.setDimensions([500, 20, 1]);
         root.addChild(men, 'men');
         
         
