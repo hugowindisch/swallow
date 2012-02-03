@@ -202,6 +202,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
         icon,
         radio,
         checked,
+        checkimg = item.getCheckedMode() === 'radio' ? 'baseui/lib/menuradio.png' : 'baseui/lib/menucheck.png',
         c = table.addHtmlChild(
             'tr', 
             '',
@@ -219,7 +220,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
     checked = item.getCheckedState();
     c.addHtmlChild(
         'td',
-        checked ? ('<img src = ' + item.getCheckedMode() + ' ></img>') : '',
+        checked ? ('<img src = ' + checkimg + ' ></img>') : '',
         {  },
         'check'
     );
