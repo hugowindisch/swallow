@@ -256,9 +256,9 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
     var cssClass,
         element = this.element,
         style;
-    
     if (element) {
         cssClass = this.getStyleData().join(' ');
+        //console.log('updateStyleRepresentation ' + this.name + ' ' + this.style + ' ' + cssClass);        
         style = element.style;
         forEachProperty(this.cssClasses, function (c, name) {
             cssClass += name;

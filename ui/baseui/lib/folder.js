@@ -20,6 +20,19 @@ function Folder(config) {
 }
 Folder.prototype = new (domvisual.DOMElement)();
 
+Folder.prototype.theme = new (visual.Theme)({
+    expanded: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'expandedFolder' }
+        ]
+    },
+    contracted: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'contractedFolder' }
+        ]
+    }
+});
+
 /**
     o.factory: name of the factory
     o.type: type
@@ -57,7 +70,7 @@ Folder.prototype.updateChildren = function () {
     if (fact) {
         Constr = fact[o.type];
         if (Constr) {
-            tc = this.addTextChild('div', t, { 'class': 'baseui_Drawer_title_closed' }, 'title');
+            tc = this.addTextChild('div', t, { 'style': 'contracted' }, 'title');
             c = new Constr(o.config);
             this.addChild(c, 'content');
             c.setHtmlFlowing({ display: 'inline-block'});
@@ -73,12 +86,15 @@ Folder.prototype.updateChildren = function () {
     Toggles the expansion of the box.
 */
 Folder.prototype.toggleExpansion = function () {
-    var expanded = !this.expanded;
+    var expanded = !this.expanded,
+        children = this.children;
     this.expanded = expanded;
     if (expanded) {
-        this.children.content.setVisible(true);
+        children.title.setStyle('expanded');
+        children.content.setVisible(true);
     } else {
-        this.children.content.setVisible(false);
+        children.title.setStyle('contracted');
+        children.content.setVisible(false);
     }
 };
 

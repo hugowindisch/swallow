@@ -98,7 +98,9 @@ exports.Input = require('./input').Input;
         but,
         label,
         input,
+        folder,
         MenuItem = exports.MenuItem,
+        Folder = exports.Folder,
         HorizontalMenu = exports.HorizontalMenu,
         Accelerator = exports.Accelerator,
         Toolbar = exports.Toolbar,
@@ -156,6 +158,19 @@ exports.Input = require('./input').Input;
         input.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 450, 0]));
         input.setDimensions([200, 32, 1]);
         root.addChild(input, 'input');
+        
+        // folder
+        folder = new Folder({ 
+            text: "hello",
+            internal: {
+                factory: 'baseui',
+                type: 'Folder',
+                config: { text: 'another', internal: { factory: 'domvisual', type: 'DOMElement' } }
+            }
+        });
+        folder.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 500, 0]));
+        folder.setDimensions([200, 200, 1]);
+        root.addChild(folder, 'folder');
 
         // go!        
         domvisual.createFullScreenApplication(root);

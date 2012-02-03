@@ -76,7 +76,14 @@ Theme.prototype.theme = new (require('visual').Theme)({
     // input text
     inputText: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor' ]
-    } 
+    },
+    // folder
+    expandedFolder: {
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgExpandedFolder' ]
+    },
+    contractedFolder: {
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgContractedFolder' ]
+    }
 });
 exports.Theme = Theme;
 
