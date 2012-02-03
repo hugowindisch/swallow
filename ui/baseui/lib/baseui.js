@@ -93,13 +93,44 @@ exports.Accelerator = menuitem.Accelerator;
 (function () {
     var Button = exports.Button,
         root,
-        but;
+        but,
+        MenuItem = exports.MenuItem,
+        HorizontalMenu = exports.HorizontalMenu,
+        Accelerator = exports.Accelerator,
+        subMenu3 = [
+            new MenuItem("SubSubItem1", null, null, null, null, false), 
+            new MenuItem("SubSubItem2", null, null, null, null, false)
+        ],
+        subMenu2 = [
+            new MenuItem("SubSubItem1", function () { alert('ss1'); }), 
+            new MenuItem("SubSubItem2", null, subMenu3)
+        ],
+        subMenu = [
+            new MenuItem("SubItem1", function () { alert('sub1'); }, null, new Accelerator('VK_A', false, false, true)), 
+            new MenuItem("SubItem.....2", null, null, null, null, false), 
+            new MenuItem("SubItem3", null, subMenu2)
+        ],
+        men;
+        
     if (require.main === module) {
         root = new (domvisual.DOMElement)({});        
+        // button
         but = new Button({text: "Hello!!!"});
         but.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 100, 0]));
         but.setDimensions([100, 32, 1]);
-        root.addChild(but);
+        root.addChild(but, 'but');
+        
+        // menu
+        men = new HorizontalMenu({ 
+            items: [
+                new MenuItem("Item1"), 
+                new MenuItem("Item2", null, subMenu3), 
+                new MenuItem("Item3", null, subMenu)
+            ]
+        });
+        men.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 300, 0]));
+        men.setDimensions([400, 200, 1]);
+        root.addChild(men, 'men');
         
         
         domvisual.createFullScreenApplication(root);

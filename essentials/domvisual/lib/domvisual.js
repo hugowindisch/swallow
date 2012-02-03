@@ -86,12 +86,12 @@ DOMVisual.prototype.setClass = function (cssClassName) {
         // why trigger dom changes immediately, keep this cached
         this.cssClasses[cssClassName] = true;
     }
-    setDirty(this, 'content');
+    setDirty(this, 'style');
 };
 DOMVisual.prototype.clearClass = function (cssClassName) {
     if (this.cssClasses[cssClassName]) {
         delete this.cssClasses[cssClassName];
-        setDirty(this, 'content');
+        setDirty(this, 'style');
     }
 };
 
@@ -141,7 +141,7 @@ DOMVisual.prototype.setHtmlFlowing = function (styles) {
 */
 DOMVisual.prototype.setChildrenClipping = function (mode) {
     this.childrenClipping = mode;
-    setDirty(this, 'content');
+    setDirty(this, 'style');
 };
 
 /**
@@ -149,7 +149,7 @@ DOMVisual.prototype.setChildrenClipping = function (mode) {
 */
 DOMVisual.prototype.setScroll = function (v3) {
     this.scroll = v3;
-    setDirty(this, 'content');
+    setDirty(this, 'style');
 };
 
 /**
@@ -268,9 +268,6 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
     }
 };
 
-DOMVisual.prototype.updateContentRepresentation = function () {
-};
-
 DOMVisual.prototype.updateDone = function () {
     var element = this.element,
         style,
@@ -342,7 +339,7 @@ DOMVisual.prototype.addHtmlChild = function (tag, text, config, name) {
 DOMVisual.prototype.addTextChild = function (tag, text, config, name) {
     var element = document.createElement(tag),
         child = new DOMVisual(config, null, element);
-    element.innerText = text;
+    child.element.appendChild(document.createTextNode(text));
     child.setHtmlFlowing({});
     this.addChild(child, name);
     return child;
@@ -356,7 +353,7 @@ DOMVisual.prototype.addTextChild = function (tag, text, config, name) {
 DOMVisual.prototype.setInnerHTML = function (html) {
     this.removeAllChildren();
     this.element.innerHTML = html;
-    setDirty(this, 'matrix', 'dimensions', 'style', 'content');    
+    setDirty(this, 'matrix', 'dimensions', 'style');    
 };
 
 /**
@@ -365,7 +362,7 @@ DOMVisual.prototype.setInnerHTML = function (html) {
 DOMVisual.prototype.setInnerText = function (text) {
     this.removeAllChildren();
     this.element.innerText = text;
-    setDirty(this, 'matrix', 'dimensions', 'style', 'content');    
+    setDirty(this, 'matrix', 'dimensions', 'style');    
 };
 
 

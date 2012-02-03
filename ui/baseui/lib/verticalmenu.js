@@ -21,7 +21,6 @@ function VerticalMenu(config) {
     // we are the top of the menu stack
     this.parentMenu = null;
     this.highlighted = null;
-    this.setClass('baseui_VerticalMenu');
     // set a key handler for accelerators
     this.on('keydown', function (evt) {
         if (!that.children.subMenu) {
@@ -30,6 +29,28 @@ function VerticalMenu(config) {
     });
 }
 VerticalMenu.prototype = new (domvisual.DOMElement)();
+VerticalMenu.prototype.theme = new (visual.Theme)({
+    menuBox: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'menuBox' }
+        ]
+    },
+    menuItem: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'menuItem' }
+        ]
+    },
+    menuItemSelected: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'menuItemSelected' }
+        ]
+    },
+    menuItemDisabled: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'menuItemDisabled' }
+        ]
+    }
+});
 /**
     Handles keys
 */
@@ -116,7 +137,7 @@ VerticalMenu.prototype.highlightItem = function (itemName) {
         smDim;
     // if some item is already highlighted
     if (this.highlighted) {
-        this.highlighted.clearClass('baseui_MenuItem_highlighted');
+        this.highlighted.setStyle('menuItem');
         if (this.children.subMenu) {
             this.removeChild(this.children.subMenu);
         }        
@@ -124,7 +145,7 @@ VerticalMenu.prototype.highlightItem = function (itemName) {
     toHighlight = table.children[itemName];
     if (toHighlight) {
         this.highlighted = toHighlight;    
-        toHighlight.setClass('baseui_MenuItem_highlighted');
+        toHighlight.setStyle('menuItemSelected');
         // do we have a submenu for this item?
         subItems = toHighlight.item.getSubMenu();
         if (subItems) {
@@ -155,7 +176,7 @@ VerticalMenu.prototype.updateChildren = function () {
     this.addHtmlChild(
         'table',
         '',
-        {'class': 'baseui_VerticalMenu_table' },
+        {'style': 'menuBox' },
         'table'
     );
     
@@ -184,9 +205,10 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
         c = table.addHtmlChild(
             'tr', 
             '',
-            { "class": [ "baseui_MenuItem", enabled ? "baseui_MenuItem_enabled" : "baseui_MenuItem_disabled" ]},
+            { style: enabled ? 'menuItem' : 'menuItemDisabled' },
             name
         );
+        
     if (enabled) {
         numEnabled += 1;
     }
@@ -198,7 +220,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
     c.addHtmlChild(
         'td',
         checked ? ('<img src = ' + item.getCheckedMode() + ' ></img>') : '',
-        { 'class': 'basui_MenuiItem_check' },
+        {  },
         'check'
     );
     // icon
@@ -206,7 +228,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
     c.addHtmlChild(
         'td',
         icon ? ('<img src = ' + icon + ' ></img>') : '',
-        { 'class': 'basui_MenuiItem_icon' },
+        {  },
         'icon'
     );
     
@@ -214,7 +236,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
     c.addTextChild(
         'td',
         item.getText(),
-        { 'class': 'basui_MenuiItem_text' },
+        {  },
         'it'
     );
     // accelerator
@@ -222,7 +244,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
     c.addTextChild(
         'td',
         accel ? accel.toKeyString() : '',
-        { 'class': 'basui_MenuiItem_accelerator' },
+        {  },
         'accel'
     );
     // to this child we want to add a handler

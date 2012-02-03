@@ -1,28 +1,10 @@
-
-/** this stuff is out : */
-
-.baseui_MenuItem {
-    background-color: black;
-    color: white;
-    font-weight: bold;
-    margin-left: 10px;
-}
-.baseui_MenuItem_highlighted {
-    background-color: yellow;
-    color: black;
-}
-
-.baseui_VerticalMenu {
-    background-color: 'red';
-}
-
-.baseui_Test {
-    background-color: green;
-};
-
-/** this stuff is in */
+@charset 'UTF-8';
 .baseui_theme_outlineColor {
     border: 1px solid #cecece;
+}
+
+.basui_theme_outlineTransparent {
+    border: 1px solid transparent;
 }
 
 .baseui_theme_outlineRounded {
@@ -31,6 +13,30 @@
     border-radius: 8px 8px 8px 8px;
     border: 1px solid #cecece;
 }
+
+.baseui_theme_outlineSmallRounded {
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #cecece;
+}
+
+
+.baseui_theme_outlineTopRounded {
+    -webkit-border-radius: 4px 4px 0px 0px;
+    -moz-border-radius: 4px 4px 0px 0px;
+    border-radius: 4px 4px 0px 0px;
+    border: 1px solid #cecece;
+}
+
+.baseui_theme_menuItemSpacing {
+    margin-left: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
 
 .baseui_theme_controlFillNormal {
     background: #ffffff; /* Old browsers */
@@ -54,3 +60,36 @@
     font-family: sans-serif;
     font-size: 14px;
 }
+.baseui_theme_menuBoxColor {
+    background-color: #fcfcfc;
+    padding: 4px 4px 4px 4px;
+    border-spacing: 0px;
+}
+.baseui_theme_menuBoxColor > td {
+    border-style: none;
+    margin: 0px;
+    padding: 2px;
+    border: 0px;
+}
+.baseui_theme_menuBoxColor > tr {
+    border-style: none;
+}
+
+.baseui_theme_textColor {
+    color: black;
+}
+.baseui_theme_textHighlightColor {
+    color: black;
+}
+.baseui_theme_textDisabledColor {
+    color: #b0b0b0;
+}
+.baseui_theme_highlightColor {
+    background-color: #e0e0e0;
+}
+.baseui_theme_menuItem > td {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+

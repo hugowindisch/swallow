@@ -303,6 +303,7 @@ Visual.prototype.getLayout = function () {
     return this.layout;
 };
 Visual.prototype.addChild = function (child, name) {
+    name = name || this.getDefaultName();
     if (this.children && this.children[name]) {
         throw new Error("Child " + name + " already exists.");
     }
@@ -398,9 +399,6 @@ Visual.prototype.update = function (why) {
         // update dim representation of ourself
         this.updateStyleRepresentation();
     }
-    if (why.content) {
-        this.updateContentRepresentation();
-    }
     this.updateDone();
 };
 
@@ -417,9 +415,6 @@ Visual.prototype.updateChildrenDepthRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 Visual.prototype.updateStyleRepresentation = function () {
-    throw new Error("Not supported in abstract base class Visual");
-};
-Visual.prototype.updateContentRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 Visual.prototype.updateDone = function () {
@@ -568,9 +563,14 @@ Visual.prototype.setStyle = function (style) {
     Returns the style data for this visual.
 */
 Visual.prototype.getStyleData = function () {
-    var style = this.style, parentTheme;
+    var style = this.style, parentTheme, parent;
     if (isString(style)) {
-        parentTheme = this.parent.theme;
+        // a container may create children to its children. This will
+        // let theses use the parent theme.
+        // this is a little bit hack&slash
+        for (parent = this.parent; parent && !parentTheme; parent = parent.parent) {
+            parentTheme = parent.theme;
+        }
         if (parentTheme) {
             style = parentTheme[style];
         }

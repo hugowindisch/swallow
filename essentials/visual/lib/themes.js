@@ -22,28 +22,12 @@
 Themes should be settable through the config: this works if we set all
 themes at once (with a themesheet)
 
-
----------------
-WARNING
---------------
-
-FIXME: IM NOT SURE THE EVENT STUFF SHOULD BE HERE AT ALL... OR MAYBE IT SHOULD
-but we need to be able to BREAK the referencing that events produce (just like
-we do with DOM events), otherwise instances will never be freed.
-
-MAYBE a simpler 'dirty all the tree' thing would be more appropriate when some
-one changes a theme (i.e. not a skin)
-
-
-
 */
 var utils = require('utils'),
-    events = require('events'),
-    EventEmitter = events.EventEmitter,
     forEachProperty = utils.forEachProperty,
     isArray = utils.isArray;
 
-function bindStyle(theme, style) {
+function bindStyle(style) {
     var that = this, i, l, deps = style.basedOn, bindings, dep, module, Constr, t;
     if (deps) {
         // this also prevents infinite
@@ -59,54 +43,31 @@ function bindStyle(theme, style) {
                 if (Constr) {
                     t = Constr.prototype.theme;
                     if (t) {
-                        // make theme dependent on t
-                        t.removeListener('themeDirty', theme.themeDirty);
-                        t.removeListener('cleanTheme', theme.cleanTheme);
-                        t.on('themeDirty', theme.themeDirty);
-                        t.on('cleanTheme', theme.cleanTheme);
                         // add the style to the bindings
                         bindings.push({theme: t, style: dep.style});
                     }
+                } else {
+                    throw new Error('unresolved constructor ' + dep.type + ' in ' + dep.factory);                    
                 }
+            } else {
+                throw new Error('unresolved module ' + dep.factory);
             }
         }
     }
 }
 
 function applyTheme(toTheme, fromTheme, all) {
-    var changed = false;
     forEachProperty(fromTheme, function (prop, propname) {
         if (all || toTheme[propname]) {
             toTheme[propname] = prop;
-            bindStyle(toTheme, prop);
         }
     });
-    if (changed) {
-        // this will 'mark' all our dependencies
-        toTheme.emit('themeDirty');
-        // this will only fire one themeChange per theme
-        toTheme.emit('cleanTheme');
-    }
 }
 
 function Theme(themeData) {
-    var that = this;
-    // define some handlers
-    this.themeDirty = function () {
-        that.dirty = true;
-        that.emit('themeDirty');
-    };
-    this.cleanTheme = function () {
-        if (that.dirty) {
-            delete that.dirty;
-            that.emit('themeChanged');
-        }
-    };
     // import everything
     applyTheme(this, themeData, true);
 }
-
-Theme.prototype = new EventEmitter();
 
 function applySkin(o, theme) {
     function createSkin(o) {
@@ -127,6 +88,8 @@ function getStyleData(style) {
     function gS(s) {
         var bindings, i, l, binding, data;
         if (s) {
+            // make sure the style is bound
+            bindStyle(s);
             bindings = s.bindings;
             // do the dependencies first
             if (bindings) {

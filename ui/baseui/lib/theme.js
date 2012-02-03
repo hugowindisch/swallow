@@ -22,10 +22,38 @@ Theme.prototype.theme = new (require('visual').Theme)({
         data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineRounded', 'baseui_theme_controlFillPressed']
     },
     buttonText: {
-        data: [ 'baseui_theme_centered', 'baseui_theme_middle', 'baseui_theme_controlFont' ]
+        data: [ 'baseui_theme_centered', 'baseui_theme_middle', 'baseui_theme_controlFont', 'baseui_theme_textColor' ]
     },
     pressedButtonText: {
-        data: [ 'baseui_theme_centered', 'baseui_theme_middle', 'baseui_theme_controlFont' ]
-    }
+        data: [ 'baseui_theme_centered', 'baseui_theme_middle', 'baseui_theme_controlFont', 'baseui_theme_textColor' ]
+    },
+    // horizontal menu
+    menuTitleBackground: {
+        data: [ 'basui_theme_outlineTransparent' ]
+    },
+    highLightedMenuTitleBackground: {
+        data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineTopRounded', 'baseui_theme_controlFillNormal' ]
+    },
+    menuTitleText: {
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_menuItemSpacing' ]
+    },
+    highLightedMenuTitleText: {
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_menuItemSpacing' ]
+    },
+    // vertical menu
+    menuBox: {
+        data: [ 'baseui_theme_outlineSmallRounded', 'baseui_theme_menuBoxColor' ]
+    },
+    menuItem: {
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_menuItem' ]
+    },
+    menuItemSelected: {
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_highlightColor', 'baseui_theme_textHighlightColor', 'baseui_theme_menuItem' ]
+    },
+    menuItemDisabled: {
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_menuBox_color', 'baseui_theme_textDisabledColor', 'baseui_theme_menuItem' ]
+    }    
 });
 exports.Theme = Theme;
+
+

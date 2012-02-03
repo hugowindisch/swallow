@@ -42,6 +42,23 @@ function HorizontalMenu(config) {
     });
 }
 HorizontalMenu.prototype = new (domvisual.DOMElement)();
+HorizontalMenu.prototype.theme = new (visual.Theme)({
+    normal: {
+        basedOn: [
+            // take the line styles from here
+            { factory: 'baseui', type: 'Theme', style: 'menuTitleBackground' },
+            { factory: 'baseui', type: 'Theme', style: 'menuTitleText' }
+            
+        ]
+    },
+    highlighted: {
+        basedOn: [
+            // take the line styles from here
+            { factory: 'baseui', type: 'Theme', style: 'highLightedMenuTitleBackground' },
+            { factory: 'baseui', type: 'Theme', style: 'highLightedMenuTitleText' }
+        ]
+    }
+});
 /**
     Handles keys
 */
@@ -112,14 +129,14 @@ HorizontalMenu.prototype.highlightItem = function (itemName) {
     if (toHighlight !== this.highlighted) {
         // if some item is already highlighted
         if (this.highlighted) {
-            this.highlighted.clearClass('baseui_MenuItem_highlighted');
+            this.highlighted.setStyle('normal');
             if (this.children.subMenu) {
                 this.removeChild(this.children.subMenu);
             }
         }
         this.highlighted = toHighlight ? toHighlight : null;
         if (toHighlight) {
-            this.highlighted.setClass('baseui_MenuItem_highlighted');
+            this.highlighted.setStyle('highlighted');
             // do we have a submenu for this item?
             subItems = toHighlight.item.getSubMenu();
             if (subItems) {
@@ -163,7 +180,7 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
         c = this.addTextChild(
             'span', 
             item.getText(),
-            { "class": "baseui_MenuItem" },
+            { "style": "normal" },
             name
         );
     // keep a reference to the item
