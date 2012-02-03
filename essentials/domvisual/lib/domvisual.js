@@ -361,7 +361,8 @@ DOMVisual.prototype.setInnerHTML = function (html) {
 */    
 DOMVisual.prototype.setInnerText = function (text) {
     this.removeAllChildren();
-    this.element.innerText = text;
+    this.element.innerHTML = '';
+    this.element.appendChild(document.createTextNode(text));
     setDirty(this, 'matrix', 'dimensions', 'style');    
 };
 
@@ -396,12 +397,36 @@ function DOMVideo(config) {
 DOMVideo.prototype = new DOMVisual();
 
 
+/////////////////
+// An input tag
+function DOMInput(config) {
+    DOMVisual.call(this, config, null, document.createElement('input'));
+}
+DOMInput.prototype = new DOMVisual();
+DOMInput.prototype.setType = function (type) {
+    this.element.type = type;
+};
+DOMInput.prototype.getType = function () {
+    return this.element.type;
+};
+DOMInput.prototype.setText = function (text) {
+    this.element.value = text;
+};
+DOMInput.prototype.getText = function () {
+    return this.element.value;
+};
+DOMInput.prototype.getConfigurationSheet = function () {
+    return { "class": {}, "style": {}, "text": {}, "type": {} };
+};
+
+
 exports.getVisualNames = function () {
     return [ 'DOMElement', 'DOMImg', 'DOMVideo' ];
 };
 exports.DOMElement = DOMElement;
 exports.DOMImg = DOMImg;
 exports.DOMVideo = DOMVideo;
+exports.DOMInput = DOMInput;
 
 /*
     We will have to do more than that but we need something to

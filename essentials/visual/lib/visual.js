@@ -557,10 +557,10 @@ Visual.prototype.setStyle = function (style) {
 Visual.prototype.getStyleData = function () {
     var style = this.style, parentTheme, parent;
     if (isString(style)) {
-        // a container may create children to its children. This will
-        // let theses use the parent theme.
-        // this is a little bit hack&slash
-        for (parent = this.parent; parent && !parentTheme; parent = parent.parent) {
+        // + we allow ourself as a container to use our own styles
+        // and all our children an sub children that don't have their own
+        // theme
+        for (parent = this; parent && !parentTheme; parent = parent.parent) {
             parentTheme = parent.theme;
         }
         if (parentTheme) {

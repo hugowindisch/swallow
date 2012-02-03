@@ -44,6 +44,8 @@ exports.Theme = require('./theme').Theme;
 exports.Button = require('./button').Button;
 exports.MenuItem = menuitem.MenuItem;
 exports.Accelerator = menuitem.Accelerator;
+exports.Label = require('./label').Label;
+exports.Input = require('./input').Input;
 
 // note: this should be last
 // we want this to be able to run as a standalone application
@@ -94,6 +96,8 @@ exports.Accelerator = menuitem.Accelerator;
     var Button = exports.Button,
         root,
         but,
+        label,
+        input,
         MenuItem = exports.MenuItem,
         HorizontalMenu = exports.HorizontalMenu,
         Accelerator = exports.Accelerator,
@@ -141,6 +145,19 @@ exports.Accelerator = menuitem.Accelerator;
         tb.setDimensions([200, 32, 1]);
         root.addChild(tb, 'tb');
         
+        // label
+        label = new (exports.Label)({ text: 'a label'});
+        label.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 400, 0]));
+        label.setDimensions([200, 32, 1]);
+        root.addChild(label, 'label');
+        
+        // input
+        input = new (exports.Input)({ text: 'a label'});
+        input.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 450, 0]));
+        input.setDimensions([200, 32, 1]);
+        root.addChild(input, 'input');
+
+        // go!        
         domvisual.createFullScreenApplication(root);
     }
 }());

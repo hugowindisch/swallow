@@ -69,6 +69,14 @@ Theme.prototype.theme = new (require('visual').Theme)({
     pressedTool: {
         data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineRounded', 'baseui_theme_controlFillPressed', 'baseui_theme_toolSize']
     },
+    // label text
+    labelText: {
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor' ]
+    },
+    // input text
+    inputText: {
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor' ]
+    } 
 });
 exports.Theme = Theme;
 
