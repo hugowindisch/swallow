@@ -385,7 +385,7 @@ DOMImg.prototype.setUrl = function (url) {
     //setDirty(this, 'content');
 };
 DOMImg.prototype.getConfigurationSheet = function () {
-    return { "class": {}, "url": {} };
+    return { "class": {}, "style": {}, "url": {} };
 };
 
 /////////////////

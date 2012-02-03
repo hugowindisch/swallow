@@ -97,9 +97,11 @@ exports.Accelerator = menuitem.Accelerator;
         MenuItem = exports.MenuItem,
         HorizontalMenu = exports.HorizontalMenu,
         Accelerator = exports.Accelerator,
+        Toolbar = exports.Toolbar,
         subMenu3 = [
-            new MenuItem("SubSubItem1", null, null, null, null, false), 
-            new MenuItem("SubSubItem2", null, null, null, null, false)
+            new MenuItem("SubSubItem1", null, null, null, 'http://cdn1.iconfinder.com/data/icons/orb/16/10.png', false), 
+            new MenuItem("SubSubItem2", null, null, null, 'http://cdn1.iconfinder.com/data/icons/orb/16/10.png', true),
+            new MenuItem("SubSubItem2", null, null, null, 'http://cdn1.iconfinder.com/data/icons/orb/16/10.png', true, true)
         ],
         subMenu2 = [
             new MenuItem("SubSubItem1", function () { alert('ss1'); }), 
@@ -110,7 +112,8 @@ exports.Accelerator = menuitem.Accelerator;
             new MenuItem("SubItem.....2", null, null, null, null, false), 
             new MenuItem("SubItem3", null, subMenu2)
         ],
-        men;
+        men,
+        tb;
         
     if (require.main === module) {
         root = new (domvisual.DOMElement)({});        
@@ -132,6 +135,11 @@ exports.Accelerator = menuitem.Accelerator;
         men.setDimensions([500, 20, 1]);
         root.addChild(men, 'men');
         
+        // toolbar
+        tb = new Toolbar({ items: subMenu3});
+        tb.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 200, 0]));
+        tb.setDimensions([200, 32, 1]);
+        root.addChild(tb, 'tb');
         
         domvisual.createFullScreenApplication(root);
     }

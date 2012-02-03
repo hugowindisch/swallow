@@ -18,6 +18,32 @@ function Toolbar(config) {
     domvisual.DOMElement.call(this, config);
 }
 Toolbar.prototype = new (domvisual.DOMElement)();
+Toolbar.prototype.theme = new (visual.Theme)({
+    tool: {
+        basedOn: [
+            // take the line styles from here
+            { factory: 'baseui', type: 'Theme', style: 'tool' }
+        ]
+    },
+    highlightedTool: {
+        basedOn: [
+            // take the line styles from here
+            { factory: 'baseui', type: 'Theme', style: 'highlightedTool' }
+        ]
+    },
+    grayedTool: {
+        basedOn: [
+            // take the line styles from here
+            { factory: 'baseui', type: 'Theme', style: 'grayedTool' }
+        ]
+    },
+    pressedTool: {
+        basedOn: [
+            // take the line styles from here
+            { factory: 'baseui', type: 'Theme', style: 'pressedTool' }
+        ]
+    }
+});
 
 Toolbar.prototype.setItems = function (items) {
     if (isFunction(items)) {
@@ -50,29 +76,56 @@ Toolbar.prototype.createItemHtml = function (item, index, numIndex) {
         name = String(index),
         icon = item.getIcon(),
         c;
-    
     if (icon) {
-        c = this.addHtmlChild(
-            'span', 
-            '<img src = "' + icon + '" alt = "' + item.getText() + '" ></img>',
-            { "class": "baseui_Toolbar_item" },
-            name
-        );
+        c = new (domvisual.DOMImg)({style: 'tool', url: icon});
+        this.addChild(c, name);
+        c.setDimensions([32, 32, 1]);
+        c.setHtmlFlowing({});
         // keep a reference to the item
         c.item = item;
-        
-        // to this child we want to add a handler
-        c.on('click', function () {
-            item.action();
-            that.updateChildren();
-        });
-        c.on('mouseover', function () {
-            // if something is already highlighted
-            /*if (that.highlighted) {
-                that.highlightItem(name);
-            }*/
-        });
+        // is it enabled?
+        this.configureItem(c);
     }
+};
+Toolbar.prototype.configureItem = function (c) {
+    var item = c.item;
+    function getStyle() {
+        if (item.getEnabled()) {
+            return item.getCheckedState() ? 'highlightedTool' : 'tool';
+        }
+        return 'grayedTool';
+    }
+    function noDefault(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+    }
+    function mouseDown(evt) {
+        noDefault(evt);
+        c.setStyle('pressedTool');
+        c.once('mouseupc', function (evt) {
+            noDefault(evt);
+            // action
+            item.action();            
+            c.setStyle(getStyle());
+        });    
+    }
+    function unhookHandlers() {
+        c.removeListener('mousedown', mouseDown);
+    }
+    // grayed
+    if (!item.getEnabled()) {
+        if (c.unhookHandlers) {
+            c.unhookHandlers();
+        }
+        c.setStyle('grayedTool');
+    } else {
+        c.setStyle(getStyle());
+        c.on('mousedown', mouseDown);
+        c.unhookHandlers = unhookHandlers;
+    }
+};
+Toolbar.prototype.getItems = function () {
+    return this.items;
 };
 
 Toolbar.prototype.getConfigurationSheet = function () {
