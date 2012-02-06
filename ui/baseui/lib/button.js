@@ -32,7 +32,7 @@ var visual = require('visual'),
                 type: "DOMElement",
                 position: "background",
                 enableScaling: false,
-                depth: 0,
+                order: 0,
                 config: {
                     style: "background"
                 }                
@@ -42,7 +42,7 @@ var visual = require('visual'),
                 type: "DOMElement",
                 position: "text",
                 enableScaling: false,
-                depth: 1,
+                order: 1,
                 config: {
                     style: "text"
                 }                

@@ -8,6 +8,7 @@ var visual = require('visual'),
     utils = require('utils'),
     verticalmenu = require('./verticalmenu'),
     glmatrix = require('glmatrix'),
+    forEachProperty = utils.forEachProperty,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction;
@@ -16,6 +17,15 @@ var visual = require('visual'),
 function Toolbar(config) {
     var that = this;
     domvisual.DOMElement.call(this, config);
+    // this is called by items that notify us of a change
+    this.itemChanged = function () {
+        var theItem = this;
+        forEachProperty(that.children, function (c) {
+            if (c.item === theItem) {
+                that.configureItem(c);
+            }
+        });
+    };
 }
 Toolbar.prototype = new (domvisual.DOMElement)();
 Toolbar.prototype.theme = new (visual.Theme)({
@@ -45,25 +55,39 @@ Toolbar.prototype.theme = new (visual.Theme)({
     }
 });
 
+Toolbar.prototype.clearItems = function () {
+    var that = this;
+    forEachProperty(this.children, function (c) {
+        if (c.item) {
+            c.item.removeListener('change', that.itemChanged);
+        }
+    });
+    // we want to remove all our children
+    this.removeAllChildren();    
+};
+
 Toolbar.prototype.setItems = function (items) {
+    this.clearItems();
     if (isFunction(items)) {
         this.getItems = items;
     } else {
         this.items = items;
-    }
+    }    
     this.updateChildren();
 };
+
+/**
+    Notifies a change of event.
+*/
 
 /**
     It is way easier to create something like this in HTML (because the
     automatic layouting fits this thing so well).
 */
-Toolbar.prototype.updateChildren = function () {
-    // we want to remove all our children
-    this.removeAllChildren();
-    
+Toolbar.prototype.updateChildren = function () {    
     // we now want to iterate our items and create children for them
     var items = this.getItems(),
+        item,
         i,
         l = items.length;
     for (i = 0; i < l; i += 1) {
@@ -83,6 +107,7 @@ Toolbar.prototype.createItemHtml = function (item, index, numIndex) {
         c.setHtmlFlowing({});
         // keep a reference to the item
         c.item = item;
+        item.addListener('change', that.itemChanged);
         // is it enabled?
         this.configureItem(c);
     }
@@ -112,11 +137,12 @@ Toolbar.prototype.configureItem = function (c) {
     function unhookHandlers() {
         c.removeListener('mousedown', mouseDown);
     }
+    // unhook previous handlers
+    if (c.unhookHandlers) {
+        c.unhookHandlers();
+    }
     // grayed
     if (!item.getEnabled()) {
-        if (c.unhookHandlers) {
-            c.unhookHandlers();
-        }
         c.setStyle('grayedTool');
     } else {
         c.setStyle(getStyle());

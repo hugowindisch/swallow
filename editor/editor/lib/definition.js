@@ -5,80 +5,45 @@ exports.definition = {
         Editor: {
             // authoring dimension
             dimensions: [ 640, 400, 0],
-            /*positions: {
-                toolbox: {
-                    type: "AbsolutePosition",
-                    matrix: [ 200, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
-                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'bottom' }
-                },
-                viewer: {
-                    type: "AbsolutePosition",
-                    matrix: [ 440, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   200, 0, 0, 0 ],
-                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
-                }                
-            },*/
             positions: {
-                toolbox: {
-                    type: "TransformPosition",
-                    matrix: [ 200, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                    scalemode: 'distort'
+                menu: {
+                    type: "AbsolutePosition",
+                    matrix: [ 640, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
                 },
-                viewer: {
-                    type: "TransformPosition",
-                    matrix: [ 440, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   200, 0, 0, 1 ],
-                    scalemode: 'distort'
-                }                
-            },
-            children: {
-                toolbox: {
-                    factory: "editor",   // BAD: WORKAROUND
-                    type: "Toolbox",
-                    position: "toolbox",        // maybe: NO position should be layout by the natural flowing
-                    enableScaling: false,
-                    depth: 0,
-                    config: {
-                        "class": [ "editorEditortoolbox" ]
-                    }                
-                },
-                viewer: {
-                    factory: "editor",
-                    type: "GroupViewer",
-                    position: "viewer",
-                    enableScaling: false,
-                    depth: 1,
-                    config: {
-                        "class": [ "editor_Editor_viewer" ]
-                    }                
-                }
-            }
-        },
-        // the left toolbox
-// THIS, USING FLOW POSITIONS AND AUTO SIZE IS SOMEHOW THE MOST COMPLICATED THING FOR
-// THE EDITOR... MAYBE WE SHOULD ONLY USE CSS FOR THIS KIND OF STUFF
-        Toolbox: {
-            // this could be empty, if all our content is flowed
-            dimensions: [ 200, 480, 1],
-            positions: {
                 tools: {
                     type: "AbsolutePosition",
-                    matrix: [ 200, 0, 0, 0,   0, 100, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
+                    matrix: [ 390, 0, 0, 0,   0, 64, 0, 0,    0, 0, 1, 0,   5, 25, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 tooldata: {
                     type: "AbsolutePosition",
-                    matrix: [ 200, 0, 0, 0,   0, 380, 0, 0,    0, 0, 1, 0,   0, 100, 0, 1 ],
+                    matrix: [ 390, 0, 0, 0,   0, 306, 0, 0,    0, 0, 1, 0,   5, 84, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'bottom' }
+                },        
+                viewer: {
+                    type: "AbsolutePosition",
+                    matrix: [ 240, 0, 0, 0,   0, 380, 0, 0,    0, 0, 1, 0,   400, 20, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
                 }                
             },
             children: {
+                menu: {
+                    factory: 'baseui',
+                    type: 'HorizontalMenu',
+                    position: 'menu',
+                    enableScaling: false,
+                    order: 3,
+                    config: {
+                    }
+                },
                 tools: {
-                    factory: "domvisual",
-                    type: "DOMElement",
+                    factory: "baseui",
+                    type: "Toolbar",
                     position: "tools",
                     enableScaling: false,
-                    depth: 0,
+                    order: 0,
                     config: {
-                        "class": [ "editor_Toolbox_tools" ]
                     }                
                 },
                 tooldata: {
@@ -86,32 +51,18 @@ exports.definition = {
                     type: "DOMElement",
                     position: "tooldata",
                     enableScaling: false,
-                    depth: 1,
+                    order: 1,
                     config: {
-                        "class": [ "editor_Toolbox_tooldata" ]
+                        "style": "tooldata"
                     }                
-                }
-            }
-        },
-        Tool: {
-            // this could be empty, if all our content is flowed
-            dimensions: [ 20, 20, 0],
-            positions: {
-                image: {
-                    type: "AbsolutePosition",
-                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
-                }
-            },
-            children: {
-                image: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    position: "image",
+                },
+                viewer: {
+                    factory: "editor",
+                    type: "GroupViewer",
+                    position: "viewer",
                     enableScaling: false,
-                    depth: 0,
+                    order: 2,
                     config: {
-                        "class": [ "editor_Tool_image" ]
                     }                
                 }
             }
@@ -132,9 +83,9 @@ exports.definition = {
                     type: "DOMElement",
                     position: null,
                     enableScaling: false,
-                    depth: 0,
+                    order: 0,
                     config: {
-                        "class": [ "editor_GroupViewer_visuals" ]
+                        "style": "page"
                     }                
                 },
                 positions: {
@@ -142,9 +93,8 @@ exports.definition = {
                     type: "DOMElement",
                     position: null,
                     enableScaling: false,
-                    depth: 1,
+                    order: 1,
                     config: {
-                        "class": [ "transparent" ]
                     }                
                 },
                 decorations: {
@@ -152,9 +102,8 @@ exports.definition = {
                     type: "DOMElement",
                     position: "editArea",
                     enableScaling: false,
-                    depth: 0,
+                    order: 2,
                     config: {
-                        "class": [ "transparent" ]
                     }                
                 }
             }
@@ -195,7 +144,7 @@ exports.definition = {
                     type: "DOMElement",
                     position: "selectionArea",
                     enableScaling: false,
-                    depth: 0,
+                    order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_selectionArea" ]
                     }                
@@ -205,7 +154,7 @@ exports.definition = {
                     type: "DOMElement",
                     position: "topLeft",
                     enableScaling: false,
-                    depth: 0,
+                    order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
                     }                
@@ -215,7 +164,7 @@ exports.definition = {
                     type: "DOMElement",
                     position: "topRight",
                     enableScaling: false,
-                    depth: 0,
+                    order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
                     }                
@@ -225,7 +174,7 @@ exports.definition = {
                     type: "DOMElement",
                     position: "bottomLeft",
                     enableScaling: false,
-                    depth: 0,
+                    order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
                     }                
@@ -235,7 +184,7 @@ exports.definition = {
                     type: "DOMElement",
                     position: "bottomRight",
                     enableScaling: false,
-                    depth: 0,
+                    order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
                     }                

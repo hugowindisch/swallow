@@ -7,7 +7,9 @@
 
 var visual = require('visual'),    
     domvisual = require('domvisual'),
+    baseui = require('baseui'),
     groups = require('./definition').definition.groups,
+    MenuItem = baseui.MenuItem,
     defaultPlugins = [
         require('./plugin/select').setup
     ];
@@ -16,7 +18,11 @@ var visual = require('visual'),
 function Editor(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Editor);
+    // create the menu bar and toolbar
+    this.setStyle('background');
     this.addPlugins(defaultPlugins);
+    this.setChildrenClipping('hidden');
+    
     
 // setup some fake stuff
 ////////////////////////
@@ -45,7 +51,7 @@ function Editor(config) {
                 type: "DOMElement",
                 position: "pos1",
                 enableScaling: false,
-                depth: 0,
+                order: 0,
                 config: {
                     "class": [ "thing" ]
                 }                
@@ -59,6 +65,18 @@ function Editor(config) {
 }
 Editor.prototype = new (domvisual.DOMElement)();
 
+Editor.prototype.theme = new (visual.Theme)({
+    background: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'windowBackground' }
+        ]
+    },
+    tooldata: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'windowForeground' } 
+        ]
+    }
+});
 
 // Editor interface
 ////////////////////
@@ -66,11 +84,57 @@ Editor.prototype = new (domvisual.DOMElement)();
     Adds some plugins
 */
 Editor.prototype.addPlugins = function (plugins) {
+    this.toolbar = [
+    ];
+    this.menubar = [
+        new MenuItem("File"), 
+        new MenuItem("Edit", null, [
+            new MenuItem("Undo"),
+            new MenuItem("Redo"),
+            new MenuItem("Cut"),
+            new MenuItem("Copy"),
+            new MenuItem("Paste"),
+            new MenuItem("Select All"),
+        ]),
+        new MenuItem("Tool", null, this.toolbar),
+        new MenuItem("Object", null, [
+            new MenuItem("Move Up"),
+            new MenuItem("Move Down"),
+            new MenuItem("To Top"),
+            new MenuItem("To Bottom"),
+            new MenuItem("Align Left"),
+            new MenuItem("Align Center"),
+            new MenuItem("Align Right"),
+            new MenuItem("Align Top"),
+            new MenuItem("Align Middle"),
+            new MenuItem("Align Bottom")
+        ]),
+        new MenuItem("Run", null, [
+            new MenuItem("Run"),
+            new MenuItem("Run Minimized"),
+            new MenuItem("Lint"),
+            new MenuItem("Test"),
+            new MenuItem("Generate Documentation"),
+        ]),
+        new MenuItem("Help", null, [
+            new MenuItem("Editor Help"),
+            new MenuItem("Editor Documentation"),
+            new MenuItem("Content Help"),
+            new MenuItem("Content Documentation"),
+            new MenuItem("All packages"),
+            new MenuItem("About")
+        ]),
+    ];
+
     var i, 
         l = plugins.length;
     for (i = 0; i < l; i += 1) {
         plugins[i](this);
     }
+    
+    // initialize the menu
+    this.children.menu.setItems(this.menubar);
+    this.children.tools.setItems(this.toolbar);
 };
 
 
@@ -89,8 +153,6 @@ Editor.prototype.getToolbox = function () {
 };
 
 exports.Editor = Editor;
-exports.Toolbox = require('./toolbox').Toolbox;
-exports.Tool = require('./tool').Tool;
 exports.GroupViewer = require('./groupviewer').GroupViewer;
 exports.SelectionBox = require('./selectionbox').SelectionBox;
 

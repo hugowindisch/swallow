@@ -6,7 +6,7 @@
         "domvisual": "0.0.1",
         "glmatrix": "0.0.1",
         "events": "0.0.1",
-        "utils": "0.0.1"
-        
+        "utils": "0.0.1",
+        "baseui": "0.0.1"
     }
 }

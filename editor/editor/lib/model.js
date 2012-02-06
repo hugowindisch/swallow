@@ -34,7 +34,7 @@ var glmatrix = require('glmatrix'),
                     type: "Toolbox",
                     position: "toolbox",
                     enableScaling: false,
-                    depth: 0,
+                    layer: 0,
                     config: {
                         "domvisual.DOMVisual": {
                             "cssClass": [ "toolbox" ]
@@ -46,7 +46,7 @@ var glmatrix = require('glmatrix'),
                     type: "DOMElement",
                     position: "viewer",
                     enableScaling: false,
-                    depth: 1,
+                    layer: 1,
                     config: {
                         "domvisual.DOMVisual": {
                             "cssClass": [ "viewer" ]

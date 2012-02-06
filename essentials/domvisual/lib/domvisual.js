@@ -229,7 +229,7 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
         }
     }
 };
-DOMVisual.prototype.updateChildrenDepthRepresentation = function () {
+DOMVisual.prototype.updateChildrenOrderRepresentation = function () {
 // NOT TESTED
 /*
     if (this.element) {
@@ -241,7 +241,7 @@ DOMVisual.prototype.updateChildrenDepthRepresentation = function () {
         if (children) {
             // get an ordered children array
             forEachProperty(children, function (c) {
-                sortedNodes[c.depth] = element.removeChild(c.element);
+                sortedNodes[c.order] = element.removeChild(c.element);
             });
             // add all children to their containing element in the right order
             n = sortedNodes.length;
@@ -261,8 +261,8 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
         //console.log('updateStyleRepresentation ' + this.name + ' ' + this.style + ' ' + cssClass);        
         style = element.style;
         forEachProperty(this.cssClasses, function (c, name) {
+            cssClass += ' ';        
             cssClass += name;
-            cssClass += ' ';
         });
         element.setAttribute('class', cssClass);
     }

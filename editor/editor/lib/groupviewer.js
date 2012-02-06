@@ -76,6 +76,7 @@ function GroupViewer(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.GroupViewer);
     // maybe this will be part of the config
+    this.setStyle('background');
     this.setChildrenClipping('scroll');
     // border around the group in pixels (when not scaled)
     this.groupBorderPix = 1000;    
@@ -104,6 +105,20 @@ function GroupViewer(config) {
     });
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
+
+GroupViewer.prototype.theme = new (visual.Theme)({
+    background: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'windowDarkerForeground' },
+            { factory: 'baseui', type: 'Theme', style: 'sectionBorder' }            
+        ]
+    },
+    page: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'windowForeground' }
+        ]
+    }
+});
 
 /**
     Enables or disables box selection.

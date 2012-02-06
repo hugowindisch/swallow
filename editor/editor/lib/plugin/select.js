@@ -1,15 +1,33 @@
+var baseui = require('baseui'),
+    MenuItem = baseui.MenuItem;
+    
 exports.setup = function (editor) {
-    var toolbox = editor.getToolbox(),
-        viewer = editor.getViewer();
-// MODAL TOOLS HAVE 2 FUNCTIONS
-// Ultimately: everything that is in the menus should be a tool
-// all tools should be in the menus
-// some tools should be in the toolbox
-    // select
-    toolbox.addTool(
-        'editor/lib/plugin/select.png',
-        'select',
-        function (fcnPopTool) {
+    var viewer = editor.getViewer(),
+        selectedTool,
+        selectTool,
+        drawTool,
+        zoomInTool,
+        zoomOutTool;
+
+    // this implements the modality of tools
+    function setModal(t) {
+        var st = selectedTool;
+        selectedTool = t;
+        // the checked state changed
+        if (st) {
+            st.emit('change');
+        }
+        if (t) {
+            t.emit('change');
+        }
+    }
+
+    
+    // select tool (arrow)
+    selectTool = new MenuItem(
+        'Select',
+        function () {
+            setModal(this);
             viewer.enableBoxSelection(
                 null,
                 null,
@@ -21,14 +39,19 @@ exports.setup = function (editor) {
                 }
             );
         },
+        null,        // null, array of items, function
+        null,
+        'editor/lib/plugin/select.png',    
+        true,        // null, array of items, function (note: defaults to true if undefined)
         function () {
+            return selectedTool === this;
         }
     );
-    // paint
-    toolbox.addTool(
-        'editor/lib/plugin/select.png',
-        'paint',
-        function (fcnPopTool) {
+    // draw tool (box)
+    drawTool = new MenuItem(
+        'Draw',
+        function () {
+            setModal(this);
             viewer.enableBoxSelection(
                 null,
                 null,
@@ -45,33 +68,47 @@ exports.setup = function (editor) {
                 }
             );
         },
+        null,        // null, array of items, function
+        null,
+        'editor/lib/plugin/draw.png',    
+        true,        // null, array of items, function (note: defaults to true if undefined)
         function () {
+            return selectedTool === this;
         }
     );
-    // zoom rect
-    toolbox.addTool(
-        'editor/lib/plugin/select.png',
-        'zoom',
-        function (fcnPopTool) {
+    // zoom in tool (magnifier)
+    zoomInTool = new MenuItem(
+        'Zoom In',
+        function () {
+            var prevSel = selectedTool;
+            setModal(this);
             viewer.enableBoxSelection(
                 null,
                 null,
                 function (mat, nmat) {
                     viewer.pushZoom(nmat);
-                    fcnPopTool();
+                    setModal(prevSel);
                 }
             );
         },
+        null,        // null, array of items, function
+        null,
+        'editor/lib/plugin/zoomin.png',    
+        true,        // null, array of items, function (note: defaults to true if undefined)
         function () {
-        }
+            return selectedTool === this;
+        }   // null, true, false, function
     );
-    // zoom out
-    toolbox.addTool(
-        'editor/lib/plugin/select.png',
-        'zoom',
-        function (fcnPopTool) {
-            viewer.popZoom();
-        }
+    // zoom out tool (magnifier -)
+    zoomOutTool = new MenuItem(
+        'Zoom Out',
+        function () {
+            viewer.popZoom();            
+        },
+        null,        // null, array of items, function
+        null,
+        'editor/lib/plugin/zoomout.png',    
+        true
     );
-    
+    editor.toolbar.push(selectTool, drawTool, zoomInTool, zoomOutTool);
 };

@@ -15,6 +15,11 @@
 function Theme() {
 }
 Theme.prototype.theme = new (require('visual').Theme)({
+    // borders
+    sectionBorder: {
+        data: [ 'baseui_theme_outlineColor' ]
+    },
+    // button
     buttonBackground: {
         data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineRounded', 'baseui_theme_controlFillNormal']
     },
@@ -83,6 +88,17 @@ Theme.prototype.theme = new (require('visual').Theme)({
     },
     contractedFolder: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgContractedFolder' ]
+    },
+    // window background (the darker part of a window, for controls etc)
+    windowBackground: {
+        data: [ 'baseui_theme_windowBackground' ]
+    },
+    // window foreground (the working area of a window)
+    windowForeground: {
+        data: [ 'baseui_theme_windowForeground', 'baseui_theme_outlineColor' ]
+    },
+    windowDarkerForeground: {
+        data: [ 'baseui_theme_windowDarkerForeground', 'baseui_theme_outlineColor' ]
     }
 });
 exports.Theme = Theme;

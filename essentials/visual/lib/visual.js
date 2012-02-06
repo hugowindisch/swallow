@@ -308,7 +308,7 @@ Visual.prototype.addChild = function (child, name) {
     }
     this.children[name] = child;
     child.name = name;
-    child.depth = this.numChildren;
+    child.order = this.numChildren;
     child.parent = this;
     this.numChildren += 1;
     setContainmentDepth(child, this.containmentDepth + 1);
@@ -337,36 +337,31 @@ Visual.prototype.removeAllChildren = function () {
         that.removeChild(c);
     });
 };
-Visual.prototype.getChildAtDepth = function (d) {
+Visual.prototype.getChildAtOrder = function (d) {
     forEachProperty(this.children, function (c) {
-        if (c.depth === d) {
+        if (c.order === d) {
             return c;
         }
     });
 };
-Visual.prototype.swapDepths = function (d1, d2) {
-    var o1 = utils.isNumber(d1) ? this.getChildAtDepth(d1) : this.children[d1],
-        o2 = utils.isNumber(d2) ? this.getChildAtDepth(d2) : this.children[d2],
-        d = o1.depth;
-    o1.depth = o2.depth;
-    o2.depth = d;
-    setDirty(this, 'childrendepth');
+Visual.prototype.swapOrder = function (d1, d2) {
+    var o1 = utils.isNumber(d1) ? this.getChildAtOrder(d1) : this.children[d1],
+        o2 = utils.isNumber(d2) ? this.getChildAtOrder(d2) : this.children[d2],
+        d = o1.order;
+    o1.order = o2.order;
+    o2.order = d;
+    setDirty(this, 'childrenOrder');
 };
-Visual.prototype.increaseDepth = function (d) {
+Visual.prototype.increaseOrder = function (d) {
 };
-Visual.prototype.decreaseDepth = function (d) {
+Visual.prototype.decreaseOrder = function (d) {
 };
-Visual.prototype.toMaxDepth = function (d) {
+Visual.prototype.toMaxOrder = function (d) {
 };
-Visual.prototype.toMinDepth = function (d) {
+Visual.prototype.toMinOrder = function (d) {
 };
 /**
     Called to update the visual part.
-    
-    why is an object with zero or more of the following properties:
-        constructed, positionChanged, parentChanged, childrenDepthShuffled,
-        dimensionsChanged
-        
     NOTE: this should not be overriden in components. This should only be
     implemented in subclasses that port the Visual to a new rendering
     system (ex: DOM, Canvas, WebGL)
@@ -376,9 +371,9 @@ Visual.prototype.update = function (why) {
     // NOTE: it is NOT ok to dirty in here
     // Here we REMAKE our representation according to what has changed
     // why is "WHAT HAS CHANGED" NOT "WHAT NEEDS TO BE REFRESHED"
-    if (why.childrendepth) {
+    if (why.childrenOrder) {
         // regenerate the order of our children
-        this.updateChildrenDepthRepresentation();
+        this.updateChildrenOrderRepresentation();
     }
     if (why.matrix) {
         this.updateMatrixRepresentation();
@@ -403,7 +398,7 @@ Visual.prototype.updateMatrixRepresentation = function () {
 Visual.prototype.updateDimensionsRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
-Visual.prototype.updateChildrenDepthRepresentation = function () {
+Visual.prototype.updateChildrenOrderRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 Visual.prototype.updateStyleRepresentation = function () {
@@ -417,13 +412,29 @@ Visual.prototype.updateDone = function () {
     Creates multiple children from a description like:
 */
 Visual.prototype.createChildren = function (groupData) {
-    var that = this,
-        isFunction = utils.isFunction,
-        isString = utils.isString;
-    forEachProperty(groupData.children, function (it, name) {
-        var fact = require(it.factory),
-            Constr,
-            child;
+    var isFunction = utils.isFunction,
+        isString = utils.isString,
+        sortedChildrenNames = [],
+        children = groupData.children,
+        i, 
+        l,
+        name,
+        it,
+        fact,
+        Constr,
+        child;
+        
+    forEachProperty(children, function (it, name) {
+        sortedChildrenNames.push(name);
+    });    
+    sortedChildrenNames.sort(function (i1, i2) {
+        return children[i1].order - children[i2].order;
+    });
+    l = sortedChildrenNames.length;
+    for (i = 0; i < l; i += 1) {
+        name = sortedChildrenNames[i];
+        it = children[name];
+        fact = require(it.factory);
 
         if (!fact) {
             throw new Error('unknown factory ' + it.factory);
@@ -443,8 +454,8 @@ Visual.prototype.createChildren = function (groupData) {
             child.enableScaling(true);
         }
         // add the child to the children list
-        that.addChild(child, name);
-    });
+        this.addChild(child, name);
+    }
 };
 
 /**

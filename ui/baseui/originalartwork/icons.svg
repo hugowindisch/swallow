@@ -62,7 +62,10 @@
      inkscape:groupmode="layer"
      id="layer1">
     <g
-       id="g3883">
+       id="g3883"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/ui/baseui/lib/folder.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <rect
          ry="0"
          y="36.362183"
@@ -78,7 +81,10 @@
          style="fill:#000000;stroke:none" />
     </g>
     <g
-       id="g3879">
+       id="g3879"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/ui/baseui/lib/folderexpanded.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <rect
          ry="0"
          y="20.362183"
@@ -95,7 +101,10 @@
     </g>
     <g
        id="g3848"
-       transform="translate(-8.4,-20.8)">
+       transform="translate(-8.4,-20.8)"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/ui/baseui/lib/menucheck.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <path
          sodipodi:nodetypes="cccccc"
          inkscape:connector-curvature="0"
@@ -112,7 +121,10 @@
          style="fill:none;stroke:none" />
     </g>
     <g
-       id="g3875">
+       id="g3875"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/ui/baseui/lib/menuradio.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <rect
          ry="0"
          y="76.362183"

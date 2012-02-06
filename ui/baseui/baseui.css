@@ -64,6 +64,7 @@
 }
 .baseui_theme_menuBar {
     background-color: #f0f0f0;
+    border-bottom: 1px solid #cecece;
 }
 
 .baseui_theme_menuBoxColor > td {
@@ -91,6 +92,7 @@
 .baseui_theme_menuItem > td {
     padding-left: 2px;
     padding-right: 2px;
+    white-space: pre;
 }
 .baseui_theme_toolSize {
     padding: 4px;
@@ -111,3 +113,14 @@
     background-repeat: no-repeat;
     padding-left: 20px;
 }
+.baseui_theme_windowBackground {
+    background-color: #e0e0e0;
+}
+.baseui_theme_windowForeground {
+    background-color: #ffffff;
+}
+.baseui_theme_windowDarkerForeground {
+    background-color: #f5f5f5;
+}
+
+
