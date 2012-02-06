@@ -84,8 +84,27 @@ Editor.prototype.theme = new (visual.Theme)({
     Adds some plugins
 */
 Editor.prototype.addPlugins = function (plugins) {
-    this.toolbar = [
+    var menus = {
+            file: [],
+            edit: [],
+            tool: [],
+            object: [],
+            run: [],
+            help: []
+        },
+        i, 
+        l = plugins.length;
+        
+    this.menus = menus;
+    this.menubar = [
+        new MenuItem("File", null, menus.file), 
+        new MenuItem("Edit", null, menus.edit),
+        new MenuItem("Tool", null, menus.tool),
+        new MenuItem("Object", null, menus.object),
+        new MenuItem("Run", null, menus.run),
+        new MenuItem("Help", null, menus.help)
     ];
+/*
     this.menubar = [
         new MenuItem("File"), 
         new MenuItem("Edit", null, [
@@ -125,16 +144,16 @@ Editor.prototype.addPlugins = function (plugins) {
             new MenuItem("About")
         ]),
     ];
-
-    var i, 
-        l = plugins.length;
+*/
     for (i = 0; i < l; i += 1) {
         plugins[i](this);
     }
     
     // initialize the menu
     this.children.menu.setItems(this.menubar);
-    this.children.tools.setItems(this.toolbar);
+    // initialize the toolbar (this could be more clever... i.e. keep
+    // everything that has an icon).
+    this.children.tools.setItems(this.menus.tool);
 };
 
 

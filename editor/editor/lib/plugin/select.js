@@ -7,7 +7,19 @@ exports.setup = function (editor) {
         selectTool,
         drawTool,
         zoomInTool,
-        zoomOutTool;
+        zoomOutTool,
+        undoTool,
+        redoTool,
+        menus = editor.menus;
+
+    function getCommandChain() {
+        var group = viewer.getGroup(),
+            chain;
+        if (group) {
+            chain = group.commandChain;
+        }
+        return chain;
+    }
 
     // this implements the modality of tools
     function setModal(t) {
@@ -39,10 +51,10 @@ exports.setup = function (editor) {
                 }
             );
         },
-        null,        // null, array of items, function
+        null,
         null,
         'editor/lib/plugin/select.png',    
-        true,        // null, array of items, function (note: defaults to true if undefined)
+        true,
         function () {
             return selectedTool === this;
         }
@@ -68,10 +80,10 @@ exports.setup = function (editor) {
                 }
             );
         },
-        null,        // null, array of items, function
+        null,
         null,
         'editor/lib/plugin/draw.png',    
-        true,        // null, array of items, function (note: defaults to true if undefined)
+        true,
         function () {
             return selectedTool === this;
         }
@@ -91,13 +103,13 @@ exports.setup = function (editor) {
                 }
             );
         },
-        null,        // null, array of items, function
+        null,
         null,
         'editor/lib/plugin/zoomin.png',    
-        true,        // null, array of items, function (note: defaults to true if undefined)
+        true,
         function () {
             return selectedTool === this;
-        }   // null, true, false, function
+        }
     );
     // zoom out tool (magnifier -)
     zoomOutTool = new MenuItem(
@@ -105,10 +117,50 @@ exports.setup = function (editor) {
         function () {
             viewer.popZoom();            
         },
-        null,        // null, array of items, function
+        null,
         null,
         'editor/lib/plugin/zoomout.png',    
         true
     );
-    editor.toolbar.push(selectTool, drawTool, zoomInTool, zoomOutTool);
+    // undo
+    undoTool = new MenuItem(
+        function () {
+            var chain = getCommandChain(),
+                msg = chain ? chain.getUndoMessage() : '';
+            return 'Undo ' + (msg || '');
+        },
+        function () {
+            getCommandChain().undo();
+        },
+        null,
+        null,
+        null,
+        function () {
+            var chain = getCommandChain(),
+                msg = chain ? chain.getUndoMessage() : '';
+            return msg !== null;
+        }
+    );
+    // redo
+    redoTool = new MenuItem(
+        function () {
+            var chain = getCommandChain(),
+                msg = chain ? chain.getRedoMessage() : '';
+            return 'Redo ' + (msg || '');
+        },
+        function () {
+            getCommandChain().redo();
+        },
+        null,
+        null,
+        null,
+        function () {
+            var chain = getCommandChain(),
+                msg = chain ? chain.getRedoMessage() : '';
+            return msg !== null;
+        }
+    );      
+    // redo
+    menus.tool.push(selectTool, drawTool, zoomInTool, zoomOutTool);
+    menus.edit.push(undoTool, redoTool);
 };

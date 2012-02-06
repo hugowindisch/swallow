@@ -8,7 +8,7 @@ function Command(doCmd, undoCmd, name, message, hint) {
     this.doCmd = doCmd;
     this.undoCmd = undoCmd;
     this.name = name;
-    this.message = message;
+    this.message = message || '';
     this.hint = hint;
 }
 function CommandGroup(name, message, hint) {
@@ -75,7 +75,7 @@ CommandChain.prototype.getUndoMessage = function () {
     var commands = this.commands,
         l = commands.length;
     if (l > 0) {
-        return commands[l - 1];
+        return commands[l - 1].message;
     }
     return null;
 };
@@ -83,7 +83,7 @@ CommandChain.prototype.getRedoMessage = function () {
     var commands = this.undoneCommands,
         l = commands.length;
     if (l > 0) {
-        return commands[l - 1];
+        return commands[l - 1].message;
     }
     return null;
 };

@@ -455,6 +455,7 @@ GroupViewer.prototype.updateAll = function () {
     this.updateSelectionControlBox();
 
     this.setScroll(zoomTranslate);
+    
 };
 
 
