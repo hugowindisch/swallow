@@ -6,10 +6,11 @@
 
 var baseui = require('baseui'),
     utils = require('utils'),
-    glmatrix = require('glmatrix'),
+    glmatrix = require('glmatrix'),    
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     forEachProperty = utils.forEachProperty,
+    deepCopy = utils.deepCopy,
     MenuItem = baseui.MenuItem;
 
 function getCommandChain(viewer) {
@@ -38,7 +39,6 @@ function setupToolMenu(editor) {
         zoomInTool,
         zoomOutTool,
         menus = editor.menus;
-
 
     // this implements the modality of tools
     function setModal(t) {
@@ -149,7 +149,17 @@ function setupEditMenu(editor) {
     var viewer = editor.getViewer(),
         undoTool,
         redoTool,
+        cutTool,
+        copyTool,
+        pasteTool,
+        deleteTool,
+        clipboard = null,
         menus = editor.menus;
+
+    function selectionNotEmpty() {
+        return !viewer.selectionIsEmpty();
+    }
+        
     // undo
     undoTool = new MenuItem(
         function () {
@@ -188,7 +198,108 @@ function setupEditMenu(editor) {
             return msg !== null;
         }
     );
-    menus.edit.push(undoTool, redoTool);
+    function copy() {
+        clipboard = viewer.getSelectionCopy();
+    }
+    function deleteSelected(cmdName, message) {
+        var group = viewer.getGroup(),
+            documentData = group.documentData,
+            children = documentData.children,
+            c,
+            positions = documentData.positions,
+            selection = viewer.getSelection(),
+            cmdGroup = group.cmdCommandGroup(cmdName, message);
+            
+        forEachProperty(selection, function (p, n) {
+            cmdGroup.add(group.cmdRemovePosition(n));
+            c = children[n];
+            if (c) {
+                cmdGroup.add(group.cmdRemoveVisual(n));
+            }
+        });
+        group.doCommand(cmdGroup);
+    }
+    
+    cutTool = new MenuItem(
+        'Cut',
+        function () {
+            copy();
+            deleteSelected();
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
+        
+    copyTool = new MenuItem(
+        'Copy',
+        function () {
+            copy();
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
+    pasteTool = new MenuItem(
+        'Paste',
+        function () {
+            var group = viewer.getGroup(),
+                documentData = group.documentData,
+                children = documentData.children,
+                c,
+                positions = documentData.positions,
+                selection = viewer.getSelection(),
+                cmdGroup = group.cmdCommandGroup('cmdPaste', 'Paste'),
+                posmap = {},
+                usedmap = {};
+               
+            function check(n) {
+                return usedmap[n];
+            }
+            forEachProperty(clipboard.positions, function (p, n) {
+                var uniqueName = group.getUniquePositionName(n, check);
+                posmap[n] = uniqueName;
+                usedmap[uniqueName] = true;
+                cmdGroup.add(group.cmdAddPosition(uniqueName, deepCopy(p)));
+            });
+            usedmap = {};
+            forEachProperty(clipboard.children, function (c, n) {
+                var uniqueName = group.getUniqueVisualName(n, check),
+                    newc = deepCopy(c);
+                newc.position = posmap[newc.position];
+                usedmap[uniqueName] = true;
+                cmdGroup.add(group.cmdAddVisual(uniqueName, newc));
+            });
+            group.doCommand(cmdGroup);
+        },
+        null,
+        null,
+        null,
+        function () {
+            return clipboard !== null;
+        }
+    );
+    deleteTool = new MenuItem(
+        'Delete',
+        function () {
+            deleteSelected();
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
+    
+    menus.edit.push(
+        undoTool, 
+        redoTool,
+        cutTool,
+        copyTool,
+        pasteTool,
+        deleteTool
+    );
 }
 
 function setupObjectMenu(editor) {

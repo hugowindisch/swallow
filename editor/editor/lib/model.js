@@ -68,20 +68,44 @@ function Group(documentData) {
 Group.prototype.getCommandChain = function () {
     return this.commandChain;
 };
-// these are the commands (stuff that actually modifies the Group model)
-Group.prototype.getUniquePositionName = function () {
-    var i = 0,
-        positions = this.documentData.positions,
-        name;
-    while (true) {
-        name = 'pos' + i;
-        if (!positions[name]) {
-            return name;
-        }
-        i += 1;        
+// makes a name unique
+function makeUniqueName(radical, test) {
+    var re = /[0-9]$/,
+        term = re.exec(radical)[0],
+        rad = radical.slice(0, -term.length),
+        r = rad,
+        n = 0;
+        
+    while (test(r)) {
+        r = rad + String(n);
+        n += 1;
     }
-    // this point cannot be reached
+    return r;
+}
+
+// these are the commands (stuff that actually modifies the Group model)
+Group.prototype.getUniquePositionName = function (radical, optionalCheck) {
+    var positions = this.documentData.positions;
+    radical = radical || 'pos';
+    return makeUniqueName(
+        radical,
+        function (r) {
+            return positions[r] !== undefined  || (optionalCheck && optionalCheck(r));
+        }
+    );
 };
+
+Group.prototype.getUniqueVisualName = function (radical, optionalCheck) {
+    var children = this.documentData.children;
+    radical = radical || 'vis';
+    return makeUniqueName(
+        radical,
+        function (r) {
+            return children[r] !== undefined || (optionalCheck && optionalCheck(r));
+        }
+    );
+};
+
 Group.prototype.getNumberOfPositions = function () {
     var n = 0;
     forEachProperty(this.documentData.children, function () {

@@ -9,6 +9,7 @@ var visual = require('visual'),
     utils = require('utils'),
     selectionbox = require('./selectionbox'),
     forEachProperty = utils.forEachProperty,
+    deepCopy = utils.deepCopy,
     groups = require('./definition').definition.groups,
     vec3 = glmatrix.vec3,
     mat4 = glmatrix.mat4,
@@ -353,7 +354,24 @@ GroupViewer.prototype.getPositionRect = function (name) {
     }
     return res;
 };
-
+GroupViewer.prototype.getSelectionCopy = function () {
+    var documentData = this.documentData,
+        positions = documentData.positions,
+        children = documentData.children,
+        res = {
+            positions: {},
+            children: {}
+        },
+        c;
+    forEachProperty(this.selection, function (p, n) {
+        c = children[n];
+        res.positions[n] = deepCopy(p);
+        if (c) {
+            res.children[n] = deepCopy(c);
+        }
+    });
+    return res;
+};
 //////////////////////
 // private stuff (maybe should go in groupviewerprivate)
 GroupViewer.prototype.setGroup = function (group) {

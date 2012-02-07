@@ -5,7 +5,7 @@
 
     Copyright (c) Hugo Windisch 2012 All Rights Reserved    
 */
-exports.forEachProperty = function (object, f) {
+function forEachProperty(object, f) {
     var p;
     if (object) {
         for (p in object) {
@@ -14,7 +14,7 @@ exports.forEachProperty = function (object, f) {
             }
         }
     }
-};
+}
 function typeOf(value) {
     var s = typeof value;
     if (s === 'object') {
@@ -28,21 +28,50 @@ function typeOf(value) {
     }
     return s;
 }
-exports.typeOf = typeOf;
-
-exports.isString = function (s) {
+function isString(s) {
     return typeOf(s) === 'string';
-};
-exports.isNumber = function (n) {
+}
+function isNumber(n) {
     return typeOf(n) === 'number';
-};
-exports.isArray = function (a) {
+}
+function isArray(a) {
     return typeOf(a) === 'array';
-};
-exports.isObject = function (o) {
+}
+function isObject(o) {
     return typeOf(o) === 'object';
-};
-exports.isFunction = function (f) {
+}
+function isFunction(f) {
     return typeOf(f) === 'function';
-};
+}
+function deepCopy(o) {
+    var res, i, l, v;
+    switch (typeOf(o)) {
+    case 'object': 
+        res = {};
+        forEachProperty(o, function (p, n) {
+            res[n] = deepCopy(p);
+        });
+        return res;
+    case 'array':
+        res = [];
+        l = o.length;
+        for (i = 0; i < l; i += 1) {
+            v = o[i];
+            if (v !== undefined) {
+                res[i] = deepCopy(v);
+            }
+        }
+        return res;
+    default:
+        return o;
+    }
+}
+exports.forEachProperty = forEachProperty;
+exports.typeOf = typeOf;
+exports.isString = isString;
+exports.isNumber = isNumber;
+exports.isArray = isArray;
+exports.isObject = isObject;
+exports.isFunction = isFunction;
+exports.deepCopy = deepCopy;
 
