@@ -299,6 +299,9 @@ GroupViewer.prototype.removeFromSelection = function (name) {
 GroupViewer.prototype.clearSelection = function (name) {
     this.selection = {};
 };
+GroupViewer.prototype.getSelection = function () {
+    return this.selection;
+};
 
 /**
     Checks whether a position is selected.
@@ -328,6 +331,27 @@ GroupViewer.prototype.getSelectionLength = function () {
 };
 GroupViewer.prototype.selectionIsEmpty = function () {
     return this.getSelectionLength() === 0;
+};
+GroupViewer.prototype.getSelectionRect = function () {
+    var unionr;
+    // compute the graphic size of the selection    
+    forEachProperty(this.selection, function (box, name) {
+        var r = getEnclosingRect(box.matrix);
+        if (!unionr) {
+            unionr = r;
+        } else {
+            unionr = unionRect(r, unionr);
+        }
+    });
+    return unionr;
+};
+GroupViewer.prototype.getPositionRect = function (name) {
+    var pos = this.documentData.positions[name],
+        res;
+    if (pos) {
+        res = getEnclosingRect(pos.matrix);
+    }
+    return res;
 };
 
 //////////////////////
@@ -375,18 +399,9 @@ GroupViewer.prototype.setGroup = function (group) {
 */
 GroupViewer.prototype.updateSelectionControlBox = function () {
     var r,
-        unionr,
+        unionr = this.getSelectionRect(),
         matrix,
         res;
-    // compute the graphic size of the selection    
-    forEachProperty(this.selection, function (box, name) {
-        r = getEnclosingRect(box.matrix);
-        if (!unionr) {
-            unionr = r;
-        } else {
-            unionr = unionRect(r, unionr);
-        }
-    });
     // show the selection box
     if (unionr) {
         this.selectionControlBox.setContentMatrix(rectToMatrix(unionr));

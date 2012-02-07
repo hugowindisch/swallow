@@ -6,6 +6,9 @@
 
 var baseui = require('baseui'),
     utils = require('utils'),
+    glmatrix = require('glmatrix'),
+    mat4 = glmatrix.mat4,
+    vec3 = glmatrix.vec3,
     forEachProperty = utils.forEachProperty,
     MenuItem = baseui.MenuItem;
 
@@ -194,6 +197,12 @@ function setupObjectMenu(editor) {
         selectionDownTool, 
         selectionToTopTool, 
         selectionToBottomTool,
+        alignLeftTool,
+        alignRightTool,
+        alignCenterTool,
+        alignTopTool,
+        alignBottomTool,
+        alignMiddleTool,
         menus = editor.menus;
         
     function selectionNotEmpty() {
@@ -324,13 +333,204 @@ function setupObjectMenu(editor) {
         null,
         selectionNotEmpty
     );
+    // align left tool
+    alignLeftTool = new MenuItem(
+        'Align Left',
+        function () {
+            var group = viewer.getGroup(),
+                dd = getDocumentData(viewer),
+                selection = viewer.getSelection(),
+                selectionRect = viewer.getSelectionRect(),
+                positionRect,
+                transform,
+                cmdGroup = group.cmdCommandGroup('alignLeft', 'Align Left');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                positionRect = viewer.getPositionRect(n);
+                transform = mat4.translate(
+                    mat4.identity(), 
+                    [selectionRect[0][0] - positionRect[0][0], 0, 0]
+                );
+
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
+    // align left tool
+    alignRightTool = new MenuItem(
+        'Align Right',
+        function () {
+            var group = viewer.getGroup(),
+                dd = getDocumentData(viewer),
+                selection = viewer.getSelection(),
+                selectionRect = viewer.getSelectionRect(),
+                positionRect,
+                transform,
+                cmdGroup = group.cmdCommandGroup('alignRight', 'Align Right');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                positionRect = viewer.getPositionRect(n);
+                transform = mat4.translate(
+                    mat4.identity(), 
+                    [selectionRect[1][0] - positionRect[1][0], 0, 0]
+                );
+
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
+    // align left tool
+    alignCenterTool = new MenuItem(
+        'Align Center',
+        function () {
+            var group = viewer.getGroup(),
+                dd = getDocumentData(viewer),
+                selection = viewer.getSelection(),
+                selectionRect = viewer.getSelectionRect(),
+                positionRect,
+                mid = (selectionRect[0][0] + selectionRect[1][0]) / 2,
+                transform,
+                cmdGroup = group.cmdCommandGroup('alignCenter', 'Align Center');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                positionRect = viewer.getPositionRect(n);
+                var m = (positionRect[0][0] + positionRect[1][0]) / 2;                
+                transform = mat4.translate(
+                    mat4.identity(), 
+                    [mid - m, 0, 0]
+                );
+
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
+    // align top tool
+    alignTopTool = new MenuItem(
+        'Align Top',
+        function () {
+            var group = viewer.getGroup(),
+                dd = getDocumentData(viewer),
+                selection = viewer.getSelection(),
+                selectionRect = viewer.getSelectionRect(),
+                positionRect,
+                transform,
+                cmdGroup = group.cmdCommandGroup('alignTop', 'Align Top');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                positionRect = viewer.getPositionRect(n);
+                transform = mat4.translate(
+                    mat4.identity(), 
+                    [0, selectionRect[0][1] - positionRect[0][1], 0]
+                );
+
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
+    // align bottom tool
+    alignBottomTool = new MenuItem(
+        'Align Bottom',
+        function () {
+            var group = viewer.getGroup(),
+                dd = getDocumentData(viewer),
+                selection = viewer.getSelection(),
+                selectionRect = viewer.getSelectionRect(),
+                positionRect,
+                transform,
+                cmdGroup = group.cmdCommandGroup('alignBottom', 'Align Bottom');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                positionRect = viewer.getPositionRect(n);
+                transform = mat4.translate(
+                    mat4.identity(), 
+                    [0, selectionRect[1][1] - positionRect[1][1], 0]
+                );
+
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
+    // align left tool
+    alignMiddleTool = new MenuItem(
+        'Align Middle',
+        function () {
+            var group = viewer.getGroup(),
+                dd = getDocumentData(viewer),
+                selection = viewer.getSelection(),
+                selectionRect = viewer.getSelectionRect(),
+                positionRect,
+                mid = (selectionRect[0][1] + selectionRect[1][1]) / 2,
+                transform,
+                cmdGroup = group.cmdCommandGroup('alignMiddle', 'Align Middle');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                positionRect = viewer.getPositionRect(n);
+                var m = (positionRect[0][1] + positionRect[1][1]) / 2;                
+                transform = mat4.translate(
+                    mat4.identity(), 
+                    [0, mid - m, 0]
+                );
+
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
 
     menus.object.push(
         selectionUpTool, 
         selectionDownTool, 
         selectionToTopTool, 
-        selectionToBottomTool
+        selectionToBottomTool,
+        alignLeftTool,
+        alignRightTool,
+        alignCenterTool,
+        alignTopTool,
+        alignBottomTool,
+        alignMiddleTool
     );
+    
 }
     
 exports.setup = function (editor) {
