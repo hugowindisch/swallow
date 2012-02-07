@@ -49,6 +49,11 @@ VerticalMenu.prototype.theme = new (visual.Theme)({
         basedOn: [
             { factory: 'baseui', type: 'Theme', style: 'menuItemDisabled' }
         ]
+    },
+    menuItemSeparator: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'horizontalSeparator' }
+        ]
     }
 });
 /**
@@ -189,9 +194,26 @@ VerticalMenu.prototype.updateChildren = function () {
     this.numItems = 0;
     for (i = 0; i < l; i += 1) {
         item = items[i];
-        numEnabledItems = this.createItemHtml(item, i, numEnabledItems, l);
+        if (item === null) {
+            this.createSeparator();
+        } else {
+            numEnabledItems = this.createItemHtml(item, i, numEnabledItems, l);
+        }
     }
     this.numItems = numEnabledItems;
+};
+VerticalMenu.prototype.createSeparator = function () {
+    var table = this.children.table,
+        c = table.addHtmlChild(
+            'tr', 
+            '',
+            { style: 'menuItem' },
+            name
+        ),
+        line = c.addHtmlChild('td', '', { style: 'menuItemSeparator' });
+    line.setElementAttributes({colspan: 4});
+    line.addHtmlChild('div', '');
+
 };
 VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIndex) {
     var that = this,
@@ -209,7 +231,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
             { style: enabled ? 'menuItem' : 'menuItemDisabled' },
             name
         );
-        
+
     if (enabled) {
         numEnabled += 1;
     }

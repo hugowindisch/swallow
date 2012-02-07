@@ -8,6 +8,7 @@ var visual = require('visual'),
     utils = require('utils'),
     verticalmenu = require('./verticalmenu'),
     glmatrix = require('glmatrix'),
+    isObject = utils.isObject,
     forEachProperty = utils.forEachProperty,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
@@ -108,7 +109,7 @@ HorizontalMenu.prototype.findAccelerators = function (evt) {
         var i, l = items.length, it, accel, subitems;
         for (i = 0; i < l; i += 1) {
             it = items[i];
-            if (it.getEnabled()) {
+            if (it && it.getEnabled()) {
                 accel = it.getAccelerator();
                 if (accel) {
                     accelerators[accel.toDecoratedVk()] = it.action;
@@ -180,9 +181,14 @@ HorizontalMenu.prototype.updateChildren = function () {
     // we now want to iterate our items and create children for them
     var items = this.getItems(),
         i,
-        l = items.length;
+        l = items.length,
+        item;
     for (i = 0; i < l; i += 1) {
-        this.createItemHtml(items[i], i, l);
+        item = items[i];
+        // we silently ignore separators (null)
+        if (item) {
+            this.createItemHtml(item, i, l);
+        }
     }
     this.numItems = l;
     

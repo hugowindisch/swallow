@@ -142,7 +142,13 @@ function setupToolMenu(editor) {
         true
     );
     
-    menus.tool.push(selectTool, drawTool, zoomInTool, zoomOutTool);
+    menus.tool.push(
+        selectTool, 
+        drawTool, 
+        zoomInTool, 
+        null,
+        zoomOutTool
+    );
 }
 
 function setupEditMenu(editor) {
@@ -295,6 +301,7 @@ function setupEditMenu(editor) {
     menus.edit.push(
         undoTool, 
         redoTool,
+        null,
         cutTool,
         copyTool,
         pasteTool,
@@ -634,9 +641,11 @@ function setupObjectMenu(editor) {
         selectionDownTool, 
         selectionToTopTool, 
         selectionToBottomTool,
+        null,
         alignLeftTool,
         alignRightTool,
         alignCenterTool,
+        null,
         alignTopTool,
         alignBottomTool,
         alignMiddleTool

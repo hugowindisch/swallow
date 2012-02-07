@@ -61,6 +61,9 @@ Theme.prototype.theme = new (require('visual').Theme)({
     menuItemDisabled: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_menuBox_color', 'baseui_theme_textDisabledColor', 'baseui_theme_menuItem' ]
     },
+    horizontalSeparator: {
+        data: [ 'baseui_theme_borderBottom']
+    },
     // toolbox tool
     tool: {
         data: [ 'baseui_theme_outlineTransparent', 'baseui_theme_toolSize' ]
@@ -73,6 +76,9 @@ Theme.prototype.theme = new (require('visual').Theme)({
     },
     pressedTool: {
         data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineRounded', 'baseui_theme_controlFillPressed', 'baseui_theme_toolSize']
+    },
+    verticalSeparator: {
+        data: [ ]
     },
     // label text
     labelText: {

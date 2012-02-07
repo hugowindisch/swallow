@@ -73,7 +73,6 @@ DOMVisual.prototype.enableInteractions = function (enable) {
         updateDOMEventHooks(c);
     });
 };
-
 // we do style through css when dealing with html content
 DOMVisual.prototype.setClass = function (cssClassName) {
     var i, l;
@@ -366,6 +365,15 @@ DOMVisual.prototype.setInnerText = function (text) {
     setDirty(this, 'matrix', 'dimensions', 'style');    
 };
 
+/**
+    Sets html attributes. This should not be useful most of the time...
+*/
+DOMVisual.prototype.setElementAttributes = function (attr) {
+    var element = this.element;
+    forEachProperty(attr, function (v, n) {
+        element.setAttribute(String(n), String(v));
+    });
+};
 
 
 /////////////////

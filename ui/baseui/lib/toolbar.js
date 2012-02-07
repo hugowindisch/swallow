@@ -52,6 +52,11 @@ Toolbar.prototype.theme = new (visual.Theme)({
             // take the line styles from here
             { factory: 'baseui', type: 'Theme', style: 'pressedTool' }
         ]
+    },
+    separator: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'verticalSeparator' }
+        ]
     }
 });
 
@@ -91,10 +96,19 @@ Toolbar.prototype.updateChildren = function () {
         i,
         l = items.length;
     for (i = 0; i < l; i += 1) {
-        this.createItemHtml(items[i], i, l);
+        item = items[i];
+        if (item) {
+            this.createItemHtml(item, i, l);
+        } else {
+            this.createSeparator();
+        }            
     }
 };
-
+Toolbar.prototype.createSeparator = function () {
+    var c = new (domvisual.DOMElement)({style: 'separator'});
+    c.setHtmlFlowing({ display: 'inline-block' });
+    this.addChild(c);
+};
 Toolbar.prototype.createItemHtml = function (item, index, numIndex) {
     var that = this,
         name = String(index),

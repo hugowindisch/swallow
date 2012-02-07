@@ -34,6 +34,13 @@
     padding-right: 4px;
 }
 
+.baseui_theme_smallHSpacing {
+    width: 12px;
+}
+
+.baseui_theme_borderBottom {
+    border-bottom: 1px solid #cecece;
+}
 
 
 .baseui_theme_controlFillNormal {
