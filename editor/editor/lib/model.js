@@ -71,8 +71,9 @@ Group.prototype.getCommandChain = function () {
 // makes a name unique
 function makeUniqueName(radical, test) {
     var re = /[0-9]$/,
-        term = re.exec(radical)[0],
-        rad = radical.slice(0, -term.length),
+        term = re.exec(radical),
+        tl = term ? term.length : 0,
+        rad = radical.slice(0, -tl),
         r = rad,
         n = 0;
         
