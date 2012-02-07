@@ -3,6 +3,8 @@
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 var glmatrix = require('glmatrix'),
+    utils = require('utils'),
+    forEachProperty = utils.forEachProperty,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     edit = require('./edit'),
@@ -79,6 +81,13 @@ Group.prototype.getUniquePositionName = function () {
         i += 1;        
     }
     // this point cannot be reached
+};
+Group.prototype.getNumberOfPositions = function () {
+    var n = 0;
+    forEachProperty(this.documentData.children, function () {
+        n += 1;
+    });
+    return n;
 };
 /**
     Calls doCmd on the command chain.
@@ -259,6 +268,39 @@ Group.prototype.cmdRenameVisual = function (name, newname) {
         "Rename visual " + name + ' as ' + newname,
         { model: this, name: name, newname: newname }
     );    
+};
+Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
+    var children = this.documentData.children,
+        nom = {};
+    forEachProperty(children, function (c, name) {
+        if (nameOrderMap[name]) {
+            nom[name] = c.order;
+        }
+    });
+    return new Command(
+        function () {
+            var child;
+            forEachProperty(nameOrderMap, function (order, n) {
+                child = children[name];
+                if (child) {
+                    child.order = order;
+                }
+            });
+        },
+        function () {
+            var child;
+            forEachProperty(nom, function (order, n) {
+                child = children[name];
+                if (child) {
+                    child.order = order;
+                }
+            });
+        },
+        'cmdSetVisualOrder',
+        message || "Set visual order",
+        { model: this }
+    );    
+
 };
 
 ///////////////////////

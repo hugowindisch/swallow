@@ -300,6 +300,35 @@ GroupViewer.prototype.clearSelection = function (name) {
     this.selection = {};
 };
 
+/**
+    Checks whether a position is selected.
+*/
+GroupViewer.prototype.positionIsSelected = function (name) {
+    return this.selection[name] !== undefined;
+};
+
+/**
+    Checks whether a visual is selected.
+*/
+GroupViewer.prototype.visualIsSelected = function (name) {
+    var documentData = this.documentData,
+        vis = documentData.children[name],
+        ret = false;
+    if (vis) {
+        ret = this.positionIsSelected(vis.position);
+    }
+    return ret;
+};
+GroupViewer.prototype.getSelectionLength = function () {
+    var n = 0;
+    forEachProperty(this.selection, function () {
+        n += 1;  
+    });
+    return n;
+};
+GroupViewer.prototype.selectionIsEmpty = function () {
+    return this.getSelectionLength() === 0;
+};
 
 //////////////////////
 // private stuff (maybe should go in groupviewerprivate)

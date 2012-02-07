@@ -8,22 +8,22 @@ exports.definition = {
             positions: {
                 menu: {
                     type: "AbsolutePosition",
-                    matrix: [ 640, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    matrix: [ 640, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
                 },
                 tools: {
                     type: "AbsolutePosition",
-                    matrix: [ 390, 0, 0, 0,   0, 64, 0, 0,    0, 0, 1, 0,   5, 25, 0, 1 ],
+                    matrix: [ 386, 0, 0, 0,   0, 64, 0, 0,    0, 0, 1, 0,   5, 29, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 tooldata: {
                     type: "AbsolutePosition",
-                    matrix: [ 390, 0, 0, 0,   0, 306, 0, 0,    0, 0, 1, 0,   5, 84, 0, 1 ],
+                    matrix: [ 390, 0, 0, 0,   0, 302, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'bottom' }
                 },        
                 viewer: {
                     type: "AbsolutePosition",
-                    matrix: [ 240, 0, 0, 0,   0, 380, 0, 0,    0, 0, 1, 0,   400, 20, 0, 1 ],
+                    matrix: [ 240, 0, 0, 0,   0, 376, 0, 0,    0, 0, 1, 0,   400, 24, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
                 }                
             },

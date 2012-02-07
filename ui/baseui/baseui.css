@@ -29,10 +29,11 @@
 
 .baseui_theme_menuItemSpacing {
     margin-left: 8px;
-    padding-top: 4px;
+    padding-top: 2px;
     padding-left: 4px;
     padding-right: 4px;
 }
+
 
 
 .baseui_theme_controlFillNormal {

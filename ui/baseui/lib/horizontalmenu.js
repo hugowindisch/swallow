@@ -243,7 +243,8 @@ HorizontalMenu.prototype.setDimensions = function (dimensions) {
     // mixing html flowing with absolute positioning is a war...
     // outer stuff grows according to inner stuff... But what we want
     // here is the other way around. So we fight.
-    var height = dimensions[1] + 'px',
+    // Note: the -5 is a hack... I must rethink this... (the css thing...)
+    var height = dimensions[1] - 5 + 'px',
         children = this.children;
     if (children && children.bar) {
         forEachProperty(children.bar.children, function (c) {
