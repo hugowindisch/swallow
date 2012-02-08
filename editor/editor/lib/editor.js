@@ -179,6 +179,17 @@ exports.SelectionBox = require('./selectionbox').SelectionBox;
 // we want this to be able to run as a standalone application
 if (require.main === module) {
     domvisual.createFullScreenApplication(new Editor());
+    
+    // small test
+    (function () {
+        var http = require('http');
+        http.get({path: '/static/editor.html'}, function (res) {
+            res.on('data', function (d) {
+                console.log(d);
+            });
+        });
+    }());
+    
 }
 
 
