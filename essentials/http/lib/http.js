@@ -65,15 +65,20 @@ function ClientRequest(options) {
     if (options.path) {
         url = url + options.path;
     }
-// events: continue, response
     this.options = options;
     this.request = new XMLHttpRequest();
     this.toSend = null;
-    this.request.open(
-        options.method,
-        url, 
-        true
-    );
+    try {
+        this.request.open(
+            options.method,
+            url, 
+            true
+        );
+    } catch (e) {
+        setTimeout(function () {
+            that.emit('error', e);
+        }, 0);
+    }
     function parseHeaders(headers) {
         var arr = headers.split('\n'),
             l = arr.length,
@@ -108,7 +113,6 @@ function ClientRequest(options) {
             break;
         }
     };
-// FIXME: error handling    
 }
 ClientRequest.prototype = new (events.EventEmitter)();
 ClientRequest.prototype.write = function (chunk) {
