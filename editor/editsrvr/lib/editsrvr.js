@@ -3,6 +3,7 @@
     editsrvr.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
+/*jslint regexp: false */
 var meatgrinder = require('meatgrinder');
 
 function serveVisual(req, res, options) {
