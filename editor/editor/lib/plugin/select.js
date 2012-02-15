@@ -30,6 +30,21 @@ function getDocumentData(viewer) {
     return dd;
 }
 
+function setupFileMenu(editor) {
+    var viewer = editor.getViewer(),
+        saveTool,
+        menus = editor.menus;
+
+    saveTool = new MenuItem(
+        'Save',
+        function () {
+            editor.saveGroup();
+        }
+    );
+    menus.file.push(
+        saveTool
+    );
+}
 
 function setupToolMenu(editor) {
     var viewer = editor.getViewer(),
@@ -655,6 +670,7 @@ function setupObjectMenu(editor) {
     
 exports.setup = function (editor) {
     // update the menus
+    setupFileMenu(editor);
     setupToolMenu(editor);
     setupEditMenu(editor);
     setupObjectMenu(editor);

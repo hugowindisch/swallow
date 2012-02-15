@@ -8,6 +8,8 @@
 var visual = require('visual'),    
     domvisual = require('domvisual'),
     baseui = require('baseui'),
+    url = require('url'),
+    http = require('http'),
     groups = require('./definition').definition.groups,
     MenuItem = baseui.MenuItem,
     defaultPlugins = [
@@ -26,7 +28,7 @@ function Editor(config) {
     
 // setup some fake stuff
 ////////////////////////
-    var grData = {
+/*    var grData = {
         dimensions: [ 200, 200, 1],
         positions: {
             pos1: {
@@ -60,7 +62,7 @@ function Editor(config) {
     },
         gr = new (require('./model').Group)(grData);
     this.children.viewer.setGroup(gr);
-//    gr.cmdAddPosition('test1', 'xyzfake');
+//    gr.cmdAddPosition('test1', 'xyzfake');*/
     
 }
 Editor.prototype = new (domvisual.DOMElement)();
@@ -80,6 +82,50 @@ Editor.prototype.theme = new (visual.Theme)({
 
 // Editor interface
 ////////////////////
+Editor.prototype.setGroupData = function (factory, type, groupData) {
+    this.docInfo = {
+        factory: factory,
+        type: type
+    };
+    this.children.viewer.setGroup(
+        new (require('./model').Group)(groupData)
+    );
+};
+Editor.prototype.loadGroup = function (factory, type) {
+    var data = '',
+        that = this;
+    http.get({ path: '/visual/' + factory + '/' + type}, function (res) {
+        res.on('data', function (d) {
+            data += d;
+        });
+        res.on('end', function () {
+            var jsonData = JSON.parse(data);
+            that.setGroupData(factory, type, jsonData);
+        });
+        res.on('error', function (e) {
+            alert('Error loading');
+        });
+    });
+};
+Editor.prototype.saveGroup = function (factory, type) {
+    factory = factory || this.docInfo.factory;
+    type = type || this.docInfo.type;
+    var doc = this.children.viewer.getGroup().documentData,
+        req = http.request(
+            {
+                method: 'POST',
+                path: '/visual/' + factory + '/' + type
+            }, 
+            function (res) {
+                res.on('error', function (e) {
+                    alert('Error saving');
+                });
+            }
+        );
+    req.write(JSON.stringify(doc));
+    req.end();
+};
+
 /**
     Adds some plugins
 */
@@ -178,18 +224,23 @@ exports.SelectionBox = require('./selectionbox').SelectionBox;
 // note: this should be last
 // we want this to be able to run as a standalone application
 if (require.main === module) {
-    domvisual.createFullScreenApplication(new Editor());
-    
-    // small test
     (function () {
-        var http = require('http');
-        http.get({path: '/static/editor.html'}, function (res) {
+        var p = url.parse(document.URL, true),
+            factory = p.query.factory,
+            type = p.query.type,
+            http = require('http'),
+            data = '';
+        http.get({ path: '/visual/' + factory + '/' + type}, function (res) {
             res.on('data', function (d) {
-                console.log(d);
+                data += d;
+            });
+            res.on('end', function () {
+                var jsonData = JSON.parse(data),
+                    edit = new Editor();
+                edit.setGroupData(factory, type, jsonData);
+                domvisual.createFullScreenApplication(edit);
             });
         });
-    }());
-    
+    }());    
 }
-
 

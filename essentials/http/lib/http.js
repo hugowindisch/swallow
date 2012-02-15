@@ -108,6 +108,9 @@ function ClientRequest(options) {
         case readyStates.loading:        
             break;
         case readyStates.done:
+            if (!response) {
+                response = new ClientResponse(null, this.status);
+            }
             response.emit('data', this.responseText);
             response.emit('end');
             break;
