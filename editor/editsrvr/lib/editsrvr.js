@@ -39,6 +39,12 @@
         GET: returns a list of all visuals
     visual/package/Constructor/img
         GET: returns a list of all images available to the 
+        
+        
+        
+   // EXPORTED visuals
+   // from the editor a vis can be marked as private (only accessible to
+   // is containing package) or public (accessible to everyone).
 */
 var meatgrinder = require('meatgrinder'),
     fs = require('fs'),
@@ -46,7 +52,10 @@ var meatgrinder = require('meatgrinder'),
     findPackages = meatgrinder.findPackages,
     fs = require('fs'),
     path = require('path'),
-    async = require('async');
+    async = require('async'),
+    mimeType = {
+        json: 'application/json'
+    };
 
 
 
@@ -232,7 +241,7 @@ function serveVisual(req, res, match, options) {
             if (err) {
                 return ret404();
             } else {
-                sendFile(filePath, 'application/json');
+                sendFile(filePath, mimeType.json);
             }
         });
         break;
@@ -260,8 +269,56 @@ function serveVisual(req, res, match, options) {
     }
 }
 
+function serveVisualList(req, res, match, options) {
+    function ret404(err) {
+        res.writeHead(404);
+        if (err) {
+            res.write(String(err));
+        }
+        res.end();    
+    }
+
+    if (req.method === 'GET') {
+        findPackages(options.srcFolder, function (err, packages) {
+            if (err) {
+                return ret404(err);
+            }
+            var re = /([^\/\.]*)\.vis$/,
+                // find all the visuals in the package
+                ret = [];
+            Object.keys(packages).forEach(function (k) {
+                var pack = packages[k],
+                    found = {};
+                pack.other.forEach(function (p) {
+                    var m = re.exec(p),
+                        type;
+                    if (m) {
+                        type = m[1];
+                        if (!found[type]) {
+                            found[type] = true;
+                            ret.push({factory: k, type: m[1]});
+                        }
+                    }
+                });
+            });
+            res.writeHead('200', {'Content-Type': mimeType.json});
+            res.write(JSON.stringify(ret, null, 4));
+            res.end();
+        });
+        
+    } else {
+        ret404();
+    }
+}
+
 function getUrls(options) {
     var urls = meatgrinder.getUrls(options);
+    urls.push({
+        filter: /^\/visual$/, 
+        handler: function (req, res, match) {
+            serveVisualList(req, res, match, options);
+        }
+    });
     urls.push({
         filter: /^\/visual\/([^\/]*)\/([^\/]*)$/, 
         handler: function (req, res, match) {
