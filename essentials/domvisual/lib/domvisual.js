@@ -126,9 +126,14 @@ DOMVisual.prototype.getDisplayMatrix = function () {
     }
     use null or undefined to disable flow
 */
-DOMVisual.prototype.setHtmlFlowing = function (styles) {
+DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
     if (this.htmlFlowing !== styles) {
         this.htmlFlowing = styles;
+        setDirty(this, 'matrix', 'dimensions');
+    }
+    applySizing = (applySizing === true);
+    if (this.htmlFlowingApplySizing !== applySizing) {
+        this.htmlFlowingApplySizing = applySizing;
         setDirty(this, 'matrix', 'dimensions');
     }
 };
@@ -213,8 +218,13 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
             style.display = this.visible ? 'block' : 'none';
         } else {
             // clear our stuff
-            style.width = null;
-            style.height = null;
+            if (this.htmlFlowingApplySizing) {
+                style.width = this.dimensions[0] + 'px';
+                style.height = this.dimensions[1] + 'px';            
+            } else {
+                style.width = null;
+                style.height = null;
+            }
             style.position = null;
             style.display = null;
             // let the htmlFlowing apply its stuff

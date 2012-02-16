@@ -25,6 +25,7 @@ agent: Controls Agent behavior. Possible values:
 */
 var utils = require('utils'),
     events = require('events'),
+    update = require('visual').update,
     forEachProperty = utils.forEachProperty,
     readyStates = {
         unsent: 0,
@@ -104,6 +105,7 @@ function ClientRequest(options) {
                 this.status
             );
             that.emit('response', response);
+            update();
             break;
         case readyStates.loading:        
             break;
@@ -113,6 +115,7 @@ function ClientRequest(options) {
             }
             response.emit('data', this.responseText);
             response.emit('end');
+            update();
             break;
         }
     };

@@ -16,7 +16,7 @@ exports.definition = {
                     matrix: [ 386, 0, 0, 0,   0, 64, 0, 0,    0, 0, 1, 0,   5, 29, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
-                tooldata: {
+                panel: {
                     type: "AbsolutePosition",
                     matrix: [ 390, 0, 0, 0,   0, 302, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'bottom' }
@@ -46,14 +46,14 @@ exports.definition = {
                     config: {
                     }                
                 },
-                tooldata: {
-                    factory: "domvisual",
-                    type: "DOMElement",
-                    position: "tooldata",
+                panel: {
+                    factory: "editor",
+                    type: "Panel",
+                    position: "panel",
                     enableScaling: false,
                     order: 1,
                     config: {
-                        "style": "tooldata"
+                        "style": "panel"
                     }                
                 },
                 viewer: {
@@ -190,7 +190,56 @@ exports.definition = {
                     }                
                 }                
             }
-        }        
+        },
+        VisualInfo: {
+            dimensions: [400, 50, 0],
+            positions: {
+                preview: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                factoryName: {
+                    type: "AbsolutePosition",
+                    matrix: [ 100, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
+                },
+                typeName: {
+                    type: "AbsolutePosition",
+                    matrix: [ 400, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 25, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
+                }
+            },
+            children: {
+                factoryName: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "factoryName",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": "factory name"
+                    }                
+                },
+                typeName: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "typeName",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "factory name"
+                    }                
+                },
+            }
+        },
+        VisualList: {
+            dimensions: [400, 400, 0],
+            positions: {
+            },
+            children: {
+            }
+        }
     }
 };
 

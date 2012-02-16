@@ -73,7 +73,7 @@ Editor.prototype.theme = new (visual.Theme)({
             { factory: 'baseui', type: 'Theme', style: 'windowBackground' }
         ]
     },
-    tooldata: {
+    panel: {
         basedOn: [
             { factory: 'baseui', type: 'Theme', style: 'windowForeground' } 
         ]
@@ -220,6 +220,9 @@ Editor.prototype.getToolbox = function () {
 exports.Editor = Editor;
 exports.GroupViewer = require('./groupviewer').GroupViewer;
 exports.SelectionBox = require('./selectionbox').SelectionBox;
+exports.VisualInfo = require('./VisualInfo').VisualInfo;
+exports.VisualList = require('./VisualList').VisualList;
+exports.Panel = require('./Panel').Panel;
 
 // note: this should be last
 // we want this to be able to run as a standalone application
@@ -228,7 +231,6 @@ if (require.main === module) {
         var p = url.parse(document.URL, true),
             factory = p.query.factory,
             type = p.query.type,
-            http = require('http'),
             data = '';
         http.get({ path: '/visual/' + factory + '/' + type}, function (res) {
             res.on('data', function (d) {

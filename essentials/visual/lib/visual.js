@@ -597,3 +597,4 @@ exports.matrixIsTranslateOnly = matrixIsTranslateOnly;
 exports.convertScaleToSize = position.convertScaleToSize;
 exports.forVisualAndAllChildrenDeep = forVisualAndAllChildrenDeep;
 exports.Theme = themes.Theme;
+exports.update = dirty.update;
