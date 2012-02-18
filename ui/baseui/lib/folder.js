@@ -39,13 +39,23 @@ Folder.prototype.theme = new (visual.Theme)({
     o.config: config to use
 */
 Folder.prototype.setInternal = function (o) {
-    this.internal = o;
+    var fact, Constr, c;
+    if (o instanceof (visual.Visual)) {
+        this.internal = o;
+    } else {
+        fact = require(o.factory);
+        if (fact) {
+            Constr = fact[o.type];
+            if (Constr) {
+                this.internal = new Constr(o.config);
+                this.internal.setVisible(false);
+            }        
+        }
+    }
 };
 
+
 /**
-    o.factory: name of the factory
-    o.type: type
-    o.config: config to use
 */
 Folder.prototype.setText = function (o) {
     this.text = o;
@@ -57,28 +67,20 @@ Folder.prototype.setText = function (o) {
 Folder.prototype.updateChildren = function () {
     var o = this.internal,
         t = this.text,
-        fact,
-        Constr,
         tc,
-        c,
         that = this;
     // clear our content
     this.removeAllChildren();
     this.expanded = false;
 
-    fact = require(o.factory);
-    if (fact) {
-        Constr = fact[o.type];
-        if (Constr) {
-            tc = this.addTextChild('div', t, { 'style': 'contracted' }, 'title');
-            c = new Constr(o.config);
-            this.addChild(c, 'content');
-            c.setHtmlFlowing({ display: 'inline-block'});
-            c.setVisible(false);
-            tc.on('click', function () {
-                that.toggleExpansion();
-            });
-        }        
+    if (o) {
+        tc = this.addTextChild('div', t, { 'style': 'contracted' }, 'title');
+        this.addChild(o, 'content');
+        o.setHtmlFlowing({}, true);
+        o.setVisible(false);
+        tc.on('click', function () {
+            that.toggleExpansion();
+        });        
     }
 };
 

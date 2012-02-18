@@ -222,6 +222,9 @@ exports.GroupViewer = require('./groupviewer').GroupViewer;
 exports.SelectionBox = require('./selectionbox').SelectionBox;
 exports.VisualInfo = require('./VisualInfo').VisualInfo;
 exports.VisualList = require('./VisualList').VisualList;
+exports.VisualInfo = require('./SelectionInfo').SelectionInfo;
+exports.VisualList = require('./Layering').Layering;
+exports.SelectionInfo = require('./SelectionInfo').SelectionInfo;
 exports.Panel = require('./Panel').Panel;
 
 // note: this should be last

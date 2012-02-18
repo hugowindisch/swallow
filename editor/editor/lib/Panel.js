@@ -19,8 +19,9 @@ function Panel(config) {
 Panel.prototype = new (domvisual.DOMElement)();
 Panel.prototype.populate = function () {
     // initially, forget drawers, add a VisualList directly
-    var vl = new VisualList({});
+    var vl = new VisualList({}),
+        folder = new (baseui.Folder)({ internal: vl, text: 'Content' });
     vl.setHtmlFlowing({});
-    this.addChild(vl);
+    this.addChild(folder);
 };
 exports.Panel = Panel;
