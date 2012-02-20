@@ -74,7 +74,7 @@ DirtyList.prototype.update = function () {
         o,
         why;
 
-    function clean(o) {    
+    function clean(o) {
         var why = o.isDirty;
         delete o.isDirty;
         o.update(why);

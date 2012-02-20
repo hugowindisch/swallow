@@ -23,6 +23,7 @@ function Editor(config) {
     // create the menu bar and toolbar
     this.setStyle('background');
     this.addPlugins(defaultPlugins);
+    this.children.panel.init(this);
     this.setChildrenClipping('hidden');
     
     

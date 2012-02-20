@@ -333,6 +333,14 @@ GroupViewer.prototype.getSelectionLength = function () {
 GroupViewer.prototype.selectionIsEmpty = function () {
     return this.getSelectionLength() === 0;
 };
+// returns a single selected item (useful when the selection length is 1)
+GroupViewer.prototype.getSelectedName = function () {
+    var ret;
+    forEachProperty(this.selection, function (p, n) {
+        ret = n;
+    });
+    return ret;
+};
 GroupViewer.prototype.getSelectionRect = function () {
     var unionr;
     // compute the graphic size of the selection    
@@ -428,7 +436,7 @@ GroupViewer.prototype.updateSelectionControlBox = function () {
         // the selection is empty, hide the box
         this.selectionControlBox.setVisible(false);
     }
-    
+    this.emit('updateSelectionControlBox');
 };
 /**
     Regenerates the whole thing.
@@ -517,7 +525,6 @@ GroupViewer.prototype.updateAll = function () {
     this.updateSelectionControlBox();
 
     this.setScroll(zoomTranslate);
-    
 };
 
 

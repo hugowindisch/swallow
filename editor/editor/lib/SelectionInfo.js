@@ -14,12 +14,10 @@ function SelectionInfo(config) {
     domvisual.DOMElement.call(this, config, groups.SelectionInfo);
 }
 SelectionInfo.prototype = new (domvisual.DOMElement)();
-SelectionInfo.prototype.setTypeInfo = function (ti) {
-    this.children.factoryName.setText(ti.factory);
-    this.children.typeName.setText(ti.type);
-};
 SelectionInfo.prototype.getConfigurationSheet = function () {
-    return { typeInfo: {} };
+    return {  };
+};
+SelectionInfo.prototype.init = function (editor) {
 };
 
 exports.SelectionInfo = SelectionInfo;

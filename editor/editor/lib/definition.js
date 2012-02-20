@@ -192,7 +192,7 @@ exports.definition = {
             }
         },
         VisualInfo: {
-            dimensions: [400, 50, 0],
+            dimensions: [390, 50, 0],
             positions: {
                 preview: {
                     type: "AbsolutePosition",
@@ -238,6 +238,133 @@ exports.definition = {
             positions: {
             },
             children: {
+            }
+        },
+        SelectionInfo: {
+            dimensions: [400, 50, 0],
+            positions: {
+                xLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                yLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   105, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                wLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                hLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   105, 30, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                x: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   35, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                y: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   135, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                w: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   35, 30, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                h: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   135, 30, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                }
+            },
+            children: {
+                xLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "xLabel",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": "x:"
+                    }                
+                },
+                yLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "yLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "y:"
+                    }                
+                },
+                wLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "wLabel",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": "w:"
+                    }                
+                },
+                hLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "hLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "h:"
+                    }                
+                },
+                x: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "x",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": "0"
+                    }                
+                },
+                y: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "y",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "0"
+                    }                
+                },
+                w: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "w",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": "0"
+                    }                
+                },
+                h: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "h",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "0"
+                    }                
+                },
             }
         }
     }

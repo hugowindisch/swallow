@@ -8,20 +8,29 @@ var visual = require('visual'),
     glmatrix = require('glmatrix'),
     baseui = require('baseui'),
     VisualList = require('./VisualList').VisualList,
+    SelectionInfo = require('./SelectionInfo').SelectionInfo,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
 
 function Panel(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Panel);
-    this.populate();
 }
 Panel.prototype = new (domvisual.DOMElement)();
-Panel.prototype.populate = function () {
+Panel.prototype.init = function (editor) {
     // initially, forget drawers, add a VisualList directly
-    var vl = new VisualList({}),
-        folder = new (baseui.Folder)({ internal: vl, text: 'Content' });
-    vl.setHtmlFlowing({});
-    this.addChild(folder);
+    var si = new SelectionInfo({}),
+        siFolder = new (baseui.Folder)({ internal: si, text: 'Position' }),
+        vl = new VisualList({}),
+        vlFolder = new (baseui.Folder)({ internal: vl, text: 'Content' });
+    vlFolder.setHtmlFlowing({});
+    siFolder.setHtmlFlowing({});
+    
+    this.addChild(siFolder);
+    this.addChild(vlFolder);
+    
+    // setup the various panel items
+    si.init(editor);
+    vl.init(editor);
 };
 exports.Panel = Panel;

@@ -76,7 +76,7 @@ Folder.prototype.updateChildren = function () {
     if (o) {
         tc = this.addTextChild('div', t, { 'style': 'contracted' }, 'title');
         this.addChild(o, 'content');
-        o.setHtmlFlowing({}, true);
+        o.setHtmlFlowing({ position: 'relative'}, true);
         o.setVisible(false);
         tc.on('click', function () {
             that.toggleExpansion();

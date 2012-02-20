@@ -80,7 +80,7 @@ function setupToolMenu(editor) {
                 function (mat, nmat) {
                     // this should be determined by the keys
                     viewer.clearSelection(nmat);
-                    viewer.selectByMatrix(nmat);
+                    viewer.selectByMatrix(nmat);                    
                     viewer.updateSelectionControlBox();
                 }
             );
