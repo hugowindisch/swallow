@@ -189,6 +189,7 @@ function saveGroupsJS(pack, allVis, cb) {
     dust.render(
         'groupFile',
         {
+            packageName: pack.name,
             constructors: constructors,
             groups: JSON.stringify(json, null, 4),
             
@@ -273,7 +274,6 @@ function saveVisual(options, packageName, constructorName, json, cb) {
                                     saveVisualSourceFile(pack, constructorName, cb);
                                 }
                             ], cb);
-                            //cb(null);                        
                         }
                     });
                 }

@@ -10,7 +10,7 @@ var visual = require('visual'),
 
 function {clsname}(config) {
     // call the baseclass
-    domvisual.DOMElement.call(this, config, groups.SelectionInfo);
+    domvisual.DOMElement.call(this, config, groups.{clsname});
 }
 {clsname}.prototype = new (domvisual.DOMElement)();
 {clsname}.prototype.getConfigurationSheet = function () {

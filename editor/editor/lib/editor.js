@@ -92,6 +92,9 @@ Editor.prototype.setGroupData = function (factory, type, groupData) {
         new (require('./model').Group)(groupData)
     );
 };
+Editor.prototype.getDocInfo = function () {
+    return this.docInfo;
+};
 Editor.prototype.loadGroup = function (factory, type) {
     var data = '',
         that = this;

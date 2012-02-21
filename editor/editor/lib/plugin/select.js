@@ -667,6 +667,24 @@ function setupObjectMenu(editor) {
     );
     
 }
+function setupRunMenu(editor) {
+    var runTool,
+        menus = editor.menus;
+        
+    // align left tool
+    runTool = new MenuItem(
+        'Run',
+        function () {
+            var docInfo = editor.getDocInfo();
+            window.open("/static/" + docInfo.factory + '.html?visual=' + docInfo.type, '_blank');
+        }
+    );
+
+    menus.run.push(
+        runTool
+    );
+}
+
     
 exports.setup = function (editor) {
     // update the menus
@@ -674,5 +692,6 @@ exports.setup = function (editor) {
     setupToolMenu(editor);
     setupEditMenu(editor);
     setupObjectMenu(editor);
+    setupRunMenu(editor);
 };
 
