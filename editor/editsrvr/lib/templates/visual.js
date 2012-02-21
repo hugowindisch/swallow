@@ -1,0 +1,20 @@
+/**
+    {clsname}.js
+*/
+var visual = require('visual'),
+    domvisual = require('domvisual'),
+    groups = require('/{packageName}/lib/groups').groups,
+    glmatrix = require('glmatrix'),
+    mat4 = glmatrix.mat4,
+    vec3 = glmatrix.vec3;
+
+function {clsname}(config) {
+    // call the baseclass
+    domvisual.DOMElement.call(this, config, groups.SelectionInfo);
+}
+{clsname}.prototype = new (domvisual.DOMElement)();
+{clsname}.prototype.getConfigurationSheet = function () {
+    return {  };
+};
+
+exports.{clsname} = {clsname};

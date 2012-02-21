@@ -3,6 +3,7 @@
     editsrvr.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
+/*globals __dirname */
 /*jslint regexp: false */
 
 /*
@@ -47,6 +48,7 @@
    // is containing package) or public (accessible to everyone).
 */
 var meatgrinder = require('meatgrinder'),
+    dust = require('dust'),
     fs = require('fs'),
     path = require('path'),
     findPackages = meatgrinder.findPackages,
@@ -57,7 +59,28 @@ var meatgrinder = require('meatgrinder'),
         json: 'application/json'
     };
 
+// disable newline and whitespace removal
+dust.optimizers.format = function (ctx, node) { 
+    return node;
+};
+  
+dust.loadSource(
+    dust.compile(
+        fs.readFileSync(
+            path.join(__dirname, 'templates/visual.js')
+        ).toString(), 
+        'jsFile'
+    )
+);
 
+dust.loadSource(
+    dust.compile(
+        fs.readFileSync(
+            path.join(__dirname, 'templates/groups.js')
+        ).toString(), 
+        'groupFile'
+    )
+);
 
 // finds a given visual in the specified package
 function findVisualInPackage(pack, visual) {
@@ -73,6 +96,22 @@ function findVisualInPackage(pack, visual) {
     });
     return ret;        
 }
+
+// finds a given js in the specified package
+function findJSInPackage(pack, visual) {
+    var re = /([^\/\.]*)\.js$/,
+        ret;
+    pack.js.some(function (d) {
+        var m = re.exec(d);
+        if (m && m[1] === visual) {
+            ret = d;
+            return true;
+        }
+        return false;
+    });
+    return ret;        
+}
+
 
 // loads all vis files in a package
 function loadVisFiles(pack, cb) {
@@ -102,16 +141,68 @@ function loadVisFiles(pack, cb) {
     );
 }
 
+// generates the visual.js file (default source file)
+function saveVisualSourceFile(pack, visual, cb) {
+    var js = findJSInPackage(pack, visual);
+    // only save it if it can't already be found (i.e. create a default
+    // js file).
+    if (!js) {
+        dust.render(
+            'jsFile', 
+            { 
+                packageName: pack.name,            
+                clsname: visual
+            }, 
+            function (err, data) {
+                if (err) {
+                    return cb(err);
+                }
+                fs.writeFile(
+                    path.join(pack.dirname, 'lib', visual + '.js'),
+                    data,
+                    cb
+                );
+            }
+        );
+    } else {
+        cb(null);
+    }
+}
 // generates the groups.js
 function saveGroupsJS(pack, allVis, cb) {
-    var json = {};
+    var json = {},
+        constructors = [];
     allVis.forEach(function (v) {
+        var ctr = {};
         json[v.name] = v.data;
+        ctr.name = v.name;
+        ctr.path = findJSInPackage(pack, v.name);
+        if (!ctr.path) {
+            ctr.path = '/' + pack.name + '/lib/' + v.name;
+        } else {
+            ctr.path = ctr.path.slice(pack.dirname.length, -3);
+            ctr.path = '/' + pack.name + ctr.path;
+        }
+        
+        constructors.push(ctr);
     });
-    fs.writeFile(
-        path.join(pack.dirname, 'lib', 'groups.js'),
-        'exports.groups = ' + JSON.stringify(json, null, 4),
-        cb
+    dust.render(
+        'groupFile',
+        {
+            constructors: constructors,
+            groups: JSON.stringify(json, null, 4),
+            
+        },
+        function (err, data) {
+            if (err) {
+                return cb(err);
+            }
+            fs.writeFile(
+                path.join(pack.dirname, 'lib', 'groups.js'),
+                data,
+                cb
+            );
+        }
     );
 }
 // 
@@ -142,6 +233,7 @@ function saveVisual(options, packageName, constructorName, json, cb) {
     // parse the data
     try {
         visData = JSON.parse(json);
+        json = JSON.stringify(visData, null, 4);
     } catch (e) {
         return cb(e);
     }
@@ -158,7 +250,11 @@ function saveVisual(options, packageName, constructorName, json, cb) {
         // normal case
         pack = packages[packageName];
         if (pack) {
-            fs.writeFile(path.join(pack.dirname, constructorName + '.vis'), json, function (err) {
+            visFile = findVisualInPackage(pack, constructorName);
+            if (!visFile) {
+                visFile = path.join(pack.dirname, 'lib', constructorName + '.vis');
+            }
+            fs.writeFile(visFile, json, function (err) {
                 if (err) {
                     return cb(err);
                 } else {
@@ -167,11 +263,14 @@ function saveVisual(options, packageName, constructorName, json, cb) {
                             return cb(err);
                         } else {
                             async.parallel([
-                                function () {
+                                function (cb) {
                                     savePackageJSON(packages, pack, allVis, cb);
                                 },
-                                function () {
+                                function (cb) {
                                     saveGroupsJS(pack, allVis, cb);
+                                },
+                                function (cb) {
+                                    saveVisualSourceFile(pack, constructorName, cb);
                                 }
                             ], cb);
                             //cb(null);                        
