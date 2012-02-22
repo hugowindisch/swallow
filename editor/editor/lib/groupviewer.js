@@ -203,7 +203,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);
         updateMouseBox(nmatrix);        
         if (selection) {
-            selection(matrix, nmatrix, startpos, endpos);
+            selection(matrix, nmatrix, startpos, endpos, evt);
         }
     }
     function mouseUp(evt) {
@@ -211,7 +211,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         decorations.removeListener('mousemovec', mouseMove);
         removeMouseBox();
         if (selectionEnd) {
-            selectionEnd(matrix, nmatrix, startpos, endpos);
+            selectionEnd(matrix, nmatrix, startpos, endpos, evt);
         }
     }
     function mouseDown(evt) {
@@ -224,7 +224,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         matrix = twoPositionsToMatrix(startpos, endpos);
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);        
         if (selectionStart) {
-            showMouseBox = selectionStart(matrix, nmatrix, startpos, endpos);
+            showMouseBox = selectionStart(matrix, nmatrix, startpos, endpos, evt);
         }
         updateMouseBox(nmatrix);
     }
@@ -337,24 +337,30 @@ GroupViewer.prototype.selectedItemAtPosition = function (position) {
 /**
     Selection.
 */
-GroupViewer.prototype.selectByMatrix = function (matrix) {
+GroupViewer.prototype.selectByMatrix = function (matrix, toggle) {
     var documentData = this.documentData,
         selrect,
         sel,
         selection = this.selection;
-        
+    function select(name) {
+        if (toggle && selection[name]) {
+            delete selection[name];
+        } else {
+            selection[name] = documentData.positions[name];
+        }
+    }   
     // select a point
     if (matrix[0] === 0 && matrix[5] === 0 && matrix[10] === 0) {
         sel = this.itemAtPosition([matrix[12], matrix[13], matrix[14]]);
         if (sel) {
-            selection[sel] = documentData.positions[sel];
+            select(sel);
         }
     } else {
         selrect = getEnclosingRect(matrix);
         forEachProperty(documentData.positions, function (c, name) {
             var r = getEnclosingRect(c.matrix);
             if (intersects(selrect, r)) {
-                selection[name] = c;
+                select(name);
             }
         });
     }

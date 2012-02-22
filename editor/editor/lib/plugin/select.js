@@ -79,8 +79,8 @@ function setupToolMenu(editor) {
             setModal(this);
             var dragging = false;
             viewer.enableBoxSelection(
-                function (mat, nmat) {
-                    if (viewer.selectedItemAtPosition([mat[12], mat[13], mat[14]])) {
+                function (mat, nmat, startpos, endpos, evt) {
+                    if (!evt.ctrlKey && viewer.selectedItemAtPosition([mat[12], mat[13], mat[14]])) {
                         dragging = true;
                     } else {
                         dragging = false;
@@ -98,7 +98,7 @@ function setupToolMenu(editor) {
                         viewer.previewSelectionTransformation(transform);
                     }
                 },
-                function (mat, nmat) {
+                function (mat, nmat, startpos, endpos, evt) {
                     var transform,
                         selection,
                         cmdGroup,
@@ -123,8 +123,10 @@ function setupToolMenu(editor) {
                         
                     } else {                    
                         // this should be determined by the keys
-                        viewer.clearSelection(nmat);
-                        viewer.selectByMatrix(nmat);                    
+                        if (!evt.ctrlKey) {
+                            viewer.clearSelection(nmat);
+                        }
+                        viewer.selectByMatrix(nmat, !evt.shiftKey);                    
                         viewer.updateSelectionControlBox();
                     }
                 }
