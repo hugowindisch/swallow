@@ -113,32 +113,6 @@ var utils = require('utils'),
     forEachProperty = utils.forEachProperty;
 
 /**
-    This is like the positioning styles.
-    ... not super certain how to handle SIZE, snapping, etc.
-    
-    NOTE: it's the visuals that need to know how to transform a position
-        to something that make sense for them
-        
-The container that redoes its layout and sees this in one of its children must:
-    - convert it to position styles, and apply these styles
-
-*/
-function FlowPosition(matrix, inline) {
-    this.matrix = matrix;
-    this.inline = inline;
-}
-
-FlowPosition.prototype.dirtyLayout = function () {
-    return false;
-};
-FlowPosition.prototype.compute = function (
-    containerDimensions, 
-    layoutDimensions
-) {
-    return null;
-};
-
-/**
     matrix:
         a matrix (mat4) that positions a unity rectangle in space
         (only x,y, sx sy are used to determine w & h and x & y of
@@ -387,19 +361,21 @@ function Layout(dimensions, positionData) {
     this.build(positionData);
 }
 
+function deserializePosition(pos) {
+    switch (pos.type) {
+    case 'AbsolutePosition':
+        return new AbsolutePosition(pos.matrix, pos.snapping);
+    case 'TransformPosition':
+        return new TransformPosition(pos.matrix, pos.scalemode);
+    default:
+        throw new Error("Invalid position type " + pos.type);
+    }
+}
+
 Layout.prototype.build = function (positionData) {
     var that = this;
     forEachProperty(positionData, function (pos, posname) {
-        switch (pos.type) {
-        case 'AbsolutePosition':
-            that.setPosition(posname, new AbsolutePosition(pos.matrix, pos.snapping));
-            break;
-        case 'TransformPosition':
-            that.setPosition(posname, new TransformPosition(pos.matrix, pos.scalemode));
-            break;
-        default:
-            throw new Error("Invalid position type " + pos.type);
-        }
+        that.setPosition(posname, deserializePosition(pos));
     });    
 };
 
@@ -468,7 +444,7 @@ function applyLayout(containerDimensions, layout, v) {
 // library interface
 exports.Layout = Layout;
 exports.applyLayout = applyLayout;
-exports.FlowPosition = FlowPosition;
 exports.AbsolutePosition = AbsolutePosition;
 exports.TransformPosition = TransformPosition;
 exports.convertScaleToSize = convertScaleToSize;
+exports.deserializePosition = deserializePosition;

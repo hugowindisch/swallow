@@ -38,7 +38,7 @@
     background-color: transparent;
 }
 .editor_SelectionBox_selectionArea {
-    background-color: green;
+    border: dotted 1px blue;
 }
 .editor_SelectionBox_knob {
     background-color: orange;

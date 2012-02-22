@@ -104,6 +104,10 @@ function GroupViewer(config) {
         });
         group.doCommand(cg);
     });
+    this.selectionControlBox.on('preview', function (transform) {
+        that.previewSelectionTransformation(transform);
+    });
+    
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
 
@@ -138,7 +142,8 @@ GroupViewer.prototype.enableBoxSelection = function (
         startpos,
         endpos,
         matrix,
-        nmatrix;
+        nmatrix,
+        showMouseBox = true;
 
     function twoPositionsToMatrix(pos1, pos2) {
         var mat = glmatrix.mat4.identity();
@@ -172,27 +177,31 @@ GroupViewer.prototype.enableBoxSelection = function (
         delete this.resetBoxSelection;
     }
     function updateMouseBox(nmatrix) {
-        var zoomMat = that.zoomMat,
-            res = convertScaleToSize(mat4.multiply(zoomMat, nmatrix, mat4.create()));
-        if (!mouseBox) {
-            mouseBox = new (domvisual.DOMElement)({ "class": "editor_GroupViewer_mouseBox"});
-            decorations.addChild(mouseBox, 'mouseBox');
+        if (showMouseBox) {
+            var zoomMat = that.zoomMat,
+                res = convertScaleToSize(mat4.multiply(zoomMat, nmatrix, mat4.create()));
+            if (!mouseBox) {
+                mouseBox = new (domvisual.DOMElement)({ "class": "editor_GroupViewer_mouseBox"});
+                decorations.addChild(mouseBox, 'mouseBox');
+            }
+            mouseBox.setDimensions(res.dimensions);
+            mouseBox.setMatrix(res.matrix);
         }
-        mouseBox.setDimensions(res.dimensions);
-        mouseBox.setMatrix(res.matrix);
     }
     function removeMouseBox() {
-        decorations.removeChild(mouseBox);
-        mouseBox = null;
+        if (mouseBox) {
+            decorations.removeChild(mouseBox);
+            mouseBox = null;
+        }
     }
     // we want to add mouse events to the decoration child
     function mouseMove(evt) {
         evt.preventDefault();
         var mat = visuals.getFullDisplayMatrix(true);
-        endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
+        endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]);
         matrix = twoPositionsToMatrix(startpos, endpos);
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);
-        updateMouseBox(nmatrix);
+        updateMouseBox(nmatrix);        
         if (selection) {
             selection(matrix, nmatrix, startpos, endpos);
         }
@@ -214,10 +223,10 @@ GroupViewer.prototype.enableBoxSelection = function (
         decorations.once('mouseupc', mouseUp);
         matrix = twoPositionsToMatrix(startpos, endpos);
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);        
-        updateMouseBox(nmatrix);
         if (selectionStart) {
-            selectionStart(matrix, nmatrix, startpos, endpos);
+            showMouseBox = selectionStart(matrix, nmatrix, startpos, endpos);
         }
+        updateMouseBox(nmatrix);
     }
     
     // setup box selection
@@ -227,6 +236,30 @@ GroupViewer.prototype.enableBoxSelection = function (
             decorations.removeListener('mousedown', mouseDown);
         };
     }
+};
+
+/**
+    Previews a transoformation of the selection.
+*/
+GroupViewer.prototype.previewSelectionTransformation = function (transform) {
+    var documentData = this.documentData,
+        children = this.children;
+    forEachProperty(this.selection, function (s, n) {
+        var vis = children.visuals.children[n],
+            pos,
+            newpos = {},
+            ch = documentData.children[n];
+            
+        if (vis) {
+            pos = documentData.positions[ch.position];
+            if (pos) {
+                newpos.type = pos.type;
+                newpos.snapping = pos.snapping;
+                newpos.matrix = mat4.multiply(transform, pos.matrix, mat4.create());
+                vis.setPosition(visual.deserializePosition(newpos));
+            }
+        }
+    });
 };
 
 /**
@@ -269,6 +302,22 @@ GroupViewer.prototype.popZoom = function () {
         this.updateAll();
     }
 };
+
+/**
+    Checks if there is a selected item under the mouse.
+*/
+GroupViewer.prototype.selectedItemAtPosition = function (position) {
+    var rp = [position, position],
+        ret = false;
+    forEachProperty(this.selection, function (it) {
+        var r = getEnclosingRect(it.matrix);
+        if (intersects(r, rp)) {
+            ret = true;
+        }
+    });
+    return ret;
+};
+
 
 /**
     Selection.

@@ -74,14 +74,57 @@ function setupToolMenu(editor) {
         'Select',
         function () {
             setModal(this);
+            var dragging = false;
             viewer.enableBoxSelection(
-                null,
-                null,
                 function (mat, nmat) {
-                    // this should be determined by the keys
-                    viewer.clearSelection(nmat);
-                    viewer.selectByMatrix(nmat);                    
-                    viewer.updateSelectionControlBox();
+                    if (viewer.selectedItemAtPosition([mat[12], mat[13], mat[14]])) {
+                        console.log('!!!!!!!!!!');
+                        dragging = true;
+                    } else {
+                        dragging = false;
+                    }
+                    return !dragging;
+                },
+                function (mat, nmat) {
+                    var transform;                    
+                    if (dragging) {
+                        // we want to move the selection.
+                        transform = mat4.translate(
+                            mat4.identity(),
+                            [mat[0], mat[5], mat[10]]
+                        );
+                        viewer.previewSelectionTransformation(transform);
+                    }
+                },
+                function (mat, nmat) {
+                    var transform,
+                        selection,
+                        cmdGroup,
+                        group;
+                    if (dragging) {
+                        group = viewer.getGroup();
+                        // we want to move the selection.
+                        transform = mat4.translate(
+                            mat4.identity(),
+                            [mat[0], mat[5], mat[10]]
+                        );
+                        selection = viewer.getSelection();
+                        cmdGroup = group.cmdCommandGroup('moveSelection', 'Move Selection');
+                        
+
+                        // for everything in the selection
+                        forEachProperty(selection, function (p, n) {
+                            cmdGroup.add(group.cmdTransformPosition(n, transform));
+                        });
+                        // do the combined command
+                        group.doCommand(cmdGroup);
+                        
+                    } else {                    
+                        // this should be determined by the keys
+                        viewer.clearSelection(nmat);
+                        viewer.selectByMatrix(nmat);                    
+                        viewer.updateSelectionControlBox();
+                    }
                 }
             );
         },

@@ -590,11 +590,12 @@ exports.getVisualNames = function () {
 };
 exports.Layout = position.Layout;
 exports.applyLayout = position.applyLayout;
-exports.FlowPosition = position.FlowPosition;
 exports.AbsolutePosition = position.AbsolutePosition;
 exports.TransformPosition = position.TransformPosition;
+exports.deserializePosition = position.deserializePosition;
 exports.matrixIsTranslateOnly = matrixIsTranslateOnly;
 exports.convertScaleToSize = position.convertScaleToSize;
 exports.forVisualAndAllChildrenDeep = forVisualAndAllChildrenDeep;
 exports.Theme = themes.Theme;
 exports.update = dirty.update;
+
