@@ -63,11 +63,31 @@ function Group(documentData) {
     documentData = documentData || { positions: {}, children: {}, dimensions: [300, 300, 0]};
     this.commandChain = new CommandChain();
     this.documentData = documentData;
+    this.normalizeChildrenOrders();
 }
 // these are getters (stuff that inspect the Group model)
 Group.prototype.getCommandChain = function () {
     return this.commandChain;
 };
+
+Group.prototype.normalizeChildrenOrders = function () {
+    var d = [], i, l, di, children = this.documentData.children;
+    // collect
+    forEachProperty(children, function (o, name) {
+        d.push({name: name, order: o.order});
+    });
+    // sort
+    d.sort(function (o1, o2) {
+        return o1.order - o2.order;
+    });
+    // redistribute
+    l = d.length;
+    for (i = 0; i < l; i += 1) {
+        di = d[i];
+        children[di.name].order = i;
+    }
+};
+
 // makes a name unique
 function makeUniqueName(radical, test) {
     var re = /[0-9]$/,
@@ -298,7 +318,7 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
     var children = this.documentData.children,
         nom = {};
     forEachProperty(children, function (c, name) {
-        if (nameOrderMap[name]) {
+        if (nameOrderMap[name] !== undefined) {
             nom[name] = c.order;
         }
     });
@@ -306,7 +326,7 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
         function () {
             var child;
             forEachProperty(nameOrderMap, function (order, n) {
-                child = children[name];
+                child = children[n];
                 if (child) {
                     child.order = order;
                 }
@@ -315,7 +335,7 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
         function () {
             var child;
             forEachProperty(nom, function (order, n) {
-                child = children[name];
+                child = children[n];
                 if (child) {
                     child.order = order;
                 }
@@ -350,70 +370,5 @@ Group.prototype.cmdSetDimensions = function (dimensions) {
     );
 };
 
-
-/**
-    The master document is consituted of many different groups.
-*/
-// we don't want this. we will be editing one group at a time
-// that's it one group, one file nothing more.
-// there will be many group files in a project
-/*function Document() {
-    this.commandChain = new (edit.CommandChain)();
-    this.documentData = {};
-}
-// these are getters
-Document.prototype.getCommandChain = function () {
-    return this.commandChain;
-};
-// these are the commands (stuff that actually modifies the Group model)
-Document.prototype.cmdAddGroup = function (name, group) {
-    var that = this;
-    this.commandChain.doCommand(
-        function () {
-            var documentData = that.documentData;
-            documentData.groups[name] = group;
-        },
-        function () {
-            var documentData = that.documentData;
-            delete documentData.groups[name];
-        },
-        "Add group " + name,
-        { model: this, name: name, group: group }
-    );
-};
-Document.prototype.cmdRemoveGroup = function (name) {
-    var that = this,
-        group;
-    this.commandChain.doCommand(
-        function () {            
-            var documentData = that.documentData;
-            group = documentData.groups[name];
-            delete documentData.groups[name];
-        },
-        function () {
-            var documentData = that.documentData;
-            documentData.groups[name] = group;
-        },
-        "Remove group " + name,
-        { model: this, name: name, group: group }
-    );
-};
-Document.prototype.cmdRenameGroup = function (name, newname) {
-    var that = this;
-    this.commandChain.doCommand(
-        function () {
-            var documentData = that.documentData;
-            documentData.groups[newname] = documentData.groups[name];
-            delete documentData.groups[name];
-        },
-        function () {
-            var documentData = that.documentData;
-            documentData.groups[name] = documentData.groups[newname];
-            delete documentData.groups[newname];
-        },
-        "Rename group " + name + ' as ' + newname,
-        { model: this, name: name, newname: newname }
-    );    
-}; */
 exports.Group = Group;
 

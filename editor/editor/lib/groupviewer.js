@@ -518,7 +518,7 @@ GroupViewer.prototype.updateAll = function () {
         zoomTranslate = [],
         zoomMatNoTranslate = mat4.create(zoomMat),
         extendedDimensions = vec3.create(this.documentData.dimensions);
-        
+
     // remove the translation from the zoom matrix
     zoomTranslate = [zoomMat[12], zoomMat[13], zoomMat[14]];
     zoomMat[12] = 0;

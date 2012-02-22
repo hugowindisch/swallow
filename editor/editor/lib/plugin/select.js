@@ -402,7 +402,7 @@ function setupObjectMenu(editor) {
         l = d.length;
         for (i = 0; i < l; i += 1) {
             di = d[i];
-            res[di.name] = di.order;
+            res[di.name] = i;
         }
         return res;
     }
@@ -475,7 +475,7 @@ function setupObjectMenu(editor) {
                 }
                 newOrders[name] = no;
             });
-            // normalize depths
+            // normalize depths            
             newOrders = normalizeDepths(newOrders);
             // apply orders
             group.doCommand(group.cmdSetVisualOrder(newOrders, 'Move To Top'));
