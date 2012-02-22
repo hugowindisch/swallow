@@ -140,6 +140,7 @@ function setupToolMenu(editor) {
             return selectedTool === this;
         }
     );
+    
     // draw tool (box)
     drawTool = new MenuItem(
         'Draw',
@@ -180,7 +181,9 @@ function setupToolMenu(editor) {
                 null,
                 function (mat, nmat) {
                     viewer.pushZoom(nmat);
-                    setModal(prevSel);
+                    if (prevSel) {
+                        prevSel.action();
+                    }
                 }
             );
         },
@@ -204,6 +207,7 @@ function setupToolMenu(editor) {
         true
     );
     
+    selectTool.action();
     menus.tool.push(
         selectTool, 
         drawTool, 
