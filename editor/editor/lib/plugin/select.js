@@ -81,7 +81,6 @@ function setupToolMenu(editor) {
             viewer.enableBoxSelection(
                 function (mat, nmat) {
                     if (viewer.selectedItemAtPosition([mat[12], mat[13], mat[14]])) {
-                        console.log('!!!!!!!!!!');
                         dragging = true;
                     } else {
                         dragging = false;

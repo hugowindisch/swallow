@@ -304,34 +304,60 @@ GroupViewer.prototype.popZoom = function () {
 };
 
 /**
-    Checks if there is a selected item under the mouse.
+    Checks if there is an item under the mouse.
 */
-GroupViewer.prototype.selectedItemAtPosition = function (position) {
-    var rp = [position, position],
-        ret = false;
-    forEachProperty(this.selection, function (it) {
-        var r = getEnclosingRect(it.matrix);
+GroupViewer.prototype.itemAtPosition = function (position, subset) {
+    var documentData = this.documentData,
+        children = documentData.children,
+        rp = [position, position],
+        ret = null,
+        retCh = null;
+    subset = subset || documentData.positions;
+    forEachProperty(subset, function (it, name) {
+        var r = getEnclosingRect(it.matrix),
+            ch;
         if (intersects(r, rp)) {
-            ret = true;
+            ch = children[name];
+            if ((retCh === null) || ((ch !== undefined) && ch.order > retCh.order)) {
+                ret = name;
+                retCh = ch;
+            }
         }
     });
     return ret;
 };
 
+/**
+    Checks if there is a selected item under the mouse.
+*/
+GroupViewer.prototype.selectedItemAtPosition = function (position) {
+    return this.itemAtPosition(position, this.selection);
+};
 
 /**
     Selection.
 */
 GroupViewer.prototype.selectByMatrix = function (matrix) {
     var documentData = this.documentData,
-        selrect = getEnclosingRect(matrix),
+        selrect,
+        sel,
         selection = this.selection;
-    forEachProperty(documentData.positions, function (c, name) {
-        var r = getEnclosingRect(c.matrix);
-        if (intersects(selrect, r)) {
-            selection[name] = c;
+        
+    // select a point
+    if (matrix[0] === 0 && matrix[5] === 0 && matrix[10] === 0) {
+        sel = this.itemAtPosition([matrix[12], matrix[13], matrix[14]]);
+        if (sel) {
+            selection[sel] = documentData.positions[sel];
         }
-    });
+    } else {
+        selrect = getEnclosingRect(matrix);
+        forEachProperty(documentData.positions, function (c, name) {
+            var r = getEnclosingRect(c.matrix);
+            if (intersects(selrect, r)) {
+                selection[name] = c;
+            }
+        });
+    }
 };
 
 /**
@@ -348,6 +374,7 @@ GroupViewer.prototype.removeFromSelection = function (name) {
 };
 GroupViewer.prototype.clearSelection = function (name) {
     this.selection = {};
+
 };
 GroupViewer.prototype.getSelection = function () {
     return this.selection;
