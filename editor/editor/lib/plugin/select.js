@@ -11,6 +11,7 @@ var baseui = require('baseui'),
     vec3 = glmatrix.vec3,
     forEachProperty = utils.forEachProperty,
     deepCopy = utils.deepCopy,
+    Accelerator = baseui.Accelerator,
     MenuItem = baseui.MenuItem;
 
 function getCommandChain(viewer) {
@@ -37,9 +38,11 @@ function setupFileMenu(editor) {
 
     saveTool = new MenuItem(
         'Save',
-        function () {
+        function () {        
             editor.saveGroup();
-        }
+        },
+        null,
+        new Accelerator('VK_S', true)
     );
     menus.file.push(
         saveTool
@@ -235,7 +238,7 @@ function setupEditMenu(editor) {
             getCommandChain(viewer).undo();
         },
         null,
-        null,
+        new Accelerator('VK_Z', true),
         null,
         function () {
             var chain = getCommandChain(viewer),
@@ -254,7 +257,7 @@ function setupEditMenu(editor) {
             getCommandChain(viewer).redo();
         },
         null,
-        null,
+        new Accelerator('VK_Y', true),
         null,
         function () {
             var chain = getCommandChain(viewer),
@@ -291,7 +294,7 @@ function setupEditMenu(editor) {
             deleteSelected();
         },
         null,
-        null,
+        new Accelerator('VK_X', true),
         null,
         selectionNotEmpty
     );
@@ -302,7 +305,7 @@ function setupEditMenu(editor) {
             copy();
         },
         null,
-        null,
+        new Accelerator('VK_C', true),
         null,
         selectionNotEmpty
     );
@@ -339,7 +342,7 @@ function setupEditMenu(editor) {
             group.doCommand(cmdGroup);
         },
         null,
-        null,
+        new Accelerator('VK_V', true),
         null,
         function () {
             return clipboard !== null;
@@ -351,7 +354,7 @@ function setupEditMenu(editor) {
             deleteSelected();
         },
         null,
-        null,
+        new Accelerator('VK_D', true),
         null,
         selectionNotEmpty
     );

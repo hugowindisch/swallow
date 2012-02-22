@@ -156,10 +156,10 @@ function addS(s, s2) {
 
 function decorate(
     s, 
-    altk,
-    shiftk,
     ctrlk,
-    metak
+    altk,
+    metak,
+    shiftk
 ) {
     var r = '';
     if (ctrlk) {
@@ -176,26 +176,25 @@ function decorate(
     }
     return addS(r, s);
 }
-
 function decorateVk(
     vkCode,
-    altk,
-    shiftk,
     ctrlk,
-    metak
+    altk,
+    metak,
+    shiftk
 ) {
-    return decorate(vkCode, altk, shiftk, ctrlk, metak);
+    return decorate(vkCode, ctrlk, altk, metak, shiftk);
 }
 
 // this should probably be moved in a more general place
 function makeKeyString(
     vkCode,
-    altk,
-    shiftk,
     ctrlk,
-    metak
+    altk,
+    metak,
+    shiftk
 ) {
-    return decorate(vkToText[vkCode], altk, shiftk, ctrlk, metak);
+    return decorate(vkToText[vkCode], ctrlk, altk, metak, shiftk);
 }
 exports.makeKeyString = makeKeyString;
 exports.decorateVk = decorateVk;

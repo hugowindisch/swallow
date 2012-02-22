@@ -28,17 +28,17 @@ function FilterKeyEvent(evt) {
         
     ret.keyString = makeKeyString(
         vk,
-        evt.altKey,
-        evt.shiftKey,
         evt.ctrlKey,
-        evt.metaKey
+        evt.altKey,
+        evt.metaKey,
+        evt.shiftKey
     );
     ret.decoratedVk = decorateVk(
         vk,
-        evt.altKey,
-        evt.shiftKey,
         evt.ctrlKey,
-        evt.metaKey
+        evt.altKey,
+        evt.metaKey,
+        evt.shiftKey
     );
     ret.preventDefault = function () { evt.preventDefault(); };
     ret.stopPropagation = function () { evt.stopPropagation(); };

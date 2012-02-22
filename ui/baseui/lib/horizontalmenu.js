@@ -104,6 +104,14 @@ HorizontalMenu.prototype.handleKey = function (evt) {
 */
 HorizontalMenu.prototype.findAccelerators = function (evt) {
     var accelerators = {};
+    
+    function geAccelFunction(it) {
+        return function () {
+            if (it.getEnabled()) {
+                it.action();
+            }
+        };
+    }
 
     function find(items) {
         var i, l = items.length, it, accel, subitems;
@@ -112,7 +120,7 @@ HorizontalMenu.prototype.findAccelerators = function (evt) {
             if (it && it.getEnabled()) {
                 accel = it.getAccelerator();
                 if (accel) {
-                    accelerators[accel.toDecoratedVk()] = it.action;
+                    accelerators[accel.toDecoratedVk()] = geAccelFunction(it);
                 }
                 subitems = it.getSubMenu();
                 if (subitems) {

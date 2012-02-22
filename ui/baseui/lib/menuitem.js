@@ -12,10 +12,10 @@ var utils = require('utils'),
 // accelerator
 function Accelerator(
     vkCode,
-    altk,
-    shiftk,
     ctrlk,
-    metak
+    altk,
+    metak,
+    shiftk
 ) {
     this.vkCode = vkCode;
     this.altk = Boolean(altk);
@@ -24,10 +24,10 @@ function Accelerator(
     this.metak = Boolean(metak);
 }
 Accelerator.prototype.toKeyString = function () {
-    return makeKeyString(this.vkCode, this.altk, this.shiftk, this.ctrlk, this.metak);
+    return makeKeyString(this.vkCode, this.ctrlk, this.altk, this.metak, this.shiftk);
 };
 Accelerator.prototype.toDecoratedVk = function () {
-    return decorateVk(this.vkCode, this.altk, this.shiftk, this.ctrlk, this.metak);  
+    return decorateVk(this.vkCode, this.ctrlk, this.altk, this.metak, this.shiftk);  
 };
         
 // it is fundamentally here that internationalization will be implemented
