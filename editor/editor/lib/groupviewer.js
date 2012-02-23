@@ -295,6 +295,14 @@ GroupViewer.prototype.getZoomInMatrix = function (position) {
 };
 
 /**
+    
+*/
+GroupViewer.prototype.resetScroll = function () {
+    var zoomMat = this.zoomStack[this.zoomStack.length - 1],
+        zoomTranslate = [zoomMat[12], zoomMat[13], zoomMat[14]];
+    this.setScroll(zoomTranslate);
+};
+/**
     Zoom to a given position.
 */
 GroupViewer.prototype.pushZoom = function (matrix) {
@@ -324,11 +332,13 @@ GroupViewer.prototype.pushZoom = function (matrix) {
     mat[14] *= z;
     this.zoomStack.push(mat);
     this.updateAll();
+    this.resetScroll();
 };
 GroupViewer.prototype.popZoom = function () {
     if (this.zoomStack.length > 1) {
         this.zoomStack.pop();
         this.updateAll();
+        this.resetScroll();
     }
 };
 
@@ -529,6 +539,7 @@ GroupViewer.prototype.setGroup = function (group) {
     this.zoomStack = [mat4.translate(mat4.identity(), [borderPix, borderPix, 0], mat4.create())];
     // regenerate everything
     this.updateAll();
+    this.resetScroll();
 };
 
 /**
@@ -577,7 +588,7 @@ GroupViewer.prototype.updateAll = function () {
         that = this,
         borderPix = this.groupBorderPix,
         zoomMat = mat4.create(this.zoomStack[this.zoomStack.length - 1]),
-        zoomTranslate = [],
+        zoomTranslate,
         zoomMatNoTranslate = mat4.create(zoomMat),
         extendedDimensions = vec3.create(this.documentData.dimensions);
 
@@ -634,8 +645,6 @@ GroupViewer.prototype.updateAll = function () {
     
     // selection control box
     this.updateSelectionControlBox();
-
-    this.setScroll(zoomTranslate);
 };
 
 
