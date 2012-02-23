@@ -536,7 +536,10 @@ GroupViewer.prototype.setGroup = function (group) {
         commandChain.removeListener('redo', onDo);
     };
     
-    this.zoomStack = [mat4.translate(mat4.identity(), [borderPix, borderPix, 0], mat4.create())];
+    this.zoomStack = [
+        mat4.scale(mat4.identity(), [0.25, 0.25, 1], mat4.create()),
+        mat4.translate(mat4.identity(), [borderPix - 20, borderPix - 20, 0], mat4.create())
+    ];
     // regenerate everything
     this.updateAll();
     this.resetScroll();
