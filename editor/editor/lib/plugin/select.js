@@ -71,6 +71,21 @@ function setupToolMenu(editor) {
         }
     }
 
+    function getTransform(xl, constrain) {
+        var translate = vec3.create(xl),
+            abs = Math.abs;
+        if (constrain) {
+            if (abs(translate[0]) > abs(translate[1])) {
+                translate[1] = 0;
+            } else {
+                translate[0] = 0;
+            }
+        }
+        return mat4.translate(
+            mat4.identity(),
+            translate
+        );
+    }
     
     // select tool (arrow)
     selectTool = new MenuItem(
@@ -87,15 +102,14 @@ function setupToolMenu(editor) {
                     }
                     return !dragging;
                 },
-                function (mat, nmat) {
-                    var transform;                    
+                function (mat, nmat, startpos, endpos, evt) {
                     if (dragging) {
-                        // we want to move the selection.
-                        transform = mat4.translate(
-                            mat4.identity(),
-                            [mat[0], mat[5], mat[10]]
+                        viewer.previewSelectionTransformation(
+                            getTransform( 
+                                [mat[0], mat[5], mat[10]],
+                                evt.ctrlKey
+                            )
                         );
-                        viewer.previewSelectionTransformation(transform);
                     }
                 },
                 function (mat, nmat, startpos, endpos, evt) {
@@ -106,9 +120,9 @@ function setupToolMenu(editor) {
                     if (dragging) {
                         group = viewer.getGroup();
                         // we want to move the selection.
-                        transform = mat4.translate(
-                            mat4.identity(),
-                            [mat[0], mat[5], mat[10]]
+                        transform = getTransform(
+                            [mat[0], mat[5], mat[10]],
+                            evt.ctrlKey
                         );
                         selection = viewer.getSelection();
                         cmdGroup = group.cmdCommandGroup('moveSelection', 'Move Selection');

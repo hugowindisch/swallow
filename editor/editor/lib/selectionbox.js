@@ -42,11 +42,10 @@ function SelectionBox(config) {
                 evt.stopPropagation();
                 endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
                 var delta = vec3.subtract(startpos, endpos, vec3.create()),
-                    newdim = vec3.add(dimensions, delta),
                     newmat,
                     res;
 
-                transform = fcn(matrix, delta);
+                transform = fcn(matrix, delta, dimensions, evt.shiftKey, evt.ctrlKey);
                 newmat = mat4.multiply(transform, matrix, mat4.create());
                 that.updateRepresentation(newmat);
                 that.emit('preview', transform);
@@ -63,8 +62,9 @@ function SelectionBox(config) {
         });
     }
 
-    makeHandler(children.topLeft, function (matrix, delta) {
-        var transform = mat4.identity();
+    makeHandler(children.topLeft, function (matrix, delta, dimensions, symmetrical, constrained) {
+        var transform = mat4.identity(),
+            m = symmetrical ? 2 : 1;
             
         mat4.translate(transform, [
             matrix[12] - delta[0],
@@ -72,8 +72,8 @@ function SelectionBox(config) {
             matrix[14] - delta[2]
         ]);
         mat4.scale(transform, [
-            (matrix[0] + delta[0]) / matrix[0],
-            (matrix[5] + delta[1]) / matrix[5],
+            (matrix[0] + delta[0] * m) / matrix[0],
+            (matrix[5] + delta[1] * m) / matrix[5],
             (matrix[10] + delta[2]) / matrix[10]
         ]);
         mat4.translate(transform, [-matrix[12], -matrix[13], -matrix[14]]);
@@ -81,17 +81,18 @@ function SelectionBox(config) {
         return transform;
     });
 
-    makeHandler(children.topRight, function (matrix, delta) {
-        var transform = mat4.identity();
+    makeHandler(children.topRight, function (matrix, delta, dimensions, symmetrical, constrained) {
+        var transform = mat4.identity(),
+            m = symmetrical ? 2 : 1;
             
         mat4.translate(transform, [
-            matrix[12],
+            matrix[12] + delta[0] * (m - 1),
             matrix[13] - delta[1],
             matrix[14] - delta[2]
         ]);
         mat4.scale(transform, [
-            (matrix[0] - delta[0]) / matrix[0],
-            (matrix[5] + delta[1]) / matrix[5],
+            (matrix[0] - delta[0] * m) / matrix[0],
+            (matrix[5] + delta[1] * m) / matrix[5],
             (matrix[10] + delta[2]) / matrix[10]
         ]);
         mat4.translate(transform, [-matrix[12], -matrix[13], -matrix[14]]);
@@ -99,17 +100,34 @@ function SelectionBox(config) {
         return transform;
     });
 
-    makeHandler(children.bottomRight, function (matrix, delta) {
-        var transform = mat4.identity();
-            
+    makeHandler(children.bottomRight, function (matrix, delta, dimensions, symmetrical, constrained) {
+        var transform = mat4.identity(),
+            m = symmetrical ? 2 : 1,
+            dd;
+        
+        // this is quite ugly
+        // maybe this could be done better by computing rects...
+        if (constrained) {
+            delta = vec3.create(delta);
+            dd = [
+                delta[1] * dimensions[0] / dimensions[1],
+                delta[0] * dimensions[1] / dimensions[0]
+            ];
+            if (dd[0] > delta[0]) {
+                delta[0] = dd[0];
+            } else {
+                delta[1] = dd[1];
+            }
+        }
+        
         mat4.translate(transform, [
-            matrix[12],
-            matrix[13],
+            matrix[12] + delta[0] * (m - 1),
+            matrix[13] + delta[1] * (m - 1),
             matrix[14] - delta[2]
         ]);
         mat4.scale(transform, [
-            (matrix[0] - delta[0]) / matrix[0],
-            (matrix[5] - delta[1]) / matrix[5],
+            (matrix[0] - delta[0] * m) / matrix[0],
+            (matrix[5] - delta[1] * m) / matrix[5],
             (matrix[10] + delta[2]) / matrix[10]
         ]);
         mat4.translate(transform, [-matrix[12], -matrix[13], -matrix[14]]);
@@ -117,17 +135,18 @@ function SelectionBox(config) {
         return transform;
     });
 
-    makeHandler(children.bottomLeft, function (matrix, delta) {
-        var transform = mat4.identity();
+    makeHandler(children.bottomLeft, function (matrix, delta, dimensions, symmetrical, constrained) {
+        var transform = mat4.identity(),
+            m = symmetrical ? 2 : 1;
             
         mat4.translate(transform, [
             matrix[12] - delta[0],
-            matrix[13],
+            matrix[13] + delta[1] * (m - 1),
             matrix[14] - delta[2]
         ]);
         mat4.scale(transform, [
-            (matrix[0] + delta[0]) / matrix[0],
-            (matrix[5] - delta[1]) / matrix[5],
+            (matrix[0] + delta[0] * m) / matrix[0],
+            (matrix[5] - delta[1] * m) / matrix[5],
             (matrix[10] + delta[2]) / matrix[10]
         ]);
         mat4.translate(transform, [-matrix[12], -matrix[13], -matrix[14]]);
