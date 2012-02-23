@@ -224,11 +224,21 @@ Group.prototype.cmdRenamePosition = function (name, newname) {
         function () {
             var documentData = that.documentData;
             documentData.positions[newname] = documentData.positions[name];
+            forEachProperty(documentData.children, function (c) {
+                if (c.position === name) {
+                    c.position = newname;
+                }
+            });
             delete documentData.positions[name];
         },
         function () {
             var documentData = that.documentData;
             documentData.positions[name] = documentData.positions[newname];
+            forEachProperty(documentData.children, function (c) {
+                if (c.position === newname) {
+                    c.position = name;
+                }
+            });
             delete documentData.positions[newname];
         },
         'cmdRenamePosition',

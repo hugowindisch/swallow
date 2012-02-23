@@ -241,50 +241,70 @@ exports.definition = {
             }
         },
         SelectionInfo: {
-            dimensions: [400, 50, 0],
+            dimensions: [400, 90, 0],
             positions: {
-                xLabel: {
+                nameLabel: {
                     type: "AbsolutePosition",
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
+                xLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
                 yLabel: {
                     type: "AbsolutePosition",
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   105, 5, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 30, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 wLabel: {
                     type: "AbsolutePosition",
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 hLabel: {
                     type: "AbsolutePosition",
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   105, 30, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 55, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                name: {
+                    type: "AbsolutePosition",
+                    matrix: [ 120, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 x: {
                     type: "AbsolutePosition",
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   35, 5, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 30, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 y: {
                     type: "AbsolutePosition",
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   135, 5, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 30, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 w: {
                     type: "AbsolutePosition",
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   35, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 h: {
                     type: "AbsolutePosition",
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   135, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
             },
             children: {
+                nameLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "nameLabel",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": "name:"
+                    }                                    
+                },
                 xLabel: {
                     factory: "baseui",
                     type: "Label",
@@ -323,6 +343,16 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "h:"
+                    }                
+                },
+                name: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "name",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": ""
                     }                
                 },
                 x: {

@@ -433,6 +433,9 @@ DOMInput.prototype.setText = function (text) {
 DOMInput.prototype.getText = function () {
     return this.element.value;
 };
+DOMInput.prototype.enable = function (enable) {
+    this.element.disabled = !enable;
+};
 DOMInput.prototype.getConfigurationSheet = function () {
     return { "class": {}, "style": {}, "text": {}, "type": {} };
 };

@@ -34,6 +34,13 @@ SelectionInfo.prototype.init = function (editor) {
         } else {
             container.setVisible(false);
         }
+        if (viewer.getSelectionLength() === 1) {
+            children.name.setText(viewer.getSelectedName());
+            children.name.enable(true);
+        } else {
+            children.name.setText('');
+            children.name.enable(false);
+        }
     }
     viewer.on('updateSelectionControlBox', update);
     viewer.on('previewSelectionRect', update);
@@ -78,6 +85,32 @@ SelectionInfo.prototype.init = function (editor) {
     children.y.on('change', selectionBoxChanged);
     children.w.on('change', selectionBoxChanged);
     children.h.on('change', selectionBoxChanged);
+    children.name.on('change', function () {
+        var txt = this.getText(),
+            group = viewer.getGroup(),
+            documentData = group.documentData,
+            selName = viewer.getSelectedName(),
+            cg;
+            
+        if (txt !== selName) {
+            if (documentData.positions[txt] === undefined && documentData.children[txt] === undefined) {
+                if (txt.length > 0) {
+                    cg = group.cmdCommandGroup('rename', 'Rename a group', { from: selName, to: txt });
+                    cg.add(group.cmdRenamePosition(selName, txt));
+                    if (documentData.children[selName]) {
+                        cg.add(group.cmdRenameVisual(selName, txt));
+                    }
+                    group.doCommand(cg);
+                } else {
+                    alert('empty name ' + txt);
+                }
+                
+            } else {
+                alert('name already taken ' + txt);
+            }
+        }
+        this.getText();
+    });
 
 };
 

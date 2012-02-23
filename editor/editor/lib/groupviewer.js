@@ -525,8 +525,15 @@ GroupViewer.prototype.setGroup = function (group) {
             that.clearSelection();
             that.addToSelection(hint.name);
             break;
-        case 'shutTheFuckUpJSLint':
-            break;
+        case 'rename':
+            if (hint) {
+                delete that.selection[hint.from];
+                that.selection[hint.to] = documentData.positions[hint.to];
+            } else {
+                throw new Error('Missing rename hint');
+            }
+            return; // skip the update all
+            
         }
         that.updateAll();
     }
