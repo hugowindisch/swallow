@@ -270,9 +270,38 @@ GroupViewer.prototype.getGroup = function () {
 };
 
 /**
+    Returns a zoom in matrix to a given point.
+*/
+GroupViewer.prototype.getZoomInMatrix = function (position) {
+    var zoomStack = this.zoomStack,
+        l = zoomStack.length,
+        topZoom = zoomStack[l - 1],
+        z = topZoom[0],
+        dimensions = this.dimensions,
+        z2 = z * 2,
+        zd = [
+            dimensions[0] / z2,
+            dimensions[1] / z2,
+            dimensions[2]
+        ],
+        m = mat4.create(topZoom);
+    m[0] = zd[0];
+    m[5] = zd[1];
+    m[10] = zd[2];
+    m[12] = position[0] - zd[0] / 2;
+    m[13] = position[1] - zd[1] / 2;
+    m[14] = position[2];
+    return m;
+};
+
+/**
     Zoom to a given position.
 */
 GroupViewer.prototype.pushZoom = function (matrix) {
+    // if the matrix is too small
+    if (!matrix || (matrix[0] < 10 || matrix[5] < 10)) {
+        matrix = this.getZoomInMatrix([matrix[12], matrix[13], matrix[14]]);
+    }    
     var documentData = this.documentData,
         borderPix = this.groupBorderPix,
         z = this.dimensions[0] / matrix[0],
