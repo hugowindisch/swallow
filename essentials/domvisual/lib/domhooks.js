@@ -118,6 +118,11 @@ hookMap = {
         getDOMElement: function (vis) {            
             return vis.element;
         }            
+    },
+    change: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
     }
 };
 

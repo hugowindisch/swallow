@@ -243,7 +243,8 @@ GroupViewer.prototype.enableBoxSelection = function (
 */
 GroupViewer.prototype.previewSelectionTransformation = function (transform) {
     var documentData = this.documentData,
-        children = this.children;
+        children = this.children,
+        selRect;
     forEachProperty(this.selection, function (s, n) {
         var vis = children.visuals.children[n],
             pos,
@@ -260,6 +261,9 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
             }
         }
     });
+    // update previews
+    this.emit('previewSelectionRect', this.getSelectionRect(transform));
+    
 };
 
 /**
@@ -462,11 +466,13 @@ GroupViewer.prototype.getSelectedName = function () {
     });
     return ret;
 };
-GroupViewer.prototype.getSelectionRect = function () {
+GroupViewer.prototype.getSelectionRect = function (optionalTransform) {
     var unionr;
+    optionalTransform = optionalTransform || mat4.identity();
     // compute the graphic size of the selection    
     forEachProperty(this.selection, function (box, name) {
-        var r = getEnclosingRect(box.matrix);
+        var matrix = mat4.multiply(optionalTransform, box.matrix, mat4.create()),
+            r = getEnclosingRect(matrix);
         if (!unionr) {
             unionr = r;
         } else {
@@ -561,7 +567,7 @@ GroupViewer.prototype.updateSelectionControlBox = function () {
         // the selection is empty, hide the box
         this.selectionControlBox.setVisible(false);
     }
-    this.emit('updateSelectionControlBox');
+    this.emit('updateSelectionControlBox', unionr);
 };
 /**
     Regenerates the whole thing.

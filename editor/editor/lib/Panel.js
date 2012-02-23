@@ -25,6 +25,8 @@ Panel.prototype.init = function (editor) {
         vlFolder = new (baseui.Folder)({ internal: vl, text: 'Content' });
     vlFolder.setHtmlFlowing({});
     siFolder.setHtmlFlowing({});
+    vlFolder.setExpanded(true);
+    siFolder.setExpanded(true);
     
     this.addChild(siFolder);
     this.addChild(vlFolder);

@@ -85,19 +85,27 @@ Folder.prototype.updateChildren = function () {
 };
 
 /**
+    Sets the expanded state.
+*/
+Folder.prototype.setExpanded = function (expanded) {
+    var children = this.children;
+    if (expanded !== this.expanded) {
+        this.expanded = expanded;
+        if (expanded) {
+            children.title.setStyle('expanded');
+            children.content.setVisible(true);
+        } else {
+            children.title.setStyle('contracted');
+            children.content.setVisible(false);
+        }
+    }
+};
+
+/**
     Toggles the expansion of the box.
 */
 Folder.prototype.toggleExpansion = function () {
-    var expanded = !this.expanded,
-        children = this.children;
-    this.expanded = expanded;
-    if (expanded) {
-        children.title.setStyle('expanded');
-        children.content.setVisible(true);
-    } else {
-        children.title.setStyle('contracted');
-        children.content.setVisible(false);
-    }
+    this.setExpanded(!this.expanded);
 };
 
 Folder.prototype.getConfigurationSheet = function () {
