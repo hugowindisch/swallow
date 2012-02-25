@@ -208,6 +208,16 @@ exports.definition = {
                     type: "AbsolutePosition",
                     matrix: [ 400, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 25, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
+                },
+                visualProperties: {
+                    type: "AbsolutePosition",
+                    matrix: [ 400, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   0, 50, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                configurationSheet: {
+                    type: "AbsolutePosition",
+                    matrix: [ 400, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 80, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
             },
             children: {
@@ -230,18 +240,18 @@ exports.definition = {
                     config: {
                         "text": "factory name"
                     }                
-                },
+                }
             }
         },
         VisualList: {
-            dimensions: [400, 400, 0],
+            dimensions: [390, 400, 0],
             positions: {
             },
             children: {
             }
         },
         SelectionInfo: {
-            dimensions: [400, 90, 0],
+            dimensions: [390, 90, 0],
             positions: {
                 nameLabel: {
                     type: "AbsolutePosition",
@@ -396,6 +406,33 @@ exports.definition = {
                     }                
                 },
             }
+        },
+        VisualProperties: {
+            dimensions: [390, 30, 0],
+            positions: {
+                scalingLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                }
+            },
+            children: {
+                scalingLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "scalingLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "resize:" // rescales / resizes
+                    }                
+                }
+            }
+        },
+        ConfigurationSheet: {
+            dimensions: [ 400, 1, 0],
+            positions: {},
+            children: {}
         }
     }
 };

@@ -316,20 +316,28 @@ Visual.prototype.addChild = function (child, name) {
     applyLayout(this.dimensions, this.layout, child);
 };
 Visual.prototype.removeChild = function (child) {
-    // we become a container
-    if (child.parent === this) {
-        delete this.children[child.name];
-        // you only have a name inside a parent
-        delete child.name;
-        // we must remove it from our array of children
-        // stay light
-        if (this.numChildren === 0) {
-            delete this.children;
-            delete this.numChildren;
+    // allow the use of a name
+    if (isString(child)) {
+        child = this.children[child];
+        if (!child) {
+            throw new Error('Unavailable child');
         }
-        child.parent = null;
-        setContainmentDepth(child, 0);
+    } else {
+        if (child.parent !== this) {
+            throw new Error('Invalid child');
+        }
     }
+    delete this.children[child.name];
+    // you only have a name inside a parent
+    delete child.name;
+    // we must remove it from our array of children
+    // stay light
+    if (this.numChildren === 0) {
+        delete this.children;
+        delete this.numChildren;
+    }
+    child.parent = null;
+    setContainmentDepth(child, 0);
 };
 Visual.prototype.removeAllChildren = function () {
     var that = this;
