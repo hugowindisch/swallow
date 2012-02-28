@@ -410,6 +410,47 @@ function serveVisualList(req, res, match, options) {
     }
 }
 
+function serveImageList(req, res, match, options) {
+    function ret404(err) {
+        res.writeHead(404);
+        if (err) {
+            res.write(String(err));
+        }
+        res.end();    
+    }
+
+    if (req.method === 'GET') {
+        findPackages(options.srcFolder, function (err, packages) {
+            if (err) {
+                return ret404(err);
+            }
+            var re = /([^\/\.]*)\.(jpg|png)$/,
+                // find all the visuals in the package
+                ret = [],
+                pack = packages[match[1]],
+                found = {};
+            pack.other.forEach(function (p) {
+                var m = re.exec(p),
+                    type;
+                if (m) {
+                    type = m[1];
+                    if (!found[type]) {
+                        found[type] = true;
+                        ret.push(pack.name + p.slice(pack.dirname.length));
+                    }
+                }
+            });
+            res.writeHead('200', {'Content-Type': mimeType.json});
+            res.write(JSON.stringify(ret, null, 4));
+            res.end();
+        });
+        
+    } else {
+        ret404();
+    }
+}
+
+// FIXME: ugly/absurd url mapping
 function getUrls(options) {
     var urls = meatgrinder.getUrls(options);
     urls.push({
@@ -422,6 +463,12 @@ function getUrls(options) {
         filter: /^\/visual\/([^\/]*)\/([^\/]*)$/, 
         handler: function (req, res, match) {
             serveVisual(req, res, match, options);
+        }
+    });
+    urls.push({
+        filter: /^\/image\/([^\/]*)$/, 
+        handler: function (req, res, match) {
+            serveImageList(req, res, match, options);
         }
     });
     return urls;
