@@ -123,7 +123,18 @@ hookMap = {
         getDOMElement: function (vis) {
             return vis.element;
         }
+    },
+    load: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
+    },
+    error: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
     }
+    
 };
 
 

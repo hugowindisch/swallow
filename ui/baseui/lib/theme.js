@@ -105,6 +105,13 @@ Theme.prototype.theme = new (require('visual').Theme)({
     },
     windowDarkerForeground: {
         data: [ 'baseui_theme_windowDarkerForeground', 'baseui_theme_outlineColor' ]
+    },
+    // image picker
+    imagePickerImage: {
+        data: [ 'baseui_theme_outlineTransparent' ] 
+    },
+    imagePickerImageSelected: {
+        data: [ 'baseui_theme_outlineColor' ] 
     }
 });
 exports.Theme = Theme;

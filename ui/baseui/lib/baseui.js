@@ -42,6 +42,7 @@ exports.HorizontalMenu = require('./horizontalmenu').HorizontalMenu;
 exports.Folder = require('./folder').Folder;
 exports.Theme = require('./theme').Theme;
 exports.Button = require('./button').Button;
+exports.ImagePicker = require('./imagepicker').ImagePicker;
 exports.MenuItem = menuitem.MenuItem;
 exports.Accelerator = menuitem.Accelerator;
 exports.Label = require('./label').Label;
@@ -99,8 +100,10 @@ exports.Input = require('./input').Input;
         label,
         input,
         folder,
+        imagePicker,
         MenuItem = exports.MenuItem,
         Folder = exports.Folder,
+        ImagePicker = exports.ImagePicker,
         HorizontalMenu = exports.HorizontalMenu,
         Accelerator = exports.Accelerator,
         Toolbar = exports.Toolbar,
@@ -171,6 +174,14 @@ exports.Input = require('./input').Input;
         folder.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 100, 500, 0]));
         folder.setDimensions([200, 200, 1]);
         root.addChild(folder, 'folder');
+        
+        // image picker
+        imagePicker = new ImagePicker({urls: [
+            'http://cdn1.iconfinder.com/data/icons/orb/16/10.png',
+            'http://cdn1.iconfinder.com/data/icons/orb/16/10.png']});
+        imagePicker.setMatrix(glmatrix.mat4.translate(glmatrix.mat4.identity(), [ 500, 500, 0]));
+        imagePicker.setDimensions([400, 40, 1]);
+        root.addChild(imagePicker, 'imagePicker');
 
         // go!        
         domvisual.createFullScreenApplication(root);

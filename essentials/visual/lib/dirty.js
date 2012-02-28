@@ -100,13 +100,21 @@ DirtyList.prototype.update = function () {
 
 var dirty = new DirtyList();
 exports.setDirty = function (o, why) {
-    dirty.setDirty(o, why);
+    dirty.setDirty.apply(dirty, arguments);
 };
 exports.update = function () {
     dirty.update();
 };
 exports.setChildrenDirty = function (o, why) {
+    var i,
+        l = arguments.length,
+        args;
+    for (i = 0; i < l; i += 1) {
+        args[i] = arguments[i];   
+    }
+
     forEachProperty(o.children, function (c) {
-        dirty.setDirty(c, why);
+        args[0] = c;
+        dirty.setDirty.apply(dirty, args);
     });
 };

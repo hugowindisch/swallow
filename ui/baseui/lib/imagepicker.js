@@ -1,0 +1,100 @@
+/**
+    imagepicker.js
+    Copyright (c) Hugo Windisch 2012 All Rights Reserved
+*/
+var visual = require('visual'),
+    domvisual = require('domvisual'),
+    utils = require('utils'),
+    glmatrix = require('glmatrix'),
+    mat4 = glmatrix.mat4,
+    vec3 = glmatrix.vec3,
+    isFunction = utils.isFunction;
+
+function ImagePicker(config) {
+    domvisual.DOMElement.call(this, config);
+    this.setChildrenClipping('hscroll');
+}
+
+ImagePicker.prototype = new (domvisual.DOMElement)();
+
+ImagePicker.prototype.theme = new (visual.Theme)({
+    image: {
+        basedOn: [
+            // take the line styles from here
+            { factory: 'baseui', type: 'Theme', style: 'imagePickerImage' }
+        ]
+    },
+    imageSelected: {
+        basedOn: [
+            // take the line styles from here
+            { factory: 'baseui', type: 'Theme', style: 'imagePickerImageSelected' }
+        ]
+    }
+});
+
+ImagePicker.prototype.setUrls = function (urls) {
+    if (this.imageUrls !== urls) {
+        this.imageUrls = urls;
+        this.selected = null;
+        this.updateChildren();
+    }
+};
+
+ImagePicker.prototype.getConfigurationSheet = function () {
+    return { urls: {} }; 
+};
+
+ImagePicker.prototype.select = function (n) {
+    if (this.selected !== n) {
+        if (this.selected !== null) {
+            this.cells[this.selected].setStyle('image');
+        }
+        this.selected = n;
+        if (this.selected !== null) {
+            this.cells[this.selected].setStyle('imageSelected');
+        }
+    }
+};
+
+ImagePicker.prototype.updateChildren = function () {
+    var urls = this.imageUrls,
+        i,
+        l = urls.length,
+        url,
+        c,
+        table,
+        row,
+        cell,
+        vert = 40,
+        that = this;
+    this.cells = [];
+    this.removeAllChildren();
+    table = this.addHtmlChild('table', '', null, 'table');
+    row = table.addHtmlChild('tr', '', null, 'row');
+    
+    function onLoad() {
+        var imageDimensions = this.getComputedDimensions();
+        this.setHtmlFlowing({
+            width: (vert * imageDimensions[0] / imageDimensions[1]) + 'px',
+            height: vert + 'px'
+        });
+    }
+    function getOnClick(n) {
+        return function () {
+            that.select(n);
+        };
+    }
+    for (i = 0; i < l; i += 1) {
+        url = urls[i];
+        cell = row.addHtmlChild('td', '');
+        this.cells.push(cell);
+        cell.setStyle('image');
+        c = new (domvisual.DOMImg)({url: url});
+        c.setDimensions([20, 20, 0]);
+        cell.addChild(c, 'image ' + i);
+        c.once('load', onLoad);
+        c.on('click', getOnClick(i));
+    }
+};
+
+exports.ImagePicker = ImagePicker;
