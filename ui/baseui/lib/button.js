@@ -96,7 +96,14 @@ Button.prototype.theme = new (visual.Theme)({
     }
 });
 Button.prototype.getConfigurationSheet = function () {
-    return { text: {} };
+    return { 
+        text:  {
+            label: 'Text',
+            factory: 'baseui',
+            type: 'Input',
+            valueName: 'text'
+        } 
+    };
 };
 Button.prototype.setText = function (text) {
     this.children.text.removeAllChildren();

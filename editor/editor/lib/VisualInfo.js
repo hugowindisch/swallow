@@ -14,6 +14,7 @@ var visual = require('visual'),
 function VisualInfo(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.VisualInfo);
+    this.setChildrenClipping('hidden');
 }
 VisualInfo.prototype = new (domvisual.DOMElement)();
 VisualInfo.prototype.theme = new (visual.Theme)({
@@ -35,6 +36,9 @@ VisualInfo.prototype.getTypeInfo = function () {
 VisualInfo.prototype.getConfigurationSheet = function () {
     return { typeInfo: {} };
 };
+VisualInfo.prototype.init = function (editor) {
+    this.editor = editor;
+};
 VisualInfo.prototype.select = function (selected) {
     this.setStyle(selected ? 'selected' : null);
     if (selected) {
@@ -46,27 +50,38 @@ VisualInfo.prototype.select = function (selected) {
 };
 VisualInfo.prototype.showDetails = function () {
     var children = this.children,
+        viewer = this.editor.getViewer(),
         visualProperties,
         configurationSheet,
         csPos = groups.VisualInfo.positions.configurationSheet,
         csPosMat = mat4.create(csPos.matrix),
-        csVertical = 100;
+        csVertical = 10,
+        that = this;
     visualProperties = new VisualProperties({});
     configurationSheet = new ConfigurationSheet({});
 
     visualProperties.setPosition('visualProperties');
     this.addChild(visualProperties, 'visualProperties');
     this.addChild(configurationSheet, 'configurationSheet');
-
-
+    
     csPosMat[5] = csVertical;
     configurationSheet.setPosition(new (visual.AbsolutePosition)(
         csPosMat,
         { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
     ));
-    
-    this.setDimensions([this.dimensions[0], csPosMat[13] + csVertical + 10, 1]);
 
+    function setConfigurationSheetContent() {
+        configurationSheet.setEditedVisual(that.editor, function (error, dim) {
+            that.setDimensions(
+                [that.dimensions[0], csPosMat[13] + dim[1] + 10, 1]
+            );
+        });
+    }
+    this.unhookConfigurationSheet = function () {
+        viewer.removeListener('updateSelectionControlBox', setConfigurationSheetContent);
+    };
+    viewer.on('updateSelectionControlBox', setConfigurationSheetContent);
+    setConfigurationSheetContent();
 };
 VisualInfo.prototype.hideDetails = function () {
     var children = this.children,
@@ -77,6 +92,10 @@ VisualInfo.prototype.hideDetails = function () {
     }
     if (configurationSheet) {
         this.removeChild(configurationSheet);
+        if (this.unhookConfigurationSheet) {
+            this.unhookConfigurationSheet();
+            delete this.unhookConfigurationSheet;
+        }
     }
     this.setDimensions(groups.VisualInfo.dimensions);
     

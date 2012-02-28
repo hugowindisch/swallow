@@ -306,6 +306,21 @@ Group.prototype.cmdUpdateVisual = function (name, visual) {
         { model: this, name: name, visual: visual }
     );
 };
+Group.prototype.cmdSetVisualConfig = function (name, config) {
+    var documentData = this.documentData,
+        oldConfig = documentData.children[name].config;
+    return new Command(
+        function () {
+            documentData.children[name].config = config;
+        },
+        function () {
+            documentData.children[name].config = oldConfig;
+        },
+        'cmdSetVisualConfig',
+        'Set visual config ' + name,
+        { model: this, name: name }
+    );
+};
 Group.prototype.cmdRenameVisual = function (name, newname) {
     var that = this;
     return new Command(

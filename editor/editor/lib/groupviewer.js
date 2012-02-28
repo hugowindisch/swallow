@@ -466,6 +466,9 @@ GroupViewer.prototype.getSelectedName = function () {
     });
     return ret;
 };
+GroupViewer.prototype.getSelectedVisual = function () {
+    return this.children.visuals.children[this.getSelectedName()];
+};
 GroupViewer.prototype.getSelectionRect = function (optionalTransform) {
     var unionr;
     optionalTransform = optionalTransform || mat4.identity();

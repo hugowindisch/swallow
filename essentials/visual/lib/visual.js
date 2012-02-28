@@ -497,7 +497,7 @@ Visual.prototype.setConfiguration = function (config) {
             that = this;
         forEachProperty(config, function (cnf, name) {
             var fcn,
-                fname = 'set' + name[0].toUpperCase() + name.slice(1);
+                fname = that.getSetFunctionName(name);
             // validate that this thing works
             if (configSheet[name]) {
                 fcn = that[fname];
@@ -510,6 +510,14 @@ Visual.prototype.setConfiguration = function (config) {
             }
         });
     }
+};
+
+Visual.prototype.getSetFunctionName = function (name) {
+    return 'set' + name[0].toUpperCase() + name.slice(1);
+};
+
+Visual.prototype.getGetFunctionName = function (name) {
+    return 'get' + name[0].toUpperCase() + name.slice(1);
 };
 
 /**

@@ -38,8 +38,7 @@ DOMVisual.prototype.addChild = function (child, name) {
         throw new Error('Non DOM child added to a DOM visual');
     }
     // it is easier to track element containement immediately instead
-    // of waiting for the update function to be called. This
-    // is maybe a little bit ugly, but until I find better, it will do
+    // of waiting for the update function to be called.
     this.superAddChild(child, name);
     this.element.appendChild(child.element);
     var connectedToTheStage = this.connectedToTheStage,
@@ -53,8 +52,7 @@ DOMVisual.prototype.addChild = function (child, name) {
 };
 DOMVisual.prototype.removeChild = function (child) {
     // it is easier to track element containement immediately instead
-    // of waiting for the update function to be called. This
-    // is maybe a little bit ugly, but until I find better, it will do
+    // of waiting for the update function to be called.
     this.element.removeChild(child.element);
     this.superRemoveChild(child);
     var connectedToTheStage = this.connectedToTheStage,
@@ -310,7 +308,8 @@ DOMVisual.prototype.getComputedMatrix = function () {
     // this retrieves stuff for the dom, so we must be clean
     dirty.update();
     var ret = glmatrix.mat4.identity(),
-        element = this.element;
+        element = this.element; 
+    
     ret[12] = element.offsetLeft;
     ret[13] = element.offsetTop;
     return ret;
@@ -320,13 +319,21 @@ DOMVisual.prototype.getComputedMatrix = function () {
 /**
     Returns the computed dimension of this element
     (if the element uses html flowing)
-    This can go wrong (the values may not be already good... apparently)    
 */
 DOMVisual.prototype.getComputedDimensions = function () {
     // this retrieves stuff for the dom, so we must be clean
     dirty.update();
-    var element = this.element;
-    return [ element.offsetWidth, element.offsetHeight, 1];
+    var element = this.element,
+        style = this.element.style,
+        w = style.width,
+        h = style.height,
+        ret;
+    style.width = null;
+    style.height = null;    
+    ret =  [ element.offsetWidth, element.offsetHeight, 1];
+    style.width = w;
+    style.height = h;
+    return ret;
 };
 
 

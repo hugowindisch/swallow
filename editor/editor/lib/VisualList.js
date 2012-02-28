@@ -21,7 +21,8 @@ function VisualList(config) {
 }
 VisualList.prototype = new (domvisual.DOMElement)();
 VisualList.prototype.select = function (vi) {
-    var sel = this.selected;
+    var sel = this.selected,
+        ret = false;
     if (vi !== sel) {
         if (sel) {
             sel.select(false);
@@ -30,13 +31,16 @@ VisualList.prototype.select = function (vi) {
         if (vi) {
             vi.select(true);
         }
+        ret = true;
     }
+    return ret;
 };
 VisualList.prototype.selectByTypeInfo = function (ti) {
-    if (ti) {
+    if (ti) {    
         var factory = ti.factory,
             type = ti.type,
-            that = this;
+            that = this,
+            editor = this.editor;
         forEachProperty(this.children, function (c) {
             var cti = c.getTypeInfo();
             if (cti.factory === factory && cti.type === type) {
@@ -121,14 +125,16 @@ VisualList.prototype.reload = function () {
                 l = jsonData.length,
                 c;
             function onClick() {
-                that.select(this);
-                that.applySelectedPosition();
+                if (that.select(this)) {
+                    that.applySelectedPosition();
+                }
             }
             function packageLoaded(err) {
                 console.log('package loaded !!!! ' + err);
             }
             for (i = 0; i < l; i += 1) {
                 c = new VisualInfo({ typeInfo: jsonData[i]});
+                c.init(that.editor);
                 // FIXME: this needs some thinking... I want to flow the thing,
                 // and doing so 
                 c.setHtmlFlowing({position: 'relative'}, true);
@@ -146,11 +152,13 @@ VisualList.prototype.init = function (editor) {
         that = this;
     this.editor = editor;
     
-    function trackVisibility() {
+    // a new box has been selected
+    function newBoxSelected() {
         var selectedChild,
             selectedTypeInfo,
             group = viewer.getGroup();
         if (viewer.getSelectionLength() === 1) {
+        
             container.setVisible(true);
             // here we want to get the selection
             selectedChild = group.documentData.children[viewer.getSelectedName()];
@@ -163,7 +171,7 @@ VisualList.prototype.init = function (editor) {
         }
     }
     
-    viewer.on('updateSelectionControlBox', trackVisibility);
+    viewer.on('updateSelectionControlBox', newBoxSelected);
 };
 
 
