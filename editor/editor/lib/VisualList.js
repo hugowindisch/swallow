@@ -20,7 +20,7 @@ function VisualList(config) {
     this.reload();
 }
 VisualList.prototype = new (domvisual.DOMElement)();
-VisualList.prototype.select = function (vi) {
+VisualList.prototype.select = function (vi, apply) {
     var sel = this.selected,
         ret = false;
     if (vi !== sel) {
@@ -28,6 +28,9 @@ VisualList.prototype.select = function (vi) {
             sel.select(false);
         }
         this.selected = vi;
+        if (apply === true) {
+            this.applySelectedPosition();
+        }
         if (vi) {
             vi.select(true);
         }
@@ -67,7 +70,6 @@ VisualList.prototype.applySelectedPosition = function () {
         selectedChild = documentData.children[selectedName];
         //selectedChild = documentData.children[selectedName];
         if (sel) {
-            console.log('@@@@@@@@@@@@');
             selTypeInfo = sel.getTypeInfo();
             console.log(selTypeInfo);
             // updated
@@ -92,6 +94,7 @@ VisualList.prototype.applySelectedPosition = function () {
                         type: selTypeInfo.type,
                         position: selectedName,
                         enableScaling: false,
+// FIXME: BROKEN!
                         order: 0, // ????
                         config: {
                         }
@@ -125,9 +128,7 @@ VisualList.prototype.reload = function () {
                 l = jsonData.length,
                 c;
             function onClick() {
-                if (that.select(this)) {
-                    that.applySelectedPosition();
-                }
+                that.select(this, true);
             }
             function packageLoaded(err) {
                 console.log('package loaded !!!! ' + err);

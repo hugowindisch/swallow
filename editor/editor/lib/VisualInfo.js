@@ -70,7 +70,7 @@ VisualInfo.prototype.showDetails = function () {
         { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
     ));
 
-    function setConfigurationSheetContent() {
+    function setConfigurationSheetContent() {    
         configurationSheet.setEditedVisual(that.editor, function (error, dim) {
             that.setDimensions(
                 [that.dimensions[0], csPosMat[13] + dim[1] + 10, 1]

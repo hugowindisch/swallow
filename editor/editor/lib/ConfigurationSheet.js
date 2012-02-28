@@ -43,17 +43,19 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
         group = viewer.getGroup(),
         documentData = group.documentData,
         editedData = documentData.children[selectedName],
-        sheet = vis.getConfigurationSheet(),
+        sheet,
         toLoad = [],
         error = null,
         i,
         l,
         loading,
         that = this;
-    if (this.selectedName === selectedName) {
+    if (viewer.getSelectionLength() !== 1 || this.selectedName === selectedName || vis === undefined) {
         return;
     }
-        
+
+    sheet = vis.getConfigurationSheet();
+
     this.selectedName = selectedName;
     this.sheet = sheet;
     this.removeAllChildren();
