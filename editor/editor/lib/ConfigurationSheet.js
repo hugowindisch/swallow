@@ -55,85 +55,65 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
     }
 
     sheet = vis.getConfigurationSheet();
-
-    this.selectedName = selectedName;
-    this.sheet = sheet;
-    this.removeAllChildren();
-    // find what needs to be loaded as editors
+    this.selectedName = selectedName;   
+    this.removeAllChildren(); 
     forEachProperty(sheet, function (it, name) {
-        if (it.factory && it.type) {
-            toLoad.push({name: name, item: it});
+        if (it) {
+            toLoad.push({name: name, fcn: it});
         }
     });
-    loading = toLoad.length;
+
     function updateContent() {
         forEachProperty(sheet, function (it, name) {
             var vis, valueName, newConfig = {};
-            if (it.factory && it.type) {
-                valueName = it.valueName || 'data';
+            if (it) {
                 vis = that.children[name];
-                newConfig[name] = vis[vis.getGetFunctionName(valueName)]();
+                newConfig[name] = vis.getData();
             }
             // apply this to the model
             group.doCommand(group.cmdSetVisualConfig(selectedName, newConfig));
         });
     }
-    function createItemEditors() {
-        forEachProperty(sheet, function (it, name) {
-            var p, Constr, c, valueName, configValue, label;
-            if (it.factory && it.type) {
-                p = require(it.factory);
-                if (p) {
-// LABEL / LABELTOP                
-                    Constr = p[it.type];
-                    if (Constr) {
-                        if (it.label) {
-                            label = new (baseui.Label)({text: it.label});
-                            label.setHtmlFlowing({});
-                            that.addChild(label);
-                        }
-                        c = new Constr(it.config || {});
-                        c.setHtmlFlowing({});
-                        // set the proper data
-                        valueName = it.valueName || 'data';
-                        configValue = editedData.config[name];
-                        if (configValue) {
-                            c[c.getSetFunctionName(valueName)](editedData.config[name]);
-                        }
-                        // add the child
-                        that.addChild(c, name);
-                        c.on('change', updateContent);
-                    }
-                }
+
+    function createControls() {
+        var i, l = toLoad.length, tl, c, data;
+        for (i = 0; i < l; i += 1) {
+            tl = toLoad[i];
+            c = tl.ctrl;
+            c.setHtmlFlowing({position: 'relative'}, true);
+            data = editedData.config[tl.name];
+            if (data) {
+                c.setData(editedData.config[tl.name]);
             }
-        });
+            c.on('change', updateContent);
+            that.addChild(c, toLoad[i].name);
+        }
     }
-    function getPackageLoaded(toLoad) {
-        return function (err) {
-            loading -= 1;
+    
+    function getOnLoad(n) {
+        return function (err, ctrl) {
+            var i,
+                l = toLoad.length,
+                c;
+            toLoad[n].ctrl = ctrl;
             if (err) {
                 error = err;
             }
+            loading -= 1;
             if (loading === 0) {
-                // we are done : we can create all the item editors
-                createItemEditors();
-                // callback:
-                if (cbWhenReady) {                
-                    cbWhenReady(error, that.getComputedDimensions());
-                }
+                createControls();
+                // append all our children            
+                cbWhenReady(err, that.getComputedDimensions());
             }
         };
     }
-    if (loading > 0) {
-        l = loading;
-        for (i = 0; i < l; i += 1) {
-            define.meat.loadPackage(
-                toLoad[i].item.factory, 
-                getPackageLoaded(toLoad[i])
-            );
-        }
+    
+    loading = toLoad.length;
+    l = loading;
+    for (i = 0; i < l; i += 1) {
+        toLoad[i].fcn({}, getOnLoad(i));
     }
-};
 
+};
 
 exports.ConfigurationSheet = ConfigurationSheet;

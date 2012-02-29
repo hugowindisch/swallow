@@ -6,6 +6,7 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
+    config = require('config'),
     verticalmenu = require('./verticalmenu'),
     glmatrix = require('glmatrix'),
     mat4 = glmatrix.mat4,
@@ -97,12 +98,7 @@ Button.prototype.theme = new (visual.Theme)({
 });
 Button.prototype.getConfigurationSheet = function () {
     return { 
-        text:  {
-            label: 'Text',
-            factory: 'baseui',
-            type: 'Input',
-            valueName: 'text'
-        } 
+        text: config.inputConfig('Text')
     };
 };
 Button.prototype.setText = function (text) {

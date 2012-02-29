@@ -1,9 +1,8 @@
 {
-    "name": "domvisual",
+    "name": "config",
     "version": "0.0.1",
     "dependencies" : {
-        "visual" : "0.0.1",
         "utils": "0.0.1",
-        "config": "0.0.1"
+        "visual": "0.0.1"
     }
 }
