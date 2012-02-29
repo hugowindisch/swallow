@@ -412,7 +412,11 @@ DOMImg.prototype.setUrl = function (url) {
     //setDirty(this, 'content');
 };
 DOMImg.prototype.getConfigurationSheet = function () {
-    return { "class": {}, "style": {}, "url": {} };
+    return { 
+        "class": null, 
+        "style": null, 
+        "url": require('config').imageUrlConfig('Url')
+    };
 };
 
 /////////////////

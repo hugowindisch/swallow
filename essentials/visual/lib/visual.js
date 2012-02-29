@@ -499,7 +499,7 @@ Visual.prototype.setConfiguration = function (config) {
             var fcn,
                 fname = that.getSetFunctionName(name);
             // validate that this thing works
-            if (configSheet[name]) {
+            if (configSheet.hasOwnProperty(name)) {
                 fcn = that[fname];
                 if (!utils.isFunction(fcn)) {
                     throw new Error('Configuration function not found: ' + fname);

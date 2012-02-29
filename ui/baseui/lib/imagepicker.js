@@ -40,6 +40,26 @@ ImagePicker.prototype.setUrls = function (urls) {
     }
 };
 
+ImagePicker.prototype.setSelectedUrl = function (url) {
+    var i,
+        imageUrls = this.imageUrls,
+        l = imageUrls.length,
+        sel = null;
+    for (i = 0; i < l; i += 1) {
+        if (imageUrls[i] === url) {
+            sel = i;
+            break;
+        }
+    }
+    this.select(sel);
+};
+ImagePicker.prototype.getSelectedUrl = function (url) {
+    if (this.selected !== null) {
+        return this.imageUrls[this.selected];
+    }
+    return null;
+};
+
 ImagePicker.prototype.getConfigurationSheet = function () {
     return { urls: {} }; 
 };
@@ -82,6 +102,7 @@ ImagePicker.prototype.updateChildren = function () {
     function getOnClick(n) {
         return function () {
             that.select(n);
+            that.emit('change', that.getSelectedUrl());
         };
     }
     for (i = 0; i < l; i += 1) {

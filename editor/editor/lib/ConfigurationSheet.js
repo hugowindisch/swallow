@@ -111,7 +111,7 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
     loading = toLoad.length;
     l = loading;
     for (i = 0; i < l; i += 1) {
-        toLoad[i].fcn({}, getOnLoad(i));
+        toLoad[i].fcn(editor.getDocInfo(), getOnLoad(i));
     }
 
 };
