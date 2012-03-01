@@ -141,7 +141,9 @@ DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
 /**
     Enables children clipping.
     available modes are
-        visible hidden scroll
+        visible hidden scroll auto
+        
+    can be an array to set x and y clipping differently
 */
 DOMVisual.prototype.setChildrenClipping = function (mode) {
     this.childrenClipping = mode;
@@ -285,7 +287,12 @@ DOMVisual.prototype.updateDone = function () {
         style = element.style;
         childrenClipping = this.childrenClipping;
         if (childrenClipping) {
-            style.overflow = childrenClipping;
+            if (isArray(childrenClipping)) {
+                style.overflowX = childrenClipping[0];
+                style.overflowY = childrenClipping[1];
+            } else {
+                style.overflow = childrenClipping;
+            }
         } else {
             style.overflow = null;
         }

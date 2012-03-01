@@ -34,5 +34,7 @@ Panel.prototype.init = function (editor) {
     // setup the various panel items
     si.init(editor);
     vl.init(editor);
+    
+    this.setChildrenClipping([ 'hidden', 'auto']);
 };
 exports.Panel = Panel;
