@@ -171,6 +171,7 @@ function setupToolMenu(editor) {
                     if (mat[5] < 8) {
                         mat[5] = 8;
                     }
+                    mat[10] = 1;
                     group.doCommand(group.cmdAddPosition(
                         group.getUniquePositionName(),
                         {

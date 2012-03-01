@@ -44,7 +44,6 @@ function SelectionBox(config) {
                 var delta = vec3.subtract(startpos, endpos, vec3.create()),
                     newmat,
                     res;
-
                 transform = fcn(matrix, delta, dimensions, evt.shiftKey, evt.ctrlKey);
                 newmat = mat4.multiply(transform, matrix, mat4.create());
                 that.updateRepresentation(newmat);
