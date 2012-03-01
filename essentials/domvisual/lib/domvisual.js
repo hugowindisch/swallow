@@ -13,6 +13,7 @@ var visual = require('visual'),
     keycodes = require('./keycodes'),
     Visual = visual.Visual,
     forEachProperty = utils.forEachProperty,
+    forEach = utils.forEachProperty,
     isObject = utils.isObject,
     isArray = utils.isArray,
     setDirty = dirty.setDirty;
@@ -442,14 +443,70 @@ DOMInput.prototype.getType = function () {
 DOMInput.prototype.setText = function (text) {
     this.element.value = text;
 };
+DOMInput.prototype.setValue = DOMInput.prototype.setText;
 DOMInput.prototype.getText = function () {
     return this.element.value;
 };
+DOMInput.prototype.getValue = DOMInput.prototype.getText;
 DOMInput.prototype.enable = function (enable) {
     this.element.disabled = !enable;
 };
+DOMInput.prototype.setChecked = function (state) {
+    this.element.checked = state;
+};
+DOMInput.prototype.getChecked = function (state) {
+    return this.element.checked === true;
+};
+
 DOMInput.prototype.getConfigurationSheet = function () {
     return { "class": {}, "style": {}, "text": {}, "type": {} };
+};
+
+///////////////
+// A combo box
+function DOMSelect(config) {
+    DOMVisual.call(this, config, null, document.createElement('select'));
+}
+DOMSelect.prototype = new DOMVisual();
+DOMSelect.prototype.setOptions = function (options) {
+// FIXME: we could support object and array for options
+    this.removeAllChildren();
+    this.options = options;
+    var i, l = options.length, c;
+    for (i = 0; i < l; i += 1) {
+        c = this.addHtmlChild('option', options[i], {}, i);
+        c.setElementAttributes({ value: i});
+    }
+};
+DOMSelect.prototype.setSelectedIndex = function (n) {
+    this.element.selectedIndex = n;
+};
+DOMSelect.prototype.getSelectedIndex = function () {
+    return this.element.selectedIndex;
+};
+DOMSelect.prototype.setSelectedOption = function (o) {
+    var index = null;
+    forEach(this.options, function (oo, n) {
+        if (oo === o) {
+            index = n;
+        }
+    });
+    this.setSelectedIndex(index);
+};
+DOMSelect.prototype.getSelectedOption = function () {
+    var index = this.getSelectedIndex(),
+        ret = null;
+    if (index >= 0 && index !== null) {
+        ret = this.options[index] || null;
+    }
+    return ret;
+};
+
+DOMSelect.prototype.enable = function (enable) {
+    this.element.disabled = !enable;
+};
+DOMSelect.prototype.getConfigurationSheet = function () {
+    return { "options": {} };
 };
 
 
@@ -460,6 +517,7 @@ exports.DOMElement = DOMElement;
 exports.DOMImg = DOMImg;
 exports.DOMVideo = DOMVideo;
 exports.DOMInput = DOMInput;
+exports.DOMSelect = DOMSelect;
 
 /*
     We will have to do more than that but we need something to

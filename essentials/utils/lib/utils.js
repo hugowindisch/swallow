@@ -15,6 +15,12 @@ function forEachProperty(object, f) {
         }
     }
 }
+function forEach(array, f) {
+    var l = array.length, i;
+    for (i = 0; i < l; i += 1) {
+        f(array[i], i, array);
+    }
+}
 function typeOf(value) {
     var s = typeof value;
     if (s === 'object') {
@@ -67,6 +73,7 @@ function deepCopy(o) {
     }
 }
 exports.forEachProperty = forEachProperty;
+exports.forEach = forEach;
 exports.typeOf = typeOf;
 exports.isString = isString;
 exports.isNumber = isNumber;

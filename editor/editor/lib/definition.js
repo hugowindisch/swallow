@@ -251,7 +251,7 @@ exports.definition = {
             }
         },
         SelectionInfo: {
-            dimensions: [390, 90, 0],
+            dimensions: [390, 140, 0],
             positions: {
                 nameLabel: {
                     type: "AbsolutePosition",
@@ -278,6 +278,32 @@ exports.definition = {
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
+                positionLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                snapLeftLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 105, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                snapRightLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 105, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                snapTopLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 105, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                snapBottomLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   225, 105, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                
                 name: {
                     type: "AbsolutePosition",
                     matrix: [ 120, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 5, 0, 1 ],
@@ -302,7 +328,39 @@ exports.definition = {
                     type: "AbsolutePosition",
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                position: {
+                    type: "AbsolutePosition",
+                    matrix: [ 150, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 80, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                transform: {
+                    type: "AbsolutePosition",
+                    matrix: [ 150, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   210, 80, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                
+                snapLeft: {
+                    type: "AbsolutePosition",
+                    matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   55, 105, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                snapRight: {
+                    type: "AbsolutePosition",
+                    matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   105, 105, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                snapTop: {
+                    type: "AbsolutePosition",
+                    matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   155, 105, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                snapBottom: {
+                    type: "AbsolutePosition",
+                    matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   205, 105, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
+                
             },
             children: {
                 nameLabel: {
@@ -355,6 +413,57 @@ exports.definition = {
                         "text": "h:"
                     }                
                 },
+                positionLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "positionLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "layout:"
+                    }                
+                },
+                snapLeftLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "snapLeftLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "left"
+                    }                
+                },
+                snapRightLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "snapRightLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "right"
+                    }                
+                },
+                snapTopLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "snapTopLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "top"
+                    }                
+                },
+                snapBottomLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "snapBottomLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "bottom"
+                    }                
+                },
+                
                 name: {
                     factory: "baseui",
                     type: "Input",
@@ -405,6 +514,67 @@ exports.definition = {
                         "text": "0"
                     }                
                 },
+                position: {
+                    factory: "domvisual",
+                    type: "DOMSelect",
+                    position: "position",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "options": [ "AbsolutePosition", "TransformPosition" ]
+                    }                
+                },
+                transform: {
+                    factory: "domvisual",
+                    type: "DOMSelect",
+                    position: "transform",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "options": [ "distort", "fitw", "fith", "showall", "cover" ]
+                    }                
+                },
+                snapLeft: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "snapLeft",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "type": "checkbox"
+                    }                
+                },
+                snapRight: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "snapRight",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "type": "checkbox"
+                    }                
+                },
+                snapTop: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "snapTop",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "type": "checkbox"
+                    }                
+                },
+                snapBottom: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "snapBottom",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "type": "checkbox"
+                    }                
+                },
+                
             }
         },
         VisualProperties: {
