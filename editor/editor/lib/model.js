@@ -92,11 +92,10 @@ Group.prototype.normalizeChildrenOrders = function () {
 function makeUniqueName(radical, test) {
     var re = /[0-9]$/,
         term = re.exec(radical),
-        tl = term ? term.length : 0,
-        rad = radical.slice(0, -tl),
+        tl = term ? term[0].length : 0,
+        rad = term ? radical.slice(0, -term[0].length) : radical,
         r = rad,
         n = 0;
-        
     while (test(r)) {
         r = rad + String(n);
         n += 1;
@@ -104,10 +103,9 @@ function makeUniqueName(radical, test) {
     return r;
 }
 
-// these are the commands (stuff that actually modifies the Group model)
 Group.prototype.getUniquePositionName = function (radical, optionalCheck) {
     var positions = this.documentData.positions;
-    radical = radical || 'pos';
+    radical = radical || 'pos';    
     return makeUniqueName(
         radical,
         function (r) {
@@ -133,6 +131,16 @@ Group.prototype.getNumberOfPositions = function () {
         n += 1;
     });
     return n;
+};
+
+Group.prototype.getTopmostOrder = function () {
+    var order = 0;
+    forEachProperty(this.documentData.children, function (c) {
+        if (c.order >= order) {
+            order = c.order + 1;
+        }
+    });
+    return order;
 };
 /**
     Calls doCmd on the command chain.

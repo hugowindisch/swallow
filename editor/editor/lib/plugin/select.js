@@ -165,12 +165,18 @@ function setupToolMenu(editor) {
                 null,
                 function (mat, nmat) {
                     var group = viewer.getGroup();
+                    if (mat[0] < 8) {
+                        mat[0] = 8;
+                    }
+                    if (mat[5] < 8) {
+                        mat[5] = 8;
+                    }
                     group.doCommand(group.cmdAddPosition(
                         group.getUniquePositionName(),
                         {
                             matrix: mat,
                             type: "AbsolutePosition",
-                            snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                            snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                         }   
                     ));
                 }

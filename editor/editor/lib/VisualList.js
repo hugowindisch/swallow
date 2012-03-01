@@ -71,7 +71,6 @@ VisualList.prototype.applySelectedPosition = function () {
         //selectedChild = documentData.children[selectedName];
         if (sel) {
             selTypeInfo = sel.getTypeInfo();
-            console.log(selTypeInfo);
             // updated
             if (selectedChild) {
                 group.doCommand(group.cmdUpdateVisual(
@@ -94,8 +93,7 @@ VisualList.prototype.applySelectedPosition = function () {
                         type: selTypeInfo.type,
                         position: selectedName,
                         enableScaling: false,
-// FIXME: BROKEN!
-                        order: 0, // ????
+                        order: group.getTopmostOrder(),
                         config: {
                         }
                     }
