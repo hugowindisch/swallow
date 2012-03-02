@@ -118,6 +118,7 @@ Toolbar.prototype.createItemHtml = function (item, index, numIndex) {
         c = new (domvisual.DOMImg)({style: 'tool', url: icon});
         this.addChild(c, name);
         c.setDimensions([32, 32, 1]);
+        c.setCursor('pointer');
         c.setHtmlFlowing({});
         // keep a reference to the item
         c.item = item;

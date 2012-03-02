@@ -115,6 +115,7 @@ ImagePicker.prototype.updateChildren = function () {
         cell.addChild(c, 'image ' + i);
         c.once('load', onLoad);
         c.on('click', getOnClick(i));
+        c.setCursor('pointer');
     }
 };
 

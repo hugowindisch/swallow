@@ -272,6 +272,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
     );
     // to this child we want to add a handler
     if (enabled) {
+        c.setCursor('pointer');
         c.on('click', function () {
             that.action();        
         });

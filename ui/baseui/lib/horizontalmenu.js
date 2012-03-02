@@ -219,6 +219,7 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
     c.item = item;
     
     c.setHtmlFlowing({ height: height, display: 'inline-block' });
+    c.setCursor('pointer');
     // to this child we want to add a handler
     c.on('click', function () {
         console.log('click');

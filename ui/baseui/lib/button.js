@@ -55,6 +55,7 @@ function Button(config) {
     var that = this;
     domvisual.DOMElement.call(this, config, group);
     // add some hooks:
+    this.setCursor('pointer');
     this.on('mousedown', function (evt) {
         evt.preventDefault();
         that.children.background.setStyle('pressedBackground');

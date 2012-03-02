@@ -24,6 +24,7 @@ function SelectionBox(config) {
     this.contentMatrix[10] = this.dimensions[2];
         
     function makeHandler(box, fcn) {
+        box.setCursor('crosshair');
         box.on('mousedown', function (evt) {
             // snapshot the dimensions
             var matrix = that.contentMatrix,

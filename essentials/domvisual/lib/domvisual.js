@@ -169,6 +169,13 @@ DOMVisual.prototype.setVisible = function (visible) {
 };
 
 /**
+    Sets the cursor.
+*/
+DOMVisual.prototype.setCursor = function (cursor) {
+    this.element.style.cursor = cursor;
+};
+
+/**
     DOM update (we essentially treat the DOM as an output thing)
 */
 DOMVisual.prototype.updateMatrixRepresentation = function () {

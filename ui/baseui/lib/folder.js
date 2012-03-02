@@ -80,7 +80,8 @@ Folder.prototype.updateChildren = function () {
         o.setVisible(false);
         tc.on('click', function () {
             that.toggleExpansion();
-        });        
+        });
+        tc.setCursor('pointer');
     }
 };
 
