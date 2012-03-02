@@ -90,10 +90,10 @@ Theme.prototype.theme = new (require('visual').Theme)({
     },
     // folder
     expandedFolder: {
-        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgExpandedFolder' ]
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgExpandedFolder', 'baseui_theme_bold' ]
     },
     contractedFolder: {
-        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgContractedFolder' ]
+        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgContractedFolder', 'baseui_theme_bold' ]
     },
     // window background (the darker part of a window, for controls etc)
     windowBackground: {

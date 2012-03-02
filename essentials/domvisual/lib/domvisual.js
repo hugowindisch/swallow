@@ -167,6 +167,9 @@ DOMVisual.prototype.setVisible = function (visible) {
         setDirty(this, 'dimensions');
     }
 };
+DOMVisual.prototype.getVisible = function () {
+    return this.visible;
+};
 
 /**
     Sets the cursor.

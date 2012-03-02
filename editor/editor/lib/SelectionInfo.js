@@ -39,6 +39,7 @@ SelectionInfo.prototype.init = function (editor) {
                     'snapLeft', 
                     'snapRight', 
                     'snapBottom', 
+                    'snapTop',
                     'snapTopLabel', 
                     'snapLeftLabel', 
                     'snapRightLabel', 

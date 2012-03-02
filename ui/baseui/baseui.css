@@ -1,4 +1,7 @@
 @charset 'UTF-8';
+.baseui_theme_bold {
+    font-weight: bold;
+}
 .baseui_theme_outlineColor {
     border: 1px solid #cecece;
 }

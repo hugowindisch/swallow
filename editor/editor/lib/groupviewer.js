@@ -126,6 +126,15 @@ GroupViewer.prototype.theme = new (visual.Theme)({
 });
 
 /**
+    Shows / hides the selection control box.
+*/
+GroupViewer.prototype.showSelectionControlBox = function (visible) {
+    var selectionControlBox = this.selectionControlBox,
+        ret = selectionControlBox.getVisible();
+    selectionControlBox.setVisible(visible);
+    return ret;
+};
+/**
     Enables or disables box selection.
         The provided callbacks will be called on selection Start, selection,
         and selection end.
@@ -653,14 +662,16 @@ GroupViewer.prototype.updateAll = function () {
     children.positions.setDimensions(extendedDimensions);
     children.positions.setMatrix(mat4.identity());
     forEachProperty(documentData.positions, function (c, name) {
-        // regenerate it
-        var pos = new (domvisual.DOMElement)({}),
-            res = convertScaleToSize(mat4.multiply(zoomMat, c.matrix, mat4.create()));
+        if (!documentData.children[name]) {
+            // regenerate it
+            var pos = new (domvisual.DOMElement)({}),
+                res = convertScaleToSize(mat4.multiply(zoomMat, c.matrix, mat4.create()));
 
-        pos.setDimensions(res.dimensions);
-        pos.setMatrix(res.matrix);
-        pos.setClass('editor_GroupViewer_position');
-        children.positions.addChild(pos, name);
+            pos.setDimensions(res.dimensions);
+            pos.setMatrix(res.matrix);
+            pos.setClass('editor_GroupViewer_position');
+            children.positions.addChild(pos, name);
+        }
     });    
     // decorations
     children.decorations.setPosition(null);
