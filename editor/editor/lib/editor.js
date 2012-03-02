@@ -76,7 +76,7 @@ Editor.prototype.theme = new (visual.Theme)({
     },
     panel: {
         basedOn: [
-            { factory: 'baseui', type: 'Theme', style: 'windowForeground' } 
+            { factory: 'baseui', type: 'Theme', style: 'windowBackground' } 
         ]
     }
 });

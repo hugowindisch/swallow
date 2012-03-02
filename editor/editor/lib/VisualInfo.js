@@ -25,9 +25,29 @@ VisualInfo.prototype.theme = new (visual.Theme)({
     }
 });
 VisualInfo.prototype.setTypeInfo = function (ti) {
+    var that = this;
+    function loadPreview() {
+        var factory,
+            Constr,
+            preview;
+        try {
+            factory = require(ti.factory);
+            if (factory) {
+                Constr = factory[ti.type];
+                if (Constr) {
+                    preview = new Constr({});
+                    that.addChild(preview, 'preview');
+                    preview.setPosition('preview');
+                }
+            }
+        } catch (e) {
+        }
+    }
     this.ti = ti;
     this.children.factoryName.setText(ti.factory);
     this.children.typeName.setText(ti.type);
+    // show the preview (normally, I would have to load it)
+    loadPreview();
 };
 VisualInfo.prototype.getTypeInfo = function () {
     var ti = this.ti;
