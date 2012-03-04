@@ -13,8 +13,8 @@ var visual = require('visual'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction;
-    
 
+   
 function HorizontalMenu(config) {
     var that = this;
     // set default dimensions
@@ -147,7 +147,31 @@ HorizontalMenu.prototype.highlightItem = function (itemName) {
         subItems,
         subMenu,
         smMat,
-        smDim;
+        smDim,
+        that = this;
+
+    function cleanupClickout() {
+        if (that.cleanupClickout) {
+            that.cleanupClickout();
+            delete that.cleanupClickout;
+        }
+    }
+    function setupClickout() {
+        var skip = 1;
+        function clickout(evt) {
+            if (skip === 0) {
+                if (that.highlighted) {
+                    that.highlightItem(null);
+                }
+            }
+            skip -= 1;            
+        }
+        that.on('mouseupt', clickout);
+        that.cleanupClickout = function () {
+            that.removeListener('mouseupt', clickout);
+        };
+    }
+
     if (toHighlight !== this.highlighted) {
         // if some item is already highlighted
         if (this.highlighted) {
@@ -172,6 +196,9 @@ HorizontalMenu.prototype.highlightItem = function (itemName) {
                 smMat[13] += smDim[1];
                 subMenu.setMatrix(smMat);
             }
+            setupClickout();
+        } else {
+            cleanupClickout();
         }
     }
 };
@@ -225,8 +252,7 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
     c.setHtmlFlowing({ height: height, display: 'inline-block' });
     c.setCursor('pointer');
     // to this child we want to add a handler
-    c.on('click', function () {
-        console.log('click');
+    c.on('mousedown', function () {
         if (that.highlighted && that.highlighted.name === name) {
             that.highlightItem(null);
             
@@ -235,9 +261,11 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
         }
         
     });
-    c.on('mouseover', function () {
+    c.on('mouseover', function (evt) {
         // if something is already highlighted
         if (that.highlighted) {
+            evt.preventDefault();
+            evt.stopPropagation();
             that.highlightItem(name);
         }
     });

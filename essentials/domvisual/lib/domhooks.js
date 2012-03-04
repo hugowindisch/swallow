@@ -89,6 +89,15 @@ hookMap = {
             return vis.element;
         }            
     },
+    mousedownt: {
+        domEvent: 'mousedown',
+        getDOMElement: getTopmostElement
+    },
+    mousedownc: {
+        capture: true,
+        domEvent: 'mousedown',
+        getDOMElement: getTopmostElement
+    },
     mouseup: {
         getDOMElement: function (vis) {            
             return vis.element;
@@ -96,6 +105,10 @@ hookMap = {
     },
     mouseupc: {
         capture: true,
+        domEvent: 'mouseup',
+        getDOMElement: getTopmostElement
+    },
+    mouseupt: {
         domEvent: 'mouseup',
         getDOMElement: getTopmostElement
     },
