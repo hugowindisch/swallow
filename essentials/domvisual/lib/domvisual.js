@@ -425,6 +425,10 @@ function DOMImg(config) {
     DOMVisual.call(this, config, null, document.createElement('img'));
 }
 DOMImg.prototype = new DOMVisual();
+DOMImg.createPreview = function () {
+    return new (DOMImg)({url: 'domvisual/lib/imagepreview.png'});
+};
+
 DOMImg.prototype.setUrl = function (url) {
     this.element.src = url;
     //setDirty(this, 'content');
@@ -443,6 +447,21 @@ function DOMVideo(config) {
     DOMVisual.call(this, config, null, document.createElement('video'));
 }
 DOMVideo.prototype = new DOMVisual();
+DOMVideo.createPreview = function () {
+    return new (DOMImg)({url: 'domvisual/lib/videopreview.png'});
+};
+
+DOMVideo.prototype.setUrl = function (url) {
+    this.element.src = url;
+    //setDirty(this, 'content');
+};
+DOMVideo.prototype.getConfigurationSheet = function () {
+    return { 
+        "class": null, 
+        "style": null, 
+        "url": require('config').inputConfig('Url')
+    };
+};
 
 
 /////////////////

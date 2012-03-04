@@ -195,12 +195,14 @@ GroupViewer.prototype.enableBoxSelection = function (
             }
             mouseBox.setDimensions(res.dimensions);
             mouseBox.setMatrix(res.matrix);
+            decorations.setCursor('crosshair');
         }
     }
     function removeMouseBox() {
         if (mouseBox) {
             decorations.removeChild(mouseBox);
             mouseBox = null;
+            decorations.setCursor(null);
         }
     }
     // we want to add mouse events to the decoration child
@@ -223,7 +225,7 @@ GroupViewer.prototype.enableBoxSelection = function (
             selectionEnd(matrix, nmatrix, startpos, endpos, evt);
         }
     }
-    function mouseDown(evt) {
+    function mouseDown(evt) {        
         evt.preventDefault();
         var mat = visuals.getFullDisplayMatrix(true);
         startpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]);

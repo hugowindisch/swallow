@@ -14,6 +14,9 @@ function Label(config) {
     domvisual.DOMElement.call(this, config);
 }
 
+Label.createPreview = function () {
+    return new (domvisual.DOMImg)({url: 'baseui/lib/labelpreview.png'});
+};
 Label.prototype = new (domvisual.DOMElement)();
 
 Label.prototype.theme = new (visual.Theme)({
@@ -36,7 +39,7 @@ Label.prototype.getText = function () {
 };
 
 Label.prototype.getConfigurationSheet = function () {
-    return { text: {} }; 
+    return { text: require('config').inputConfig('Text') }; 
 };
 
 exports.Label = Label;

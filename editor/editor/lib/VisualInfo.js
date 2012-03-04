@@ -35,7 +35,13 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
             if (factory) {
                 Constr = factory[ti.type];
                 if (Constr) {
-                    preview = new Constr({});
+                    if (Constr.createPreview) {
+                        // specific preview
+                        preview = Constr.createPreview();
+                    } else {
+                        // generic preview
+                        preview = new Constr({});
+                    }
                     that.addChild(preview, 'preview');
                     preview.setPosition('preview');
                 }

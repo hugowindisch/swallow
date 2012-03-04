@@ -27,7 +27,7 @@ Input.prototype.theme = new (visual.Theme)({
 });
 
 Input.prototype.getConfigurationSheet = function () {
-    return { text: {} }; 
+    return { text: require('config').inputConfig('Text') }; 
 };
 
 exports.Input = Input;

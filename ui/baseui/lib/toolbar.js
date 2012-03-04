@@ -28,6 +28,9 @@ function Toolbar(config) {
     };
 }
 Toolbar.prototype = new (domvisual.DOMElement)();
+Toolbar.createPreview = function () {
+    return new (domvisual.DOMImg)({url: 'baseui/lib/toolbarpreview.png'});
+};
 Toolbar.prototype.theme = new (visual.Theme)({
     tool: {
         basedOn: [
@@ -170,7 +173,7 @@ Toolbar.prototype.getItems = function () {
 };
 
 Toolbar.prototype.getConfigurationSheet = function () {
-    return { items: {} };
+    return { items: null };
 };
 
 

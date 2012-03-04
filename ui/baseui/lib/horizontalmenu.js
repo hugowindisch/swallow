@@ -45,6 +45,10 @@ function HorizontalMenu(config) {
     });
 }
 HorizontalMenu.prototype = new (domvisual.DOMElement)();
+HorizontalMenu.createPreview = function () {
+    return new (domvisual.DOMImg)({url: 'baseui/lib/menupreview.png'});
+};
+
 HorizontalMenu.prototype.theme = new (visual.Theme)({
     normal: {
         basedOn: [
@@ -251,7 +255,7 @@ HorizontalMenu.prototype.getItems = function () {
     return this.items;
 };
 HorizontalMenu.prototype.getConfigurationSheet = function () {
-    return { items: {} };
+    return { items: null };
 };
 HorizontalMenu.prototype.setDimensions = function (dimensions) {
     domvisual.DOMElement.prototype.setDimensions.call(this, dimensions);
