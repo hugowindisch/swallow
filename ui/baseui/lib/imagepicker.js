@@ -101,7 +101,11 @@ ImagePicker.prototype.updateChildren = function () {
     }
     function getOnClick(n) {
         return function () {
-            that.select(n);
+            if (that.selected !== n) {
+                that.select(n);
+            } else {
+                that.select(null);
+            }
             that.emit('change', that.getSelectedUrl());
         };
     }
