@@ -477,6 +477,7 @@ DOMInput.prototype.getType = function () {
     return this.element.type;
 };
 DOMInput.prototype.setText = function (text) {
+    text = text || '';
     this.element.value = text;
 };
 DOMInput.prototype.setValue = DOMInput.prototype.setText;

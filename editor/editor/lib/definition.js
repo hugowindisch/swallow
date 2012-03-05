@@ -603,7 +603,135 @@ exports.definition = {
             dimensions: [ 400, 1, 0],
             positions: {},
             children: {}
+        },
+        ComponentInfo: {
+            dimensions: [ 390, 115, 0],
+            positions: {
+                wLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                hLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                w: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                h: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                descriptionLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                privateLabel: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   25, 80, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                description: {
+                    type: "AbsolutePosition",
+                    matrix: [ 380, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                privateCheck: {
+                    type: "AbsolutePosition",
+                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                }
+            },
+            children: {
+                wLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "wLabel",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": "w:"
+                    }                
+                },
+                hLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "hLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "h:"
+                    }                
+                },
+                descriptionLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "descriptionLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "description:"
+                    }                
+                },
+                privateLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "privateLabel",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "private"
+                    }                
+                },
+                w: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "w",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": "0"
+                    }                
+                },
+                h: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "h",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": "0"
+                    }                
+                },
+                description: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "description",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "text": ""
+                    }                
+                },
+                privateCheck: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "privateCheck",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "type": "checkbox"
+                    }                
+                }
+            }
         }
+        
     }
 };
 

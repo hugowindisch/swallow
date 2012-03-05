@@ -382,23 +382,25 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
 };
 
 ///////////////////////
-Group.prototype.cmdSetDimensions = function (dimensions) {
+Group.prototype.cmdSetComponentProperties = function (dimensions, description, priv) {
     var that = this;
+    function doUndo() {
+        var documentData = that.documentData,
+            dim = documentData.dimensions,
+            descr = documentData.description,
+            prv = documentData.private;
+        documentData.dimensions = dimensions;
+        documentData.description = description;
+        documentData.private = priv;
+        dimensions = dim;
+        description = descr;
+        priv = prv;
+    }
     return new Command(
-        function () {
-            var documentData = that.documentData,
-                dim = documentData.dimensionsm;
-            documentData.dimensions = dimensions;
-            dimensions = dim;
-        },
-        function () {
-            var documentData = that.documentData,
-                dim = documentData.dimensions;
-            documentData.dimensions = dimensions;
-            dimensions = dim;
-        },
-        'cmdSetDimensions',
-        "Set dimensions",
+        doUndo,
+        doUndo,
+        'cmdSetComponentProperties',
+        'Set component properties',
         { model: this, dimensions: dimensions }
     );
 };
