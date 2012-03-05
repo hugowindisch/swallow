@@ -6,7 +6,7 @@
 
 var baseui = require('baseui'),
     utils = require('utils'),
-    glmatrix = require('glmatrix'),    
+    glmatrix = require('glmatrix'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     forEachProperty = utils.forEachProperty,
@@ -34,6 +34,7 @@ function getDocumentData(viewer) {
 function setupFileMenu(editor) {
     var viewer = editor.getViewer(),
         saveTool,
+        newTool,
         menus = editor.menus;
 
     saveTool = new MenuItem(
@@ -44,8 +45,19 @@ function setupFileMenu(editor) {
         null,
         new Accelerator('VK_S', true)
     );
+    newTool = new MenuItem(
+        'New...',
+        function () {
+            // FIXME, very crude
+            var result = window.prompt('name', '');
+            if (result !== '') {
+                editor.newGroup(null, result);
+            }
+        }
+    );
     menus.file.push(
-        saveTool
+        saveTool,
+        newTool
     );
 }
 

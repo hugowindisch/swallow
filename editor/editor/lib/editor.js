@@ -111,11 +111,11 @@ Editor.prototype.loadGroup = function (factory, type) {
         });
     });
 };
-Editor.prototype.saveGroup = function (factory, type) {
+Editor.prototype.saveGroup = function (factory, type, doc) {
     factory = factory || this.docInfo.factory;
     type = type || this.docInfo.type;
-    var doc = this.children.viewer.getGroup().documentData,
-        req = http.request(
+    doc = doc || this.children.viewer.getGroup().documentData;
+    var req = http.request(
             {
                 method: 'POST',
                 path: '/visual/' + factory + '/' + type
@@ -129,6 +129,21 @@ Editor.prototype.saveGroup = function (factory, type) {
     req.write(JSON.stringify(doc));
     req.end();
 };
+
+Editor.prototype.newGroup = function (factory, type) {
+    this.saveGroup(
+        factory, 
+        type,
+        { 
+            description: '', 
+            private: false, 
+            dimensions: [ 600, 400, 0], 
+            children: {}, 
+            positions: {}
+        }
+    );
+};
+
 
 /**
     Adds some plugins
