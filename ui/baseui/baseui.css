@@ -10,6 +10,11 @@
     border: 1px solid transparent;
 }
 
+.baseui_theme_outlineShadow {
+   -moz-box-shadow: 3px  3px 3px #222;
+   -webkit-box-shadow: 3px 3px 3px #222;
+   box-shadow: 3px 3px 3px #aaa;
+}
 
 .baseui_theme_outlineRounded {
     -webkit-border-radius: 8px 8px 8px 8px;

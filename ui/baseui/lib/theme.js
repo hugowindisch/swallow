@@ -50,7 +50,7 @@ Theme.prototype.theme = new (require('visual').Theme)({
     },
     // vertical menu
     menuBox: {
-        data: [ 'baseui_theme_outlineSmallRounded', 'baseui_theme_menuBoxColor', 'baseui_theme_outlineColor' ]
+        data: [ 'baseui_theme_outlineSmallRounded', 'baseui_theme_menuBoxColor', 'baseui_theme_outlineColor', 'baseui_theme_outlineShadow' ]
     },
     menuItem: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_menuItem' ]
