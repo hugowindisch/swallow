@@ -57,10 +57,10 @@ function leftRightConfig(
         cnt.setDimensions([lineWidth, lineHeight, 1]);
         cnt.addChild(label, 'label');
         cnt.addChild(editor, 'data');
-        label.setDimensions([labelWidth, lineHeight, 1]);
-        label.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1]);
-        editor.setDimensions([lineWidth - labelWidth, lineHeight, 1]);
-        editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  labelWidth, 0, 0, 1]);
+        label.setDimensions([labelWidth - 10, lineHeight, 1]);
+        label.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, 0, 0, 1]);
+        editor.setDimensions([lineWidth - (labelWidth + 20), lineHeight, 1]);
+        editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  labelWidth + 5, 0, 0, 1]);
         cb(null, cnt);
     });
 }
@@ -92,10 +92,10 @@ function topBottomConfig(
         cnt.setDimensions([lineWidth, lineHeight, 1]);
         cnt.addChild(label, 'label');
         cnt.addChild(editor, 'data');
-        label.setDimensions([lineWidth, labelHeight, 1]);
-        label.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1]);
-        editor.setDimensions([lineWidth, lineHeight - labelHeight, 1]);
-        editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, labelHeight, 0, 1]);
+        label.setDimensions([lineWidth - 10, labelHeight, 1]);
+        label.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, 0, 0, 1]);
+        editor.setDimensions([lineWidth - 10, lineHeight - labelHeight, 1]);
+        editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, labelHeight, 0, 1]);
         cb(null, cnt);
     });
 
@@ -108,7 +108,7 @@ function inputConfig(label) {
             'baseui',
             'Input',
             {},
-            20,
+            25,
             390,
             100,
             function (err, ctrl) {
@@ -147,7 +147,7 @@ function imageUrlConfig(label) {
                     { urls: jsonData },
                     80,
                     390,
-                    20,
+                    25,
                     function (err, ctrl) {
                         if (err) {
                             return cb(err);

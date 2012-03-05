@@ -82,10 +82,10 @@ VisualInfo.prototype.showDetails = function () {
         csPos = groups.VisualInfo.positions.configurationSheet,
         csPosMat = mat4.create(csPos.matrix),
         csVertical = 10,
+        hooked = true,
         that = this;
     visualProperties = new VisualProperties({});
     configurationSheet = new ConfigurationSheet({});
-
     visualProperties.setPosition('visualProperties');
     this.addChild(visualProperties, 'visualProperties');
     this.addChild(configurationSheet, 'configurationSheet');
@@ -96,14 +96,17 @@ VisualInfo.prototype.showDetails = function () {
         { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
     ));
 
-    function setConfigurationSheetContent() {    
-        configurationSheet.setEditedVisual(that.editor, function (error, dim) {
-            that.setDimensions(
-                [that.dimensions[0], csPosMat[13] + dim[1] + 10, 1]
-            );
-        });
+    function setConfigurationSheetContent() {
+        if (hooked) {
+            configurationSheet.setEditedVisual(that.editor, function (error, dim) {
+                that.setDimensions(
+                    [that.dimensions[0], csPosMat[13] + dim[1] + 10, 1]
+                );
+            });
+        }
     }
     this.unhookConfigurationSheet = function () {
+        hooked = false;
         viewer.removeListener('updateSelectionControlBox', setConfigurationSheetContent);
     };
     viewer.on('updateSelectionControlBox', setConfigurationSheetContent);
@@ -123,8 +126,7 @@ VisualInfo.prototype.hideDetails = function () {
             delete this.unhookConfigurationSheet;
         }
     }
-    this.setDimensions(groups.VisualInfo.dimensions);
-    
+    this.setDimensions(groups.VisualInfo.dimensions);    
 };
 
 

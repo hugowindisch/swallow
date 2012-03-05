@@ -129,7 +129,6 @@ VisualList.prototype.reload = function () {
                 that.select(this, true);
             }
             function packageLoaded(err) {
-                console.log('package loaded !!!! ' + err);
             }
             for (i = 0; i < l; i += 1) {
                 c = new VisualInfo({ typeInfo: jsonData[i]});
