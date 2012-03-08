@@ -49,10 +49,25 @@ function setupFileMenu(editor) {
         'New...',
         function () {
             // FIXME, very crude
-            var result = window.prompt('name', '');
-            if (result !== '') {
-                editor.newGroup(null, result);
+            var result = window.prompt('name', ''),
+                sres = result.split(' '),
+                factory,
+                type;
+            if (sres.length > 1) {
+                factory = sres[0];
+                type = sres[1];
+            } else if (result.length > 0) {
+                type = sres[0];
+                factory = editor.getDocInfo().factory;
             }
+            // create
+            editor.newGroup(factory, type, function (err) {
+                if (!err) {
+                    window.open('/static/editor.html?factory=' + factory + '&type=' + type, '_blank');
+                }
+            });
+//....            
+//            window.open("/static/" + docInfo.factory + '.html?visual=' + docInfo.type, '_blank');            
         }
     );
     menus.file.push(
@@ -155,7 +170,7 @@ function setupToolMenu(editor) {
                         if (!evt.ctrlKey) {
                             viewer.clearSelection(nmat);
                         }
-                        viewer.selectByMatrix(nmat, !evt.shiftKey);                    
+                        viewer.selectByMatrix(nmat, !evt.shiftKey, evt.ctrlKey);
                         viewer.updateSelectionControlBox();
                     }
                 }

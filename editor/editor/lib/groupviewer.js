@@ -51,8 +51,16 @@ function intersects(r1, r2) {
     var r1min = r1[0], r2min = r2[0],
         r1max = r1[1], r2max = r2[1];
     return (r1min[0] <= r2max[0] && r1max[0] >= r2min[0]) &&
-        (r1min[1] <= r2max[1] && r1max[1] >= r2min[1]) &&
-        (r1min[2] <= r2max[2] && r1max[2] >= r2min[2]);
+        (r1min[1] <= r2max[1] && r1max[1] >= r2min[1]); // &&
+        //(r1min[2] <= r2max[2] && r1max[2] >= r2min[2]);
+}
+
+function encloses(r1, r2) {
+    var r1min = r1[0], r2min = r2[0],
+        r1max = r1[1], r2max = r2[1];
+    return (r1min[0] <= r2min[0] && r1max[0] >= r2max[0]) &&
+        (r1min[1] <= r2min[1] && r1max[1] >= r2max[1]); // &&
+        //(r1min[2] <= r2min[2] && r1max[2] >= r2max[2]);
 }
 
 function rectToMatrix(r) {
@@ -209,7 +217,7 @@ GroupViewer.prototype.enableBoxSelection = function (
     function mouseMove(evt) {
         evt.preventDefault();
         var mat = visuals.getFullDisplayMatrix(true);
-        endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]);
+        endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
         matrix = twoPositionsToMatrix(startpos, endpos);
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);
         updateMouseBox(nmatrix);        
@@ -391,10 +399,11 @@ GroupViewer.prototype.selectedItemAtPosition = function (position) {
 /**
     Selection.
 */
-GroupViewer.prototype.selectByMatrix = function (matrix, toggle) {
+GroupViewer.prototype.selectByMatrix = function (matrix, toggle, byContact) {
     var documentData = this.documentData,
         selrect,
         sel,
+        selfcn = byContact === true ? intersects : encloses,
         selection = this.selection;
     function select(name) {
         if (toggle && selection[name]) {
@@ -413,7 +422,7 @@ GroupViewer.prototype.selectByMatrix = function (matrix, toggle) {
         selrect = getEnclosingRect(matrix);
         forEachProperty(documentData.positions, function (c, name) {
             var r = getEnclosingRect(c.matrix);
-            if (intersects(selrect, r)) {
+            if (selfcn(selrect, r)) {
                 select(name);
             }
         });
@@ -652,7 +661,13 @@ GroupViewer.prototype.updateAll = function () {
     //children.decorations.removeAllChildren();
     // children
     children.visuals.setPosition(null);
-    children.visuals.createGroup(documentData);
+    try {
+        children.visuals.createGroup(documentData);
+    } catch (e) {
+        // FIXME: this is wrong... because... the components we depend
+        // on are not necessarily already loaded...
+        // kinda shitty.
+    }
     children.visuals.setMatrix(zoomMat);
     
     forEachProperty(children.visuals.children, function (c) {

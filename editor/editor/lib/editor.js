@@ -111,7 +111,7 @@ Editor.prototype.loadGroup = function (factory, type) {
         });
     });
 };
-Editor.prototype.saveGroup = function (factory, type, doc) {
+Editor.prototype.saveGroup = function (factory, type, doc, cb) {
     factory = factory || this.docInfo.factory;
     type = type || this.docInfo.type;
     doc = doc || this.children.viewer.getGroup().documentData;
@@ -123,6 +123,14 @@ Editor.prototype.saveGroup = function (factory, type, doc) {
             function (res) {
                 res.on('error', function (e) {
                     alert('Error saving');
+                    if (cb) {
+                        cb(e);
+                    }
+                });
+                res.on('end', function () {
+                    if (cb) {
+                        cb(null);
+                    }
                 });
             }
         );
@@ -130,7 +138,7 @@ Editor.prototype.saveGroup = function (factory, type, doc) {
     req.end();
 };
 
-Editor.prototype.newGroup = function (factory, type) {
+Editor.prototype.newGroup = function (factory, type, cb) {
     this.saveGroup(
         factory, 
         type,
@@ -140,7 +148,8 @@ Editor.prototype.newGroup = function (factory, type) {
             dimensions: [ 600, 400, 0], 
             children: {}, 
             positions: {}
-        }
+        },
+        cb
     );
 };
 

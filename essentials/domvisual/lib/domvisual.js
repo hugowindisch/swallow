@@ -179,6 +179,35 @@ DOMVisual.prototype.setCursor = function (cursor) {
 };
 
 /**
+    Very rough...
+    (some more thoughts must be done on this)
+rethink this... maybe this should be a parameter of setPosition ???    
+*/
+DOMVisual.prototype.setTransition = function (
+    duration,
+    easingFunction
+) {
+    // force update
+    dirty.update();
+    // set the transition
+    this.transition = {
+        duration: duration || 300,
+        easingFunction: easingFunction || 'easein'
+    };
+    setDirty(this, 'matrix');
+};
+DOMVisual.prototype.clearTransition = function () {
+    // force update
+    dirty.update();
+    // remove the transition
+    delete this.transition;
+    setDirty(this, 'matrix');
+};
+DOMVisual.prototype.setOpacity = function (opacity) {
+    this.opacity = opacity;
+    setDirty(this, 'matrix');
+};
+/**
     DOM update (we essentially treat the DOM as an output thing)
 */
 DOMVisual.prototype.updateMatrixRepresentation = function () {
@@ -186,7 +215,26 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
         var matrix = this.matrix,
             style = this.element.style,
             htmlFlowing = this.htmlFlowing,
+            transition = this.transition,
+            opacity = this.opacity,
             transform;
+        // opacity FIXME: not sure this should be here
+        if (opacity !== undefined) {
+            style.webkitOpacity = opacity;
+            
+        } else {
+            style.webkitOpacity = null;
+        }
+        // transitions FIXME: not sure this should be here
+        if (transition) {
+            style.webkitTransitionProperty = 'all';
+            style.webkitTransitionDuration = transition.duration;
+            style.webkitTransitionTimingFunction = transition.easingFunction;                
+        } else {
+            style.webkitTransitionProperty = null;
+            style.webkitTransitionDuration = null;
+            style.webkitTransitionTimingFunction = null;
+        }
         // full matrix not yet supported
         if (!htmlFlowing) {
             // we can either use left & top (if html5 is not supported)
