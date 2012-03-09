@@ -395,14 +395,42 @@ function serveVisualList(req, res, match, options) {
                         type = m[1];
                         if (!found[type]) {
                             found[type] = true;
-                            ret.push({factory: k, type: m[1]});
+                            ret.push({factory: k, type: m[1], path: p});
                         }
                     }
                 });
             });
-            res.writeHead('200', {'Content-Type': mimeType.json});
-            res.write(JSON.stringify(ret, null, 4));
-            res.end();
+            // there are some details that we want to return too...
+            // and for this... we need to load the vis files...
+            // kinda sad...
+            async.map(
+                ret, 
+                function (r, cb) {
+                    fs.readFile(r.path, function (err, data) {
+                        if (err) {
+                            return cb(err);
+                        }
+                        var js = JSON.parse(data);
+                        cb(
+                            null, 
+                            {
+                                factory: r.factory,
+                                type: r.type,
+                                description: js.description,
+                                private: js.private
+                            }
+                        );
+                    });                
+                },
+                function (err, ret) {
+                    if (err) {
+                        return res.ret404(err);
+                    }
+                    res.writeHead('200', {'Content-Type': mimeType.json});
+                    res.write(JSON.stringify(ret, null, 4));
+                    res.end();
+                }
+            );
         });
         
     } else {

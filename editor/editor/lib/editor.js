@@ -23,7 +23,6 @@ function Editor(config) {
     // create the menu bar and toolbar
     this.setStyle('background');
     this.addPlugins(defaultPlugins);
-    this.children.panel.init(this);
     this.setChildrenClipping('hidden');
     
     
@@ -91,6 +90,7 @@ Editor.prototype.setGroupData = function (factory, type, groupData) {
     this.children.viewer.setGroup(
         new (require('./model').Group)(groupData)
     );
+    this.children.panel.init(this);    
 };
 Editor.prototype.getDocInfo = function () {
     return this.docInfo;
@@ -144,7 +144,7 @@ Editor.prototype.newGroup = function (factory, type, cb) {
         type,
         { 
             description: '', 
-            private: false, 
+            private: true, 
             dimensions: [ 600, 400, 0], 
             children: {}, 
             positions: {}
@@ -178,47 +178,6 @@ Editor.prototype.addPlugins = function (plugins) {
         new MenuItem("Run", null, menus.run),
         new MenuItem("Help", null, menus.help)
     ];
-/*
-    this.menubar = [
-        new MenuItem("File"), 
-        new MenuItem("Edit", null, [
-            new MenuItem("Undo"),
-            new MenuItem("Redo"),
-            new MenuItem("Cut"),
-            new MenuItem("Copy"),
-            new MenuItem("Paste"),
-            new MenuItem("Select All"),
-        ]),
-        new MenuItem("Tool", null, this.toolbar),
-        new MenuItem("Object", null, [
-            new MenuItem("Move Up"),
-            new MenuItem("Move Down"),
-            new MenuItem("To Top"),
-            new MenuItem("To Bottom"),
-            new MenuItem("Align Left"),
-            new MenuItem("Align Center"),
-            new MenuItem("Align Right"),
-            new MenuItem("Align Top"),
-            new MenuItem("Align Middle"),
-            new MenuItem("Align Bottom")
-        ]),
-        new MenuItem("Run", null, [
-            new MenuItem("Run"),
-            new MenuItem("Run Minimized"),
-            new MenuItem("Lint"),
-            new MenuItem("Test"),
-            new MenuItem("Generate Documentation"),
-        ]),
-        new MenuItem("Help", null, [
-            new MenuItem("Editor Help"),
-            new MenuItem("Editor Documentation"),
-            new MenuItem("Content Help"),
-            new MenuItem("Content Documentation"),
-            new MenuItem("All packages"),
-            new MenuItem("About")
-        ]),
-    ];
-*/
     for (i = 0; i < l; i += 1) {
         plugins[i](this);
     }

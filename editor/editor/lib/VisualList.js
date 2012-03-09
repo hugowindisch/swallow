@@ -17,7 +17,6 @@ var visual = require('visual'),
 function VisualList(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.VisualList);
-    this.reload();
 }
 VisualList.prototype = new (domvisual.DOMElement)();
 VisualList.prototype.select = function (vi, apply) {
@@ -115,6 +114,9 @@ VisualList.prototype.applySelectedPosition = function () {
 VisualList.prototype.reload = function () {
     this.removeAllChildren();
     var data = '',
+        editor = this.editor,
+        docInfo = editor.getDocInfo(),
+        editedFactory = docInfo.factory,
         that = this;
     http.get({ path: '/visual'}, function (res) {
         res.on('data', function (d) {
@@ -124,6 +126,7 @@ VisualList.prototype.reload = function () {
             var jsonData = JSON.parse(data),
                 i,
                 l = jsonData.length,
+                jsd,
                 c;
             function onClick() {
                 that.select(this, true);
@@ -131,14 +134,17 @@ VisualList.prototype.reload = function () {
             function packageLoaded(err) {
             }
             for (i = 0; i < l; i += 1) {
-                c = new VisualInfo({ typeInfo: jsonData[i]});
-                c.init(that.editor);
-                // FIXME: this needs some thinking... I want to flow the thing,
-                // and doing so 
-                c.setHtmlFlowing({position: 'relative'}, true);
-                that.addChild(c);
-                c.on('click', onClick);
-                define.meat.loadPackage(jsonData[i].factory, packageLoaded);
+                jsd = jsonData[i];
+                if ((!jsd.private || jsd.factory === editedFactory) && !(jsd.factory === docInfo.factory && jsd.type === docInfo.type)) {
+                    c = new VisualInfo({ typeInfo: jsd});
+                    c.init(that.editor);
+                    // FIXME: this needs some thinking... I want to flow the thing,
+                    // and doing so 
+                    c.setHtmlFlowing({position: 'relative'}, true);
+                    that.addChild(c);
+                    c.on('click', onClick);
+                    define.meat.loadPackage(jsonData[i].factory, packageLoaded);
+                }
             }
         });
     });
@@ -150,6 +156,7 @@ VisualList.prototype.init = function (editor) {
         that = this;
     this.editor = editor;
     
+    this.reload();
     // a new box has been selected
     function newBoxSelected() {
         var selectedChild,
