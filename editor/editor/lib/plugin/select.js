@@ -66,8 +66,6 @@ function setupFileMenu(editor) {
                     window.open('/static/editor.html?factory=' + factory + '&type=' + type, '_blank');
                 }
             });
-//....            
-//            window.open("/static/" + docInfo.factory + '.html?visual=' + docInfo.type, '_blank');            
         }
     );
     menus.file.push(

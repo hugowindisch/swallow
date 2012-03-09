@@ -97,6 +97,10 @@ Button.prototype.theme = new (visual.Theme)({
         ]
     }
 });
+Button.createPreview = function () {
+    return new Button({text: 'Button'});
+};
+
 Button.prototype.getConfigurationSheet = function () {
     return { 
         text: config.inputConfig('Text')

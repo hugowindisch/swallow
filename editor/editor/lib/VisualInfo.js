@@ -2,6 +2,7 @@
     VisualInfo.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
+/*globals define */
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
@@ -30,24 +31,30 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
         var factory,
             Constr,
             preview;
-        try {
-            factory = require(ti.factory);
-            if (factory) {
-                Constr = factory[ti.type];
-                if (Constr) {
-                    if (Constr.createPreview) {
-                        // specific preview
-                        preview = Constr.createPreview();
-                    } else {
-                        // generic preview
-                        preview = new Constr({});
+        define.meat.loadPackage(ti.factory, function (err) {
+            if (!err) {
+                factory = require(ti.factory);
+                if (factory) {
+                    Constr = factory[ti.type];
+                    if (Constr) {
+                        if (Constr.createPreview) {
+                            // specific preview
+                            preview = Constr.createPreview();
+                        } else {
+                            // generic preview
+                            preview = new Constr({});
+                            preview.setChildrenClipping('hidden');
+                            preview.enableScaling(true);
+                        }
+                        preview.setPosition('preview');
+                        preview.enableInteractions(false);
+                        that.addChild(preview, 'preview');
                     }
-                    that.addChild(preview, 'preview');
-                    preview.setPosition('preview');
                 }
-            }
-        } catch (e) {
-        }
+            } /*else {
+                // display something to say that it did not work properly.
+            }*/
+        });
     }
     this.ti = ti;
     this.children.factoryName.setText(ti.factory);

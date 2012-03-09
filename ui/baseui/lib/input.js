@@ -17,6 +17,10 @@ function Input(config) {
 
 Input.prototype = new (domvisual.DOMInput)();
 
+Input.createPreview = function () {
+    return new Input({text: 'input'});
+};
+
 Input.prototype.theme = new (visual.Theme)({
     text: {
         basedOn: [

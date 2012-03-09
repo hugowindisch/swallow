@@ -47,7 +47,9 @@ DOMVisual.prototype.addChild = function (child, name) {
         disableEventHooks = this.disableEventHooks;
     visual.forVisualAndAllChildrenDeep(child, function (c) {
         c.connectedToTheStage = connectedToTheStage;
-        c.disableEventHooks = disableEventHooks;
+        if (disableEventHooks) {
+            c.disableEventHooks = true;
+        }
         // here we should revalidate the hooks for this child
         updateDOMEventHooks(c);
     });
