@@ -441,6 +441,9 @@ function setupObjectMenu(editor) {
     function selectionNotEmpty() {
         return !viewer.selectionIsEmpty();
     }
+    function selectionTwoOrMore() {
+        return viewer.getSelectionLength() > 1;
+    }
 
     function normalizeDepths(orders) {
         var d = [], res = {}, i, l, di;
@@ -594,7 +597,7 @@ function setupObjectMenu(editor) {
         null,
         null,
         null,
-        selectionNotEmpty
+        selectionTwoOrMore
     );
     // align left tool
     alignRightTool = new MenuItem(
@@ -624,7 +627,7 @@ function setupObjectMenu(editor) {
         null,
         null,
         null,
-        selectionNotEmpty
+        selectionTwoOrMore
     );
     // align left tool
     alignCenterTool = new MenuItem(
@@ -656,7 +659,7 @@ function setupObjectMenu(editor) {
         null,
         null,
         null,
-        selectionNotEmpty
+        selectionTwoOrMore
     );
     // align top tool
     alignTopTool = new MenuItem(
@@ -686,7 +689,7 @@ function setupObjectMenu(editor) {
         null,
         null,
         null,
-        selectionNotEmpty
+        selectionTwoOrMore
     );
     // align bottom tool
     alignBottomTool = new MenuItem(
@@ -716,7 +719,7 @@ function setupObjectMenu(editor) {
         null,
         null,
         null,
-        selectionNotEmpty
+        selectionTwoOrMore
     );
     // align left tool
     alignMiddleTool = new MenuItem(
@@ -748,7 +751,7 @@ function setupObjectMenu(editor) {
         null,
         null,
         null,
-        selectionNotEmpty
+        selectionTwoOrMore
     );
 
     menus.object.push(
