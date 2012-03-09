@@ -263,20 +263,34 @@ GroupViewer.prototype.enableBoxSelection = function (
 GroupViewer.prototype.previewSelectionTransformation = function (transform) {
     var documentData = this.documentData,
         children = this.children,
+        visuals = children.visuals.children || {},
+        positions = children.positions.children || {},
+        zoomMat = this.zoomMat,
         selRect;
     forEachProperty(this.selection, function (s, n) {
-        var vis = children.visuals.children[n],
+        var vis = visuals[n],
+            posFrame = positions[n],
             pos,
+            res,
             newpos = {},
             ch = documentData.children[n];
-            
-        if (vis) {
-            pos = documentData.positions[ch.position];
-            if (pos) {
+        pos = documentData.positions[n];
+        if (pos) {
+            // graphic element
+            if (vis) {
                 newpos.type = pos.type;
                 newpos.snapping = pos.snapping;
                 newpos.matrix = mat4.multiply(transform, pos.matrix, mat4.create());
                 vis.setPosition(visual.deserializePosition(newpos));
+            }
+            // frame
+            if (posFrame) {
+                res = convertScaleToSize(mat4.multiply(
+                    zoomMat, 
+                    mat4.multiply(transform, pos.matrix, mat4.create()),
+                    mat4.create()
+                ));
+                posFrame.setMatrix(res.matrix);
             }
         }
     });
