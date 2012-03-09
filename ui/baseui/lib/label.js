@@ -29,6 +29,7 @@ Label.prototype.theme = new (visual.Theme)({
 });
 
 Label.prototype.setText = function (text) {
+    text = text || '';
     this.setInnerText(text);
     this.setStyle('text');
     this.text = text;

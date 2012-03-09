@@ -59,6 +59,7 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
     this.ti = ti;
     this.children.factoryName.setText(ti.factory);
     this.children.typeName.setText(ti.type);
+    this.children.description.setText(ti.description);
     // show the preview (normally, I would have to load it)
     loadPreview();
 };

@@ -209,6 +209,11 @@ exports.definition = {
                     matrix: [ 400, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 25, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
                 },
+                description: {
+                    type: "AbsolutePosition",
+                    matrix: [ 300, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   180, 5, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
+                },
                 visualProperties: {
                     type: "AbsolutePosition",
                     matrix: [ 400, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   0, 50, 0, 1 ],
@@ -238,7 +243,16 @@ exports.definition = {
                     enableScaling: false,
                     order: 1,
                     config: {
-                        "text": "factory name"
+                        "text": "type name"
+                    }                
+                },
+                description: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "description",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
                     }                
                 }
             }
