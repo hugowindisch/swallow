@@ -214,6 +214,7 @@ exports.VisualProperties = require('./VisualProperties').VisualProperties;
 exports.ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet;
 exports.VisualList = require('./Layering').Layering;
 exports.SelectionInfo = require('./SelectionInfo').SelectionInfo;
+exports.LayerInfo = require('./LayerInfo').LayerInfo;
 exports.Panel = require('./Panel').Panel;
 
 // note: this should be last

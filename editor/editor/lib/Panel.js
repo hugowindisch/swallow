@@ -10,6 +10,7 @@ var visual = require('visual'),
     VisualList = require('./VisualList').VisualList,
     SelectionInfo = require('./SelectionInfo').SelectionInfo,
     ComponentInfo = require('./ComponentInfo').ComponentInfo,
+    Layering = require('./Layering').Layering,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
 
@@ -22,22 +23,28 @@ Panel.prototype.init = function (editor) {
     // initially, forget drawers, add a VisualList directly
     var ci = new ComponentInfo({}),
         ciFolder = new (baseui.Folder)({ internal: ci, text: 'Component' }),
-        si = new SelectionInfo({}),        
+        li = new Layering({}),
+        liFolder = new (baseui.Folder)({internal: li, text: 'Layering' }),
+        si = new SelectionInfo({}),
         siFolder = new (baseui.Folder)({ internal: si, text: 'Position' }),
         vl = new VisualList({}),
         vlFolder = new (baseui.Folder)({ internal: vl, text: 'Content' });
+    liFolder.setHtmlFlowing({});
     ciFolder.setHtmlFlowing({});
     vlFolder.setHtmlFlowing({});
     siFolder.setHtmlFlowing({});
     ciFolder.setExpanded(false);
+    liFolder.setExpanded(false);
     vlFolder.setExpanded(true);
     siFolder.setExpanded(true);
 
     this.addChild(ciFolder);
+    this.addChild(liFolder);
     this.addChild(siFolder);
     this.addChild(vlFolder);
     
     // setup the various panel items
+    li.init(editor);
     ci.init(editor);
     si.init(editor);
     vl.init(editor);

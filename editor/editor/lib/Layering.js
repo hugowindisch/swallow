@@ -6,6 +6,10 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
     glmatrix = require('glmatrix'),
+    utils = require('utils'),
+    LayerInfo = require('./LayerInfo').LayerInfo,
+    forEachProperty = utils.forEachProperty,
+    forEach = utils.forEach,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
 
@@ -20,6 +24,38 @@ Layering.prototype.setTypeInfo = function (ti) {
 };
 Layering.prototype.getConfigurationSheet = function () {
     return { typeInfo: {} };
+};
+Layering.prototype.init = function (editor) {
+    var viewer = editor.getViewer(),
+        that = this;
+    this.editor = editor;
+    function refresh() {
+        that.updateList();
+    }
+    viewer.on('updateSelectionControlBox', refresh);
+    refresh();
+};
+Layering.prototype.updateList = function () {
+    var viewer = this.editor.getViewer(),
+        group = viewer.getGroup(),
+        that = this,
+        documentData = group.documentData,
+        it = [];
+        
+    forEachProperty(documentData.children, function (c, name) {
+        it.push({name: name, order: c.order});
+    });
+    it.sort(function (i1, i2) {
+        return i1.order - i2.order;
+    });
+    this.removeAllChildren();
+    forEach(it, function (i) {
+        var ch = new LayerInfo({contentName: i.name});
+        ch.setHtmlFlowing({position: 'relative'}, true);
+        that.addChild(ch, i.name);        
+
+    });
+    this.setDimensions([groups.Layering.dimensions[0], it.length * 25 + 10, 1]);
 };
 
 exports.Layering = Layering;

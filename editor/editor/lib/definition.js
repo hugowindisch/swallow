@@ -258,7 +258,7 @@ exports.definition = {
             }
         },
         VisualList: {
-            dimensions: [390, 400, 0],
+            dimensions: [390, 80, 0],
             positions: {
             },
             children: {
@@ -744,7 +744,35 @@ exports.definition = {
                     }                
                 }
             }
-        }
+        },
+        LayerInfo: {
+            dimensions: [390, 25, 1],
+            positions: {
+                name: {
+                    type: "AbsolutePosition",
+                    matrix: [ 380, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 0, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                }                
+            },
+            children: {
+                name: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "name",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                    }                
+                },
+            }
+        },
+        Layering: {
+            dimensions: [390, 100, 0],
+            positions: {
+            },
+            children: {
+            }
+        },
         
     }
 };
