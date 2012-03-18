@@ -750,9 +750,20 @@ exports.definition = {
             positions: {
                 name: {
                     type: "AbsolutePosition",
-                    matrix: [ 380, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 0, 0, 1 ],
+                    matrix: [ 280, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 2, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
-                }                
+                },
+                enableView: {
+                    type: "AbsolutePosition",
+                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   290, 2, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                enableSelection: {
+                    type: "AbsolutePosition",
+                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   320, 2, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                }
+                
             },
             children: {
                 name: {
@@ -762,6 +773,26 @@ exports.definition = {
                     enableScaling: false,
                     order: 1,
                     config: {
+                    }                
+                },
+                enableView: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "enableView",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        url: 'editor/lib/enableView.png'
+                    }                
+                },
+                enableSelection: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "enableSelection",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        url: 'editor/lib/enableSelect.png'
                     }                
                 },
             }

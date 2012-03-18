@@ -38,6 +38,7 @@ Layering.prototype.init = function (editor) {
 Layering.prototype.updateList = function () {
     var viewer = this.editor.getViewer(),
         group = viewer.getGroup(),
+        selection = viewer.getSelection(),
         that = this,
         documentData = group.documentData,
         it = [];
@@ -50,10 +51,15 @@ Layering.prototype.updateList = function () {
     });
     this.removeAllChildren();
     forEach(it, function (i) {
-        var ch = new LayerInfo({contentName: i.name});
+        var name = i.name,
+            ch = new LayerInfo({contentName: name, selected: selection[name]});
         ch.setHtmlFlowing({position: 'relative'}, true);
-        that.addChild(ch, i.name);        
-
+        that.addChild(ch, name);
+        ch.on('select', function (name) {
+            viewer.clearSelection();
+            viewer.addToSelection(name);
+            viewer.updateSelectionControlBox();
+        });
     });
     this.setDimensions([groups.Layering.dimensions[0], it.length * 25 + 10, 1]);
 };
