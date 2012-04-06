@@ -59,7 +59,7 @@ VisualList.prototype.select = function (vi, apply) {
         }
         if (vi) {
             vi.select(true);
-            sel.setVisible(true);
+            vi.setVisible(true);
         }
         ret = true;
     }
