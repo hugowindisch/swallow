@@ -1,6 +1,6 @@
 /**
     domvisual.js
-    
+
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 var visual = require('visual'),
@@ -57,6 +57,7 @@ DOMVisual.prototype.addChild = function (child, name) {
 DOMVisual.prototype.removeChild = function (child) {
     // it is easier to track element containement immediately instead
     // of waiting for the update function to be called.
+    child = this.resolveChild(child);
     this.element.removeChild(child.element);
     this.superRemoveChild(child);
     var connectedToTheStage = this.connectedToTheStage,
@@ -100,10 +101,10 @@ DOMVisual.prototype.getDisplayMatrix = function () {
     var scrollX = this.element.scrollLeft,
         scrollY = this.element.scrollTop,
         mat;
-        
+
     if (scrollX || scrollY) {
         mat = glmatrix.mat4.translate(
-            this.matrix, 
+            this.matrix,
             [-scrollX, -scrollY, 0],
             glmatrix.mat4.create()
         );
@@ -120,11 +121,11 @@ DOMVisual.prototype.getDisplayMatrix = function () {
     Note that even if we are flowed by html, we still can apply our layout
     rules to our children and ourselves be positioned by our parent
     (i.e. the swagup layouting is independent of the html layouting)
-    
+
     {
         inline: true|false, // inline vs block html flowing
         autoWidth,      // don't use our dimensions
-        autoHeight,     // don't use our dimensions 
+        autoHeight,     // don't use our dimensions
     }
     use null or undefined to disable flow
 */
@@ -144,7 +145,7 @@ DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
     Enables children clipping.
     available modes are
         visible hidden scroll auto
-        
+
     can be an array to set x and y clipping differently
 */
 DOMVisual.prototype.setChildrenClipping = function (mode) {
@@ -183,7 +184,7 @@ DOMVisual.prototype.setCursor = function (cursor) {
 /**
     Very rough...
     (some more thoughts must be done on this)
-rethink this... maybe this should be a parameter of setPosition ???    
+rethink this... maybe this should be a parameter of setPosition ???
 */
 DOMVisual.prototype.setTransition = function (
     duration,
@@ -213,7 +214,7 @@ DOMVisual.prototype.setOpacity = function (opacity) {
     DOM update (we essentially treat the DOM as an output thing)
 */
 DOMVisual.prototype.updateMatrixRepresentation = function () {
-    if (this.element && this.name !== 'stage') {    
+    if (this.element && this.name !== 'stage') {
         var matrix = this.matrix,
             style = this.element.style,
             htmlFlowing = this.htmlFlowing,
@@ -223,7 +224,7 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
         // opacity FIXME: not sure this should be here
         if (opacity !== undefined) {
             style.webkitOpacity = opacity;
-            
+
         } else {
             style.webkitOpacity = null;
         }
@@ -231,7 +232,7 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
         if (transition) {
             style.webkitTransitionProperty = 'all';
             style.webkitTransitionDuration = transition.duration;
-            style.webkitTransitionTimingFunction = transition.easingFunction;                
+            style.webkitTransitionTimingFunction = transition.easingFunction;
         } else {
             style.webkitTransitionProperty = null;
             style.webkitTransitionDuration = null;
@@ -260,7 +261,7 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
                 style.MozTransformOrigin = style.webkitTransformOrigin = style.transformOrigin = '0 0 0';
                 style.MozTransform = style.webkitTransform = style.transform = transform;
             }
-        } else {        
+        } else {
             style.left = null; //'auto';
             style.top = null; //'auto';
             style.webkitBackfaceVisibility = null;
@@ -282,7 +283,7 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
             // clear our stuff
             if (this.htmlFlowingApplySizing) {
                 style.width = this.dimensions[0] + 'px';
-                style.height = this.dimensions[1] + 'px';            
+                style.height = this.dimensions[1] + 'px';
             } else {
                 style.width = null;
                 style.height = null;
@@ -301,27 +302,27 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
     }
 };
 DOMVisual.prototype.updateChildrenOrderRepresentation = function () {
-// NOT TESTED
-/*
     if (this.element) {
         var children = this.children,
             sortedNodes = [],
             element = this.element,
-            i, 
+            i,
             n;
         if (children) {
             // get an ordered children array
             forEachProperty(children, function (c) {
-                sortedNodes[c.order] = element.removeChild(c.element);
+                sortedNodes[c.order] = c.element;
+                element.removeChild(c.element);
             });
             // add all children to their containing element in the right order
             n = sortedNodes.length;
             for (i = 0; i < n; i += 1) {
-                element.appendChild(sortedNodes[i]);
+                if (sortedNodes[i]) {
+                    element.appendChild(sortedNodes[i]);
+                }
             }
         }
     }
-*/
 };
 DOMVisual.prototype.updateStyleRepresentation = function () {
     var cssClass,
@@ -329,10 +330,10 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
         style;
     if (element) {
         cssClass = this.getStyleData().join(' ');
-        //console.log('updateStyleRepresentation ' + this.name + ' ' + this.style + ' ' + cssClass);        
+        //console.log('updateStyleRepresentation ' + this.name + ' ' + this.style + ' ' + cssClass);
         style = element.style;
         forEachProperty(this.cssClasses, function (c, name) {
-            cssClass += ' ';        
+            cssClass += ' ';
             cssClass += name;
         });
         element.setAttribute('class', cssClass);
@@ -377,8 +378,8 @@ DOMVisual.prototype.getComputedMatrix = function () {
     // this retrieves stuff for the dom, so we must be clean
     dirty.update();
     var ret = glmatrix.mat4.identity(),
-        element = this.element; 
-    
+        element = this.element;
+
     ret[12] = element.offsetLeft;
     ret[13] = element.offsetTop;
     return ret;
@@ -398,7 +399,7 @@ DOMVisual.prototype.getComputedDimensions = function () {
         h = style.height,
         ret;
     style.width = null;
-    style.height = null;    
+    style.height = null;
     ret =  [ element.offsetWidth, element.offsetHeight, 1];
     style.width = w;
     style.height = h;
@@ -438,17 +439,17 @@ DOMVisual.prototype.addTextChild = function (tag, text, config, name) {
 DOMVisual.prototype.setInnerHTML = function (html) {
     this.removeAllChildren();
     this.element.innerHTML = html;
-    setDirty(this, 'matrix', 'dimensions', 'style');    
+    setDirty(this, 'matrix', 'dimensions', 'style');
 };
 
 /**
     Sets the text of a DOMVisual. This removes all children.
-*/    
+*/
 DOMVisual.prototype.setInnerText = function (text) {
     this.removeAllChildren();
     this.element.innerHTML = '';
     this.element.appendChild(document.createTextNode(text));
-    setDirty(this, 'matrix', 'dimensions', 'style');    
+    setDirty(this, 'matrix', 'dimensions', 'style');
 };
 
 /**
@@ -484,9 +485,9 @@ DOMImg.prototype.setUrl = function (url) {
     //setDirty(this, 'content');
 };
 DOMImg.prototype.getConfigurationSheet = function () {
-    return { 
-        "class": null, 
-        "style": null, 
+    return {
+        "class": null,
+        "style": null,
         "url": require('config').imageUrlConfig('Url')
     };
 };
@@ -506,9 +507,9 @@ DOMVideo.prototype.setUrl = function (url) {
     //setDirty(this, 'content');
 };
 DOMVideo.prototype.getConfigurationSheet = function () {
-    return { 
-        "class": null, 
-        "style": null, 
+    return {
+        "class": null,
+        "style": null,
         "url": require('config').inputConfig('Url')
     };
 };
@@ -618,7 +619,7 @@ exports.createFullScreenApplication = function (child) {
     bodyElement.appendChild(thisElement);
     viz.setLayout(
         {
-    
+
             dimensions: [100, 100, 0],
             positions: {
                 root: {
@@ -646,7 +647,7 @@ exports.createFullScreenApplication = function (child) {
         updateTopLayout();
         // update will be automatically called.
     });
-    updateTopLayout();    
+    updateTopLayout();
     dirty.update();
     return child;
 };

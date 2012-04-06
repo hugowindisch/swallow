@@ -14,8 +14,8 @@ var glmatrix = require('glmatrix'),
 /**
     A document can have multiple groups. Each of them have an independent
     command chain.
-    
-    This is the format of the data we edit:    
+
+    This is the format of the data we edit:
         {
             dimensions: [ 640, 400, 0],
             positions: {
@@ -28,7 +28,7 @@ var glmatrix = require('glmatrix'),
                     type: "TransformPosition",
                     matrix: [ 440, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   200, 0, 0, 0 ],
                     scalemode: 'distort'
-                }                
+                }
             },
             children: {
                 toolbox: {
@@ -41,7 +41,7 @@ var glmatrix = require('glmatrix'),
                         "domvisual.DOMVisual": {
                             "cssClass": [ "toolbox" ]
                         }
-                    }                
+                    }
                 },
                 viewer: {
                     factory: "domvisual",
@@ -53,7 +53,7 @@ var glmatrix = require('glmatrix'),
                         "domvisual.DOMVisual": {
                             "cssClass": [ "viewer" ]
                         }
-                    }                
+                    }
                 }
             }
         }
@@ -105,7 +105,7 @@ function makeUniqueName(radical, test) {
 
 Group.prototype.getUniquePositionName = function (radical, optionalCheck) {
     var positions = this.documentData.positions;
-    radical = radical || 'pos';    
+    radical = radical || 'pos';
     return makeUniqueName(
         radical,
         function (r) {
@@ -178,7 +178,7 @@ Group.prototype.cmdRemovePosition = function (name) {
     var that = this,
         position;
     return new Command(
-        function () {            
+        function () {
             var documentData = that.documentData;
             position = documentData.positions[name];
             delete documentData.positions[name];
@@ -226,6 +226,36 @@ Group.prototype.cmdTransformPosition = function (name, transform) {
         { model: this, name: name, transform: transform }
     );
 };
+Group.prototype.cmdEnableSelectPosition = function (name, enable) {
+    var that = this,
+        prev = this.documentData.positions[name].enableSelect;
+    return new Command(
+        function () {
+            that.documentData.positions[name].enableSelect = enable;
+        },
+        function () {
+            that.documentData.positions[name].enableSelect = prev;
+        },
+        'cmdEnableSelectPosition',
+        'Enable Selection ' + name + ' ' + enable,
+        { model: this, name: name, enable: enable }
+    );
+};
+Group.prototype.cmdEnableDisplayPosition = function (name, enable) {
+    var that = this,
+        prev = this.documentData.positions[name].enableDisplay;
+    return new Command(
+        function () {
+            that.documentData.positions[name].enableDisplay = enable;
+        },
+        function () {
+            that.documentData.positions[name].enableDisplay = prev;
+        },
+        'cmdEnableDisplayPosition',
+        'Enable Display ' + name + ' ' + enable,
+        { model: this, name: name, enable: enable }
+    );
+};
 Group.prototype.cmdRenamePosition = function (name, newname) {
     var that = this;
     return new Command(
@@ -253,7 +283,7 @@ Group.prototype.cmdRenamePosition = function (name, newname) {
         "Rename position " + name + ' as ' + newname,
         { model: this, name: name, newname: newname }
     );
-    
+
 };
 
 
@@ -280,7 +310,7 @@ Group.prototype.cmdRemoveVisual = function (name) {
     var that = this,
         visual;
     return new Command(
-        function () {            
+        function () {
             var documentData = that.documentData;
             visual = documentData.children[name];
             delete documentData.children[name];
@@ -345,7 +375,7 @@ Group.prototype.cmdRenameVisual = function (name, newname) {
         'cmdRenameVisual',
         "Rename visual " + name + ' as ' + newname,
         { model: this, name: name, newname: newname }
-    );    
+    );
 };
 Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
     var children = this.documentData.children,
@@ -377,7 +407,7 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
         'cmdSetVisualOrder',
         message || "Set visual order",
         { model: this }
-    );    
+    );
 
 };
 
@@ -406,4 +436,3 @@ Group.prototype.cmdSetComponentProperties = function (dimensions, description, p
 };
 
 exports.Group = Group;
-

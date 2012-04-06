@@ -1,6 +1,6 @@
 /**
     visual.js
-    
+
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 
@@ -61,7 +61,7 @@ A position can be a named position inside our parent or an unmanaged position.
 
 var utils = require('utils'),
     events = require('events'),
-    glmatrix = require('glmatrix'),    
+    glmatrix = require('glmatrix'),
     forEachProperty = utils.forEachProperty,
     dirty = require('./dirty'),
     position = require('./position'),
@@ -101,17 +101,17 @@ function matrixIsTranslateOnly(matrix) {
         return Math.round(n * 1000) === 0;
     }
     return (
-        isOne(matrix[0]) && 
+        isOne(matrix[0]) &&
         isOne(matrix[5]) &&
-        isOne(matrix[10]) && 
-        
+        isOne(matrix[10]) &&
+
         isZero(matrix[1]) &&
         isZero(matrix[2]) &&
         isZero(matrix[4]) &&
         isZero(matrix[6]) &&
         isZero(matrix[8]) &&
         isZero(matrix[9])
-    );                        
+    );
 }
 
 function updateChildrenPositions(v) {
@@ -154,7 +154,7 @@ Visual.prototype.getDefaultName = function () {
 
 /**
     Allows scaling. When a visual is moved to a given position, it
-    is resized. The resizing part of the transformation can either be 
+    is resized. The resizing part of the transformation can either be
     interpreted as a scaling or as a resizing.
 */
 Visual.prototype.enableScaling = function (enable) {
@@ -172,7 +172,7 @@ Visual.prototype.enableScaling = function (enable) {
     Allows (or disallows) user interactions (mouse, keyboard). Disallowing
     interactions can be used to display a component as a passive preview.
     By default, interactions are always enabled.
-    
+
     // this function is implemented by subclasses
 */
 Visual.prototype.enableInteractions = function (enable) {
@@ -182,7 +182,7 @@ Visual.prototype.enableInteractions = function (enable) {
 /**
     Sets the dimension  of the visual
     (the dimensions are defined as an Array ... compatible with glmatrix)
-    
+
     'auto' for any of this will make the dimension determined
     by the content of the box.
 */
@@ -212,7 +212,7 @@ Visual.prototype.setMatrix = function (m4) {
     var dimensions = this.dimensions;
     this.setMatrix(
         glmatrix.mat4.scale(
-            m4, 
+            m4,
             [1 / dimensions[0], 1 / dimensions[1], 1],
             glmatrix.mat4.create()
         )
@@ -237,7 +237,7 @@ Visual.prototype.isOnlyTranslated = function () {
     that do nothing with the real matrix but and display the element differently.
     The only known case of this is when an element uses the normal html
     flowing or scrolling: the real positionning is determined by the html engine.
-    
+
     This should be private (well...)
 */
 Visual.prototype.getDisplayMatrix = function () {
@@ -266,7 +266,7 @@ Visual.prototype.getFullDisplayMatrix = function (inverse) {
         position.AbsolutePosition
         position.TransformPosition
     OR nothing
-        
+
     Note that a position is not necessarily a matrix. It is a way
     to compute a matrix (or style) given the size of the parent container.
 */
@@ -315,7 +315,7 @@ Visual.prototype.addChild = function (child, name) {
     // immediately redimension this child
     applyLayout(this.dimensions, this.layout, child);
 };
-Visual.prototype.removeChild = function (child) {
+Visual.prototype.resolveChild = function (child) {
     // allow the use of a name
     if (isString(child)) {
         child = this.children[child];
@@ -327,11 +327,16 @@ Visual.prototype.removeChild = function (child) {
             throw new Error('Invalid child');
         }
     }
+    return child;
+};
+Visual.prototype.removeChild = function (child) {
+    child = this.resolveChild(child);
     delete this.children[child.name];
     // you only have a name inside a parent
     delete child.name;
     // we must remove it from our array of children
     // stay light
+    this.numChildren -= 1;
     if (this.numChildren === 0) {
         delete this.children;
         delete this.numChildren;
@@ -345,12 +350,21 @@ Visual.prototype.removeAllChildren = function () {
         that.removeChild(c);
     });
 };
+Visual.prototype.getChild = function (name) {
+    var ch;
+    if (this.children) {
+        ch = this.children[name];
+    }
+    return ch;
+};
 Visual.prototype.getChildAtOrder = function (d) {
+    var ch;
     forEachProperty(this.children, function (c) {
         if (c.order === d) {
-            return c;
+            ch = c;
         }
     });
+    return ch;
 };
 Visual.prototype.swapOrder = function (d1, d2) {
     var o1 = utils.isNumber(d1) ? this.getChildAtOrder(d1) : this.children[d1],
@@ -368,6 +382,55 @@ Visual.prototype.toMaxOrder = function (d) {
 };
 Visual.prototype.toMinOrder = function (d) {
 };
+Visual.prototype.orderBefore = function (toMove, ref) {
+    if (toMove === ref) {
+        return;
+    }
+    var refOrder = 0,
+        children = this.children,
+        cToMove = children[toMove],
+        rc;
+    if (cToMove) {
+        if (ref && children) {
+            rc = children[ref];
+            if (rc) {
+                refOrder = rc.order;
+            }
+        }
+        forEachProperty(this.children, function (c) {
+            if (c.order >= refOrder) {
+                c.order += 1;
+            }
+        });
+        cToMove.order = refOrder;
+        setDirty(this, 'childrenOrder');
+    }
+};
+Visual.prototype.orderAfter = function (toMove, ref) {
+    if (toMove === ref) {
+        return;
+    }
+    var refOrder = 0,
+        children = this.children,
+        cToMove = children[toMove],
+        rc;
+    if (cToMove) {
+        if (ref && children) {
+            rc = children[ref];
+            if (rc) {
+                refOrder = rc.order + 1;
+            }
+        }
+        forEachProperty(this.children, function (c, name) {
+            if (c.order >= refOrder) {
+                c.order += 1;
+            }
+        });
+        cToMove.order = refOrder;
+        setDirty(this, 'childrenOrder');
+    }
+};
+
 /**
     Called to update the visual part.
     NOTE: this should not be overriden in components. This should only be
@@ -386,7 +449,7 @@ Visual.prototype.update = function (why) {
     if (why.matrix) {
         this.updateMatrixRepresentation();
     }
-    if (why.dimensions) {        
+    if (why.dimensions) {
         // update dim representation of ourself
         this.updateDimensionsRepresentation();
     }
@@ -424,17 +487,17 @@ Visual.prototype.createChildren = function (groupData) {
         isString = utils.isString,
         sortedChildrenNames = [],
         children = groupData.children,
-        i, 
+        i,
         l,
         name,
         it,
         fact,
         Constr,
         child;
-        
+
     forEachProperty(children, function (it, name) {
         sortedChildrenNames.push(name);
-    });    
+    });
     sortedChildrenNames.sort(function (i1, i2) {
         return children[i1].order - children[i2].order;
     });
@@ -481,13 +544,13 @@ Visual.prototype.createGroup = function (groupData) {
 /**
     Sets the configuration of this visual.
     The config is somthing like:
-    
+
     {
         data1: somestuff,
         data2: somestuff,
         etc: somestuff
     }
-    
+
     (calling the baseclass, if you need to do so, you can always have a data
     that is baseclassdata: {} )
 */
@@ -523,9 +586,9 @@ Visual.prototype.getGetFunctionName = function (name) {
 /**
     Gets data sheet (this allows the editor to edit this visual element)
     getConfigurationSheet
-    
 
-    // should create a viwer that has a     
+
+    // should create a viwer that has a
     Sheet: {
         myData: {
             fcnCreateDataViewer(data)
@@ -570,7 +633,7 @@ Visual.prototype.getSkinStyle = function (styleName) {
     sets the style of this visual. This is either a string,
     in which case it refers to a named style in the parent's
     theme/skin, or a style (as defined in themes.js).
-*/    
+*/
 Visual.prototype.setStyle = function (style) {
     if (style !== this.style) {
         this.style = style;
@@ -614,4 +677,3 @@ exports.convertScaleToSize = position.convertScaleToSize;
 exports.forVisualAndAllChildrenDeep = forVisualAndAllChildrenDeep;
 exports.Theme = themes.Theme;
 exports.update = dirty.update;
-

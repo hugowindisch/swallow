@@ -14,7 +14,7 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3,
     mat4 = glmatrix.mat4,
     convertScaleToSize = visual.convertScaleToSize;
-    
+
 /**
     Useful functions for dealing with selections.
 */
@@ -67,8 +67,8 @@ function rectToMatrix(r) {
     var m = mat4.identity(),
         rmin = r[0],
         rmax = r[1],
-        rmin0, 
-        rmin1, 
+        rmin0,
+        rmin1,
         rmin2;
     m[12] = rmin0 = rmin[0];
     m[13] = rmin1 = rmin[1];
@@ -88,9 +88,9 @@ function GroupViewer(config) {
     this.setStyle('background');
     this.setChildrenClipping('scroll');
     // border around the group in pixels (when not scaled)
-    this.groupBorderPix = 1000;    
+    this.groupBorderPix = 1000;
     this.selection = {};
-    
+
     // setup the selection control box
     this.selectionControlBox = new (selectionbox.SelectionBox)({});
     this.selectionControlBox.setMatrix(mat4.translate(mat4.identity(), [100, 100, 0]));
@@ -115,7 +115,7 @@ function GroupViewer(config) {
     this.selectionControlBox.on('preview', function (transform) {
         that.previewSelectionTransformation(transform);
     });
-    
+
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
 
@@ -123,7 +123,7 @@ GroupViewer.prototype.theme = new (visual.Theme)({
     background: {
         basedOn: [
             { factory: 'baseui', type: 'Theme', style: 'windowDarkerForeground' },
-            { factory: 'baseui', type: 'Theme', style: 'sectionBorder' }            
+            { factory: 'baseui', type: 'Theme', style: 'sectionBorder' }
         ]
     },
     page: {
@@ -171,7 +171,7 @@ GroupViewer.prototype.enableBoxSelection = function (
     function twoPositionsToNormalizedMatrix(pos1, pos2) {
         var v1 = vec3.create(),
             v2 = vec3.create(),
-            p1, 
+            p1,
             p2,
             i;
         for (i = 0; i < 3; i += 1) {
@@ -220,7 +220,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
         matrix = twoPositionsToMatrix(startpos, endpos);
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);
-        updateMouseBox(nmatrix);        
+        updateMouseBox(nmatrix);
         if (selection) {
             selection(matrix, nmatrix, startpos, endpos, evt);
         }
@@ -233,7 +233,7 @@ GroupViewer.prototype.enableBoxSelection = function (
             selectionEnd(matrix, nmatrix, startpos, endpos, evt);
         }
     }
-    function mouseDown(evt) {        
+    function mouseDown(evt) {
         evt.preventDefault();
         var mat = visuals.getFullDisplayMatrix(true);
         startpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]);
@@ -241,13 +241,13 @@ GroupViewer.prototype.enableBoxSelection = function (
         decorations.on('mousemovec', mouseMove);
         decorations.once('mouseupc', mouseUp);
         matrix = twoPositionsToMatrix(startpos, endpos);
-        nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);        
+        nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);
         if (selectionStart) {
             showMouseBox = selectionStart(matrix, nmatrix, startpos, endpos, evt);
         }
         updateMouseBox(nmatrix);
     }
-    
+
     // setup box selection
     if (selectionStart || selection || selectionEnd) {
         decorations.on('mousedown', mouseDown);
@@ -286,7 +286,7 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
             // frame
             if (posFrame) {
                 res = convertScaleToSize(mat4.multiply(
-                    zoomMat, 
+                    zoomMat,
                     mat4.multiply(transform, pos.matrix, mat4.create()),
                     mat4.create()
                 ));
@@ -296,7 +296,7 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
     });
     // update previews
     this.emit('previewSelectionRect', this.getSelectionRect(transform));
-    
+
 };
 
 /**
@@ -332,7 +332,7 @@ GroupViewer.prototype.getZoomInMatrix = function (position) {
 };
 
 /**
-    
+
 */
 GroupViewer.prototype.resetScroll = function () {
     var zoomMat = this.zoomStack[this.zoomStack.length - 1],
@@ -346,7 +346,7 @@ GroupViewer.prototype.pushZoom = function (matrix) {
     // if the matrix is too small
     if (!matrix || (matrix[0] < 10 || matrix[5] < 10)) {
         matrix = this.getZoomInMatrix([matrix[12], matrix[13], matrix[14]]);
-    }    
+    }
     var documentData = this.documentData,
         borderPix = this.groupBorderPix,
         z = this.dimensions[0] / matrix[0],
@@ -417,7 +417,9 @@ GroupViewer.prototype.selectByMatrix = function (matrix, toggle, byContact) {
     var documentData = this.documentData,
         selrect,
         sel,
+        selp,
         selfcn = byContact === true ? intersects : encloses,
+        positions = documentData.positions,
         selection = this.selection;
     function select(name) {
         if (toggle && selection[name]) {
@@ -425,19 +427,25 @@ GroupViewer.prototype.selectByMatrix = function (matrix, toggle, byContact) {
         } else {
             selection[name] = documentData.positions[name];
         }
-    }   
+    }
     // select a point
     if (matrix[0] === 0 && matrix[5] === 0 && matrix[10] === 0) {
         sel = this.itemAtPosition([matrix[12], matrix[13], matrix[14]]);
+
         if (sel) {
-            select(sel);
+            selp = positions[sel];
+            if (selp.enableSelect !== false && selp.enableDisplay !== false) {
+                select(sel);
+            }
         }
     } else {
         selrect = getEnclosingRect(matrix);
-        forEachProperty(documentData.positions, function (c, name) {
-            var r = getEnclosingRect(c.matrix);
-            if (selfcn(selrect, r)) {
-                select(name);
+        forEachProperty(positions, function (c, name) {
+            if (c.enableSelect !== false && c.enableDisplay !== false) {
+                var r = getEnclosingRect(c.matrix);
+                if (selfcn(selrect, r)) {
+                    select(name);
+                }
             }
         });
     }
@@ -485,7 +493,7 @@ GroupViewer.prototype.visualIsSelected = function (name) {
 GroupViewer.prototype.getSelectionLength = function () {
     var n = 0;
     forEachProperty(this.selection, function () {
-        n += 1;  
+        n += 1;
     });
     return n;
 };
@@ -511,7 +519,7 @@ GroupViewer.prototype.getSelectedPosition = function () {
 GroupViewer.prototype.getSelectionRect = function (optionalTransform) {
     var unionr;
     optionalTransform = optionalTransform || mat4.identity();
-    // compute the graphic size of the selection    
+    // compute the graphic size of the selection
     forEachProperty(this.selection, function (box, name) {
         var matrix = mat4.multiply(optionalTransform, box.matrix, mat4.create()),
             r = getEnclosingRect(matrix);
@@ -575,7 +583,7 @@ GroupViewer.prototype.setGroup = function (group) {
                 throw new Error('Missing rename hint');
             }
             return; // skip the update all
-            
+
         }
         that.updateAll();
     }
@@ -583,14 +591,14 @@ GroupViewer.prototype.setGroup = function (group) {
     commandChain.on('do', onDo);
     commandChain.on('undo', onDo);
     commandChain.on('redo', onDo);
-    
+
     // unhook current document
     this.unhookFromGroup = function () {
         commandChain.removeListener('do', onDo);
         commandChain.removeListener('undo', onDo);
         commandChain.removeListener('redo', onDo);
     };
-    
+
     this.zoomStack = [
         mat4.scale(mat4.identity(), [0.25, 0.25, 1], mat4.create()),
         mat4.translate(mat4.identity(), [borderPix - 20, borderPix - 20, 0], mat4.create())
@@ -618,10 +626,35 @@ GroupViewer.prototype.updateSelectionControlBox = function () {
     }
     this.emit('updateSelectionControlBox', unionr);
 };
+
+/**
+    This will filter the documentData to make it displayable in the editor.
+*/
+GroupViewer.prototype.getDisplayableDocumentData = function () {
+    var documentData = this.documentData,
+        positions = documentData.positions,
+        children = documentData.children,
+        fdd = {
+            dimensions: documentData.dimensions,
+            children: {},
+            positions: {},
+        };
+    forEachProperty(documentData.positions, function (pos, name) {
+        var c = children[name];
+        if (positions[name].enableDisplay !== false) {
+            fdd.positions[name] = pos;
+            if (c) {
+                fdd.children[name] = c;
+            }
+        }
+    });
+    return fdd;
+};
+
 /**
     Regenerates the whole thing.
-    
-    
+
+
 HOW WE DEAL WITH ZOOM
 - only the childen layer is really zoomed
     (it should not be handled by the position thing (?))
@@ -632,7 +665,7 @@ HOW WE DEAL WITH ZOOM
 
 To display something in model coordinate in the decorations or positions layer,
     we must apply the zooming matrix to it
-    
+
 To display something in model coordinates in the visuals layer, there is nothing
     special to do
 
@@ -659,36 +692,36 @@ GroupViewer.prototype.updateAll = function () {
     zoomMatNoTranslate[12] = 0;
     zoomMatNoTranslate[13] = 0;
     zoomMatNoTranslate[14] = 0;
-    
+
     // keep this (useful for coordinate transformations)
     this.zoomMat = zoomMat;
-    
+
     // compute the extended dimensions
     extendedDimensions[0] += borderPix * 2;
     extendedDimensions[1] += borderPix * 2;
     extendedDimensions[2] = 1;
     mat4.multiplyVec3(zoomMatNoTranslate, extendedDimensions);
-    
-    // regenerate content    
+
+    // regenerate content
     children.visuals.removeAllChildren();
     children.positions.removeAllChildren();
     //children.decorations.removeAllChildren();
     // children
     children.visuals.setPosition(null);
     try {
-        children.visuals.createGroup(documentData);
+        children.visuals.createGroup(this.getDisplayableDocumentData());
     } catch (e) {
         // FIXME: this is wrong... because... the components we depend
         // on are not necessarily already loaded...
         // kinda shitty.
     }
     children.visuals.setMatrix(zoomMat);
-    
+
     forEachProperty(children.visuals.children, function (c) {
         // Sets the preview mode
         c.enableInteractions(false);
     });
-    // positions   
+    // positions
     children.positions.setPosition(null);
     children.positions.setDimensions(extendedDimensions);
     children.positions.setMatrix(mat4.identity());
@@ -703,12 +736,12 @@ GroupViewer.prototype.updateAll = function () {
             pos.setClass('editor_GroupViewer_position');
             children.positions.addChild(pos, name);
         }
-    });    
+    });
     // decorations
     children.decorations.setPosition(null);
     children.decorations.setDimensions(extendedDimensions);
     children.decorations.setMatrix(mat4.identity());
-    
+
     // selection control box
     this.updateSelectionControlBox();
 };
