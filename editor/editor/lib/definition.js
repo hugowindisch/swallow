@@ -20,12 +20,12 @@ exports.definition = {
                     type: "AbsolutePosition",
                     matrix: [ 390, 0, 0, 0,   0, 302, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'bottom' }
-                },        
+                },
                 viewer: {
                     type: "AbsolutePosition",
                     matrix: [ 240, 0, 0, 0,   0, 376, 0, 0,    0, 0, 1, 0,   400, 24, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
-                }                
+                }
             },
             children: {
                 menu: {
@@ -44,7 +44,7 @@ exports.definition = {
                     enableScaling: false,
                     order: 0,
                     config: {
-                    }                
+                    }
                 },
                 panel: {
                     factory: "editor",
@@ -54,7 +54,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "style": "panel"
-                    }                
+                    }
                 },
                 viewer: {
                     factory: "editor",
@@ -63,7 +63,7 @@ exports.definition = {
                     enableScaling: false,
                     order: 2,
                     config: {
-                    }                
+                    }
                 }
             }
         },
@@ -86,7 +86,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "style": "page"
-                    }                
+                    }
                 },
                 positions: {
                     factory: "domvisual",
@@ -95,7 +95,7 @@ exports.definition = {
                     enableScaling: false,
                     order: 1,
                     config: {
-                    }                
+                    }
                 },
                 decorations: {
                     factory: "domvisual",
@@ -104,7 +104,7 @@ exports.definition = {
                     enableScaling: false,
                     order: 2,
                     config: {
-                    }                
+                    }
                 }
             }
         },
@@ -147,7 +147,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_selectionArea" ]
-                    }                
+                    }
                 },
                 topLeft: {
                     factory: "domvisual",
@@ -157,7 +157,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
-                    }                
+                    }
                 },
                 topRight: {
                     factory: "domvisual",
@@ -167,7 +167,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
-                    }                
+                    }
                 },
                 bottomLeft: {
                     factory: "domvisual",
@@ -177,7 +177,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
-                    }                
+                    }
                 },
                 bottomRight: {
                     factory: "domvisual",
@@ -187,8 +187,8 @@ exports.definition = {
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
-                    }                
-                }                
+                    }
+                }
             }
         },
         VisualInfo: {
@@ -234,7 +234,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "text": "factory name"
-                    }                
+                    }
                 },
                 typeName: {
                     factory: "baseui",
@@ -244,7 +244,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "type name"
-                    }                
+                    }
                 },
                 description: {
                     factory: "baseui",
@@ -253,15 +253,59 @@ exports.definition = {
                     enableScaling: false,
                     order: 1,
                     config: {
-                    }                
+                    }
                 }
             }
         },
         VisualList: {
             dimensions: [390, 80, 0],
             positions: {
+                label: {
+                    type: "AbsolutePosition",
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 10, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                library: {
+                    type: "AbsolutePosition",
+                    matrix: [ 180, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   80, 10, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                },
+                choices: {
+                    type: "AbsolutePosition",
+                    matrix: [ 380, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   10, 50, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                }
             },
             children: {
+                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "label",
+                    enableScaling: false,
+                    order: 0,
+                    config: {
+                        "text": "Library:"
+                    }
+                },
+                library: {
+                    factory: "domvisual",
+                    type: "DOMSelect",
+                    position: "library",
+                    enableScaling: false,
+                    order: 1,
+                    config: {
+                        "options": [ "fake" ]
+                    }
+                },
+                choices: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "choices",
+                    enableScaling: false,
+                    order: 2,
+                    config: {
+                    }
+                }
             }
         },
         SelectionInfo: {
@@ -317,7 +361,7 @@ exports.definition = {
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   225, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
-                
+
                 name: {
                     type: "AbsolutePosition",
                     matrix: [ 120, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 5, 0, 1 ],
@@ -353,7 +397,7 @@ exports.definition = {
                     matrix: [ 150, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   210, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
-                
+
                 snapLeft: {
                     type: "AbsolutePosition",
                     matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   55, 105, 0, 1 ],
@@ -374,7 +418,7 @@ exports.definition = {
                     matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   205, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
-                
+
             },
             children: {
                 nameLabel: {
@@ -385,7 +429,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "text": "name:"
-                    }                                    
+                    }
                 },
                 xLabel: {
                     factory: "baseui",
@@ -395,7 +439,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "text": "x:"
-                    }                
+                    }
                 },
                 yLabel: {
                     factory: "baseui",
@@ -405,7 +449,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "y:"
-                    }                
+                    }
                 },
                 wLabel: {
                     factory: "baseui",
@@ -415,7 +459,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "text": "w:"
-                    }                
+                    }
                 },
                 hLabel: {
                     factory: "baseui",
@@ -425,7 +469,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "h:"
-                    }                
+                    }
                 },
                 positionLabel: {
                     factory: "baseui",
@@ -435,7 +479,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "layout:"
-                    }                
+                    }
                 },
                 snapLeftLabel: {
                     factory: "baseui",
@@ -445,7 +489,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "left"
-                    }                
+                    }
                 },
                 snapRightLabel: {
                     factory: "baseui",
@@ -455,7 +499,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "right"
-                    }                
+                    }
                 },
                 snapTopLabel: {
                     factory: "baseui",
@@ -465,7 +509,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "top"
-                    }                
+                    }
                 },
                 snapBottomLabel: {
                     factory: "baseui",
@@ -475,9 +519,9 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "bottom"
-                    }                
+                    }
                 },
-                
+
                 name: {
                     factory: "baseui",
                     type: "Input",
@@ -486,7 +530,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "text": ""
-                    }                
+                    }
                 },
                 x: {
                     factory: "baseui",
@@ -496,7 +540,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "text": "0"
-                    }                
+                    }
                 },
                 y: {
                     factory: "baseui",
@@ -506,7 +550,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "0"
-                    }                
+                    }
                 },
                 w: {
                     factory: "baseui",
@@ -516,7 +560,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "text": "0"
-                    }                
+                    }
                 },
                 h: {
                     factory: "baseui",
@@ -526,7 +570,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "0"
-                    }                
+                    }
                 },
                 position: {
                     factory: "domvisual",
@@ -536,7 +580,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "options": [ "AbsolutePosition", "TransformPosition" ]
-                    }                
+                    }
                 },
                 transform: {
                     factory: "domvisual",
@@ -546,7 +590,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "options": [ "distort", "fitw", "fith", "showall", "cover" ]
-                    }                
+                    }
                 },
                 snapLeft: {
                     factory: "domvisual",
@@ -556,7 +600,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "type": "checkbox"
-                    }                
+                    }
                 },
                 snapRight: {
                     factory: "domvisual",
@@ -566,7 +610,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "type": "checkbox"
-                    }                
+                    }
                 },
                 snapTop: {
                     factory: "domvisual",
@@ -576,7 +620,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "type": "checkbox"
-                    }                
+                    }
                 },
                 snapBottom: {
                     factory: "domvisual",
@@ -586,9 +630,9 @@ exports.definition = {
                     order: 1,
                     config: {
                         "type": "checkbox"
-                    }                
+                    }
                 },
-                
+
             }
         },
         VisualProperties: {
@@ -609,7 +653,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "resize:" // rescales / resizes
-                    }                
+                    }
                 }
             }
         },
@@ -671,7 +715,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "text": "w:"
-                    }                
+                    }
                 },
                 hLabel: {
                     factory: "baseui",
@@ -681,7 +725,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "h:"
-                    }                
+                    }
                 },
                 descriptionLabel: {
                     factory: "baseui",
@@ -691,7 +735,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "description:"
-                    }                
+                    }
                 },
                 privateLabel: {
                     factory: "baseui",
@@ -701,7 +745,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "private"
-                    }                
+                    }
                 },
                 w: {
                     factory: "baseui",
@@ -711,7 +755,7 @@ exports.definition = {
                     order: 0,
                     config: {
                         "text": "0"
-                    }                
+                    }
                 },
                 h: {
                     factory: "baseui",
@@ -721,7 +765,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": "0"
-                    }                
+                    }
                 },
                 description: {
                     factory: "baseui",
@@ -731,7 +775,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "text": ""
-                    }                
+                    }
                 },
                 privateCheck: {
                     factory: "domvisual",
@@ -741,7 +785,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         "type": "checkbox"
-                    }                
+                    }
                 }
             }
         },
@@ -763,7 +807,7 @@ exports.definition = {
                     matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   320, 2, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
-                
+
             },
             children: {
                 name: {
@@ -773,7 +817,7 @@ exports.definition = {
                     enableScaling: false,
                     order: 1,
                     config: {
-                    }                
+                    }
                 },
                 enableView: {
                     factory: "domvisual",
@@ -783,7 +827,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         url: 'editor/lib/enableView.png'
-                    }                
+                    }
                 },
                 enableSelection: {
                     factory: "domvisual",
@@ -793,7 +837,7 @@ exports.definition = {
                     order: 1,
                     config: {
                         url: 'editor/lib/enableSelect.png'
-                    }                
+                    }
                 },
             }
         },
@@ -804,7 +848,6 @@ exports.definition = {
             children: {
             }
         },
-        
+
     }
 };
-

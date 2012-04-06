@@ -42,13 +42,13 @@ Panel.prototype.init = function (editor) {
     this.addChild(liFolder);
     this.addChild(siFolder);
     this.addChild(vlFolder);
-    
+
     // setup the various panel items
     li.init(editor);
     ci.init(editor);
     si.init(editor);
     vl.init(editor);
-    
+
     this.setChildrenClipping([ 'hidden', 'auto']);
 };
 exports.Panel = Panel;

@@ -17,14 +17,41 @@ var visual = require('visual'),
 function VisualList(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.VisualList);
+    var that = this,
+        library = this.children.library;
+    library.on('change', function (evt) {
+        that.filterFactories();
+    });
 }
 VisualList.prototype = new (domvisual.DOMElement)();
+VisualList.prototype.filterFactories = function () {
+    var editor = this.editor,
+        choices = this.children.choices,
+        docInfo = editor.getDocInfo(),
+        filteredFactory = this.children.library.getSelectedOption(),
+        editedFactory = docInfo.factory,
+        selected = this.selected;
+    forEachProperty(choices.children, function (c) {
+        var cti = c.getTypeInfo(),
+            f = cti.factory;
+        c.setVisible(editedFactory === f || filteredFactory === f || c === selected);
+    });
+};
 VisualList.prototype.select = function (vi, apply) {
     var sel = this.selected,
-        ret = false;
+        ret = false,
+        editor = this.editor,
+        choices = this.children.choices,
+        docInfo = editor.getDocInfo(),
+        filteredFactory = this.children.library.getSelectedOption(),
+        f,
+        editedFactory = docInfo.factory;
+
     if (vi !== sel) {
         if (sel) {
             sel.select(false);
+            f = sel.getTypeInfo().factory;
+            sel.setVisible(editedFactory === f || filteredFactory === f);
         }
         this.selected = vi;
         if (apply === true) {
@@ -32,18 +59,20 @@ VisualList.prototype.select = function (vi, apply) {
         }
         if (vi) {
             vi.select(true);
+            sel.setVisible(true);
         }
         ret = true;
     }
     return ret;
 };
 VisualList.prototype.selectByTypeInfo = function (ti) {
-    if (ti) {    
+    if (ti) {
         var factory = ti.factory,
+            choices = this.children.choices,
             type = ti.type,
             that = this,
             editor = this.editor;
-        forEachProperty(this.children, function (c) {
+        forEachProperty(choices.children, function (c) {
             var cti = c.getTypeInfo();
             if (cti.factory === factory && cti.type === type) {
                 that.select(c);
@@ -61,7 +90,7 @@ VisualList.prototype.applySelectedPosition = function () {
         selectedName,
         selectedChild,
         selTypeInfo;
-    
+
     if (viewer.getSelectionLength() !== 1) {
         throw ('Unexpected selection length');
     } else {
@@ -83,7 +112,7 @@ VisualList.prototype.applySelectedPosition = function () {
                         config: {
                         }
                     }
-                )); 
+                ));
             } else {
                 group.doCommand(group.cmdAddVisual(
                     selectedName,
@@ -96,7 +125,7 @@ VisualList.prototype.applySelectedPosition = function () {
                         config: {
                         }
                     }
-                )); 
+                ));
             }
         } else {
             // clear the content from the box
@@ -109,15 +138,16 @@ VisualList.prototype.applySelectedPosition = function () {
         }
         //group.
     }
-    
+
 };
 VisualList.prototype.reload = function () {
-    this.removeAllChildren();
     var data = '',
         editor = this.editor,
+        choices = this.children.choices,
         docInfo = editor.getDocInfo(),
         editedFactory = docInfo.factory,
         that = this;
+    choices.removeAllChildren();
     http.get({ path: '/visual'}, function (res) {
         res.on('data', function (d) {
             data += d;
@@ -127,7 +157,8 @@ VisualList.prototype.reload = function () {
                 i,
                 l = jsonData.length,
                 jsd,
-                c;
+                c,
+                factories = {};
             function onClick() {
                 that.select(this, true);
             }
@@ -136,26 +167,30 @@ VisualList.prototype.reload = function () {
             for (i = 0; i < l; i += 1) {
                 jsd = jsonData[i];
                 if ((!jsd.private || jsd.factory === editedFactory) && !(jsd.factory === docInfo.factory && jsd.type === docInfo.type)) {
+                    // keep a list of factories
+                    factories[jsd.factory] = jsd.factory;
                     c = new VisualInfo({ typeInfo: jsd});
                     c.init(that.editor);
                     // FIXME: this needs some thinking... I want to flow the thing,
-                    // and doing so 
+                    // and doing so
                     c.setHtmlFlowing({position: 'relative'}, true);
-                    that.addChild(c);
+                    choices.addChild(c);
                     c.on('click', onClick);
                     define.meat.loadPackage(jsonData[i].factory, packageLoaded);
                 }
             }
+            that.setFactories(factories);
+            that.filterFactories();
         });
     });
 };
 
 VisualList.prototype.init = function (editor) {
-    var viewer = editor.getViewer(),        
+    var viewer = editor.getViewer(),
         container = this.parent,
         that = this;
     this.editor = editor;
-    
+
     this.reload();
     // a new box has been selected
     function newBoxSelected() {
@@ -163,7 +198,7 @@ VisualList.prototype.init = function (editor) {
             selectedTypeInfo,
             group = viewer.getGroup();
         if (viewer.getSelectionLength() === 1) {
-        
+
             container.setVisible(true);
             // here we want to get the selection
             selectedChild = group.documentData.children[viewer.getSelectedName()];
@@ -175,8 +210,19 @@ VisualList.prototype.init = function (editor) {
             container.setVisible(false);
         }
     }
-    
+
     viewer.on('updateSelectionControlBox', newBoxSelected);
+};
+
+VisualList.prototype.setFactories = function (factories) {
+    var factArray = [];
+    forEachProperty(factories, function (f, name) {
+        factArray.push(name);
+    });
+    factArray.sort(function (i1, i2) {
+        return i1 > i2;
+    });
+    this.children.library.setOptions(factArray);
 };
 
 

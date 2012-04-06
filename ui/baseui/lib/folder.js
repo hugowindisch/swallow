@@ -16,6 +16,7 @@ var visual = require('visual'),
 function Folder(config) {
     var that = this;
     domvisual.DOMElement.call(this, config);
+    this.indent = 10;
     this.updateChildren();
 }
 Folder.prototype = new (domvisual.DOMElement)();
@@ -49,7 +50,7 @@ Folder.prototype.setInternal = function (o) {
             if (Constr) {
                 this.internal = new Constr(o.config);
                 this.internal.setVisible(false);
-            }        
+            }
         }
     }
 };
@@ -76,7 +77,7 @@ Folder.prototype.updateChildren = function () {
     if (o) {
         tc = this.addTextChild('div', t, { 'style': 'contracted' }, 'title');
         this.addChild(o, 'content');
-        o.setHtmlFlowing({ position: 'relative'}, true);
+        o.setHtmlFlowing({ position: 'relative', left: this.indent + 'px' }, true);
         o.setVisible(false);
         tc.on('click', function () {
             that.toggleExpansion();
@@ -109,8 +110,15 @@ Folder.prototype.toggleExpansion = function () {
     this.setExpanded(!this.expanded);
 };
 
+/**
+    Sets the indent.
+*/
+Folder.prototype.setIndent = function (indent) {
+    this.indent = indent;
+};
+
 Folder.prototype.getConfigurationSheet = function () {
-    return { internal: {}, text: {} };
+    return { internal: {}, text: {}, indent: {} };
 };
 
 exports.Folder = Folder;
