@@ -25,28 +25,26 @@ var visual = require('visual'),
                 type: "AbsolutePosition",
                 matrix: [ 380, 0, 0, 0,   0, 180, 0, 0,    0, 0, 1, 0,   10, 10, 0, 1 ],
                 snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
-            }                
+            }
         },
         children: {
             background: {
                 factory: "domvisual",
                 type: "DOMElement",
                 position: "background",
-                enableScaling: false,
                 order: 0,
                 config: {
                     style: "background"
-                }                
+                }
             },
             text: {
                 factory: "domvisual",
                 type: "DOMElement",
                 position: "text",
-                enableScaling: false,
                 order: 1,
                 config: {
                     style: "text"
-                }                
+                }
             }
         }
     };
@@ -72,28 +70,28 @@ Button.prototype.theme = new (visual.Theme)({
         basedOn: [
             // take the line styles from here
             { factory: 'baseui', type: 'Theme', style: 'buttonBackground' }
-            
+
         ]
     },
     pressedBackground: {
         basedOn: [
             // take the line styles from here
             { factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground' }
-            
+
         ]
     },
     text: {
         basedOn: [
             // take the line styles from here
             { factory: 'baseui', type: 'Theme', style: 'buttonText' }
-            
+
         ]
     },
     pressedText: {
         basedOn: [
             // take the line styles from here
             { factory: 'baseui', type: 'Theme', style: 'pressedButtonText' }
-            
+
         ]
     }
 });
@@ -102,7 +100,7 @@ Button.createPreview = function () {
 };
 
 Button.prototype.getConfigurationSheet = function () {
-    return { 
+    return {
         text: config.inputConfig('Text')
     };
 };
@@ -112,4 +110,3 @@ Button.prototype.setText = function (text) {
 };
 
 exports.Button = Button;
-

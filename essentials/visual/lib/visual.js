@@ -521,9 +521,6 @@ Visual.prototype.createChildren = function (groupData) {
         if (isString(it.position)) {
             child.setPosition(it.position);
         }
-        if (it.enableScaling === true) {
-            child.enableScaling(true);
-        }
         // add the child to the children list
         this.addChild(child, name);
     }

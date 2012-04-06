@@ -1,11 +1,11 @@
 /**
     editor.js
-    Copyright (c) Hugo Windisch 2012 All Rights Reserved    
+    Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 
 // this is the top level editor
 
-var visual = require('visual'),    
+var visual = require('visual'),
     domvisual = require('domvisual'),
     baseui = require('baseui'),
     url = require('url'),
@@ -24,8 +24,8 @@ function Editor(config) {
     this.setStyle('background');
     this.addPlugins(defaultPlugins);
     this.setChildrenClipping('hidden');
-    
-    
+
+
 // setup some fake stuff
 ////////////////////////
 /*    var grData = {
@@ -52,18 +52,17 @@ function Editor(config) {
                 factory: "domvisual",
                 type: "DOMElement",
                 position: "pos1",
-                enableScaling: false,
                 order: 0,
                 config: {
                     "class": [ "thing" ]
-                }                
+                }
             }
         }
     },
         gr = new (require('./model').Group)(grData);
     this.children.viewer.setGroup(gr);
 //    gr.cmdAddPosition('test1', 'xyzfake');*/
-    
+
 }
 Editor.prototype = new (domvisual.DOMElement)();
 
@@ -75,7 +74,7 @@ Editor.prototype.theme = new (visual.Theme)({
     },
     panel: {
         basedOn: [
-            { factory: 'baseui', type: 'Theme', style: 'windowBackground' } 
+            { factory: 'baseui', type: 'Theme', style: 'windowBackground' }
         ]
     }
 });
@@ -90,7 +89,7 @@ Editor.prototype.setGroupData = function (factory, type, groupData) {
     this.children.viewer.setGroup(
         new (require('./model').Group)(groupData)
     );
-    this.children.panel.init(this);    
+    this.children.panel.init(this);
 };
 Editor.prototype.getDocInfo = function () {
     return this.docInfo;
@@ -119,7 +118,7 @@ Editor.prototype.saveGroup = function (factory, type, doc, cb) {
             {
                 method: 'POST',
                 path: '/visual/' + factory + '/' + type
-            }, 
+            },
             function (res) {
                 res.on('error', function (e) {
                     alert('Error saving');
@@ -140,13 +139,13 @@ Editor.prototype.saveGroup = function (factory, type, doc, cb) {
 
 Editor.prototype.newGroup = function (factory, type, cb) {
     this.saveGroup(
-        factory, 
+        factory,
         type,
-        { 
-            description: '', 
-            private: true, 
-            dimensions: [ 600, 400, 0], 
-            children: {}, 
+        {
+            description: '',
+            private: true,
+            dimensions: [ 600, 400, 0],
+            children: {},
             positions: {}
         },
         cb
@@ -166,12 +165,12 @@ Editor.prototype.addPlugins = function (plugins) {
             run: [],
             help: []
         },
-        i, 
+        i,
         l = plugins.length;
-        
+
     this.menus = menus;
     this.menubar = [
-        new MenuItem("File", null, menus.file), 
+        new MenuItem("File", null, menus.file),
         new MenuItem("Edit", null, menus.edit),
         new MenuItem("Tool", null, menus.tool),
         new MenuItem("Object", null, menus.object),
@@ -181,7 +180,7 @@ Editor.prototype.addPlugins = function (plugins) {
     for (i = 0; i < l; i += 1) {
         plugins[i](this);
     }
-    
+
     // initialize the menu
     this.children.menu.setItems(this.menubar);
     // initialize the toolbar (this could be more clever... i.e. keep
@@ -236,6 +235,5 @@ if (require.main === module) {
                 domvisual.createFullScreenApplication(edit);
             });
         });
-    }());    
+    }());
 }
-

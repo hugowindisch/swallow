@@ -35,7 +35,6 @@ var glmatrix = require('glmatrix'),
                     factory: "editor",
                     type: "Toolbox",
                     position: "toolbox",
-                    enableScaling: false,
                     layer: 0,
                     config: {
                         "domvisual.DOMVisual": {
@@ -47,7 +46,6 @@ var glmatrix = require('glmatrix'),
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "viewer",
-                    enableScaling: false,
                     layer: 1,
                     config: {
                         "domvisual.DOMVisual": {

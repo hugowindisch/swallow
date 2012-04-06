@@ -32,7 +32,6 @@ exports.definition = {
                     factory: 'baseui',
                     type: 'HorizontalMenu',
                     position: 'menu',
-                    enableScaling: false,
                     order: 3,
                     config: {
                     }
@@ -41,7 +40,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Toolbar",
                     position: "tools",
-                    enableScaling: false,
                     order: 0,
                     config: {
                     }
@@ -50,7 +48,6 @@ exports.definition = {
                     factory: "editor",
                     type: "Panel",
                     position: "panel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "style": "panel"
@@ -60,7 +57,6 @@ exports.definition = {
                     factory: "editor",
                     type: "GroupViewer",
                     position: "viewer",
-                    enableScaling: false,
                     order: 2,
                     config: {
                     }
@@ -82,7 +78,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: null,
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "style": "page"
@@ -92,7 +87,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: null,
-                    enableScaling: false,
                     order: 1,
                     config: {
                     }
@@ -101,7 +95,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "editArea",
-                    enableScaling: false,
                     order: 2,
                     config: {
                     }
@@ -143,7 +136,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "selectionArea",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_selectionArea" ]
@@ -153,7 +145,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "topLeft",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
@@ -163,7 +154,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "topRight",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
@@ -173,7 +163,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "bottomLeft",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
@@ -183,7 +172,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "bottomRight",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
@@ -230,7 +218,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "factoryName",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": "factory name"
@@ -240,7 +227,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "typeName",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "type name"
@@ -250,7 +236,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "description",
-                    enableScaling: false,
                     order: 1,
                     config: {
                     }
@@ -281,7 +266,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "label",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": "Library:"
@@ -291,7 +275,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMSelect",
                     position: "library",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "options": [ "fake" ]
@@ -301,7 +284,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "choices",
-                    enableScaling: false,
                     order: 2,
                     config: {
                     }
@@ -425,7 +407,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "nameLabel",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": "name:"
@@ -435,7 +416,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "xLabel",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": "x:"
@@ -445,7 +425,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "yLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "y:"
@@ -455,7 +434,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "wLabel",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": "w:"
@@ -465,7 +443,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "hLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "h:"
@@ -475,7 +452,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "positionLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "layout:"
@@ -485,7 +461,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "snapLeftLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "left"
@@ -495,7 +470,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "snapRightLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "right"
@@ -505,7 +479,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "snapTopLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "top"
@@ -515,7 +488,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "snapBottomLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "bottom"
@@ -526,7 +498,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "name",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": ""
@@ -536,7 +507,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "x",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": "0"
@@ -546,7 +516,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "y",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "0"
@@ -556,7 +525,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "w",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": "0"
@@ -566,7 +534,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "h",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "0"
@@ -576,7 +543,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMSelect",
                     position: "position",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "options": [ "AbsolutePosition", "TransformPosition" ]
@@ -586,7 +552,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMSelect",
                     position: "transform",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "options": [ "distort", "fitw", "fith", "showall", "cover" ]
@@ -596,7 +561,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "snapLeft",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "type": "checkbox"
@@ -606,7 +570,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "snapRight",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "type": "checkbox"
@@ -616,7 +579,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "snapTop",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "type": "checkbox"
@@ -626,7 +588,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "snapBottom",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "type": "checkbox"
@@ -649,7 +610,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "scalingLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "resize:" // rescales / resizes
@@ -711,7 +671,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "wLabel",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": "w:"
@@ -721,7 +680,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "hLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "h:"
@@ -731,7 +689,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "descriptionLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "description:"
@@ -741,7 +698,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "privateLabel",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "private"
@@ -751,7 +707,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "w",
-                    enableScaling: false,
                     order: 0,
                     config: {
                         "text": "0"
@@ -761,7 +716,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "h",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": "0"
@@ -771,7 +725,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "description",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "text": ""
@@ -781,7 +734,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "privateCheck",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         "type": "checkbox"
@@ -814,7 +766,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "name",
-                    enableScaling: false,
                     order: 1,
                     config: {
                     }
@@ -823,7 +774,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     position: "enableView",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         url: 'editor/lib/enableView.png'
@@ -833,7 +783,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     position: "enableSelection",
-                    enableScaling: false,
                     order: 1,
                     config: {
                         url: 'editor/lib/enableSelect.png'

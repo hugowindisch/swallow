@@ -107,7 +107,6 @@ VisualList.prototype.applySelectedPosition = function () {
                         factory: selTypeInfo.factory,
                         type: selTypeInfo.type,
                         position: selectedName,
-                        enableScaling: selectedChild.enableScaling,
                         order: selectedChild.order,
                         config: {
                         }
@@ -120,7 +119,6 @@ VisualList.prototype.applySelectedPosition = function () {
                         factory: selTypeInfo.factory,
                         type: selTypeInfo.type,
                         position: selectedName,
-                        enableScaling: false,
                         order: group.getTopmostOrder(),
                         config: {
                         }
