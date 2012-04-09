@@ -673,6 +673,7 @@ exports.getVisualNames = function () {
 };
 exports.Layout = position.Layout;
 exports.applyLayout = position.applyLayout;
+exports.Position = position.Position;
 exports.AbsolutePosition = position.AbsolutePosition;
 exports.TransformPosition = position.TransformPosition;
 exports.deserializePosition = position.deserializePosition;
