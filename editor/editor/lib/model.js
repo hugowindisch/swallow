@@ -21,11 +21,13 @@ var glmatrix = require('glmatrix'),
             positions: {
                 toolbox: {
                     type: "TransformPosition",
+                    order: 0,
                     matrix: [ 200, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
                     scalemode: 'distort'
                 },
                 viewer: {
                     type: "TransformPosition",
+                    order: 1,
                     matrix: [ 440, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   200, 0, 0, 0 ],
                     scalemode: 'distort'
                 }
@@ -35,7 +37,6 @@ var glmatrix = require('glmatrix'),
                     factory: "editor",
                     type: "Toolbox",
                     position: "toolbox",
-                    layer: 0,
                     config: {
                         "domvisual.DOMVisual": {
                             "cssClass": [ "toolbox" ]
@@ -46,7 +47,6 @@ var glmatrix = require('glmatrix'),
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "viewer",
-                    layer: 1,
                     config: {
                         "domvisual.DOMVisual": {
                             "cssClass": [ "viewer" ]
@@ -61,17 +61,17 @@ function Group(documentData) {
     documentData = documentData || { positions: {}, children: {}, dimensions: [300, 300, 0]};
     this.commandChain = new CommandChain();
     this.documentData = documentData;
-    this.normalizeChildrenOrders();
+    this.normalizeOrders();
 }
 // these are getters (stuff that inspect the Group model)
 Group.prototype.getCommandChain = function () {
     return this.commandChain;
 };
 
-Group.prototype.normalizeChildrenOrders = function () {
-    var d = [], i, l, di, children = this.documentData.children;
+Group.prototype.normalizeOrders = function () {
+    var d = [], i, l, di, positions = this.documentData.positions;
     // collect
-    forEachProperty(children, function (o, name) {
+    forEachProperty(positions, function (o, name) {
         d.push({name: name, order: o.order});
     });
     // sort
@@ -82,7 +82,7 @@ Group.prototype.normalizeChildrenOrders = function () {
     l = d.length;
     for (i = 0; i < l; i += 1) {
         di = d[i];
-        children[di.name].order = i;
+        positions[di.name].order = i;
     }
 };
 
@@ -133,7 +133,7 @@ Group.prototype.getNumberOfPositions = function () {
 
 Group.prototype.getTopmostOrder = function () {
     var order = 0;
-    forEachProperty(this.documentData.children, function (c) {
+    forEachProperty(this.documentData.positions, function (c) {
         if (c.order >= order) {
             order = c.order + 1;
         }
@@ -376,29 +376,29 @@ Group.prototype.cmdRenameVisual = function (name, newname) {
     );
 };
 Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
-    var children = this.documentData.children,
+    var positions = this.documentData.positions,
         nom = {};
-    forEachProperty(children, function (c, name) {
+    forEachProperty(positions, function (c, name) {
         if (nameOrderMap[name] !== undefined) {
             nom[name] = c.order;
         }
     });
     return new Command(
         function () {
-            var child;
+            var pos;
             forEachProperty(nameOrderMap, function (order, n) {
-                child = children[n];
-                if (child) {
-                    child.order = order;
+                pos = positions[n];
+                if (pos) {
+                    pos.order = order;
                 }
             });
         },
         function () {
-            var child;
+            var pos;
             forEachProperty(nom, function (order, n) {
-                child = children[n];
-                if (child) {
-                    child.order = order;
+                pos = positions[n];
+                if (pos) {
+                    pos.order = order;
                 }
             });
         },

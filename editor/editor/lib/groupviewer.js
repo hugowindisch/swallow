@@ -385,18 +385,17 @@ GroupViewer.prototype.popZoom = function () {
 GroupViewer.prototype.itemAtPosition = function (position, subset) {
     var documentData = this.documentData,
         children = documentData.children,
+        positions = documentData.positions,
         rp = [position, position],
-        ret = null,
-        retCh = null;
-    subset = subset || documentData.positions;
+        retOrder = 0,
+        ret = null;
+    subset = subset || positions;
     forEachProperty(subset, function (it, name) {
-        var r = getEnclosingRect(it.matrix),
-            ch;
+        var r = getEnclosingRect(it.matrix);
         if (intersects(r, rp)) {
-            ch = children[name];
-            if ((retCh === null) || ((ch !== undefined) && ch.order > retCh.order)) {
+            if (ret === null || it.order > retOrder) {
                 ret = name;
-                retCh = ch;
+                retOrder = it.order;
             }
         }
     });

@@ -1,6 +1,6 @@
 /**
     select.js
-    
+
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 
@@ -39,7 +39,7 @@ function setupFileMenu(editor) {
 
     saveTool = new MenuItem(
         'Save',
-        function () {        
+        function () {
             editor.saveGroup();
         },
         null,
@@ -111,7 +111,7 @@ function setupToolMenu(editor) {
             translate
         );
     }
-    
+
     // select tool (arrow)
     selectTool = new MenuItem(
         'Select',
@@ -132,7 +132,7 @@ function setupToolMenu(editor) {
                 function (mat, nmat, startpos, endpos, evt) {
                     if (dragging) {
                         viewer.previewSelectionTransformation(
-                            getTransform( 
+                            getTransform(
                                 [mat[0], mat[5], mat[10]],
                                 evt.ctrlKey
                             )
@@ -153,7 +153,7 @@ function setupToolMenu(editor) {
                         );
                         selection = viewer.getSelection();
                         cmdGroup = group.cmdCommandGroup('moveSelection', 'Move Selection');
-                        
+
 
                         // for everything in the selection
                         forEachProperty(selection, function (p, n) {
@@ -162,8 +162,8 @@ function setupToolMenu(editor) {
                         // do the combined command
                         group.doCommand(cmdGroup);
                         viewer.showSelectionControlBox(selectionControlBoxVisibility);
-                        
-                    } else {                    
+
+                    } else {
                         // this should be determined by the keys
                         if (!evt.ctrlKey) {
                             viewer.clearSelection(nmat);
@@ -176,13 +176,13 @@ function setupToolMenu(editor) {
         },
         null,
         null,
-        'editor/lib/plugin/select.png',    
+        'editor/lib/plugin/select.png',
         true,
         function () {
             return selectedTool === this;
         }
     );
-    
+
     // draw tool (box)
     drawTool = new MenuItem(
         'Draw',
@@ -206,14 +206,14 @@ function setupToolMenu(editor) {
                             matrix: mat,
                             type: "AbsolutePosition",
                             snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
-                        }   
+                        }
                     ));
                 }
             );
         },
         null,
         null,
-        'editor/lib/plugin/draw.png',    
+        'editor/lib/plugin/draw.png',
         true,
         function () {
             return selectedTool === this;
@@ -238,7 +238,7 @@ function setupToolMenu(editor) {
         },
         null,
         null,
-        'editor/lib/plugin/zoomin.png',    
+        'editor/lib/plugin/zoomin.png',
         true,
         function () {
             return selectedTool === this;
@@ -248,19 +248,19 @@ function setupToolMenu(editor) {
     zoomOutTool = new MenuItem(
         'Zoom Out',
         function () {
-            viewer.popZoom();            
+            viewer.popZoom();
         },
         null,
         null,
-        'editor/lib/plugin/zoomout.png',    
+        'editor/lib/plugin/zoomout.png',
         true
     );
-    
+
     selectTool.action();
     menus.tool.push(
-        selectTool, 
-        drawTool, 
-        zoomInTool, 
+        selectTool,
+        drawTool,
+        zoomInTool,
         null,
         zoomOutTool
     );
@@ -280,7 +280,7 @@ function setupEditMenu(editor) {
     function selectionNotEmpty() {
         return !viewer.selectionIsEmpty();
     }
-        
+
     // undo
     undoTool = new MenuItem(
         function () {
@@ -330,7 +330,7 @@ function setupEditMenu(editor) {
             positions = documentData.positions,
             selection = viewer.getSelection(),
             cmdGroup = group.cmdCommandGroup(cmdName, message);
-            
+
         forEachProperty(selection, function (p, n) {
             cmdGroup.add(group.cmdRemovePosition(n));
             c = children[n];
@@ -340,7 +340,7 @@ function setupEditMenu(editor) {
         });
         group.doCommand(cmdGroup);
     }
-    
+
     cutTool = new MenuItem(
         'Cut',
         function () {
@@ -352,7 +352,7 @@ function setupEditMenu(editor) {
         null,
         selectionNotEmpty
     );
-        
+
     copyTool = new MenuItem(
         'Copy',
         function () {
@@ -375,7 +375,7 @@ function setupEditMenu(editor) {
                 cmdGroup = group.cmdCommandGroup('cmdPaste', 'Paste'),
                 posmap = {},
                 usedmap = {};
-               
+
             function check(n) {
                 return usedmap[n];
             }
@@ -412,9 +412,9 @@ function setupEditMenu(editor) {
         null,
         selectionNotEmpty
     );
-    
+
     menus.edit.push(
-        undoTool, 
+        undoTool,
         redoTool,
         null,
         cutTool,
@@ -426,9 +426,9 @@ function setupEditMenu(editor) {
 
 function setupObjectMenu(editor) {
     var viewer = editor.getViewer(),
-        selectionUpTool, 
-        selectionDownTool, 
-        selectionToTopTool, 
+        selectionUpTool,
+        selectionDownTool,
+        selectionToTopTool,
         selectionToBottomTool,
         alignLeftTool,
         alignRightTool,
@@ -437,7 +437,7 @@ function setupObjectMenu(editor) {
         alignBottomTool,
         alignMiddleTool,
         menus = editor.menus;
-        
+
     function selectionNotEmpty() {
         return !viewer.selectionIsEmpty();
     }
@@ -472,7 +472,7 @@ function setupObjectMenu(editor) {
                 newOrders = {},
                 no;
             // compute new depths
-            forEachProperty(dd.children, function (c, name) {
+            forEachProperty(dd.positions, function (c, name) {
                 no = c.order;
                 if (viewer.visualIsSelected(name)) {
                     no += 1.5;
@@ -498,7 +498,7 @@ function setupObjectMenu(editor) {
                 newOrders = {},
                 no;
             // compute new depths
-            forEachProperty(dd.children, function (c, name) {
+            forEachProperty(dd.positions, function (c, name) {
                 no = c.order;
                 if (viewer.visualIsSelected(name)) {
                     no -= 1.5;
@@ -525,14 +525,14 @@ function setupObjectMenu(editor) {
                 newOrders = {},
                 no;
             // compute new depths
-            forEachProperty(dd.children, function (c, name) {
+            forEachProperty(dd.positions, function (c, name) {
                 no = c.order;
                 if (viewer.visualIsSelected(name)) {
                     no += numpos;
                 }
                 newOrders[name] = no;
             });
-            // normalize depths            
+            // normalize depths
             newOrders = normalizeDepths(newOrders);
             // apply orders
             group.doCommand(group.cmdSetVisualOrder(newOrders, 'Move To Top'));
@@ -552,7 +552,7 @@ function setupObjectMenu(editor) {
                 newOrders = {},
                 no;
             // compute new depths
-            forEachProperty(dd.children, function (c, name) {
+            forEachProperty(dd.positions, function (c, name) {
                 no = c.order;
                 if (viewer.visualIsSelected(name)) {
                     no -= numpos;
@@ -585,7 +585,7 @@ function setupObjectMenu(editor) {
             forEachProperty(selection, function (p, n) {
                 positionRect = viewer.getPositionRect(n);
                 transform = mat4.translate(
-                    mat4.identity(), 
+                    mat4.identity(),
                     [selectionRect[0][0] - positionRect[0][0], 0, 0]
                 );
 
@@ -615,7 +615,7 @@ function setupObjectMenu(editor) {
             forEachProperty(selection, function (p, n) {
                 positionRect = viewer.getPositionRect(n);
                 transform = mat4.translate(
-                    mat4.identity(), 
+                    mat4.identity(),
                     [selectionRect[1][0] - positionRect[1][0], 0, 0]
                 );
 
@@ -645,9 +645,9 @@ function setupObjectMenu(editor) {
             // for everything in the selection
             forEachProperty(selection, function (p, n) {
                 positionRect = viewer.getPositionRect(n);
-                var m = (positionRect[0][0] + positionRect[1][0]) / 2;                
+                var m = (positionRect[0][0] + positionRect[1][0]) / 2;
                 transform = mat4.translate(
-                    mat4.identity(), 
+                    mat4.identity(),
                     [mid - m, 0, 0]
                 );
 
@@ -677,7 +677,7 @@ function setupObjectMenu(editor) {
             forEachProperty(selection, function (p, n) {
                 positionRect = viewer.getPositionRect(n);
                 transform = mat4.translate(
-                    mat4.identity(), 
+                    mat4.identity(),
                     [0, selectionRect[0][1] - positionRect[0][1], 0]
                 );
 
@@ -707,7 +707,7 @@ function setupObjectMenu(editor) {
             forEachProperty(selection, function (p, n) {
                 positionRect = viewer.getPositionRect(n);
                 transform = mat4.translate(
-                    mat4.identity(), 
+                    mat4.identity(),
                     [0, selectionRect[1][1] - positionRect[1][1], 0]
                 );
 
@@ -737,9 +737,9 @@ function setupObjectMenu(editor) {
             // for everything in the selection
             forEachProperty(selection, function (p, n) {
                 positionRect = viewer.getPositionRect(n);
-                var m = (positionRect[0][1] + positionRect[1][1]) / 2;                
+                var m = (positionRect[0][1] + positionRect[1][1]) / 2;
                 transform = mat4.translate(
-                    mat4.identity(), 
+                    mat4.identity(),
                     [0, mid - m, 0]
                 );
 
@@ -755,9 +755,9 @@ function setupObjectMenu(editor) {
     );
 
     menus.object.push(
-        selectionUpTool, 
-        selectionDownTool, 
-        selectionToTopTool, 
+        selectionUpTool,
+        selectionDownTool,
+        selectionToTopTool,
         selectionToBottomTool,
         null,
         alignLeftTool,
@@ -768,12 +768,12 @@ function setupObjectMenu(editor) {
         alignBottomTool,
         alignMiddleTool
     );
-    
+
 }
 function setupRunMenu(editor) {
     var runTool,
         menus = editor.menus;
-        
+
     // align left tool
     runTool = new MenuItem(
         'Run',
@@ -788,7 +788,7 @@ function setupRunMenu(editor) {
     );
 }
 
-    
+
 exports.setup = function (editor) {
     // update the menus
     setupFileMenu(editor);
@@ -797,4 +797,3 @@ exports.setup = function (editor) {
     setupObjectMenu(editor);
     setupRunMenu(editor);
 };
-

@@ -24,45 +24,6 @@ function Editor(config) {
     this.setStyle('background');
     this.addPlugins(defaultPlugins);
     this.setChildrenClipping('hidden');
-
-
-// setup some fake stuff
-////////////////////////
-/*    var grData = {
-        dimensions: [ 200, 200, 1],
-        positions: {
-            pos1: {
-                type: "AbsolutePosition",
-                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
-            },
-            pos2: {
-                type: "AbsolutePosition",
-                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   20, 20, 0, 1 ],
-                snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
-            },
-            pos3: {
-                type: "AbsolutePosition",
-                matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   40, 0, 0, 1 ],
-                snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
-            },
-        },
-        children: {
-            pos1: {
-                factory: "domvisual",
-                type: "DOMElement",
-                position: "pos1",
-                order: 0,
-                config: {
-                    "class": [ "thing" ]
-                }
-            }
-        }
-    },
-        gr = new (require('./model').Group)(grData);
-    this.children.viewer.setGroup(gr);
-//    gr.cmdAddPosition('test1', 'xyzfake');*/
-
 }
 Editor.prototype = new (domvisual.DOMElement)();
 

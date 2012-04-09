@@ -18,11 +18,13 @@ var visual = require('visual'),
         positions: {
             background: {
                 type: "AbsolutePosition",
+                order: 0,
                 matrix: [ 400, 0, 0, 0,   0, 200, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                 snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
             },
             text: {
                 type: "AbsolutePosition",
+                order: 1,
                 matrix: [ 380, 0, 0, 0,   0, 180, 0, 0,    0, 0, 1, 0,   10, 10, 0, 1 ],
                 snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
             }
@@ -32,7 +34,6 @@ var visual = require('visual'),
                 factory: "domvisual",
                 type: "DOMElement",
                 position: "background",
-                order: 0,
                 config: {
                     style: "background"
                 }
@@ -41,7 +42,6 @@ var visual = require('visual'),
                 factory: "domvisual",
                 type: "DOMElement",
                 position: "text",
-                order: 1,
                 config: {
                     style: "text"
                 }

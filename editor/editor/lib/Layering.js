@@ -41,13 +41,14 @@ Layering.prototype.updateList = function () {
         that = this,
         prevName,
         documentData = group.documentData,
+        positions = documentData.positions,
         it = [];
 
     forEachProperty(documentData.children, function (c, name) {
-        it.push({name: name, order: c.order});
+        it.push({name: name, order: documentData.positions[c.position].order});
     });
     it.sort(function (i1, i2) {
-        return i1.order - i2.order;
+        return i2.order - i1.order;
     });
     // remove the children that are not in the list
     forEachProperty(this.children, function (c, name) {

@@ -8,21 +8,25 @@ exports.definition = {
             positions: {
                 menu: {
                     type: "AbsolutePosition",
+                    order: 3,
                     matrix: [ 640, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
                 },
                 tools: {
                     type: "AbsolutePosition",
+                    order: 0,
                     matrix: [ 386, 0, 0, 0,   0, 64, 0, 0,    0, 0, 1, 0,   5, 29, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 panel: {
                     type: "AbsolutePosition",
+                    order: 1,
                     matrix: [ 390, 0, 0, 0,   0, 302, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'bottom' }
                 },
                 viewer: {
                     type: "AbsolutePosition",
+                    order: 2,
                     matrix: [ 240, 0, 0, 0,   0, 376, 0, 0,    0, 0, 1, 0,   400, 24, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
                 }
@@ -32,7 +36,6 @@ exports.definition = {
                     factory: 'baseui',
                     type: 'HorizontalMenu',
                     position: 'menu',
-                    order: 3,
                     config: {
                     }
                 },
@@ -40,7 +43,7 @@ exports.definition = {
                     factory: "baseui",
                     type: "Toolbar",
                     position: "tools",
-                    order: 0,
+
                     config: {
                     }
                 },
@@ -48,7 +51,6 @@ exports.definition = {
                     factory: "editor",
                     type: "Panel",
                     position: "panel",
-                    order: 1,
                     config: {
                         "style": "panel"
                     }
@@ -57,7 +59,6 @@ exports.definition = {
                     factory: "editor",
                     type: "GroupViewer",
                     position: "viewer",
-                    order: 2,
                     config: {
                     }
                 }
@@ -69,6 +70,7 @@ exports.definition = {
             positions: {
                 editArea: {
                     type: "AbsolutePosition",
+                    order: 0,
                     matrix: [ 440, 0, 0, 0,   0, 480, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
                 }
@@ -78,7 +80,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: null,
-                    order: 0,
                     config: {
                         "style": "page"
                     }
@@ -87,7 +88,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: null,
-                    order: 1,
                     config: {
                     }
                 },
@@ -95,7 +95,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "editArea",
-                    order: 2,
                     config: {
                     }
                 }
@@ -107,26 +106,31 @@ exports.definition = {
             positions: {
                 selectionArea: {
                     type: "AbsolutePosition",
+                    order: 0,
                     matrix: [ 400, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
                 },
                 topLeft: {
                     type: "AbsolutePosition",
+                    order: 1,
                     matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   -10, -10, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 topRight: {
                     type: "AbsolutePosition",
+                    order: 2,
                     matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, -10, 0, 1 ],
                     snapping: { leftTo: 'right', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
                 },
                 bottomLeft: {
                     type: "AbsolutePosition",
+                    order: 2,
                     matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   -10, 400, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'bottom', bottomTo: 'bottom' }
                 },
                 bottomRight: {
                     type: "AbsolutePosition",
+                    order: 3,
                     matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, 400, 0, 1 ],
                     snapping: { leftTo: 'right', rightTo: 'right', topTo: 'bottom', bottomTo: 'bottom' }
                 }
@@ -136,7 +140,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "selectionArea",
-                    order: 0,
+
                     config: {
                         "class": [ "editor_SelectionBox_selectionArea" ]
                     }
@@ -145,7 +149,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "topLeft",
-                    order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
                     }
@@ -154,7 +157,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "topRight",
-                    order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
                     }
@@ -163,7 +165,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "bottomLeft",
-                    order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
                     }
@@ -172,7 +173,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "bottomRight",
-                    order: 0,
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
                     }
@@ -184,31 +184,37 @@ exports.definition = {
             positions: {
                 preview: {
                     type: "AbsolutePosition",
+                    order: 0,
                     matrix: [ 60, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 factoryName: {
                     type: "AbsolutePosition",
+                    order: 1,
                     matrix: [ 100, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
                 },
                 typeName: {
                     type: "AbsolutePosition",
+                    order: 2,
                     matrix: [ 400, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 25, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
                 },
                 description: {
                     type: "AbsolutePosition",
+                    order: 3,
                     matrix: [ 300, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   180, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'top' }
                 },
                 visualProperties: {
                     type: "AbsolutePosition",
+                    order: 4,
                     matrix: [ 400, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   0, 50, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 configurationSheet: {
                     type: "AbsolutePosition",
+                    order: 5,
                     matrix: [ 400, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
@@ -218,7 +224,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "factoryName",
-                    order: 0,
                     config: {
                         "text": "factory name"
                     }
@@ -227,7 +232,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "typeName",
-                    order: 1,
                     config: {
                         "text": "type name"
                     }
@@ -236,7 +240,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "description",
-                    order: 1,
                     config: {
                     }
                 }
@@ -247,16 +250,19 @@ exports.definition = {
             positions: {
                 label: {
                     type: "AbsolutePosition",
+                    order: 0,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 10, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 library: {
                     type: "AbsolutePosition",
+                    order: 1,
                     matrix: [ 180, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   80, 10, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 choices: {
                     type: "AbsolutePosition",
+                    order: 2,
                     matrix: [ 380, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   10, 50, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
@@ -266,7 +272,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "label",
-                    order: 0,
                     config: {
                         "text": "Library:"
                     }
@@ -275,7 +280,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMSelect",
                     position: "library",
-                    order: 1,
                     config: {
                         "options": [ "fake" ]
                     }
@@ -284,7 +288,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMElement",
                     position: "choices",
-                    order: 2,
                     config: {
                     }
                 }
@@ -295,108 +298,129 @@ exports.definition = {
             positions: {
                 nameLabel: {
                     type: "AbsolutePosition",
+                    order: 0,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 xLabel: {
                     type: "AbsolutePosition",
+                    order: 1,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 yLabel: {
                     type: "AbsolutePosition",
+                    order: 2,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 30, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 wLabel: {
                     type: "AbsolutePosition",
+                    order: 3,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 hLabel: {
                     type: "AbsolutePosition",
+                    order: 4,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 positionLabel: {
                     type: "AbsolutePosition",
+                    order: 5,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 snapLeftLabel: {
                     type: "AbsolutePosition",
+                    order: 6,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 snapRightLabel: {
                     type: "AbsolutePosition",
+                    order: 7,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 snapTopLabel: {
                     type: "AbsolutePosition",
+                    order: 8,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 snapBottomLabel: {
                     type: "AbsolutePosition",
+                    order: 9,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   225, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
 
                 name: {
                     type: "AbsolutePosition",
+                    order: 10,
                     matrix: [ 120, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 x: {
                     type: "AbsolutePosition",
+                    order: 11,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 30, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 y: {
                     type: "AbsolutePosition",
+                    order: 12,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 30, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 w: {
                     type: "AbsolutePosition",
+                    order: 13,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 h: {
                     type: "AbsolutePosition",
+                    order: 14,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 position: {
                     type: "AbsolutePosition",
+                    order: 15,
                     matrix: [ 150, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 transform: {
                     type: "AbsolutePosition",
+                    order: 16,
                     matrix: [ 150, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   210, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
 
                 snapLeft: {
                     type: "AbsolutePosition",
+                    order: 17,
                     matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   55, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 snapRight: {
                     type: "AbsolutePosition",
+                    order: 18,
                     matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   105, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 snapTop: {
                     type: "AbsolutePosition",
+                    order: 19,
                     matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   155, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 snapBottom: {
                     type: "AbsolutePosition",
+                    order: 20,
                     matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   205, 105, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
@@ -407,7 +431,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "nameLabel",
-                    order: 0,
                     config: {
                         "text": "name:"
                     }
@@ -416,7 +439,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "xLabel",
-                    order: 0,
                     config: {
                         "text": "x:"
                     }
@@ -425,7 +447,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "yLabel",
-                    order: 1,
                     config: {
                         "text": "y:"
                     }
@@ -434,7 +455,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "wLabel",
-                    order: 0,
                     config: {
                         "text": "w:"
                     }
@@ -443,7 +463,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "hLabel",
-                    order: 1,
                     config: {
                         "text": "h:"
                     }
@@ -452,7 +471,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "positionLabel",
-                    order: 1,
                     config: {
                         "text": "layout:"
                     }
@@ -461,7 +479,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "snapLeftLabel",
-                    order: 1,
                     config: {
                         "text": "left"
                     }
@@ -470,7 +487,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "snapRightLabel",
-                    order: 1,
                     config: {
                         "text": "right"
                     }
@@ -479,7 +495,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "snapTopLabel",
-                    order: 1,
                     config: {
                         "text": "top"
                     }
@@ -488,7 +503,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "snapBottomLabel",
-                    order: 1,
                     config: {
                         "text": "bottom"
                     }
@@ -498,7 +512,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "name",
-                    order: 0,
                     config: {
                         "text": ""
                     }
@@ -507,7 +520,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "x",
-                    order: 0,
                     config: {
                         "text": "0"
                     }
@@ -516,7 +528,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "y",
-                    order: 1,
                     config: {
                         "text": "0"
                     }
@@ -525,7 +536,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "w",
-                    order: 0,
                     config: {
                         "text": "0"
                     }
@@ -534,7 +544,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "h",
-                    order: 1,
                     config: {
                         "text": "0"
                     }
@@ -543,7 +552,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMSelect",
                     position: "position",
-                    order: 1,
                     config: {
                         "options": [ "AbsolutePosition", "TransformPosition" ]
                     }
@@ -552,7 +560,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMSelect",
                     position: "transform",
-                    order: 1,
                     config: {
                         "options": [ "distort", "fitw", "fith", "showall", "cover" ]
                     }
@@ -561,7 +568,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "snapLeft",
-                    order: 1,
                     config: {
                         "type": "checkbox"
                     }
@@ -570,7 +576,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "snapRight",
-                    order: 1,
                     config: {
                         "type": "checkbox"
                     }
@@ -579,7 +584,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "snapTop",
-                    order: 1,
                     config: {
                         "type": "checkbox"
                     }
@@ -588,7 +592,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "snapBottom",
-                    order: 1,
                     config: {
                         "type": "checkbox"
                     }
@@ -601,6 +604,7 @@ exports.definition = {
             positions: {
                 scalingLabel: {
                     type: "AbsolutePosition",
+                    order: 0,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
@@ -610,7 +614,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "scalingLabel",
-                    order: 1,
                     config: {
                         "text": "resize:" // rescales / resizes
                     }
@@ -627,41 +630,49 @@ exports.definition = {
             positions: {
                 wLabel: {
                     type: "AbsolutePosition",
+                    order: 0,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 hLabel: {
                     type: "AbsolutePosition",
+                    order: 1,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 w: {
                     type: "AbsolutePosition",
+                    order: 2,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 h: {
                     type: "AbsolutePosition",
+                    order: 3,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 5, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 descriptionLabel: {
                     type: "AbsolutePosition",
+                    order: 4,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 privateLabel: {
                     type: "AbsolutePosition",
+                    order: 5,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   25, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 description: {
                     type: "AbsolutePosition",
+                    order: 6,
                     matrix: [ 380, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 privateCheck: {
                     type: "AbsolutePosition",
+                    order: 7,
                     matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
@@ -671,7 +682,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "wLabel",
-                    order: 0,
                     config: {
                         "text": "w:"
                     }
@@ -680,7 +690,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "hLabel",
-                    order: 1,
                     config: {
                         "text": "h:"
                     }
@@ -689,7 +698,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "descriptionLabel",
-                    order: 1,
                     config: {
                         "text": "description:"
                     }
@@ -698,7 +706,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "privateLabel",
-                    order: 1,
                     config: {
                         "text": "private"
                     }
@@ -707,7 +714,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "w",
-                    order: 0,
                     config: {
                         "text": "0"
                     }
@@ -716,7 +722,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "h",
-                    order: 1,
                     config: {
                         "text": "0"
                     }
@@ -725,7 +730,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Input",
                     position: "description",
-                    order: 1,
                     config: {
                         "text": ""
                     }
@@ -734,7 +738,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "privateCheck",
-                    order: 1,
                     config: {
                         "type": "checkbox"
                     }
@@ -746,16 +749,19 @@ exports.definition = {
             positions: {
                 name: {
                     type: "AbsolutePosition",
+                    order: 0,
                     matrix: [ 280, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 2, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 enableView: {
                     type: "AbsolutePosition",
+                    order: 1,
                     matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   290, 2, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 },
                 enableSelection: {
                     type: "AbsolutePosition",
+                    order: 2,
                     matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   320, 2, 0, 1 ],
                     snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                 }
@@ -766,7 +772,6 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "name",
-                    order: 1,
                     config: {
                     }
                 },
@@ -774,7 +779,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     position: "enableView",
-                    order: 1,
                     config: {
                         url: 'editor/lib/enableView.png'
                     }
@@ -783,7 +787,6 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     position: "enableSelection",
-                    order: 1,
                     config: {
                         url: 'editor/lib/enableSelect.png'
                     }
@@ -796,7 +799,6 @@ exports.definition = {
             },
             children: {
             }
-        },
-
+        }
     }
 };

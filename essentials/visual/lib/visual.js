@@ -487,6 +487,7 @@ Visual.prototype.createChildren = function (groupData) {
         isString = utils.isString,
         sortedChildrenNames = [],
         children = groupData.children,
+        positions = groupData.positions,
         i,
         l,
         name,
@@ -499,7 +500,13 @@ Visual.prototype.createChildren = function (groupData) {
         sortedChildrenNames.push(name);
     });
     sortedChildrenNames.sort(function (i1, i2) {
-        return children[i1].order - children[i2].order;
+        var pos1 = positions[children[i1].position],
+            pos2 = positions[children[i2].position],
+            l = children.length,
+            o1 = pos1 ? pos1.order : l,
+            o2 = pos1 ? pos2.order : l;
+
+        return o1 - o2;
     });
     l = sortedChildrenNames.length;
     for (i = 0; i < l; i += 1) {
