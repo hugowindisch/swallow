@@ -504,7 +504,7 @@ Visual.prototype.createChildren = function (groupData) {
             pos2 = positions[children[i2].position],
             l = children.length,
             o1 = pos1 ? pos1.order : l,
-            o2 = pos1 ? pos2.order : l;
+            o2 = pos2 ? pos2.order : l;
 
         return o1 - o2;
     });
