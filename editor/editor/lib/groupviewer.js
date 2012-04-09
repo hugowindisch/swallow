@@ -722,18 +722,6 @@ GroupViewer.prototype.updateAll = function () {
     children.positions.setPosition(null);
     children.positions.setDimensions(extendedDimensions);
     children.positions.setMatrix(mat4.identity());
-    forEachProperty(documentData.positions, function (c, name) {
-        if (!documentData.children[name]) {
-            // regenerate it
-            var pos = new (domvisual.DOMElement)({}),
-                res = convertScaleToSize(mat4.multiply(zoomMat, c.matrix, mat4.create()));
-
-            pos.setDimensions(res.dimensions);
-            pos.setMatrix(res.matrix);
-            pos.setClass('editor_GroupViewer_position');
-            children.positions.addChild(pos, name);
-        }
-    });
     // decorations
     children.decorations.setPosition(null);
     children.decorations.setDimensions(extendedDimensions);
