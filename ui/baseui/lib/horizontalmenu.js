@@ -14,7 +14,7 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction;
 
-   
+
 function HorizontalMenu(config) {
     var that = this;
     // set default dimensions
@@ -32,9 +32,10 @@ function HorizontalMenu(config) {
         if (that.accelerators) {
             accel = that.accelerators[evt.decoratedVk];
             if (accel) {
-                accel();
-                evt.preventDefault();
-                evt.stopPropagation();
+                if (accel()) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                }
                 return;
             }
         }
@@ -55,7 +56,7 @@ HorizontalMenu.prototype.theme = new (visual.Theme)({
             // take the line styles from here
             { factory: 'baseui', type: 'Theme', style: 'menuTitleBackground' },
             { factory: 'baseui', type: 'Theme', style: 'menuTitleText' }
-            
+
         ]
     },
     highlighted: {
@@ -83,7 +84,7 @@ HorizontalMenu.prototype.handleKey = function (evt) {
         case 'VK_LEFT':
             nH -= 1;
             if (nH < 0) {
-                nH = maxH - 1; 
+                nH = maxH - 1;
             }
             this.highlightItem(String(nH));
             break;
@@ -108,12 +109,15 @@ HorizontalMenu.prototype.handleKey = function (evt) {
 */
 HorizontalMenu.prototype.findAccelerators = function (evt) {
     var accelerators = {};
-    
+
     function geAccelFunction(it) {
         return function () {
+            var ret = false;
             if (it.getEnabled()) {
                 it.action();
+                ret = true;
             }
+            return ret;
         };
     }
 
@@ -121,7 +125,7 @@ HorizontalMenu.prototype.findAccelerators = function (evt) {
         var i, l = items.length, it, accel, subitems;
         for (i = 0; i < l; i += 1) {
             it = items[i];
-            if (it && it.getEnabled()) {
+            if (it) {
                 accel = it.getAccelerator();
                 if (accel) {
                     accelerators[accel.toDecoratedVk()] = geAccelFunction(it);
@@ -164,7 +168,7 @@ HorizontalMenu.prototype.highlightItem = function (itemName) {
                     that.highlightItem(null);
                 }
             }
-            skip -= 1;            
+            skip -= 1;
         }
         that.on('mouseupt', clickout);
         that.cleanupClickout = function () {
@@ -190,7 +194,7 @@ HorizontalMenu.prototype.highlightItem = function (itemName) {
                 subMenu = new (verticalmenu.VerticalMenu)({ items: subItems});
                 subMenu.parentMenu = this;
                 this.addChild(subMenu, 'subMenu');
-                // we want to position it semi intelligently                
+                // we want to position it semi intelligently
                 smMat = mat4.create(toHighlight.getComputedMatrix());
                 smDim = toHighlight.getComputedDimensions();
                 smMat[13] += smDim[1];
@@ -216,7 +220,7 @@ HorizontalMenu.prototype.updateChildren = function () {
         'bar'
     ).setHtmlFlowing({position: 'absolute', left: '0px', top: '0px', right: '0px', bottom: 'auto' });
 
-    
+
     // we now want to iterate our items and create children for them
     var items = this.getItems(),
         i,
@@ -230,7 +234,7 @@ HorizontalMenu.prototype.updateChildren = function () {
         }
     }
     this.numItems = l;
-    
+
     // find available accelerators
     this.findAccelerators();
 };
@@ -240,7 +244,7 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
         name = String(index),
         bar = this.children.bar,
         c = bar.addTextChild(
-            'div', 
+            'div',
             item.getText(),
             { style: 'normal' },
             name
@@ -248,18 +252,18 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
         height = this.dimensions[1] + 'px';
     // keep a reference to the item
     c.item = item;
-    
+
     c.setHtmlFlowing({ height: height, display: 'inline-block' });
     c.setCursor('pointer');
     // to this child we want to add a handler
     c.on('mousedown', function () {
         if (that.highlighted && that.highlighted.name === name) {
             that.highlightItem(null);
-            
+
         } else {
             that.highlightItem(name);
         }
-        
+
     });
     c.on('mouseover', function (evt) {
         // if something is already highlighted
@@ -300,4 +304,3 @@ HorizontalMenu.prototype.setDimensions = function (dimensions) {
     }
 };
 exports.HorizontalMenu = HorizontalMenu;
-
