@@ -599,27 +599,6 @@ exports.definition = {
 
             }
         },
-        VisualProperties: {
-            dimensions: [390, 30, 0],
-            positions: {
-                scalingLabel: {
-                    type: "Position",
-                    order: 0,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                }
-            },
-            children: {
-                scalingLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "scalingLabel",
-                    config: {
-                        "text": "resize:" // rescales / resizes
-                    }
-                }
-            }
-        },
         ConfigurationSheet: {
             dimensions: [ 400, 1, 0],
             positions: {},

@@ -7,7 +7,6 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
     glmatrix = require('glmatrix'),
-    VisualProperties = require('./VisualProperties').VisualProperties,
     ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
@@ -80,24 +79,20 @@ VisualInfo.prototype.select = function (selected) {
     } else {
         this.hideDetails();
     }
-    
+
 };
 VisualInfo.prototype.showDetails = function () {
     var children = this.children,
         viewer = this.editor.getViewer(),
-        visualProperties,
         configurationSheet,
         csPos = groups.VisualInfo.positions.configurationSheet,
         csPosMat = mat4.create(csPos.matrix),
         csVertical = 10,
         hooked = true,
         that = this;
-    visualProperties = new VisualProperties({});
     configurationSheet = new ConfigurationSheet({});
-    visualProperties.setPosition('visualProperties');
-    this.addChild(visualProperties, 'visualProperties');
     this.addChild(configurationSheet, 'configurationSheet');
-    
+
     csPosMat[5] = csVertical;
     configurationSheet.setPosition(new (visual.AbsolutePosition)(
         csPosMat,
@@ -122,11 +117,7 @@ VisualInfo.prototype.showDetails = function () {
 };
 VisualInfo.prototype.hideDetails = function () {
     var children = this.children,
-        visualProperties = children.visualProperties,
         configurationSheet = children.configurationSheet;
-    if (visualProperties) {
-        this.removeChild(visualProperties);
-    }
     if (configurationSheet) {
         this.removeChild(configurationSheet);
         if (this.unhookConfigurationSheet) {
@@ -134,7 +125,7 @@ VisualInfo.prototype.hideDetails = function () {
             delete this.unhookConfigurationSheet;
         }
     }
-    this.setDimensions(groups.VisualInfo.dimensions);    
+    this.setDimensions(groups.VisualInfo.dimensions);
 };
 
 
