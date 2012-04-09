@@ -121,7 +121,7 @@ function setupToolMenu(editor) {
                 selectionControlBoxVisibility;
             viewer.enableBoxSelection(
                 function (mat, nmat, startpos, endpos, evt) {
-                    if (!evt.ctrlKey && viewer.selectedItemAtPosition([mat[12], mat[13], mat[14]])) {
+                    if (!evt.ctrlKey && viewer.itemAtPositionIsSelected([mat[12], mat[13], mat[14]])) {
                         dragging = true;
                         selectionControlBoxVisibility = viewer.showSelectionControlBox(false);
                     } else {
@@ -205,6 +205,7 @@ function setupToolMenu(editor) {
                         {
                             matrix: mat,
                             type: "AbsolutePosition",
+                            order: group.getTopmostOrder(),
                             snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
                         }
                     ));
@@ -373,6 +374,8 @@ function setupEditMenu(editor) {
                 positions = documentData.positions,
                 selection = viewer.getSelection(),
                 cmdGroup = group.cmdCommandGroup('cmdPaste', 'Paste'),
+                order = group.getTopmostOrder(),
+                minorder,
                 posmap = {},
                 usedmap = {};
 
@@ -380,10 +383,17 @@ function setupEditMenu(editor) {
                 return usedmap[n];
             }
             forEachProperty(clipboard.positions, function (p, n) {
-                var uniqueName = group.getUniquePositionName(n, check);
+                if (minorder === undefined || p.order < minorder) {
+                    minorder = p.order;
+                }
+            });
+            forEachProperty(clipboard.positions, function (p, n) {
+                var uniqueName = group.getUniquePositionName(n, check), cp;
                 posmap[n] = uniqueName;
                 usedmap[uniqueName] = true;
-                cmdGroup.add(group.cmdAddPosition(uniqueName, deepCopy(p)));
+                cp = deepCopy(p);
+                cp.order = order + p.order - minorder;
+                cmdGroup.add(group.cmdAddPosition(uniqueName, cp));
             });
             usedmap = {};
             forEachProperty(clipboard.children, function (c, n) {
@@ -474,7 +484,7 @@ function setupObjectMenu(editor) {
             // compute new depths
             forEachProperty(dd.positions, function (c, name) {
                 no = c.order;
-                if (viewer.visualIsSelected(name)) {
+                if (viewer.positionIsSelected(name)) {
                     no += 1.5;
                 }
                 newOrders[name] = no;
@@ -500,7 +510,7 @@ function setupObjectMenu(editor) {
             // compute new depths
             forEachProperty(dd.positions, function (c, name) {
                 no = c.order;
-                if (viewer.visualIsSelected(name)) {
+                if (viewer.positionIsSelected(name)) {
                     no -= 1.5;
                 }
                 newOrders[name] = no;
@@ -527,7 +537,7 @@ function setupObjectMenu(editor) {
             // compute new depths
             forEachProperty(dd.positions, function (c, name) {
                 no = c.order;
-                if (viewer.visualIsSelected(name)) {
+                if (viewer.positionIsSelected(name)) {
                     no += numpos;
                 }
                 newOrders[name] = no;
@@ -554,7 +564,7 @@ function setupObjectMenu(editor) {
             // compute new depths
             forEachProperty(dd.positions, function (c, name) {
                 no = c.order;
-                if (viewer.visualIsSelected(name)) {
+                if (viewer.positionIsSelected(name)) {
                     no -= numpos;
                 }
                 newOrders[name] = no;

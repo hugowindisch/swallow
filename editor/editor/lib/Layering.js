@@ -44,8 +44,8 @@ Layering.prototype.updateList = function () {
         positions = documentData.positions,
         it = [];
 
-    forEachProperty(documentData.children, function (c, name) {
-        it.push({name: name, order: documentData.positions[c.position].order});
+    forEachProperty(documentData.positions, function (c, name) {
+        it.push({name: name, order: c.order});
     });
     it.sort(function (i1, i2) {
         return i2.order - i1.order;

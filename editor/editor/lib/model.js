@@ -125,7 +125,7 @@ Group.prototype.getUniqueVisualName = function (radical, optionalCheck) {
 
 Group.prototype.getNumberOfPositions = function () {
     var n = 0;
-    forEachProperty(this.documentData.children, function () {
+    forEachProperty(this.documentData.positions, function () {
         n += 1;
     });
     return n;

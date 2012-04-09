@@ -799,6 +799,27 @@ exports.definition = {
             },
             children: {
             }
+        },
+        EmptyPosition: {
+            dimensions: [100, 100, 0],
+            positions: {
+                pos: {
+                    type: "AbsolutePosition",
+                    order: 0,
+                    matrix: [ 100, 0, 0, 0,   0, 100, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                }
+            },
+            children: {
+                pos: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "pos",
+                    config: {
+                        style: "background"
+                    }
+                }
+            }
         }
     }
 };

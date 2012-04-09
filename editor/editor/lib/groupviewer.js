@@ -13,6 +13,7 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups,
     vec3 = glmatrix.vec3,
     mat4 = glmatrix.mat4,
+    EmptyPosition = require('./EmptyPosition').EmptyPosition,
     convertScaleToSize = visual.convertScaleToSize;
 
 /**
@@ -405,8 +406,9 @@ GroupViewer.prototype.itemAtPosition = function (position, subset) {
 /**
     Checks if there is a selected item under the mouse.
 */
-GroupViewer.prototype.selectedItemAtPosition = function (position) {
-    return this.itemAtPosition(position, this.selection);
+GroupViewer.prototype.itemAtPositionIsSelected = function (position) {
+    var it = this.itemAtPosition(position);
+    return this.selection[it] !== undefined;
 };
 
 /**
@@ -477,18 +479,6 @@ GroupViewer.prototype.positionIsSelected = function (name) {
     return this.selection[name] !== undefined;
 };
 
-/**
-    Checks whether a visual is selected.
-*/
-GroupViewer.prototype.visualIsSelected = function (name) {
-    var documentData = this.documentData,
-        vis = documentData.children[name],
-        ret = false;
-    if (vis) {
-        ret = this.positionIsSelected(vis.position);
-    }
-    return ret;
-};
 GroupViewer.prototype.getSelectionLength = function () {
     var n = 0;
     forEachProperty(this.selection, function () {
@@ -644,6 +634,14 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
             fdd.positions[name] = pos;
             if (c) {
                 fdd.children[name] = c;
+            } else {
+                // we want to create a fake preview element
+                fdd.children[name] = {
+                    factory: "editor",
+                    type: "EmptyPosition",
+                    position: name,
+                    config: {}
+                };
             }
         }
     });
