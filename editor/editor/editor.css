@@ -46,3 +46,20 @@
 .thing {
     background-color: purple;
 }
+.editor_layoutAnchorHorizontal {
+    border-bottom: 1px solid;
+}
+.editor_layoutAnchorAdapterHorizontal {
+    border-right: 1px solid;
+    border-top: 1px solid;
+}
+
+.editor_layoutAnchorPx {
+    color: blue;
+}
+.editor_layoutAnchorPercent {
+    color: red;
+}
+.editor_layoutAnchorAuto {
+    color: gray;
+}

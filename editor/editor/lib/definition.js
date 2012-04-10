@@ -133,6 +133,12 @@ exports.definition = {
                     order: 3,
                     matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, 400, 0, 1 ],
                     snapping: { left: 'auto', right: 'px', width: 'px', top: 'auto', height: 'px', bottom: 'px' }
+                },
+                layoutAnchorRight: {
+                    type: "Position",
+                    order: 4,
+                    matrix: [ 40, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, 200, 0, 1 ],
+                    snapping: { left: 'auto', right: 'px', width: 'px', top: '%', height: 'px', bottom: 'auto' }
                 }
             },
             children: {
@@ -176,6 +182,12 @@ exports.definition = {
                     config: {
                         "class": [ "editor_SelectionBox_knob" ]
                     }
+                },
+                layoutAnchorRight: {
+                    factory: "editor",
+                    type: "LayoutAnchor",
+                    position: "layoutAnchorRight",
+                    config: { orientation: "horizontal" }
                 }
             }
         },

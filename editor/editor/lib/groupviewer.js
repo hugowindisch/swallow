@@ -603,15 +603,17 @@ GroupViewer.prototype.setGroup = function (group) {
 GroupViewer.prototype.updateSelectionControlBox = function () {
     var r,
         unionr = this.getSelectionRect(),
+        selectionControlBox = this.selectionControlBox,
         matrix,
         res;
     // show the selection box
     if (unionr) {
-        this.selectionControlBox.setContentMatrix(rectToMatrix(unionr));
-        this.selectionControlBox.setVisible(true);
+        selectionControlBox.setPageRect(this.getTransformedPageRect());
+        selectionControlBox.setContentMatrix(rectToMatrix(unionr));
+        selectionControlBox.setVisible(true);
     } else {
         // the selection is empty, hide the box
-        this.selectionControlBox.setVisible(false);
+        selectionControlBox.setVisible(false);
     }
     this.emit('updateSelectionControlBox', unionr);
 };
@@ -646,6 +648,18 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
         }
     });
     return fdd;
+};
+
+/**
+    Returns the transformed (for zoom) page rect.
+*/
+GroupViewer.prototype.getTransformedPageRect = function () {
+    var dim = this.documentData.dimensions,
+        zoomMat = this.zoomMat,
+        topLeft = mat4.multiplyVec3(zoomMat, vec3.create()),
+        bottomRight = mat4.multiplyVec3(zoomMat, dim, vec3.create());
+
+    return [topLeft, bottomRight];
 };
 
 /**

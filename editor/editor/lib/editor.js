@@ -172,6 +172,7 @@ exports.VisualList = require('./VisualList').VisualList;
 exports.VisualInfo = require('./VisualInfo').VisualInfo;
 exports.EmptyPosition = require('./EmptyPosition').EmptyPosition;
 exports.ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet;
+exports.LayoutAnchor = require('./LayoutAnchor').LayoutAnchor;
 exports.VisualList = require('./Layering').Layering;
 exports.SelectionInfo = require('./SelectionInfo').SelectionInfo;
 exports.LayerInfo = require('./LayerInfo').LayerInfo;

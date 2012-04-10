@@ -5,6 +5,7 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
+    LayoutAnchor = require('./LayoutAnchor').LayoutAnchor,
     glmatrix = require('glmatrix'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
@@ -15,14 +16,14 @@ function SelectionBox(config) {
 
     var children = this.children,
         that = this;
-        
+
     // set a default content matrix (this is not really needed in real
     // use cases)
     this.contentMatrix = mat4.create(this.matrix);
     this.contentMatrix[0] = this.dimensions[0];
     this.contentMatrix[5] = this.dimensions[1];
     this.contentMatrix[10] = this.dimensions[2];
-        
+
     function makeHandler(box, fcn) {
         box.setCursor('crosshair');
         box.on('mousedown', function (evt) {
@@ -36,7 +37,7 @@ function SelectionBox(config) {
             // prevent crap from happening
             evt.preventDefault();
             evt.stopPropagation();
-                
+
             function mouseMove(evt) {
                 mat = that.getFDM();
                 evt.preventDefault();
@@ -65,7 +66,7 @@ function SelectionBox(config) {
     makeHandler(children.topLeft, function (matrix, delta, dimensions, symmetrical, constrained) {
         var transform = mat4.identity(),
             m = symmetrical ? 2 : 1;
-            
+
         mat4.translate(transform, [
             matrix[12] - delta[0],
             matrix[13] - delta[1],
@@ -84,7 +85,7 @@ function SelectionBox(config) {
     makeHandler(children.topRight, function (matrix, delta, dimensions, symmetrical, constrained) {
         var transform = mat4.identity(),
             m = symmetrical ? 2 : 1;
-            
+
         mat4.translate(transform, [
             matrix[12] + delta[0] * (m - 1),
             matrix[13] - delta[1],
@@ -104,7 +105,7 @@ function SelectionBox(config) {
         var transform = mat4.identity(),
             m = symmetrical ? 2 : 1,
             dd;
-        
+
         // this is quite ugly
         // maybe this could be done better by computing rects...
         if (constrained) {
@@ -119,7 +120,7 @@ function SelectionBox(config) {
                 delta[1] = dd[1];
             }
         }
-        
+
         mat4.translate(transform, [
             matrix[12] + delta[0] * (m - 1),
             matrix[13] + delta[1] * (m - 1),
@@ -138,7 +139,7 @@ function SelectionBox(config) {
     makeHandler(children.bottomLeft, function (matrix, delta, dimensions, symmetrical, constrained) {
         var transform = mat4.identity(),
             m = symmetrical ? 2 : 1;
-            
+
         mat4.translate(transform, [
             matrix[12] - delta[0],
             matrix[13] + delta[1] * (m - 1),
@@ -160,6 +161,9 @@ SelectionBox.prototype.setContentMatrix = function (matrix) {
     this.contentMatrix = matrix;
     this.updateRepresentation(this.contentMatrix);
 };
+SelectionBox.prototype.setPageRect = function (pr) {
+    this.pageRect = pr;
+};
 // hack (for the fact that we are not transfomed the same way as the content we manipulate)
 SelectionBox.prototype.getFDM = function () {
     return this.parent.getFullDisplayMatrix(true);
@@ -170,9 +174,26 @@ SelectionBox.prototype.transformContentMatrix = function (matrix) {
 };
 SelectionBox.prototype.updateRepresentation = function (contentMatrix) {
     var mat = this.transformContentMatrix(contentMatrix),
-        res = visual.convertScaleToSize(mat);
-    this.setDimensions(res.dimensions);
-    this.setMatrix(res.matrix);
-};
+        res = visual.convertScaleToSize(mat),
+        resMatrix = res.matrix,
+        resDimensions = res.dimensions;
+    this.setDimensions(resDimensions);
+    this.setMatrix(resMatrix);
 
+    this.updateLayoutAnchors([
+        [resMatrix[12], resMatrix[13], 0],
+        [resMatrix[12] + resDimensions[0], resMatrix[13] + resDimensions[1], 1]
+    ]);
+
+};
+SelectionBox.prototype.updateLayoutAnchors = function (contentRect) {
+    var pageRect = this.pageRect,
+        children = this.children,
+        lAR = children.layoutAnchorRight;
+
+    // for an horizontal anchor this is an x coord, for a vert a y coord
+    lAR.setDelta(pageRect[1][0] - contentRect[1][0]);
+    lAR.setClearance((contentRect[1][1] - contentRect[0][1]) / 2);
+    lAR.drawConnector();
+};
 exports.SelectionBox = SelectionBox;
