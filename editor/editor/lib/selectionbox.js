@@ -5,7 +5,6 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
-    LayoutAnchor = require('./LayoutAnchor').LayoutAnchor,
     glmatrix = require('glmatrix'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
@@ -37,7 +36,6 @@ function SelectionBox(config) {
             // prevent crap from happening
             evt.preventDefault();
             evt.stopPropagation();
-
             function mouseMove(evt) {
                 mat = that.getFDM();
                 evt.preventDefault();
@@ -162,9 +160,6 @@ SelectionBox.prototype.setContentMatrix = function (matrix) {
     this.contentMatrix = matrix;
     this.updateRepresentation(this.contentMatrix);
 };
-SelectionBox.prototype.setPageRect = function (pr) {
-    this.pageRect = pr;
-};
 // hack (for the fact that we are not transfomed the same way as the content we manipulate)
 SelectionBox.prototype.getFDM = function () {
     return this.parent.getFullDisplayMatrix(true);
@@ -180,21 +175,5 @@ SelectionBox.prototype.updateRepresentation = function (contentMatrix) {
         resDimensions = res.dimensions;
     this.setDimensions(resDimensions);
     this.setMatrix(resMatrix);
-
-    this.updateLayoutAnchors([
-        [resMatrix[12], resMatrix[13], 0],
-        [resMatrix[12] + resDimensions[0], resMatrix[13] + resDimensions[1], 1]
-    ]);
-
-};
-SelectionBox.prototype.updateLayoutAnchors = function (contentRect) {
-    var pageRect = this.pageRect,
-        children = this.children,
-        lAR = children.layoutAnchorRight;
-
-    // for an horizontal anchor this is an x coord, for a vert a y coord
-    lAR.setDelta(pageRect[1][0] - contentRect[1][0]);
-    lAR.setClearance((contentRect[1][1] - contentRect[0][1]) / 2);
-    lAR.drawConnector();
 };
 exports.SelectionBox = SelectionBox;

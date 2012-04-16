@@ -118,12 +118,14 @@ function setupToolMenu(editor) {
         function () {
             setModal(this);
             var dragging = false,
+                layoutAnchorsVisibility,
                 selectionControlBoxVisibility;
             viewer.enableBoxSelection(
                 function (mat, nmat, startpos, endpos, evt) {
                     if (!evt.ctrlKey && viewer.itemAtPositionIsSelected([mat[12], mat[13], mat[14]])) {
                         dragging = true;
                         selectionControlBoxVisibility = viewer.showSelectionControlBox(false);
+                        layoutAnchorsVisibility = viewer.showLayoutAnchors(false);
                     } else {
                         dragging = false;
                     }
@@ -162,6 +164,7 @@ function setupToolMenu(editor) {
                         // do the combined command
                         group.doCommand(cmdGroup);
                         viewer.showSelectionControlBox(selectionControlBoxVisibility);
+                        viewer.showLayoutAnchors(layoutAnchorsVisibility);
 
                     } else {
                         // this should be determined by the keys

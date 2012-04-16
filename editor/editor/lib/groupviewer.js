@@ -8,6 +8,7 @@ var visual = require('visual'),
     glmatrix = require('glmatrix'),
     utils = require('utils'),
     selectionbox = require('./selectionbox'),
+    LayoutAnchors = require('./LayoutAnchors').LayoutAnchors,
     forEachProperty = utils.forEachProperty,
     deepCopy = utils.deepCopy,
     groups = require('./definition').definition.groups,
@@ -94,9 +95,10 @@ function GroupViewer(config) {
 
     // setup the selection control box
     this.selectionControlBox = new (selectionbox.SelectionBox)({});
-    this.selectionControlBox.setMatrix(mat4.translate(mat4.identity(), [100, 100, 0]));
-    this.selectionControlBox.setDimensions([200, 200, 1]);
     this.children.decorations.addChild(this.selectionControlBox, 'selectionControlBox');
+    // layout anchors
+    this.layoutAnchors = new (LayoutAnchors)({});
+    this.children.decorations.addChild(this.layoutAnchors, 'layoutAnchors');
     // add handlers for the selectionControlBox
     this.selectionControlBox.transformContentMatrix = function (matrix) {
         return mat4.multiply(that.zoomMat, matrix, mat4.create());
@@ -141,6 +143,15 @@ GroupViewer.prototype.showSelectionControlBox = function (visible) {
     var selectionControlBox = this.selectionControlBox,
         ret = selectionControlBox.getVisible();
     selectionControlBox.setVisible(visible);
+    return ret;
+};
+/**
+    Shows / hides layout anchors
+*/
+GroupViewer.prototype.showLayoutAnchors = function (visible) {
+    var layoutAnchors = this.layoutAnchors,
+        ret = layoutAnchors.getVisible();
+    layoutAnchors.setVisible(visible);
     return ret;
 };
 /**
@@ -286,6 +297,7 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
             }
         }
     });
+    this.showLayoutAnchors(false);
     // update previews
     this.emit('previewSelectionRect', this.getSelectionRect(transform));
 
@@ -592,21 +604,36 @@ GroupViewer.prototype.setGroup = function (group) {
     Updates the representation of the selection box.
 */
 GroupViewer.prototype.updateSelectionControlBox = function () {
-    var r,
-        unionr = this.getSelectionRect(),
-        selectionControlBox = this.selectionControlBox,
-        matrix,
-        res;
+    var unionr = this.getSelectionRect(),
+        selectionControlBox = this.selectionControlBox;
     // show the selection box
     if (unionr) {
-        selectionControlBox.setPageRect(this.getTransformedPageRect());
         selectionControlBox.setContentMatrix(rectToMatrix(unionr));
         selectionControlBox.setVisible(true);
     } else {
         // the selection is empty, hide the box
         selectionControlBox.setVisible(false);
     }
+    this.updateLayoutAnchors();
     this.emit('updateSelectionControlBox', unionr);
+};
+
+/**
+    Updates the representation of the layout anchors.
+*/
+GroupViewer.prototype.updateLayoutAnchors = function () {
+    var unionr = this.getSelectionRect(),
+        zoomMat = this.zoomMat,
+        layoutAnchors = this.layoutAnchors;
+    // show the selection box
+    if (unionr) {
+        layoutAnchors.setPageRect(this.getTransformedPageRect());
+        layoutAnchors.setContentRect([mat4.multiplyVec3(zoomMat, unionr[0]), mat4.multiplyVec3(zoomMat, unionr[1])]);
+        layoutAnchors.setVisible(true);
+    } else {
+        // the selection is empty, hide the box
+        layoutAnchors.setVisible(false);
+    }
 };
 
 /**
