@@ -799,6 +799,28 @@ exports.definition = {
                     }
                 }
             }
-        }
+        },
+        SnapButton: {
+            dimensions: [18, 18, 0],
+            positions: {
+                pos: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 18, 0, 0, 0,   0, 18, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                }
+            },
+            children: {
+                pos: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "pos",
+                    config: {
+                        url: "editor/lib/snappx.png"
+                    }
+                }
+            }
+        },
+
     }
 };

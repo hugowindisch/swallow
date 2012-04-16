@@ -8,6 +8,7 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups,
     glmatrix = require('glmatrix'),
     ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet,
+    SnapButton = require('./SnapButton').SnapButton,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
 
@@ -27,6 +28,13 @@ LayoutAnchors.prototype.getConfigurationSheet = function () {
     return { orientation: {} };
 };
 
+LayoutAnchors.prototype.setPageRect = function (pr) {
+    this.pageRect = pr;
+};
+
+LayoutAnchors.prototype.setAnchors = function (anchors) {
+    this.anchors = anchors;
+};
 
 LayoutAnchors.prototype.setContentRect = function (cr) {
     var pr = this.pageRect,
@@ -47,7 +55,9 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
         small = 30,
         big = 40,
         d,
-        d2;
+        d2,
+        sb,
+        anchors = this.anchors;
     this.removeAllChildren();
     // right connector
     if ((prmaxx - xmax) > small) {
@@ -164,6 +174,32 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
 
     // v connector
     this.v(xmid, ymin, ymax);
+
+    // all snap buttons
+    sb = new SnapButton({snapping: anchors.left});
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmin - 20, ymid - 9, 0, 1]);
+    this.addChild(sb, 'sbLeft');
+
+    sb = new SnapButton({snapping: anchors.right});
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmax + 4, ymid - 9, 0, 1]);
+    this.addChild(sb, 'sbRight');
+
+    sb = new SnapButton({snapping: anchors.top});
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmid - 9, ymin - 20, 0, 1]);
+    this.addChild(sb, 'sbTop');
+
+    sb = new SnapButton({snapping: anchors.bottom});
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmid - 9, ymax + 4, 0, 1]);
+    this.addChild(sb, 'sbBottom');
+
+    sb = new SnapButton({snapping: anchors.height});
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmid - 9, ymin + 4, 0, 1]);
+    this.addChild(sb, 'sbHeight');
+
+    sb = new SnapButton({snapping: anchors.width});
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmin + 4, ymid - 9, 0, 1]);
+    this.addChild(sb, 'sbWidth');
+
 };
 
 LayoutAnchors.prototype.h = function (x1, x2, y, style) {
@@ -191,11 +227,5 @@ LayoutAnchors.prototype.v = function (x, y1, y2, style) {
     child.setStyle('hLine');
     this.addChild(child);
 };
-
-
-LayoutAnchors.prototype.setPageRect = function (pr) {
-    this.pageRect = pr;
-};
-
 
 exports.LayoutAnchors = LayoutAnchors;

@@ -523,6 +523,22 @@ GroupViewer.prototype.getSelectionRect = function (optionalTransform) {
     });
     return unionr;
 };
+GroupViewer.prototype.getSelectionAnchoring = function () {
+    var anchoring = {};
+    forEachProperty(this.selection, function (box, name) {
+        var snapping = box.snapping;
+        forEachProperty(snapping, function (a, an) {
+            if (anchoring[an]) {
+                if (anchoring[an] !== a) {
+                    anchoring[an] = 'unknown';
+                }
+            } else {
+                anchoring[an] = a;
+            }
+        });
+    });
+    return anchoring;
+};
 GroupViewer.prototype.getPositionRect = function (name) {
     var pos = this.documentData.positions[name],
         res;
@@ -628,6 +644,7 @@ GroupViewer.prototype.updateLayoutAnchors = function () {
     // show the selection box
     if (unionr) {
         layoutAnchors.setPageRect(this.getTransformedPageRect());
+        layoutAnchors.setAnchors(this.getSelectionAnchoring());
         layoutAnchors.setContentRect([mat4.multiplyVec3(zoomMat, unionr[0]), mat4.multiplyVec3(zoomMat, unionr[1])]);
         layoutAnchors.setVisible(true);
     } else {
