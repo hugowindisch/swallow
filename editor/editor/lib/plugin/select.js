@@ -204,9 +204,9 @@ function setupToolMenu(editor) {
                         group.getUniquePositionName(),
                         {
                             matrix: mat,
-                            type: "AbsolutePosition",
+                            type: "Position",
                             order: group.getTopmostOrder(),
-                            snapping: { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+                            snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                         }
                     ));
                 }

@@ -284,15 +284,6 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
                 newpos.matrix = mat4.multiply(transform, pos.matrix, mat4.create());
                 vis.setPosition(visual.deserializePosition(newpos));
             }
-            // frame
-            if (posFrame) {
-                res = convertScaleToSize(mat4.multiply(
-                    zoomMat,
-                    mat4.multiply(transform, pos.matrix, mat4.create()),
-                    mat4.create()
-                ));
-                posFrame.setMatrix(res.matrix);
-            }
         }
     });
     // update previews

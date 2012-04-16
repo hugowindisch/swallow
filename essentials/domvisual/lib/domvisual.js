@@ -251,13 +251,11 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
                 style.MozTransform = style.webkitTransform = style.transform = null;
             } else {
                 // we need the whole css3 transform shebang
-// FIXME: I did not have internet and I want the full matrix thing
                 // 3d transform
                 style.left = '0px';
                 style.top = '0px';
                 transform = 'translate(' + matrix[12] + 'px, ' + matrix[13] + 'px) ';
                 transform += 'scale(' + matrix[0] + ',' + matrix[5] + ')';
-                style.webkitBackfaceVisibility = 'hidden';
                 style.MozTransformOrigin = style.webkitTransformOrigin = style.transformOrigin = '0 0 0';
                 style.MozTransform = style.webkitTransform = style.transform = transform;
             }

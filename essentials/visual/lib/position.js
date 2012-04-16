@@ -173,8 +173,12 @@ Position.prototype.compute = function (
     layoutDimensions
 ) {
     var snapping = this.snapping,
-        srcRect = getEnclosingRect(this.matrix),
+        matrix = this.matrix,
+        srcRect = getEnclosingRect(matrix),
         dstRect = [vec3.create(), vec3.create()],
+        scale,
+        srcExt,
+        dstExt,
         outm = mat4.identity();
 
     switch (snapping.left) {
@@ -283,8 +287,20 @@ Position.prototype.compute = function (
         }
     }
     dstRect[1][2] = 1;
+    // compute the scaling
+    srcExt = vec3.subtract(srcRect[1], srcRect[0], vec3.create());
+    dstExt = vec3.subtract(dstRect[1], dstRect[0], vec3.create());
+    scale = [
+        srcExt[0] === 0 ? 0 : dstExt[0] / srcExt[0],
+        srcExt[1] === 0 ? 0 : dstExt[1] / srcExt[1],
+        1
+    ];
     // now we want to compute the matrix
-    return rectToMatrix(dstRect);
+    mat4.translate(outm, dstRect[0]);
+    mat4.scale(outm, scale);
+    mat4.translate(outm, [-srcRect[0][0], -srcRect[0][1], 0]);
+    mat4.multiply(outm, matrix);
+    return outm;
 };
 /*(function () {
     var p = new Position(
