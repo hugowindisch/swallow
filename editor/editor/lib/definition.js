@@ -245,6 +245,85 @@ exports.definition = {
                 }
             }
         },
+        // the right viewer
+        RotationBox: {
+            dimensions: [ 400, 400, 0],
+            positions: {
+                selectionArea: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 400, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', height: 'auto', bottom: 'px' }
+                },
+                topLeft: {
+                    type: "Position",
+                    order: 1,
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   -10, -10, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', height: 'px', bottom: 'auto' }
+                },
+                topRight: {
+                    type: "Position",
+                    order: 2,
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, -10, 0, 1 ],
+                    snapping: { left: 'auto', right: 'px', width: 'px', top: 'px', height: 'px', bottom: 'auto' }
+                },
+                bottomLeft: {
+                    type: "Position",
+                    order: 2,
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   -10, 400, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'auto', height: 'px', bottom: 'px' }
+                },
+                bottomRight: {
+                    type: "Position",
+                    order: 3,
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, 400, 0, 1 ],
+                    snapping: { left: 'auto', right: 'px', width: 'px', top: 'auto', height: 'px', bottom: 'px' }
+                }
+            },
+            children: {
+                selectionArea: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "selectionArea",
+
+                    config: {
+                        "class": [ "editor_SelectionBox_selectionArea" ]
+                    }
+                },
+                topLeft: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "topLeft",
+                    config: {
+                        "class": [ "editor_RotationBox_knob" ]
+                    }
+                },
+                topRight: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "topRight",
+                    config: {
+                        "class": [ "editor_RotationBox_knob" ]
+                    }
+                },
+                bottomLeft: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "bottomLeft",
+                    config: {
+                        "class": [ "editor_RotationBox_knob" ]
+                    }
+                },
+                bottomRight: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "bottomRight",
+                    config: {
+                        "class": [ "editor_RotationBox_knob" ]
+                    }
+                }
+            }
+        },
         VisualList: {
             dimensions: [390, 80, 0],
             positions: {

@@ -9,7 +9,9 @@ var visual = require('visual'),
     utils = require('utils'),
     selectionbox = require('./selectionbox'),
     LayoutAnchors = require('./LayoutAnchors').LayoutAnchors,
+    RotationBox = require('./RotationBox').RotationBox,
     forEachProperty = utils.forEachProperty,
+    forEach = utils.forEach,
     deepCopy = utils.deepCopy,
     groups = require('./definition').definition.groups,
     vec3 = glmatrix.vec3,
@@ -93,20 +95,34 @@ function GroupViewer(config) {
     this.groupBorderPix = 1000;
     this.selection = {};
 
+    // thse are the possible modes of the selection control box (should be called selection transformation box)
     // setup the selection control box
-    this.selectionControlBox = new (selectionbox.SelectionBox)({});
-    this.children.decorations.addChild(this.selectionControlBox, 'selectionControlBox');
+    this.selectionScalingUI = new (selectionbox.SelectionBox)({});
+    this.children.decorations.addChild(this.selectionScalingUI, 'selectionScalingUI');
+    // setup the rotation box
+    this.selectionRotationUI = new RotationBox();
+    this.children.decorations.addChild(this.selectionRotationUI, 'selectionRotationUI');
+    // to these are the possible choices
+    this.selectionControlBoxModes = [
+        this.selectionScalingUI,
+        this.selectionRotationUI
+    ];
+    this.selectionControlBox = this.selectionControlBoxModes[0];
+    this.selectionRotationUI.setVisible(false);
+
     // layout anchors
     this.layoutAnchors = new (LayoutAnchors)({});
     this.children.decorations.addChild(this.layoutAnchors, 'layoutAnchors');
-    // add handlers for the selectionControlBox
-    this.selectionControlBox.transformContentMatrix = function (matrix) {
-        return mat4.multiply(that.zoomMat, matrix, mat4.create());
-    };
-    this.selectionControlBox.getFDM = function () {
-        return that.children.visuals.getFullDisplayMatrix(true);
-    };
-    this.selectionControlBox.on('transform', function (transform) {
+    // add handlers for the selectionScalingUI
+    this.selectionRotationUI.transformContentMatrix =
+        this.selectionScalingUI.transformContentMatrix = function (matrix) {
+            return mat4.multiply(that.zoomMat, matrix, mat4.create());
+        };
+    this.selectionRotationUI.getFDM =
+        this.selectionScalingUI.getFDM = function () {
+            return that.children.visuals.getFullDisplayMatrix(true);
+        };
+    this.selectionScalingUI.on('transform', function (transform) {
         var group = that.group,
             cg = that.group.cmdCommandGroup('transform', 'Transform a group');
         // transform the whole selection
@@ -115,7 +131,7 @@ function GroupViewer(config) {
         });
         group.doCommand(cg);
     });
-    this.selectionControlBox.on('preview', function (transform) {
+    this.selectionScalingUI.on('preview', function (transform) {
         that.previewSelectionTransformation(transform);
     });
     this.layoutAnchors.on('anchor', function (anchor) {
@@ -146,6 +162,43 @@ GroupViewer.prototype.theme = new (visual.Theme)({
 });
 
 /**
+    Toogle from the scale box to the rotation box, to whatever box we may
+    add.
+*/
+GroupViewer.prototype.toggleSelectionControlBoxMode = function () {
+    var modes = this.selectionControlBoxModes,
+        visible = this.selectionControlBox.getVisible(),
+        l = modes.length,
+        that = this,
+        mode = this.selectionControlBox,
+        found;
+    forEach(modes, function (m, n) {
+        if (m === mode) {
+            found = n;
+        }
+    });
+    if (found === undefined || found === (l - 1)) {
+        found = 0;
+    } else {
+        found += 1;
+    }
+    this.selectionControlBox.setVisible(false);
+    this.selectionControlBox = this.selectionControlBoxModes[found];
+    this.selectionControlBox.setVisible(visible);
+};
+
+GroupViewer.prototype.resetSelectionControlBoxMode = function (mode) {
+    if (this.selectionControlBox !== this.selectionControlBoxModes[0]) {
+        var visible = this.selectionControlBox.getVisible();
+        this.selectionControlBox.setVisible(false);
+        this.selectionControlBox = this.selectionControlBoxModes[0];
+        this.selectionControlBox.setVisible(visible);
+    }
+
+};
+
+
+/**
     Shows / hides the selection control box.
 */
 GroupViewer.prototype.showSelectionControlBox = function (visible) {
@@ -154,6 +207,8 @@ GroupViewer.prototype.showSelectionControlBox = function (visible) {
     selectionControlBox.setVisible(visible);
     return ret;
 };
+
+
 /**
     Shows / hides layout anchors
 */
@@ -630,15 +685,21 @@ GroupViewer.prototype.setGroup = function (group) {
 */
 GroupViewer.prototype.updateSelectionControlBox = function () {
     var unionr = this.getSelectionRect(),
+        unionmat,
+        modes = this.selectionControlBoxModes,
         selectionControlBox = this.selectionControlBox;
     // show the selection box
     if (unionr) {
-        selectionControlBox.setContentMatrix(rectToMatrix(unionr));
+        unionmat = rectToMatrix(unionr);
+        forEach(modes, function (m, n) {
+            m.setContentMatrix(unionmat);
+        });
         selectionControlBox.setVisible(true);
     } else {
         // the selection is empty, hide the box
         selectionControlBox.setVisible(false);
     }
+
     this.updateLayoutAnchors();
     this.emit('updateSelectionControlBox', unionr);
 };
@@ -710,6 +771,7 @@ GroupViewer.prototype.getTransformedPageRect = function () {
 
     return [topLeft, bottomRight];
 };
+
 
 /**
     Regenerates the whole thing.

@@ -118,6 +118,8 @@ function setupToolMenu(editor) {
         function () {
             setModal(this);
             var dragging = false,
+                draggingWait = true,
+                toggleControlBoxModeWhenFinished = true,
                 layoutAnchorsVisibility,
                 selectionControlBoxVisibility;
 
@@ -131,11 +133,15 @@ function setupToolMenu(editor) {
 
             viewer.enableBoxSelection(
                 function (mat, nmat, startpos, endpos, evt) {
+                    toggleControlBoxModeWhenFinished = true;
                     if (!viewer.itemAtPositionIsSelected(startpos)) {
+                        toggleControlBoxModeWhenFinished = false;
                         select(evt, nmat);
+                        viewer.resetSelectionControlBoxMode();
                     }
                     if (!evt.ctrlKey && viewer.itemAtPositionIsSelected([mat[12], mat[13], mat[14]])) {
                         dragging = true;
+                        draggingWait = true;
                         selectionControlBoxVisibility = viewer.showSelectionControlBox(false);
                         layoutAnchorsVisibility = viewer.showLayoutAnchors(false);
                     } else {
@@ -144,13 +150,24 @@ function setupToolMenu(editor) {
                     return !dragging;
                 },
                 function (mat, nmat, startpos, endpos, evt) {
+                    var delta;
                     if (dragging) {
-                        viewer.previewSelectionTransformation(
-                            getTransform(
-                                [mat[0], mat[5], mat[10]],
-                                evt.ctrlKey
-                            )
-                        );
+                        // this will force a minimal displacement to enter dragging mode
+                        if (draggingWait) {
+                            delta = Math.max(
+                                Math.abs(startpos[0] - endpos[0]),
+                                Math.abs(startpos[1] - endpos[1])
+                            );
+                            draggingWait = delta < 3;
+                        }
+                        if (!draggingWait) {
+                            viewer.previewSelectionTransformation(
+                                getTransform(
+                                    [mat[0], mat[5], mat[10]],
+                                    evt.ctrlKey
+                                )
+                            );
+                        }
                     }
                 },
                 function (mat, nmat, startpos, endpos, evt) {
@@ -159,25 +176,34 @@ function setupToolMenu(editor) {
                         cmdGroup,
                         group;
                     if (dragging) {
-                        group = viewer.getGroup();
-                        // we want to move the selection.
-                        transform = getTransform(
-                            [mat[0], mat[5], mat[10]],
-                            evt.ctrlKey
-                        );
-                        selection = viewer.getSelection();
-                        cmdGroup = group.cmdCommandGroup('moveSelection', 'Move Selection');
+                        if (draggingWait) {
+                            // not enough dragging, we will simply toggle the
+                            // selection gizmos (translation <-> rotation)
+                            viewer.showSelectionControlBox(selectionControlBoxVisibility);
+                            viewer.showLayoutAnchors(layoutAnchorsVisibility);
+                            if (toggleControlBoxModeWhenFinished) {
+                                viewer.toggleSelectionControlBoxMode();
+                            }
+                        } else {
+                            group = viewer.getGroup();
+                            // we want to move the selection.
+                            transform = getTransform(
+                                [mat[0], mat[5], mat[10]],
+                                evt.ctrlKey
+                            );
+                            selection = viewer.getSelection();
+                            cmdGroup = group.cmdCommandGroup('moveSelection', 'Move Selection');
 
-
-                        // for everything in the selection
-                        forEachProperty(selection, function (p, n) {
-                            cmdGroup.add(group.cmdTransformPosition(n, transform));
-                        });
-                        // do the combined command
-                        group.doCommand(cmdGroup);
-                        viewer.showSelectionControlBox(selectionControlBoxVisibility);
-                        viewer.showLayoutAnchors(layoutAnchorsVisibility);
-
+                            // for everything in the selection
+                            forEachProperty(selection, function (p, n) {
+                                cmdGroup.add(group.cmdTransformPosition(n, transform));
+                            });
+                            // do the combined command
+                            group.doCommand(cmdGroup);
+                            viewer.resetSelectionControlBoxMode();
+                            viewer.showSelectionControlBox(selectionControlBoxVisibility);
+                            viewer.showLayoutAnchors(layoutAnchorsVisibility);
+                        }
                     } else {
                         select(evt, nmat);
                     }

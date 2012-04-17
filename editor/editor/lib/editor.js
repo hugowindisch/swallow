@@ -176,6 +176,7 @@ exports.LayoutAnchors = require('./LayoutAnchors').LayoutAnchors;
 exports.VisualList = require('./Layering').Layering;
 exports.SelectionInfo = require('./SelectionInfo').SelectionInfo;
 exports.SnapButton = require('./SnapButton').SnapButton;
+exports.RotationBox = require('./RotationBox').RotationBox;
 exports.LayerInfo = require('./LayerInfo').LayerInfo;
 exports.Panel = require('./Panel').Panel;
 
