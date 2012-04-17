@@ -37,6 +37,7 @@ function SnapButton(config) {
         evt.stopPropagation();
         that.emit('change', that.snapping);
     });
+    this.setCursor('pointer');
 }
 SnapButton.prototype = new (domvisual.DOMElement)();
 SnapButton.prototype.getConfigurationSheet = function () {
