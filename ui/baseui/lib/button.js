@@ -17,16 +17,16 @@ var visual = require('visual'),
         dimensions: [ 400, 200, 0],
         positions: {
             background: {
-                type: "AbsolutePosition",
+                type: "Position",
                 order: 0,
                 matrix: [ 400, 0, 0, 0,   0, 200, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
             },
             text: {
-                type: "AbsolutePosition",
+                type: "Position",
                 order: 1,
                 matrix: [ 380, 0, 0, 0,   0, 180, 0, 0,    0, 0, 1, 0,   10, 10, 0, 1 ],
-                snapping: { leftTo: 'left', rightTo: 'right', topTo: 'top', bottomTo: 'bottom' }
+                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
             }
         },
         children: {
