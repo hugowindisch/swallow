@@ -120,8 +120,20 @@ function setupToolMenu(editor) {
             var dragging = false,
                 layoutAnchorsVisibility,
                 selectionControlBoxVisibility;
+
+            function select(evt, nmat) {
+                if (!evt.ctrlKey) {
+                    viewer.clearSelection(nmat);
+                }
+                viewer.selectByMatrix(nmat, !evt.shiftKey, evt.ctrlKey);
+                viewer.updateSelectionControlBox();
+            }
+
             viewer.enableBoxSelection(
                 function (mat, nmat, startpos, endpos, evt) {
+                    if (!viewer.itemAtPositionIsSelected(startpos)) {
+                        select(evt, nmat);
+                    }
                     if (!evt.ctrlKey && viewer.itemAtPositionIsSelected([mat[12], mat[13], mat[14]])) {
                         dragging = true;
                         selectionControlBoxVisibility = viewer.showSelectionControlBox(false);
@@ -167,12 +179,7 @@ function setupToolMenu(editor) {
                         viewer.showLayoutAnchors(layoutAnchorsVisibility);
 
                     } else {
-                        // this should be determined by the keys
-                        if (!evt.ctrlKey) {
-                            viewer.clearSelection(nmat);
-                        }
-                        viewer.selectByMatrix(nmat, !evt.shiftKey, evt.ctrlKey);
-                        viewer.updateSelectionControlBox();
+                        select(evt, nmat);
                     }
                 }
             );
