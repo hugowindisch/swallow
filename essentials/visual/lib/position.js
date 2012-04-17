@@ -118,7 +118,7 @@ function getEnclosingRect(m) {
     var tv1 = mat4.multiplyVec3(m, [1, 0, 0]),
         tv2 = mat4.multiplyVec3(m, [0, 1, 0]),
         tv3 = mat4.multiplyVec3(m, [1, 1, 0]),
-        tv4 = mat4.multiplyVec3(m, [0, 0, 0]),
+        tv4 = mat4.multiplyVec3(m, [0, 0, 1]),
         v1,
         v2,
         v3,
