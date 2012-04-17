@@ -254,8 +254,7 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
                 // 3d transform
                 style.left = '0px';
                 style.top = '0px';
-                transform = 'translate(' + matrix[12] + 'px, ' + matrix[13] + 'px) ';
-                transform += 'scale(' + matrix[0] + ',' + matrix[5] + ')';
+                transform = 'matrix(' + matrix[0] + ', ' + matrix[1] + ', ' + matrix[4] + ', ' + matrix[5] + ', ' + matrix[12] + ', ' + matrix[13] + ')';
                 style.MozTransformOrigin = style.webkitTransformOrigin = style.transformOrigin = '0 0 0';
                 style.MozTransform = style.webkitTransform = style.transform = transform;
             }

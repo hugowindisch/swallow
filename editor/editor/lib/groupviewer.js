@@ -5,6 +5,8 @@
 
 var visual = require('visual'),
     domvisual = require('domvisual'),
+    getEnclosingRect = visual.getEnclosingRect,
+    rectToMatrix = visual.rectToMatrix,
     glmatrix = require('glmatrix'),
     utils = require('utils'),
     selectionbox = require('./selectionbox'),
@@ -22,25 +24,6 @@ var visual = require('visual'),
 /**
     Useful functions for dealing with selections.
 */
-function getEnclosingRect(m) {
-    var i, v1, v2, v3, t, minpt = [], maxpt = [], mn, mx, min = Math.min, max = Math.max;
-    for (i = 0; i < 3; i += 1) {
-        t = m[12 + i];
-        v1 = m[i] + t;
-        v2 = m[i + 4] + t;
-        v3 = m[i + 8] + t;
-        mn = min(v1, v2, v3, t);
-        mx = max(v1, v2, v3, t);
-        if (maxpt[i] === undefined || mn < minpt[i]) {
-            minpt[i] = mn;
-        }
-        if (maxpt[i] === undefined || mx > maxpt[i]) {
-            maxpt[i] = mx;
-        }
-    }
-    return [minpt, maxpt];
-}
-
 function unionRect(r1, r2) {
     var min = Math.min, max = Math.max,
         r1min = r1[0], r2min = r2[0],
@@ -66,23 +49,6 @@ function encloses(r1, r2) {
         (r1min[1] <= r2min[1] && r1max[1] >= r2max[1]); // &&
         //(r1min[2] <= r2min[2] && r1max[2] >= r2max[2]);
 }
-
-function rectToMatrix(r) {
-    var m = mat4.identity(),
-        rmin = r[0],
-        rmax = r[1],
-        rmin0,
-        rmin1,
-        rmin2;
-    m[12] = rmin0 = rmin[0];
-    m[13] = rmin1 = rmin[1];
-    m[14] = rmin2 = rmin[2];
-    m[0] = rmax[0] - rmin0;
-    m[5] = rmax[1] - rmin1;
-    m[10] = rmax[2] - rmin2;
-    return m;
-}
-
 
 function GroupViewer(config) {
     var that = this;
@@ -122,7 +88,8 @@ function GroupViewer(config) {
         this.selectionScalingUI.getFDM = function () {
             return that.children.visuals.getFullDisplayMatrix(true);
         };
-    this.selectionScalingUI.on('transform', function (transform) {
+    // transform handlers
+    function transformHandler(transform) {
         var group = that.group,
             cg = that.group.cmdCommandGroup('transform', 'Transform a group');
         // transform the whole selection
@@ -130,10 +97,16 @@ function GroupViewer(config) {
             cg.add(group.cmdTransformPosition(name, transform));
         });
         group.doCommand(cg);
-    });
-    this.selectionScalingUI.on('preview', function (transform) {
+    }
+    this.selectionScalingUI.on('transform', transformHandler);
+    this.selectionRotationUI.on('transform', transformHandler);
+    // preview handlers
+    function previewHandler(transform) {
         that.previewSelectionTransformation(transform);
-    });
+    }
+    this.selectionScalingUI.on('preview', previewHandler);
+    this.selectionRotationUI.on('preview', previewHandler);
+    // anchor handlers
     this.layoutAnchors.on('anchor', function (anchor) {
         var group = that.group,
             cg = that.group.cmdCommandGroup('anchor', 'Anchor a group');

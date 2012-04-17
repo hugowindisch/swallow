@@ -682,3 +682,5 @@ exports.convertScaleToSize = position.convertScaleToSize;
 exports.forVisualAndAllChildrenDeep = forVisualAndAllChildrenDeep;
 exports.Theme = themes.Theme;
 exports.update = dirty.update;
+exports.getEnclosingRect = position.getEnclosingRect;
+exports.rectToMatrix = position.rectToMatrix;

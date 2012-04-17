@@ -114,16 +114,29 @@ var utils = require('utils'),
     isObject = utils.isObject,
     forEachProperty = utils.forEachProperty;
 
-
 function getEnclosingRect(m) {
-    var i, v1, v2, v3, t, minpt = [], maxpt = [], mn, mx, min = Math.min, max = Math.max;
+    var tv1 = mat4.multiplyVec3(m, [1, 0, 0]),
+        tv2 = mat4.multiplyVec3(m, [0, 1, 0]),
+        tv3 = mat4.multiplyVec3(m, [1, 1, 0]),
+        tv4 = mat4.multiplyVec3(m, [0, 0, 0]),
+        v1,
+        v2,
+        v3,
+        v4,
+        i,
+        minpt = [],
+        maxpt = [],
+        min = Math.min,
+        max = Math.max,
+        mn,
+        mx;
     for (i = 0; i < 3; i += 1) {
-        t = m[12 + i];
-        v1 = m[i] + t;
-        v2 = m[i + 4] + t;
-        v3 = m[i + 8] + t;
-        mn = min(v1, v2, v3, t);
-        mx = max(v1, v2, v3, t);
+        v1 = tv1[i];
+        v2 = tv2[i];
+        v3 = tv3[i];
+        v4 = tv4[i];
+        mn = min(v1, v2, v3, v4);
+        mx = max(v1, v2, v3, v4);
         if (maxpt[i] === undefined || mn < minpt[i]) {
             minpt[i] = mn;
         }
@@ -133,6 +146,7 @@ function getEnclosingRect(m) {
     }
     return [minpt, maxpt];
 }
+
 
 function rectToMatrix(r) {
     var m = mat4.identity(),
@@ -650,3 +664,5 @@ exports.AbsolutePosition = AbsolutePosition;
 exports.TransformPosition = TransformPosition;
 exports.convertScaleToSize = convertScaleToSize;
 exports.deserializePosition = deserializePosition;
+exports.getEnclosingRect = getEnclosingRect;
+exports.rectToMatrix = rectToMatrix;

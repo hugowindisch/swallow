@@ -10,6 +10,10 @@
 }
 .editor_RotationBox_knob {
     background-color: blue;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+
 }
 .editor_layoutAnchorHorizontal {
     border-bottom: 1px dotted;
