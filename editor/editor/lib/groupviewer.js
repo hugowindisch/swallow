@@ -118,6 +118,15 @@ function GroupViewer(config) {
     this.selectionControlBox.on('preview', function (transform) {
         that.previewSelectionTransformation(transform);
     });
+    this.layoutAnchors.on('anchor', function (anchor) {
+        var group = that.group,
+            cg = that.group.cmdCommandGroup('anchor', 'Anchor a group');
+        // transform the whole selection
+        forEachProperty(that.selection, function (sel, name) {
+            cg.add(group.cmdSetPositionSnapping(name, anchor));
+        });
+        group.doCommand(cg);
+    });
 
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
@@ -668,7 +677,12 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
     forEachProperty(documentData.positions, function (pos, name) {
         var c = children[name];
         if (positions[name].enableDisplay !== false) {
-            fdd.positions[name] = pos;
+            fdd.positions[name] = {
+                type: "Position",
+                order: pos.order,
+                matrix: pos.matrix,
+                snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+            };
             if (c) {
                 fdd.children[name] = c;
             } else {

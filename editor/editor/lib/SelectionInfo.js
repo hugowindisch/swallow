@@ -25,57 +25,6 @@ SelectionInfo.prototype.init = function (editor) {
         container = this.parent,
         children = this.children;
 
-    function enablePositionControls(enable) {
-        forEach(
-            ['position', 'transform', 'snapLeft', 'snapRight', 'snapBottom', 'snapTop', 'snapRight'],
-            function (n) {
-                children[n].enable(enable);
-            }
-        );
-    }
-    function updatePositionControls(position) {
-        var controls = {
-                "AbsolutePosition": [ 
-                    'snapLeft', 
-                    'snapRight', 
-                    'snapBottom', 
-                    'snapTop',
-                    'snapTopLabel', 
-                    'snapLeftLabel', 
-                    'snapRightLabel', 
-                    'snapBottomLabel', 
-                    'snapTopLabel'
-                ],
-                "TransformPosition": [
-                    'transform'
-                ]
-            },
-            snapping,
-            positionType = position.type;
-        // visibility
-        forEachProperty(controls, function (cSet, cName) {
-            var enable = cName === positionType;
-            forEach(cSet, function (n) {
-                children[n].setVisible(enable);
-            });
-        });
-        // content
-        switch (positionType) {
-        case 'AbsolutePosition':
-            snapping = position.snapping;
-            children.snapLeft.setChecked(snapping.leftTo === 'right');
-            children.snapRight.setChecked(snapping.rightTo === 'right');
-            children.snapTop.setChecked(snapping.topTo === 'bottom');
-            children.snapBottom.setChecked(snapping.bottomTo === 'bottom');
-            break;
-        case 'TransformPosition':
-            children.transform.setSelectedOption(position.scaleMode);
-            break;
-        }
-        children.position.setSelectedOption(positionType);
-    }
-
-
     function update(rect) {
         if (rect) {
             children.x.setText(rect[0][0].toFixed(1));
@@ -89,13 +38,9 @@ SelectionInfo.prototype.init = function (editor) {
         if (viewer.getSelectionLength() === 1) {
             children.name.setText(viewer.getSelectedName());
             children.name.enable(true);
-            enablePositionControls(true);
-            updatePositionControls(viewer.getSelectedPosition());
-            
         } else {
             children.name.setText('');
             children.name.enable(false);
-            enablePositionControls(false);
         }
     }
     viewer.on('updateSelectionControlBox', update);
@@ -108,36 +53,6 @@ SelectionInfo.prototype.init = function (editor) {
         }
         return n;
     }
-    function positionOptionsChanged() {
-        var positionType = children.position.getSelectedOption(),
-            res = {},
-            group = viewer.getGroup();
-        switch (positionType) {
-        case 'AbsolutePosition':
-            res.type = positionType;
-            res.snapping = {
-                leftTo: children.snapLeft.getChecked() ? 'right' : 'left',
-                rightTo: children.snapRight.getChecked() ? 'right' : 'left',
-                topTo: children.snapTop.getChecked() ? 'bottom' : 'top',
-                bottomTo: children.snapBottom.getChecked() ? 'bottom' : 'top'
-            };
-            break;
-        case 'TransformPosition':
-            res.type = positionType;
-            res.scaleMode = children.transform.getSelectedOption();
-            break;
-        default:
-            return;
-        }
-        res.matrix = viewer.getSelectedPosition().matrix;
-        group.doCommand(group.cmdUpdatePosition(viewer.getSelectedName(), res));
-    }
-    forEach(
-        ['position', 'transform', 'snapLeft', 'snapRight', 'snapBottom', 'snapTop', 'snapRight'],
-        function (c) {
-            children[c].on('change', positionOptionsChanged);
-        }
-    );
     function selectionBoxChanged() {
         var x = toNumber(children.x.getText()),
             y = toNumber(children.y.getText()),
@@ -154,7 +69,7 @@ SelectionInfo.prototype.init = function (editor) {
         if (h < 1) {
             h = 1;
         }
-        
+
         mat4.translate(transform, [x, y, 0]);
         mat4.scale(transform, [w / (selRect[1][0] - selRect[0][0]), h / (selRect[1][1] - selRect[0][1]), 1]);
         mat4.translate(transform, [-selRect[0][0], -selRect[0][1], 0]);
@@ -165,7 +80,7 @@ SelectionInfo.prototype.init = function (editor) {
             cg.add(group.cmdTransformPosition(name, transform));
         });
         group.doCommand(cg);
-        
+
     }
     children.x.on('change', selectionBoxChanged);
     children.y.on('change', selectionBoxChanged);
@@ -177,7 +92,7 @@ SelectionInfo.prototype.init = function (editor) {
             documentData = group.documentData,
             selName = viewer.getSelectedName(),
             cg;
-            
+
         if (txt !== selName) {
             if (documentData.positions[txt] === undefined && documentData.children[txt] === undefined) {
                 if (txt.length > 0) {
@@ -190,7 +105,7 @@ SelectionInfo.prototype.init = function (editor) {
                 } else {
                     alert('empty name ' + txt);
                 }
-                
+
             } else {
                 alert('name already taken ' + txt);
             }

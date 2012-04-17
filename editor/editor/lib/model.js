@@ -254,6 +254,34 @@ Group.prototype.cmdEnableDisplayPosition = function (name, enable) {
         { model: this, name: name, enable: enable }
     );
 };
+Group.prototype.cmdSetPositionSnapping = function (name, snapping) {
+    var that = this,
+        prev = {};
+    return new Command(
+        function () {
+            var cs = that.documentData.positions[name].snapping;
+            forEachProperty(snapping, function (s, n) {
+                if (s !== 'unknown') {
+                    prev[n] = cs[n] ? cs[n] : 'unknown';
+                    cs[n] = s;
+                }
+            });
+        },
+        function () {
+            forEachProperty(prev, function (s, n) {
+                var cs = that.documentData.positions[name].snapping;
+                if (s !== 'unknown') {
+                    cs[n] = s;
+                } else {
+                    delete cs[n];
+                }
+            });
+        },
+        'cmdSetPositionSnapping',
+        'Set Snapping ' + name,
+        { model: this, name: name }
+    );
+};
 Group.prototype.cmdRenamePosition = function (name, newname) {
     var that = this;
     return new Command(

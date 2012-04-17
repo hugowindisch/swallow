@@ -47,19 +47,15 @@
     background-color: purple;
 }
 .editor_layoutAnchorHorizontal {
-    border-bottom: 1px solid;
+    border-bottom: 1px dotted;
 }
-.editor_layoutAnchorAdapterHorizontal {
-    border-right: 1px solid;
-    border-top: 1px solid;
+.editor_layoutAnchorVertical {
+    border-left: 1px dotted;
 }
 
 .editor_layoutAnchorPx {
-    color: blue;
+    border-color: red;
 }
 .editor_layoutAnchorPercent {
-    color: red;
-}
-.editor_layoutAnchorAuto {
-    color: gray;
+    border-color: blue;
 }

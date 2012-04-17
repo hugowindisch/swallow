@@ -294,7 +294,7 @@ exports.definition = {
             }
         },
         SelectionInfo: {
-            dimensions: [390, 140, 0],
+            dimensions: [390, 100, 0],
             positions: {
                 nameLabel: {
                     type: "Position",
@@ -324,36 +324,6 @@ exports.definition = {
                     type: "Position",
                     order: 4,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 55, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                positionLabel: {
-                    type: "Position",
-                    order: 5,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                snapLeftLabel: {
-                    type: "Position",
-                    order: 6,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 105, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                snapRightLabel: {
-                    type: "Position",
-                    order: 7,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 105, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                snapTopLabel: {
-                    type: "Position",
-                    order: 8,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 105, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                snapBottomLabel: {
-                    type: "Position",
-                    order: 9,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   225, 105, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
@@ -386,45 +356,7 @@ exports.definition = {
                     order: 14,
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                position: {
-                    type: "Position",
-                    order: 15,
-                    matrix: [ 150, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 80, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                transform: {
-                    type: "Position",
-                    order: 16,
-                    matrix: [ 150, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   210, 80, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-
-                snapLeft: {
-                    type: "Position",
-                    order: 17,
-                    matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   55, 105, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                snapRight: {
-                    type: "Position",
-                    order: 18,
-                    matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   105, 105, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                snapTop: {
-                    type: "Position",
-                    order: 19,
-                    matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   155, 105, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                snapBottom: {
-                    type: "Position",
-                    order: 20,
-                    matrix: [ 15, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   205, 105, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
-
             },
             children: {
                 nameLabel: {
@@ -467,47 +399,6 @@ exports.definition = {
                         "text": "h:"
                     }
                 },
-                positionLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "positionLabel",
-                    config: {
-                        "text": "layout:"
-                    }
-                },
-                snapLeftLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "snapLeftLabel",
-                    config: {
-                        "text": "left"
-                    }
-                },
-                snapRightLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "snapRightLabel",
-                    config: {
-                        "text": "right"
-                    }
-                },
-                snapTopLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "snapTopLabel",
-                    config: {
-                        "text": "top"
-                    }
-                },
-                snapBottomLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "snapBottomLabel",
-                    config: {
-                        "text": "bottom"
-                    }
-                },
-
                 name: {
                     factory: "baseui",
                     type: "Input",
@@ -547,55 +438,7 @@ exports.definition = {
                     config: {
                         "text": "0"
                     }
-                },
-                position: {
-                    factory: "domvisual",
-                    type: "DOMSelect",
-                    position: "position",
-                    config: {
-                        "options": [ "AbsolutePosition", "TransformPosition" ]
-                    }
-                },
-                transform: {
-                    factory: "domvisual",
-                    type: "DOMSelect",
-                    position: "transform",
-                    config: {
-                        "options": [ "distort", "fitw", "fith", "showall", "cover" ]
-                    }
-                },
-                snapLeft: {
-                    factory: "domvisual",
-                    type: "DOMInput",
-                    position: "snapLeft",
-                    config: {
-                        "type": "checkbox"
-                    }
-                },
-                snapRight: {
-                    factory: "domvisual",
-                    type: "DOMInput",
-                    position: "snapRight",
-                    config: {
-                        "type": "checkbox"
-                    }
-                },
-                snapTop: {
-                    factory: "domvisual",
-                    type: "DOMInput",
-                    position: "snapTop",
-                    config: {
-                        "type": "checkbox"
-                    }
-                },
-                snapBottom: {
-                    factory: "domvisual",
-                    type: "DOMInput",
-                    position: "snapBottom",
-                    config: {
-                        "type": "checkbox"
-                    }
-                },
+                }
 
             }
         },
