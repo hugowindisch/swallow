@@ -282,6 +282,28 @@ Group.prototype.cmdSetPositionSnapping = function (name, snapping) {
         { model: this, name: name }
     );
 };
+Group.prototype.cmdSetPositionOpacity = function (name, opacity) {
+    var that = this,
+        prev;
+    function swap() {
+        var pos = that.documentData.positions[name];
+        prev = pos.opacity;
+        if (opacity === null || opacity === undefined || opacity >= 1) {
+            delete pos.opacity;
+        } else {
+            pos.opacity = opacity;
+        }
+        opacity = prev;
+    }
+    return new Command(
+        swap,
+        swap,
+        'cmdSetPositionOpacity',
+        'Set Opacity ' + name,
+        { model: this, name: name }
+    );
+
+};
 Group.prototype.cmdRenamePosition = function (name, newname) {
     var that = this;
     return new Command(

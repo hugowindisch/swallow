@@ -576,6 +576,43 @@ GroupViewer.prototype.getSelectionAnchoring = function () {
     });
     return anchoring;
 };
+GroupViewer.prototype.getSelectionOpacity = function () {
+    var opacity;
+    forEachProperty(this.selection, function (box, name) {
+        var op = box.opacity;
+        if (op === undefined || op === null) {
+            op = 1;
+        }
+        if (opacity === undefined) {
+            opacity = op;
+        } else if (opacity !== op) {
+            opacity = null;
+        }
+    });
+    if (opacity === undefined) {
+        opacity = null;
+    }
+    return opacity;
+};
+GroupViewer.prototype.setSelectionOpacity = function (opacity) {
+    var group = this.group,
+        cg = group.cmdCommandGroup('setSelectionOpacity', 'Change Opacity');
+    // transform the whole selection
+    forEachProperty(this.selection, function (sel, name) {
+        cg.add(group.cmdSetPositionOpacity(name, opacity));
+    });
+    group.doCommand(cg);
+};
+GroupViewer.prototype.previewSelectionOpacity = function (opacity) {
+    var children = this.children,
+        visuals = children.visuals.children || {};
+    forEachProperty(this.selection, function (sel, name) {
+        var vis = visuals[name];
+        if (vis) {
+            vis.setOpacity(opacity);
+        }
+    });
+};
 GroupViewer.prototype.getPositionRect = function (name) {
     var pos = this.documentData.positions[name],
         res;
@@ -714,6 +751,7 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
             fdd.positions[name] = {
                 type: "Position",
                 order: pos.order,
+                opacity: pos.opacity,
                 matrix: pos.matrix,
                 snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
             };

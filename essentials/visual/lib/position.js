@@ -178,9 +178,10 @@ function rectToMatrix(r) {
         bottom: % px auto
         height: % px auto
 */
-function Position(matrix, snapping) {
+function Position(matrix, snapping, opacity) {
     this.matrix = matrix;
     this.snapping = snapping;
+    this.opacity = opacity;
 }
 Position.prototype.compute = function (
     containerDimensions,
@@ -577,7 +578,7 @@ function Layout(dimensions, positionData) {
 function deserializePosition(pos) {
     switch (pos.type) {
     case 'Position':
-        return new Position(pos.matrix, pos.snapping);
+        return new Position(pos.matrix, pos.snapping, pos.opacity);
     case 'AbsolutePosition':
         return new AbsolutePosition(pos.matrix, pos.snapping);
     case 'TransformPosition':
@@ -651,6 +652,8 @@ function applyLayout(containerDimensions, layout, v) {
                     v.setMatrix(matrix);
                 }
             }
+            // opacity
+            v.setOpacity(pos.opacity);
         }
     }
 }

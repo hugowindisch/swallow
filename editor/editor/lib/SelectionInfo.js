@@ -9,6 +9,7 @@ var visual = require('visual'),
     utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEach,
+    isNumber = utils.isNumber,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
 
@@ -43,7 +44,20 @@ SelectionInfo.prototype.init = function (editor) {
             children.name.enable(false);
         }
     }
-    viewer.on('updateSelectionControlBox', update);
+    function updateAll(rect) {
+        // rect
+        update(rect);
+        // opacity
+        var opacity = viewer.getSelectionOpacity();
+        if (opacity === null) {
+            children.opacitySlider.setValue(100);
+            children.opacityInput.setValue('');
+        } else {
+            children.opacityInput.setValue(opacity * 100);
+            children.opacitySlider.setValue(opacity * 100);
+        }
+    }
+    viewer.on('updateSelectionControlBox', updateAll);
     viewer.on('previewSelectionRect', update);
 
     function toNumber(s) {
@@ -111,6 +125,25 @@ SelectionInfo.prototype.init = function (editor) {
             }
         }
         this.getText();
+    });
+    children.opacitySlider.on('change', function (v, sliding) {
+        children.opacityInput.setValue(Math.round(v));
+        if (sliding) {
+            viewer.previewSelectionOpacity(v / 100);
+        } else {
+            viewer.setSelectionOpacity(v / 100);
+        }
+    });
+    children.opacityInput.on('change', function (v) {
+        var opacity = Number(v);
+        if (opacity < 0) {
+            opacity = 0;
+        } else if (opacity > 100) {
+            opacity = 100;
+        }
+        children.opacitySlider.setValue(opacity);
+        viewer.setSelectionOpacity(opacity / 100);
+
     });
 
 };

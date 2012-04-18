@@ -16,6 +16,7 @@ var visual = require('visual'),
     forEach = utils.forEachProperty,
     isObject = utils.isObject,
     isArray = utils.isArray,
+    isNumber = utils.isNumber,
     setDirty = dirty.setDirty;
 
 function DOMVisual(config, groupData, element) {
@@ -109,7 +110,7 @@ DOMVisual.prototype.getDisplayMatrix = function () {
             glmatrix.mat4.create()
         );
     } else {
-        mat = this.matrix;
+        mat = this.getMatrix();
     }
     return mat;
 };
@@ -336,6 +337,16 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
         element.setAttribute('class', cssClass);
     }
 };
+DOMVisual.prototype.updateOpacityRepresentation = function () {
+    var element = this.element;
+    if (element) {
+        if (this.opacity) {
+            element.opacity = this.opacity;
+        } else {
+            element.opacity = null;
+        }
+    }
+};
 
 DOMVisual.prototype.updateDone = function () {
     var element = this.element,
@@ -525,7 +536,11 @@ DOMInput.prototype.getType = function () {
     return this.element.type;
 };
 DOMInput.prototype.setText = function (text) {
-    text = text || '';
+    if (text === undefined || text === null) {
+        text = '';
+    } else {
+        text = String(text);
+    }
     this.element.value = text;
 };
 DOMInput.prototype.setValue = DOMInput.prototype.setText;

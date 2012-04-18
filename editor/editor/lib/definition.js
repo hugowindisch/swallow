@@ -373,7 +373,7 @@ exports.definition = {
             }
         },
         SelectionInfo: {
-            dimensions: [390, 100, 0],
+            dimensions: [390, 130, 0],
             positions: {
                 nameLabel: {
                     type: "Position",
@@ -403,6 +403,24 @@ exports.definition = {
                     type: "Position",
                     order: 4,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 55, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                opacityLabel: {
+                    type: "Position",
+                    order: 5,
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                opacityInput: {
+                    type: "Position",
+                    order: 6,
+                    matrix: [ 40, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 80, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                opacitySlider: {
+                    type: "Position",
+                    order: 7,
+                    matrix: [ 220, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
@@ -517,7 +535,33 @@ exports.definition = {
                     config: {
                         "text": "0"
                     }
-                }
+                },
+                opacityLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "opacityLabel",
+                    config: {
+                        "text": "Opacity:"
+                    }
+                },
+                opacityInput: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "opacityInput",
+                    config: {
+                        "text": "100"
+                    }
+                },
+                opacitySlider: {
+                    factory: "baseui",
+                    type: "Slider",
+                    position: "opacitySlider",
+                    config: {
+                        "minValue": 0,
+                        "maxValue": 100,
+                        "value": 100
+                    }
+                },
 
             }
         },

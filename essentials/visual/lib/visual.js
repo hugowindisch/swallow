@@ -190,7 +190,7 @@ Visual.prototype.setDimensions = function (v3) {
     this.dimensions = v3;
     setDirty(this, 'dimensions');
     // Keep all children in synch (in terms of position and matrix)
-    updateChildrenPositions(this);
+    this.applyLayout();
 };
 /**
     Sets the matrix.
@@ -200,6 +200,12 @@ Visual.prototype.setDimensions = function (v3) {
 Visual.prototype.setMatrix = function (m4) {
     this.matrix = m4;
     setDirty(this, 'matrix');
+};
+/**
+    Sets a simple translation matrix.
+*/
+Visual.prototype.setTranslationMatrix = function (pos) {
+    this.setMatrix(glmatrix.mat4.create([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, pos[0], pos[1], pos[2], 1]));
 };
 /**
     Sets the matrix with a matrix that is normalized to scale a unity
@@ -259,6 +265,34 @@ Visual.prototype.getFullDisplayMatrix = function (inverse) {
     return mat;
 };
 /**
+    Sets the opacity of the visual (1 = fully opaque, 0 = fully transparent).
+*/
+Visual.prototype.setOpacity = function (opacity) {
+    var prevOpacity = this.opacity;
+    opacity = Number(opacity);
+    if (opacity >= 1) {
+        delete this.opacity;
+    } else {
+        if (opacity < 0) {
+            opacity = 0;
+        }
+        this.opacity = opacity;
+    }
+    if (this.opacity !== prevOpacity) {
+        setDirty(this, 'opacity');
+    }
+};
+/**
+    Returns the opacity of the visual.
+*/
+Visual.prototype.getOpacity = function () {
+    var opacity = this.opacity;
+    if (opacity === undefined) {
+        opacity = 1;
+    }
+    return opacity;
+};
+/**
     Sets the position. The position is either a string
     (referring to a position name in the parent layout) OR
     a position object created with one of the following constructors:
@@ -273,7 +307,7 @@ Visual.prototype.getFullDisplayMatrix = function (inverse) {
 Visual.prototype.setPosition = function (position) {
     this.position = position;
     var parent = this.parent;
-    if (parent) {
+    if (parent && position !== null) {
         applyLayout(parent.dimensions, parent.layout, this);
     }
 };
@@ -289,11 +323,23 @@ Visual.prototype.getPosition = function () {
 */
 Visual.prototype.setLayout = function (groupData) {
     this.layout = new (position.Layout)(groupData.dimensions, groupData.positions);
-    updateChildrenPositions(this);
+    this.applyLayout();
 };
 Visual.prototype.getLayout = function () {
     return this.layout;
 };
+/**
+    This is called each time a container decides to reposition all its children
+    (mainly when its dimensions changes but also if its layout changes).
+
+    Note: this function can be overridden by subclasses that wish to control
+    the positioning of their children (relative to their dimensions) by
+    themselves.
+*/
+Visual.prototype.applyLayout = function () {
+    updateChildrenPositions(this);
+};
+
 Visual.prototype.addChild = function (child, name) {
     name = name || this.getDefaultName();
     if (this.children && this.children[name]) {
@@ -454,8 +500,12 @@ Visual.prototype.update = function (why) {
         this.updateDimensionsRepresentation();
     }
     if (why.style) {
-        // update dim representation of ourself
+        // update style representation of ourself
         this.updateStyleRepresentation();
+    }
+    if (why.opacity) {
+        // update opacity representation of ourself
+        this.updateOpacityRepresentation();
     }
     this.updateDone();
 };
@@ -473,6 +523,9 @@ Visual.prototype.updateChildrenOrderRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 Visual.prototype.updateStyleRepresentation = function () {
+    throw new Error("Not supported in abstract base class Visual");
+};
+Visual.prototype.updateOpacityRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 Visual.prototype.updateDone = function () {
