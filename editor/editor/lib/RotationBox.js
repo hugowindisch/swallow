@@ -89,7 +89,7 @@ function RotationBox(config) {
 
 }
 RotationBox.prototype = new (domvisual.DOMElement)();
-RotationBox.prototype.setContentMatrix = function (matrix) {
+RotationBox.prototype.setContentRectAndMatrix = function (rect, matrix) {
     this.contentMatrix = matrix;
     this.updateRepresentation(this.contentMatrix);
 };

@@ -89,6 +89,10 @@ function GroupViewer(config) {
         this.selectionScalingUI.getFDM = function () {
             return that.children.visuals.getFullDisplayMatrix(true);
         };
+    this.selectionRotationUI.snapPositionToGrid =
+        this.selectionScalingUI.snapPositionToGrid = function (pos) {
+            return that.snapPositionToGrid(pos);
+        };
     // transform handlers
     function transformHandler(transform) {
         var group = that.group,
@@ -789,7 +793,7 @@ GroupViewer.prototype.updateSelectionControlBox = function () {
     if (unionr) {
         unionmat = rectToMatrix(unionr);
         forEach(modes, function (m, n) {
-            m.setContentMatrix(unionmat);
+            m.setContentRectAndMatrix(unionr, unionmat);
         });
         selectionControlBox.setVisible(true);
     } else {
