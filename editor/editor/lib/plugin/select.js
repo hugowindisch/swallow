@@ -158,13 +158,13 @@ function setupToolMenu(editor) {
 
             viewer.enableBoxSelection(
                 function (mat, nmat, startpos, endpos, evt) {
-                    selectionRect = viewer.getSelectionRect();
                     toggleControlBoxModeWhenFinished = true;
                     if (!viewer.itemAtPositionIsSelected(startpos)) {
                         toggleControlBoxModeWhenFinished = false;
                         select(evt, nmat);
                         viewer.resetSelectionControlBoxMode();
                     }
+                    selectionRect = viewer.getSelectionRect();
                     if (!evt.ctrlKey && viewer.itemAtPositionIsSelected([mat[12], mat[13], mat[14]])) {
                         dragging = true;
                         draggingWait = true;
