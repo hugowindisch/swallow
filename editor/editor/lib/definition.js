@@ -73,7 +73,20 @@ exports.definition = {
                     order: 0,
                     matrix: [ 440, 0, 0, 0,   0, 480, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', height: 'auto', bottom: 'px' }
-                }
+                },
+                grid: {
+                    type: "Position",
+                    order: 1,
+                    matrix: [ 200, 0, 0, 0,   0, 200, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', height: 'px', bottom: 'auto' }
+                },
+                decorations: {
+                    type: "Position",
+                    order: 2,
+                    matrix: [ 440, 0, 0, 0,   0, 480, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', height: 'auto', bottom: 'px' }
+                },
+
             },
             children: {
                 visuals: {
@@ -84,17 +97,16 @@ exports.definition = {
                         "style": "page"
                     }
                 },
-                positions: {
+                grid: {
                     factory: "domvisual",
-                    type: "DOMElement",
-                    position: null,
-                    config: {
-                    }
+                    type: "DOMCanvas",
+                    position: "grid",
+                    config: { width: 100, height: 100 }
                 },
                 decorations: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "editArea",
+                    position: "decorations",
                     config: {
                     }
                 }
@@ -571,7 +583,7 @@ exports.definition = {
             children: {}
         },
         ComponentInfo: {
-            dimensions: [ 390, 115, 0],
+            dimensions: [ 390, 140, 0],
             positions: {
                 wLabel: {
                     type: "Position",
@@ -583,6 +595,12 @@ exports.definition = {
                     type: "Position",
                     order: 1,
                     matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 5, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                gridLabel: {
+                    type: "Position",
+                    order: 1,
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 w: {
@@ -597,28 +615,35 @@ exports.definition = {
                     matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
+                grid: {
+                    type: "Position",
+                    order: 3,
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 30, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+
                 descriptionLabel: {
                     type: "Position",
                     order: 4,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 privateLabel: {
                     type: "Position",
                     order: 5,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   25, 80, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   25, 105, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
                     type: "Position",
                     order: 6,
-                    matrix: [ 380, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
+                    matrix: [ 380, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 privateCheck: {
                     type: "Position",
                     order: 7,
-                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 105, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -637,6 +662,14 @@ exports.definition = {
                     position: "hLabel",
                     config: {
                         "text": "h:"
+                    }
+                },
+                gridLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "gridLabel",
+                    config: {
+                        "text": "grid:"
                     }
                 },
                 descriptionLabel: {
@@ -669,6 +702,14 @@ exports.definition = {
                     position: "h",
                     config: {
                         "text": "0"
+                    }
+                },
+                grid: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "grid",
+                    config: {
+                        "text": "8"
                     }
                 },
                 description: {

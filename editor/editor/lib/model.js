@@ -61,13 +61,34 @@ function Group(documentData) {
     documentData = documentData || { positions: {}, children: {}, dimensions: [300, 300, 0]};
     this.commandChain = new CommandChain();
     this.documentData = documentData;
+    this.normalizeDocument();
     this.normalizeOrders();
 }
 // these are getters (stuff that inspect the Group model)
 Group.prototype.getCommandChain = function () {
     return this.commandChain;
 };
-
+/**
+    Repair any anomalies in the document format.
+*/
+Group.prototype.normalizeDocument = function () {
+    var d = this.documentData;
+    if (!d.gridSize) {
+        d.gridSize = 8;
+    }
+    if (!d.dimensions) {
+        d.dimensions = [ 800, 600, 1 ];
+    }
+    if (!d.positions) {
+        d.positions = {};
+    }
+    if (!d.children) {
+        d.children = {};
+    }
+};
+/**
+    Fixes z orders.
+*/
 Group.prototype.normalizeOrders = function () {
     var d = [], i, l, di, positions = this.documentData.positions;
     // collect
@@ -460,19 +481,22 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
 };
 
 ///////////////////////
-Group.prototype.cmdSetComponentProperties = function (dimensions, description, priv) {
+Group.prototype.cmdSetComponentProperties = function (dimensions, description, priv, gridSize) {
     var that = this;
     function doUndo() {
         var documentData = that.documentData,
             dim = documentData.dimensions,
             descr = documentData.description,
+            gs = documentData.gridSize,
             prv = documentData.private;
         documentData.dimensions = dimensions;
         documentData.description = description;
         documentData.private = priv;
+        documentData.gridSize = gridSize;
         dimensions = dim;
         description = descr;
         priv = prv;
+        gridSize = gs;
     }
     return new Command(
         doUndo,

@@ -1,17 +1,18 @@
 /**
     dirty.js
-    
+
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     isNumber = utils.isNumber,
-    isArray = utils.isArray;
+    isArray = utils.isArray,
+    inUpdate = false;
 
 /**
     Practically we probably only need only one dirty list.
     We keep the dirty list containment-depth-sorted to minimize
-    refreshes (a container while updating itself, has chances of 
+    refreshes (a container while updating itself, has chances of
 */
 function DirtyList() {
     this.dirty = [];
@@ -43,7 +44,7 @@ DirtyList.prototype.setDirty = function (o) {
     Returns a depth sorted dirty list
 */
 DirtyList.prototype.getDepthSortedList = function () {
-    var dirty = [], 
+    var dirty = [],
         i,
         thisdirty = this.dirty,
         l = thisdirty.length,
@@ -65,7 +66,7 @@ DirtyList.prototype.getDepthSortedList = function () {
     Cleans all dirt.
 */
 DirtyList.prototype.update = function () {
-    var i, 
+    var i,
         l,
         j,
         k,
@@ -73,6 +74,10 @@ DirtyList.prototype.update = function () {
         dirty,
         o,
         why;
+    if (inUpdate) {
+        throw new Error('Recursive Update');
+    }
+    inUpdate = true;
 
     function clean(o) {
         var why = o.isDirty;
@@ -80,7 +85,7 @@ DirtyList.prototype.update = function () {
         o.update(why);
     }
     dirty = this.getDepthSortedList();
-    while ((l = dirty.length) > 0) {        
+    while ((l = dirty.length) > 0) {
         this.dirty = [];
         // we go bottom up
         for (i = l - 1; i >= 0; i -= 1) {
@@ -96,6 +101,7 @@ DirtyList.prototype.update = function () {
         }
         dirty = this.getDepthSortedList();
     }
+    inUpdate = false;
 };
 
 var dirty = new DirtyList();
@@ -110,7 +116,7 @@ exports.setChildrenDirty = function (o, why) {
         l = arguments.length,
         args;
     for (i = 0; i < l; i += 1) {
-        args[i] = arguments[i];   
+        args[i] = arguments[i];
     }
 
     forEachProperty(o.children, function (c) {

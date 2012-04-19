@@ -59,6 +59,7 @@ function GroupViewer(config) {
     this.setChildrenClipping('scroll');
     // border around the group in pixels (when not scaled)
     this.groupBorderPix = 1000;
+    this.showGrid = true;
     this.selection = {};
 
     // thse are the possible modes of the selection control box (should be called selection transformation box)
@@ -116,7 +117,7 @@ function GroupViewer(config) {
         });
         group.doCommand(cg);
     });
-
+    this.children.grid.setVisible(false);
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
 
@@ -313,12 +314,10 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
     var documentData = this.documentData,
         children = this.children,
         visuals = children.visuals.children || {},
-        positions = children.positions.children || {},
         zoomMat = this.zoomMat,
         selRect;
     forEachProperty(this.selection, function (s, n) {
         var vis = visuals[n],
-            posFrame = positions[n],
             pos,
             res,
             newpos = {},
@@ -373,13 +372,14 @@ GroupViewer.prototype.getZoomInMatrix = function (position) {
 };
 
 /**
-
+    Resets the scroll.
 */
 GroupViewer.prototype.resetScroll = function () {
     var zoomMat = this.zoomStack[this.zoomStack.length - 1],
         zoomTranslate = [zoomMat[12], zoomMat[13], zoomMat[14]];
     this.setScroll(zoomTranslate);
 };
+
 /**
     Zoom to a given position.
 */
@@ -397,7 +397,6 @@ GroupViewer.prototype.pushZoom = function (matrix) {
     mat[12] += borderPix;
     mat[13] += borderPix;
 
-
     // we want uniform scaling
     if (z > zy) {
         z = zy;
@@ -409,14 +408,76 @@ GroupViewer.prototype.pushZoom = function (matrix) {
     mat[13] *= z;
     mat[14] *= z;
     this.zoomStack.push(mat);
+    this.adjustZoomToGridSize();
+};
+
+/**
+    Adjust the zoom to the current grid.
+*/
+GroupViewer.prototype.adjustZoomToGridSize = function () {
+    var gridSize = this.group.documentData.gridSize,
+        zoomStack = this.zoomStack,
+        zoom = zoomStack[zoomStack.length - 1],
+        z = Math.round(zoom[0] * gridSize) / gridSize;
+
+    zoom[0] = z;
+    zoom[5] = z;
+    zoom[10] = z;
     this.updateAll();
     this.resetScroll();
+    this.regenerateGrid();
 };
+
+/**
+    Pops the zoom.
+*/
 GroupViewer.prototype.popZoom = function () {
     if (this.zoomStack.length > 1) {
         this.zoomStack.pop();
         this.updateAll();
         this.resetScroll();
+        this.regenerateGrid();
+    }
+};
+
+/**
+    Regenerates the grid.
+*/
+GroupViewer.prototype.regenerateGrid = function () {
+    var gridSize,
+        gridOffset,
+        zoomMat,
+        zv,
+        gridDim,
+        gridOffs,
+        showGrid = this.showGrid,
+        children = this.children,
+        grid = children.grid,
+        ctx;
+
+    // show the grid
+    if (showGrid) {
+        gridSize = this.group.documentData.gridSize;
+        gridOffset = this.groupBorderPix % gridSize;
+        zoomMat = this.zoomMat;
+        zv = [zoomMat[0], zoomMat[5], zoomMat[10]];
+        gridDim = [gridSize * zv[0], gridSize * zv[1], 0];
+        gridOffs = [gridOffset * zv[0], gridOffset * zv[1], 0];
+        // skip some grid spots if the grid is too dense
+        while (gridDim[0] < 8) {
+            gridDim[0] *= 2;
+            gridDim[1] *= 2;
+        }
+        grid.setWidth(gridDim[0]);
+        grid.setHeight(gridDim[1]);
+
+        ctx = grid.getContext2D();
+        ctx.fillStyle = 'rgb(150,150,150)';
+        ctx.fillRect(gridOffs[0], gridOffs[1], 1, 1);
+        //ctx.fillRect(1,1,2,2);
+        children.decorations.setBackgroundImage(grid.toDataURL());
+    } else {
+        children.decorations.setBackgroundImage(null);
     }
 };
 
@@ -466,7 +527,7 @@ GroupViewer.prototype.selectByMatrix = function (matrix, toggle, byContact) {
         if (toggle && selection[name]) {
             delete selection[name];
         } else {
-            selection[name] = documentData.positions[name];
+            selection[name] = positions[name];
         }
     }
     // select a point
@@ -657,6 +718,9 @@ GroupViewer.prototype.setGroup = function (group) {
             that.clearSelection();
             that.addToSelection(hint.name);
             break;
+        case 'cmdSetComponentProperties':
+            that.adjustZoomToGridSize();
+            return;
         case 'rename':
             if (hint) {
                 delete that.selection[hint.from];
@@ -686,8 +750,7 @@ GroupViewer.prototype.setGroup = function (group) {
         mat4.translate(mat4.identity(), [borderPix - 20, borderPix - 20, 0], mat4.create())
     ];
     // regenerate everything
-    this.updateAll();
-    this.resetScroll();
+    this.adjustZoomToGridSize();
 };
 
 /**
@@ -837,7 +900,6 @@ GroupViewer.prototype.updateAll = function () {
 
     // regenerate content
     children.visuals.removeAllChildren();
-    children.positions.removeAllChildren();
     //children.decorations.removeAllChildren();
     // children
     children.visuals.setPosition(null);
@@ -854,10 +916,6 @@ GroupViewer.prototype.updateAll = function () {
         // Sets the preview mode
         c.enableInteractions(false);
     });
-    // positions
-    children.positions.setPosition(null);
-    children.positions.setDimensions(extendedDimensions);
-    children.positions.setMatrix(mat4.identity());
     // decorations
     children.decorations.setPosition(null);
     children.decorations.setDimensions(extendedDimensions);
@@ -866,7 +924,6 @@ GroupViewer.prototype.updateAll = function () {
     // selection control box
     this.updateSelectionControlBox();
 };
-
 
 
 exports.GroupViewer = GroupViewer;

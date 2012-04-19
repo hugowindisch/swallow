@@ -20,17 +20,26 @@ ComponentInfo.prototype.getConfigurationSheet = function () {
 ComponentInfo.prototype.init = function (editor) {
     var viewer = editor.getViewer(),
         children = this.children;
-    
+
     function updateDoc() {
         var group = viewer.getGroup(),
-            documentData = group.documentData;
+            documentData = group.documentData,
+            gridSize = Number(children.grid.getValue());
+        if (isNaN(gridSize)) {
+            gridSize = 8;
+        } else if (gridSize > 64) {
+            gridSize = 64;
+        } else if (gridSize < 2) {
+            gridSize = 2;
+        }
         group.doCommand(group.cmdSetComponentProperties(
             [children.w.getText(), children.h.getText(), 1],
             children.description.getText(),
-            children.privateCheck.getChecked()
+            children.privateCheck.getChecked(),
+            gridSize
         ));
     }
-    
+
     function updateControls() {
         var group = viewer.getGroup(),
             documentData = group.documentData;
@@ -38,13 +47,16 @@ ComponentInfo.prototype.init = function (editor) {
         children.h.setText(documentData.dimensions[1]);
         children.description.setText(documentData.description);
         children.privateCheck.setChecked(documentData.private === true);
-    }    
+        children.grid.setValue(documentData.gridSize);
+    }
 
     children.w.on('change', updateDoc);
     children.h.on('change', updateDoc);
     children.description.on('change', updateDoc);
     children.privateCheck.on('change', updateDoc);
+    children.grid.on('change', updateDoc);
     viewer.on('updateSelectionControlBox', updateControls);
+    updateControls();
 };
 
 exports.ComponentInfo = ComponentInfo;

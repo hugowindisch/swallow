@@ -211,6 +211,12 @@ DOMVisual.prototype.setOpacity = function (opacity) {
     this.opacity = opacity;
     setDirty(this, 'matrix');
 };
+DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
+    repeat = repeat || 'repeat';
+    var style = this.element.style;
+    style.backgroundImage = 'url(' + url + ')';
+    style.backgroundRepeat = 'repeat';
+};
 /**
     DOM update (we essentially treat the DOM as an output thing)
 */
@@ -609,6 +615,30 @@ DOMSelect.prototype.getConfigurationSheet = function () {
     return { "options": {} };
 };
 
+///////////
+// Canvas
+function DOMCanvas(config) {
+    DOMVisual.call(this, config, null, document.createElement('canvas'));
+}
+DOMCanvas.prototype = new DOMVisual();
+
+DOMCanvas.prototype.setWidth = function (w) {
+    this.element.setAttribute('width', w);
+};
+DOMCanvas.prototype.setHeight = function (h) {
+    this.element.setAttribute('height', h);
+};
+DOMCanvas.prototype.getContext2D = function () {
+    // return the 2d context
+    return this.element.getContext('2d');
+};
+DOMCanvas.prototype.toDataURL = function () {
+    return this.element.toDataURL.apply(this.element, arguments);
+}
+DOMCanvas.prototype.getConfigurationSheet = function () {
+    return { "width": {}, "height": {} };
+};
+
 
 exports.getVisualNames = function () {
     return [ 'DOMElement', 'DOMImg', 'DOMVideo' ];
@@ -618,6 +648,7 @@ exports.DOMImg = DOMImg;
 exports.DOMVideo = DOMVideo;
 exports.DOMInput = DOMInput;
 exports.DOMSelect = DOMSelect;
+exports.DOMCanvas = DOMCanvas;
 
 /*
     We will have to do more than that but we need something to
