@@ -634,7 +634,7 @@ DOMCanvas.prototype.getContext2D = function () {
 };
 DOMCanvas.prototype.toDataURL = function () {
     return this.element.toDataURL.apply(this.element, arguments);
-}
+};
 DOMCanvas.prototype.getConfigurationSheet = function () {
     return { "width": {}, "height": {} };
 };

@@ -96,9 +96,33 @@ function setupToolMenu(editor) {
         }
     }
 
-    function getTransform(xl, constrain) {
+    function getTransform(xl, constrain, selectionRect) {
         var translate = vec3.create(xl),
-            abs = Math.abs;
+            abs = Math.abs,
+            min = Math.min,
+            srt = [
+                vec3.add(selectionRect[0], translate, vec3.create()),
+                vec3.add(selectionRect[1], translate, vec3.create()),
+            ],
+            srSnapped = [
+                viewer.snapPositionToGrid(vec3.create(srt[0])),
+                viewer.snapPositionToGrid(vec3.create(srt[1]))
+            ],
+            d1,
+            d2,
+            i;
+        // grids (snapping)
+        for (i = 0; i < 2; i += 1) {
+            d1 = srt[0][i] - srSnapped[0][i];
+            d2 = srt[1][i] - srSnapped[1][i];
+            if (abs(d1) <= abs(d2)) {
+                translate[i] -= d1;
+            } else {
+                translate[i] -= d2;
+            }
+        }
+
+        // constrains
         if (constrain) {
             if (abs(translate[0]) > abs(translate[1])) {
                 translate[1] = 0;
@@ -121,6 +145,7 @@ function setupToolMenu(editor) {
                 draggingWait = true,
                 toggleControlBoxModeWhenFinished = true,
                 layoutAnchorsVisibility,
+                selectionRect,
                 selectionControlBoxVisibility;
 
             function select(evt, nmat) {
@@ -133,6 +158,7 @@ function setupToolMenu(editor) {
 
             viewer.enableBoxSelection(
                 function (mat, nmat, startpos, endpos, evt) {
+                    selectionRect = viewer.getSelectionRect();
                     toggleControlBoxModeWhenFinished = true;
                     if (!viewer.itemAtPositionIsSelected(startpos)) {
                         toggleControlBoxModeWhenFinished = false;
@@ -164,7 +190,8 @@ function setupToolMenu(editor) {
                             viewer.previewSelectionTransformation(
                                 getTransform(
                                     [mat[0], mat[5], mat[10]],
-                                    evt.ctrlKey
+                                    evt.ctrlKey,
+                                    selectionRect
                                 )
                             );
                         }
@@ -189,7 +216,8 @@ function setupToolMenu(editor) {
                             // we want to move the selection.
                             transform = getTransform(
                                 [mat[0], mat[5], mat[10]],
-                                evt.ctrlKey
+                                evt.ctrlKey,
+                                selectionRect
                             );
                             selection = viewer.getSelection();
                             cmdGroup = group.cmdCommandGroup('moveSelection', 'Move Selection');
@@ -245,7 +273,8 @@ function setupToolMenu(editor) {
                             snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                         }
                     ));
-                }
+                },
+                true
             );
         },
         null,

@@ -200,7 +200,8 @@ GroupViewer.prototype.showLayoutAnchors = function (visible) {
 GroupViewer.prototype.enableBoxSelection = function (
     selectionStart,
     selection,
-    selectionEnd
+    selectionEnd,
+    useGrid
 ) {
     var that = this,
         decorations = this.children.decorations,
@@ -237,6 +238,12 @@ GroupViewer.prototype.enableBoxSelection = function (
         }
         return twoPositionsToMatrix(v1, v2);
     }
+    function applyGrid(pos) {
+        if (useGrid) {
+            pos = that.snapPositionToGrid(pos);
+        }
+        return pos;
+    }
 
     // resets box selection
     if (this.resetBoxSelection) {
@@ -267,7 +274,7 @@ GroupViewer.prototype.enableBoxSelection = function (
     function mouseMove(evt) {
         evt.preventDefault();
         var mat = visuals.getFullDisplayMatrix(true);
-        endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
+        endpos = applyGrid(glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]));
         matrix = twoPositionsToMatrix(startpos, endpos);
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);
         updateMouseBox(nmatrix);
@@ -285,8 +292,10 @@ GroupViewer.prototype.enableBoxSelection = function (
     }
     function mouseDown(evt) {
         evt.preventDefault();
-        var mat = visuals.getFullDisplayMatrix(true);
-        startpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]);
+        var mat = visuals.getFullDisplayMatrix(true),
+            evtPos = [evt.pageX, evt.pageY, 0];
+
+        startpos = applyGrid(glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]));
         endpos = startpos;
         decorations.on('mousemovec', mouseMove);
         decorations.once('mouseupc', mouseUp);
@@ -479,6 +488,21 @@ GroupViewer.prototype.regenerateGrid = function () {
     } else {
         children.decorations.setBackgroundImage(null);
     }
+};
+
+/**
+    Snaps to grid.
+*/
+GroupViewer.prototype.snapPositionToGrid = function (position) {
+    var ret = vec3.create(position),
+        gridSize;
+    // if we use the grid
+    if (this.showGrid) {
+        gridSize = this.group.documentData.gridSize;
+        ret[0] = Math.round(ret[0] / gridSize) * gridSize;
+        ret[1] = Math.round(ret[1] / gridSize) * gridSize;
+    }
+    return ret;
 };
 
 /**
