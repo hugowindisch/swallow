@@ -10,6 +10,9 @@ var visual = require('visual'),
     baseui = require('baseui'),
     url = require('url'),
     http = require('http'),
+    utils = require('utils'),
+    forEachProperty = utils.forEachProperty,
+    forEach = utils.forEach,
     groups = require('./definition').definition.groups,
     MenuItem = baseui.MenuItem,
     defaultPlugins = [
@@ -124,11 +127,25 @@ Editor.prototype.addPlugins = function (plugins) {
             edit: [],
             tool: [],
             object: [],
+            view: [],
             run: [],
             help: []
         },
         i,
         l = plugins.length;
+
+    // this could be a function of the horizontal toolbar
+    function findToolsWithIcons() {
+        var tools = [];
+        forEachProperty(menus, function (m) {
+            forEach(m, function (item) {
+                if (item && item.getIcon()) {
+                    tools.push(item);
+                }
+            });
+        });
+        return tools;
+    }
 
     this.menus = menus;
     this.menubar = [
@@ -136,6 +153,7 @@ Editor.prototype.addPlugins = function (plugins) {
         new MenuItem("Edit", null, menus.edit),
         new MenuItem("Tool", null, menus.tool),
         new MenuItem("Object", null, menus.object),
+        new MenuItem("View", null, menus.view),
         new MenuItem("Run", null, menus.run),
         new MenuItem("Help", null, menus.help)
     ];
@@ -147,7 +165,7 @@ Editor.prototype.addPlugins = function (plugins) {
     this.children.menu.setItems(this.menubar);
     // initialize the toolbar (this could be more clever... i.e. keep
     // everything that has an icon).
-    this.children.tools.setItems(this.menus.tool);
+    this.children.tools.setItems(findToolsWithIcons());
 };
 
 

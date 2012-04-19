@@ -60,6 +60,7 @@ function GroupViewer(config) {
     // border around the group in pixels (when not scaled)
     this.groupBorderPix = 1000;
     this.showGrid = true;
+    this.showAnchors = true;
     this.selection = {};
 
     // thse are the possible modes of the selection control box (should be called selection transformation box)
@@ -173,6 +174,26 @@ GroupViewer.prototype.resetSelectionControlBoxMode = function (mode) {
         this.selectionControlBox.setVisible(visible);
     }
 
+};
+
+
+GroupViewer.prototype.setShowGrid = function (show) {
+    if (this.showGrid !== show) {
+        this.showGrid = show;
+        this.adjustZoomToGridSize();
+    }
+};
+GroupViewer.prototype.getShowGrid = function () {
+    return this.showGrid;
+};
+GroupViewer.prototype.setShowAnchors = function (show) {
+    if (this.showAnchors !== show) {
+        this.showAnchors = show;
+        this.adjustZoomToGridSize();
+    }
+};
+GroupViewer.prototype.getShowAnchors = function () {
+    return this.showAnchors;
 };
 
 
@@ -817,7 +838,7 @@ GroupViewer.prototype.updateLayoutAnchors = function () {
         layoutAnchors.setPageRect(this.getTransformedPageRect());
         layoutAnchors.setAnchors(this.getSelectionAnchoring());
         layoutAnchors.setContentRect([mat4.multiplyVec3(zoomMat, unionr[0]), mat4.multiplyVec3(zoomMat, unionr[1])]);
-        layoutAnchors.setVisible(true);
+        layoutAnchors.setVisible(this.showAnchors);
     } else {
         // the selection is empty, hide the box
         layoutAnchors.setVisible(false);

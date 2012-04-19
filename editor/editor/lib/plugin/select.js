@@ -845,6 +845,46 @@ function setupObjectMenu(editor) {
     );
 
 }
+function setupViewMenu(editor) {
+    var showGrid,
+        showAnchors,
+        menus = editor.menus,
+        viewer = editor.getViewer();
+
+    // align left tool
+    showGrid = new MenuItem(
+        'Show Grid',
+        function () {
+            viewer.setShowGrid(!viewer.getShowGrid());
+        },
+        null,
+        null,
+        'editor/lib/plugin/showgrid.png',
+        true,
+        function () {
+            return viewer.getShowGrid();
+        }
+    );
+    showAnchors = new MenuItem(
+        'Show Anchors',
+        function () {
+            viewer.setShowAnchors(!viewer.getShowAnchors());
+        },
+        null,
+        null,
+        'editor/lib/plugin/showanchors.png',
+        true,
+        function () {
+            return viewer.getShowAnchors();
+        }
+    );
+
+    menus.view.push(
+        showGrid,
+        showAnchors
+    );
+}
+
 function setupRunMenu(editor) {
     var runTool,
         menus = editor.menus;
@@ -870,5 +910,6 @@ exports.setup = function (editor) {
     setupToolMenu(editor);
     setupEditMenu(editor);
     setupObjectMenu(editor);
+    setupViewMenu(editor);
     setupRunMenu(editor);
 };
