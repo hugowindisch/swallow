@@ -27,14 +27,17 @@ SelectionInfo.prototype.init = function (editor) {
         children = this.children;
 
     function update(rect) {
-        if (rect) {
+        var rectDefined = Boolean(rect);
+        children.x.enable(rectDefined);
+        children.y.enable(rectDefined);
+        children.w.enable(rectDefined);
+        children.h.enable(rectDefined);
+
+        if (rectDefined) {
             children.x.setText(rect[0][0].toFixed(1));
             children.y.setText(rect[0][1].toFixed(1));
             children.w.setText((rect[1][0] - rect[0][0]).toFixed(1));
             children.h.setText((rect[1][1] - rect[0][1]).toFixed(1));
-            container.setVisible(true);
-        } else {
-            container.setVisible(false);
         }
         if (viewer.getSelectionLength() === 1) {
             children.name.setText(viewer.getSelectedName());
@@ -145,7 +148,7 @@ SelectionInfo.prototype.init = function (editor) {
         viewer.setSelectionOpacity(opacity / 100);
 
     });
-
+    update(null);
 };
 
 exports.SelectionInfo = SelectionInfo;

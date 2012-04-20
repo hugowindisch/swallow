@@ -46,7 +46,6 @@ VisualList.prototype.select = function (vi, apply) {
         filteredFactory = this.children.library.getSelectedOption(),
         f,
         editedFactory = docInfo.factory;
-
     if (vi !== sel) {
         if (sel) {
             sel.select(false);
@@ -85,56 +84,54 @@ VisualList.prototype.selectByTypeInfo = function (ti) {
 VisualList.prototype.applySelectedPosition = function () {
     var viewer = this.editor.getViewer(),
         group = viewer.getGroup(),
+        cmdGroup = group.cmdCommandGroup('setContent', 'Set Content'),
         documentData = group.documentData,
+        children = documentData.children,
         sel = this.selected,
-        selectedName,
-        selectedChild,
+        selection = viewer.getSelection(),
         selTypeInfo;
 
-    if (viewer.getSelectionLength() !== 1) {
-        throw ('Unexpected selection length');
-    } else {
-        selectedName = viewer.getSelectedName();
-        selectedChild = documentData.children[selectedName];
-        //selectedChild = documentData.children[selectedName];
+    if (viewer.getSelectionLength() > 0) {
         if (sel) {
             selTypeInfo = sel.getTypeInfo();
-            // updated
-            if (selectedChild) {
-                group.doCommand(group.cmdUpdateVisual(
-                    selectedName,
-                    {
-                        factory: selTypeInfo.factory,
-                        type: selTypeInfo.type,
-                        position: selectedName,
-                        config: {
+            forEachProperty(selection, function (pos, posName) {
+                var selectedChild = children[posName];
+                // updated
+                if (selectedChild) {
+                    cmdGroup.add(group.cmdUpdateVisual(
+                        posName,
+                        {
+                            factory: selTypeInfo.factory,
+                            type: selTypeInfo.type,
+                            position: posName,
+                            config: {
+                            }
                         }
-                    }
-                ));
-            } else {
-                group.doCommand(group.cmdAddVisual(
-                    selectedName,
-                    {
-                        factory: selTypeInfo.factory,
-                        type: selTypeInfo.type,
-                        position: selectedName,
-                        config: {
+                    ));
+                } else {
+                    cmdGroup.add(group.cmdAddVisual(
+                        posName,
+                        {
+                            factory: selTypeInfo.factory,
+                            type: selTypeInfo.type,
+                            position: posName,
+                            config: {
+                            }
                         }
-                    }
-                ));
-            }
+                    ));
+                }
+            });
+            group.doCommand(cmdGroup);
         } else {
-            // clear the content from the box
-            if (selectedChild) {
-                group.doCommand(group.cmdRemoveVisual(selectedName));
-            }
+            forEachProperty(selection, function (pos, posName) {
+                // clear the content from the box
+                if (children[posName]) {
+                    cmdGroup.add(group.cmdRemoveVisual(posName));
+                }
+            });
+            group.doCommand(cmdGroup);
         }
-        if (sel) {
-            selTypeInfo = sel.getTypeInfo();
-        }
-        //group.
     }
-
 };
 VisualList.prototype.reload = function () {
     var data = '',
@@ -190,21 +187,7 @@ VisualList.prototype.init = function (editor) {
     this.reload();
     // a new box has been selected
     function newBoxSelected() {
-        var selectedChild,
-            selectedTypeInfo,
-            group = viewer.getGroup();
-        if (viewer.getSelectionLength() === 1) {
-
-            container.setVisible(true);
-            // here we want to get the selection
-            selectedChild = group.documentData.children[viewer.getSelectedName()];
-            if (selectedChild) {
-                selectedTypeInfo = {factory: selectedChild.factory, type: selectedChild.type};
-            }
-            that.selectByTypeInfo(selectedTypeInfo);
-        } else {
-            container.setVisible(false);
-        }
+        that.selectByTypeInfo(viewer.getSelectionTypeInfo());
     }
 
     viewer.on('updateSelectionControlBox', newBoxSelected);

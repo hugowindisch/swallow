@@ -700,6 +700,32 @@ GroupViewer.prototype.getSelectionAnchoring = function () {
     });
     return anchoring;
 };
+GroupViewer.prototype.getSelectionTypeInfo = function () {
+    var children = this.documentData.children,
+        typeInfo;
+    forEachProperty(this.selection, function (box, name) {
+        var ch = children[name];
+        if (ch) {
+            if (typeInfo === undefined) {
+                typeInfo = {
+                    factory: ch.factory,
+                    type: ch.type
+                };
+            } else if (typeInfo !== null) {
+                if (typeInfo.factory !== ch.factory || typeInfo.type !== ch.type) {
+                    typeInfo = null;
+                }
+            }
+        } else {
+            typeInfo = null;
+        }
+    });
+    // no typeinfo: return null
+    if (typeInfo === undefined) {
+        typeInfo = null;
+    }
+    return typeInfo;
+};
 GroupViewer.prototype.getSelectionOpacity = function () {
     var opacity;
     forEachProperty(this.selection, function (box, name) {
