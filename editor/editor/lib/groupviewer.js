@@ -623,6 +623,20 @@ GroupViewer.prototype.getSelection = function () {
 };
 
 /**
+    Remove stuff that does not exist from the selection.
+*/
+GroupViewer.prototype.purgeSelection = function () {
+    var positions = this.documentData.positions,
+        selection = {};
+    forEachProperty(this.selection, function (p, n) {
+        if (positions[n]) {
+            selection[n] = p;
+        }
+    });
+    this.selection = selection;
+};
+
+/**
     Checks whether a position is selected.
 */
 GroupViewer.prototype.positionIsSelected = function (name) {
@@ -777,9 +791,10 @@ GroupViewer.prototype.setGroup = function (group) {
             } else {
                 throw new Error('Missing rename hint');
             }
-            return; // skip the update all
+            return;
 
         }
+        that.purgeSelection();
         that.updateAll();
     }
     // hook ourselves
