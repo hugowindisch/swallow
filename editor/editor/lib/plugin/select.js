@@ -30,6 +30,46 @@ function getDocumentData(viewer) {
     }
     return dd;
 }
+function getTransform(viewer, xl, constrain, selectionRect) {
+    var translate = vec3.create(xl),
+        abs = Math.abs,
+        min = Math.min,
+        srt = [
+            vec3.add(selectionRect[0], translate, vec3.create()),
+            vec3.add(selectionRect[1], translate, vec3.create()),
+        ],
+        srSnapped = [
+            viewer.snapPositionToGrid(vec3.create(srt[0])),
+            viewer.snapPositionToGrid(vec3.create(srt[1]))
+        ],
+        d1,
+        d2,
+        i;
+    // grids (snapping)
+    for (i = 0; i < 2; i += 1) {
+        d1 = srt[0][i] - srSnapped[0][i];
+        d2 = srt[1][i] - srSnapped[1][i];
+        if (abs(d1) <= abs(d2)) {
+            translate[i] -= d1;
+        } else {
+            translate[i] -= d2;
+        }
+    }
+
+    // constrains
+    if (constrain) {
+        if (abs(translate[0]) > abs(translate[1])) {
+            translate[1] = 0;
+        } else {
+            translate[0] = 0;
+        }
+    }
+    return mat4.translate(
+        mat4.identity(),
+        translate
+    );
+}
+
 
 function setupFileMenu(editor) {
     var viewer = editor.getViewer(),
@@ -96,46 +136,6 @@ function setupToolMenu(editor) {
         }
     }
 
-    function getTransform(xl, constrain, selectionRect) {
-        var translate = vec3.create(xl),
-            abs = Math.abs,
-            min = Math.min,
-            srt = [
-                vec3.add(selectionRect[0], translate, vec3.create()),
-                vec3.add(selectionRect[1], translate, vec3.create()),
-            ],
-            srSnapped = [
-                viewer.snapPositionToGrid(vec3.create(srt[0])),
-                viewer.snapPositionToGrid(vec3.create(srt[1]))
-            ],
-            d1,
-            d2,
-            i;
-        // grids (snapping)
-        for (i = 0; i < 2; i += 1) {
-            d1 = srt[0][i] - srSnapped[0][i];
-            d2 = srt[1][i] - srSnapped[1][i];
-            if (abs(d1) <= abs(d2)) {
-                translate[i] -= d1;
-            } else {
-                translate[i] -= d2;
-            }
-        }
-
-        // constrains
-        if (constrain) {
-            if (abs(translate[0]) > abs(translate[1])) {
-                translate[1] = 0;
-            } else {
-                translate[0] = 0;
-            }
-        }
-        return mat4.translate(
-            mat4.identity(),
-            translate
-        );
-    }
-
     // select tool (arrow)
     selectTool = new MenuItem(
         'Select',
@@ -189,6 +189,7 @@ function setupToolMenu(editor) {
                         if (!draggingWait) {
                             viewer.previewSelectionTransformation(
                                 getTransform(
+                                    viewer,
                                     [mat[0], mat[5], mat[10]],
                                     evt.ctrlKey,
                                     selectionRect
@@ -215,6 +216,7 @@ function setupToolMenu(editor) {
                             group = viewer.getGroup();
                             // we want to move the selection.
                             transform = getTransform(
+                                viewer,
                                 [mat[0], mat[5], mat[10]],
                                 evt.ctrlKey,
                                 selectionRect
@@ -256,12 +258,11 @@ function setupToolMenu(editor) {
                 null,
                 null,
                 function (mat, nmat) {
-                    var group = viewer.getGroup();
-                    if (mat[0] < 8) {
-                        mat[0] = 8;
-                    }
-                    if (mat[5] < 8) {
-                        mat[5] = 8;
+                    var group = viewer.getGroup(),
+                        abs = Math.abs;
+                    if (abs(mat[0]) < 32 && abs(mat[5]) < 32) {
+                        mat[0] = 32;
+                        mat[5] = 32;
                     }
                     mat[10] = 1;
                     group.doCommand(group.cmdAddPosition(
@@ -511,6 +512,10 @@ function setupObjectMenu(editor) {
         alignTopTool,
         alignBottomTool,
         alignMiddleTool,
+        moveUpTool,
+        moveDownTool,
+        moveLeftTool,
+        moveRightTool,
         menus = editor.menus;
 
     function selectionNotEmpty() {
@@ -540,7 +545,7 @@ function setupObjectMenu(editor) {
     }
     // selection up
     selectionUpTool = new MenuItem(
-        'Move Up',
+        'Decrease Depth',
         function () {
             var group = viewer.getGroup(),
                 dd = getDocumentData(viewer),
@@ -557,7 +562,7 @@ function setupObjectMenu(editor) {
             // normalize depths
             newOrders = normalizeDepths(newOrders);
             // apply orders
-            group.doCommand(group.cmdSetVisualOrder(newOrders, 'Move Up'));
+            group.doCommand(group.cmdSetVisualOrder(newOrders, 'Decrease Depth'));
         },
         null,
         null,
@@ -566,7 +571,7 @@ function setupObjectMenu(editor) {
     );
     // selection down
     selectionDownTool = new MenuItem(
-        'Move Down',
+        'Increase Depth',
         function () {
             var group = viewer.getGroup(),
                 dd = getDocumentData(viewer),
@@ -583,7 +588,7 @@ function setupObjectMenu(editor) {
             // normalize depths
             newOrders = normalizeDepths(newOrders);
             // apply orders
-            group.doCommand(group.cmdSetVisualOrder(newOrders, 'Move Down'));
+            group.doCommand(group.cmdSetVisualOrder(newOrders, 'Increase Depth'));
         },
         null,
         null,
@@ -592,7 +597,7 @@ function setupObjectMenu(editor) {
     );
     // selection to top
     selectionToTopTool = new MenuItem(
-        'Move To Top',
+        'To Topmost Depth',
         function () {
             var group = viewer.getGroup(),
                 dd = getDocumentData(viewer),
@@ -610,7 +615,7 @@ function setupObjectMenu(editor) {
             // normalize depths
             newOrders = normalizeDepths(newOrders);
             // apply orders
-            group.doCommand(group.cmdSetVisualOrder(newOrders, 'Move To Top'));
+            group.doCommand(group.cmdSetVisualOrder(newOrders, 'To Topmost Depth'));
         },
         null,
         null,
@@ -619,7 +624,7 @@ function setupObjectMenu(editor) {
     );
     // selection to bottom
     selectionToBottomTool = new MenuItem(
-        'Move To Bottom',
+        'To Bottommost Depth',
         function () {
             var group = viewer.getGroup(),
                 dd = getDocumentData(viewer),
@@ -637,7 +642,7 @@ function setupObjectMenu(editor) {
             // normalize depths
             newOrders = normalizeDepths(newOrders);
             // apply orders
-            group.doCommand(group.cmdSetVisualOrder(newOrders, 'Move To Bottom'));
+            group.doCommand(group.cmdSetVisualOrder(newOrders, 'To Bottommost Depth'));
         },
         null,
         null,
@@ -829,6 +834,128 @@ function setupObjectMenu(editor) {
         selectionTwoOrMore
     );
 
+    // move tools
+    moveUpTool = new MenuItem(
+        'Move Up',
+        function () {
+            var group = viewer.getGroup(),
+                selectionRect = viewer.getSelectionRect(),
+                transform,
+                selection,
+                cmdGroup;
+            // we want to move the selection.
+            transform = getTransform(
+                viewer,
+                [0, -group.documentData.gridSize, 0],
+                false,
+                selectionRect
+            );
+            selection = viewer.getSelection();
+            cmdGroup = group.cmdCommandGroup('moveUp', 'Move Up');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        new Accelerator('VK_UP', true),
+        null,
+        selectionNotEmpty
+    );
+    moveDownTool = new MenuItem(
+        'Move Down',
+        function () {
+            var group = viewer.getGroup(),
+                selectionRect = viewer.getSelectionRect(),
+                transform,
+                selection,
+                cmdGroup;
+            // we want to move the selection.
+            transform = getTransform(
+                viewer,
+                [0, group.documentData.gridSize, 0],
+                false,
+                selectionRect
+            );
+            selection = viewer.getSelection();
+            cmdGroup = group.cmdCommandGroup('moveDown', 'Move Down');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        new Accelerator('VK_DOWN', true),
+        null,
+        selectionNotEmpty
+    );
+    moveLeftTool = new MenuItem(
+        'Move Left',
+        function () {
+            var group = viewer.getGroup(),
+                selectionRect = viewer.getSelectionRect(),
+                transform,
+                selection,
+                cmdGroup;
+            // we want to move the selection.
+            transform = getTransform(
+                viewer,
+                [-group.documentData.gridSize, 0, 0],
+                false,
+                selectionRect
+            );
+            selection = viewer.getSelection();
+            cmdGroup = group.cmdCommandGroup('moveLeft', 'Move Left');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        new Accelerator('VK_LEFT', true),
+        null,
+        selectionNotEmpty
+    );
+    moveRightTool = new MenuItem(
+        'Move Right',
+        function () {
+            var group = viewer.getGroup(),
+                selectionRect = viewer.getSelectionRect(),
+                transform,
+                selection,
+                cmdGroup;
+            // we want to move the selection.
+            transform = getTransform(
+                viewer,
+                [group.documentData.gridSize, 0, 0],
+                false,
+                selectionRect
+            );
+            selection = viewer.getSelection();
+            cmdGroup = group.cmdCommandGroup('moveRight', 'Move Right');
+
+            // for everything in the selection
+            forEachProperty(selection, function (p, n) {
+                cmdGroup.add(group.cmdTransformPosition(n, transform));
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        new Accelerator('VK_RIGHT', true),
+        null,
+        selectionNotEmpty
+    );
+
     menus.object.push(
         selectionUpTool,
         selectionDownTool,
@@ -841,7 +968,12 @@ function setupObjectMenu(editor) {
         null,
         alignTopTool,
         alignBottomTool,
-        alignMiddleTool
+        alignMiddleTool,
+        null,
+        moveUpTool,
+        moveDownTool,
+        moveLeftTool,
+        moveRightTool
     );
 
 }
