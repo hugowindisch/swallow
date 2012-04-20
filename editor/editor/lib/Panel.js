@@ -50,5 +50,12 @@ Panel.prototype.init = function (editor) {
     vl.init(editor);
 
     this.setChildrenClipping([ 'hidden', 'auto']);
+    function disableUglyMouseBehaviors(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+    }
+    this.on('mousedown', disableUglyMouseBehaviors);
+    this.on('mousemove', disableUglyMouseBehaviors);
+    this.on('mouseup', disableUglyMouseBehaviors);
 };
 exports.Panel = Panel;
