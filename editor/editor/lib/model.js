@@ -282,7 +282,14 @@ Group.prototype.cmdSetPositionSnapping = function (name, snapping) {
         function () {
             var cs = that.documentData.positions[name].snapping;
             forEachProperty(snapping, function (s, n) {
-                if (s !== 'unknown') {
+                var csn = cs[n];
+                // this allows to force consistency (always having 2 things snapped out of 3)
+                if (s === 'snap') {
+                    if (csn !== 'px' && csn !== '%') {
+                        prev[n] = csn;
+                        cs[n] = 'px';
+                    }
+                } else if (s !== 'unknown') {
                     prev[n] = cs[n] ? cs[n] : 'unknown';
                     cs[n] = s;
                 }

@@ -17,7 +17,7 @@ var visual = require('visual'),
     },
     snappingToggle = {
         'px': '%',
-        '%': 'auto',
+        '%': 'px',
         'auto': 'px',
         'unknown': 'px'
     };
