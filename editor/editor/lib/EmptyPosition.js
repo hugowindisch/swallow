@@ -17,9 +17,7 @@ function EmptyPosition(config) {
 EmptyPosition.prototype = new (domvisual.DOMElement)();
 EmptyPosition.prototype.theme = new (visual.Theme)({
     background: {
-        basedOn: [
-            { factory: 'baseui', type: 'Theme', style: 'buttonBackground' }
-        ]
+        data: [ 'editor_emptyPosition' ]
     }
 });
 

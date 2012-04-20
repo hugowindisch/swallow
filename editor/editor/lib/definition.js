@@ -794,6 +794,12 @@ exports.definition = {
                     order: 0,
                     matrix: [ 100, 0, 0, 0,   0, 100, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                },
+                img: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   2, 2, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
             children: {
@@ -803,6 +809,14 @@ exports.definition = {
                     position: "pos",
                     config: {
                         style: "background"
+                    }
+                },
+                img: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "img",
+                    config: {
+                        url: "editor/lib/topleft.png"
                     }
                 }
             }
