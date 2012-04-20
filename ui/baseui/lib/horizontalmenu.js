@@ -170,10 +170,13 @@ HorizontalMenu.prototype.highlightItem = function (itemName) {
             }
             skip -= 1;
         }
-        that.on('mouseupt', clickout);
-        that.cleanupClickout = function () {
-            that.removeListener('mouseupt', clickout);
-        };
+        // if not already setup
+        if (!that.cleanupClickout) {
+            that.on('mouseupt', clickout);
+            that.cleanupClickout = function () {
+                that.removeListener('mouseupt', clickout);
+            };
+        }
     }
 
     if (toHighlight !== this.highlighted) {
