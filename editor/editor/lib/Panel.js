@@ -54,8 +54,9 @@ Panel.prototype.init = function (editor) {
         evt.preventDefault();
         evt.stopPropagation();
     }
-    this.on('mousedown', disableUglyMouseBehaviors);
-    this.on('mousemove', disableUglyMouseBehaviors);
-    this.on('mouseup', disableUglyMouseBehaviors);
+    // this breaks the combo box
+    //this.on('mousedown', disableUglyMouseBehaviors);
+    //this.on('mousemove', disableUglyMouseBehaviors);
+    //this.on('mouseup', disableUglyMouseBehaviors);
 };
 exports.Panel = Panel;
