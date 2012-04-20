@@ -516,6 +516,7 @@ function setupObjectMenu(editor) {
         moveDownTool,
         moveLeftTool,
         moveRightTool,
+        unsetContentTool,
         menus = editor.menus;
 
     function selectionNotEmpty() {
@@ -523,6 +524,21 @@ function setupObjectMenu(editor) {
     }
     function selectionTwoOrMore() {
         return viewer.getSelectionLength() > 1;
+    }
+    function selectionHasNonEmptyPositions() {
+        var group = viewer.getGroup(),
+            documentData = group.documentData,
+            children = documentData.children,
+            selection = viewer.getSelection(),
+            cmdGroup = group.cmdCommandGroup('unsetContent', 'Unset Content'),
+            ret = false;
+        forEachProperty(children, function (c, n) {
+            var p = c.position;
+            if (selection[p]) {
+                ret = true;
+            }
+        });
+        return ret;
     }
 
     function normalizeDepths(orders) {
@@ -956,6 +972,44 @@ function setupObjectMenu(editor) {
         selectionNotEmpty
     );
 
+    unsetContentTool = new MenuItem(
+        'Unset Content',
+        function () {
+            var group = viewer.getGroup(),
+                documentData = group.documentData,
+                children = documentData.children,
+                selection = viewer.getSelection(),
+                cmdGroup = group.cmdCommandGroup('unsetContent', 'Unset Content');
+
+            // for everything in the selection
+            forEachProperty(children, function (c, n) {
+                var p = c.position;
+                if (selection[p]) {
+                    cmdGroup.add(group.cmdRemoveVisual(p));
+                }
+            });
+            // do the combined command
+            group.doCommand(cmdGroup);
+        },
+        null,
+        new Accelerator('VK_U', true),
+        'editor/lib/plugin/unsetcontent.png',
+        selectionHasNonEmptyPositions
+    );
+
+    // setup auto update of some tools
+    (function () {
+        var group = viewer.getGroup(),
+            documentData = group.documentData,
+            commandChain = group.getCommandChain();
+        function signalChange(evt) {
+            unsetContentTool.emit('change');
+        }
+        commandChain.on('undo', signalChange);
+        commandChain.on('redo', signalChange);
+        commandChain.on('do', signalChange);
+    }());
+
     menus.object.push(
         selectionUpTool,
         selectionDownTool,
@@ -973,7 +1027,9 @@ function setupObjectMenu(editor) {
         moveUpTool,
         moveDownTool,
         moveLeftTool,
-        moveRightTool
+        moveRightTool,
+        null,
+        unsetContentTool
     );
 
 }

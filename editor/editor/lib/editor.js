@@ -25,7 +25,6 @@ function Editor(config) {
     domvisual.DOMElement.call(this, config, groups.Editor);
     // create the menu bar and toolbar
     this.setStyle('background');
-    this.addPlugins(defaultPlugins);
     this.setChildrenClipping('hidden');
 }
 Editor.prototype = new (domvisual.DOMElement)();
@@ -54,6 +53,7 @@ Editor.prototype.setGroupData = function (factory, type, groupData) {
         new (require('./model').Group)(groupData)
     );
     this.children.panel.init(this);
+    this.addPlugins(defaultPlugins);
 };
 Editor.prototype.getDocInfo = function () {
     return this.docInfo;
