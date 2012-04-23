@@ -15,12 +15,16 @@ var visual = require('visual'),
     forEach = utils.forEach,
     groups = require('./definition').definition.groups,
     MenuItem = baseui.MenuItem,
+    DependencyManager = require('./DependencyManager').DependencyManager,
     defaultPlugins = [
         require('./plugin/select').setup
     ];
 
 
 function Editor(config) {
+    // create the dependency manager
+    this.dependencyManager = new DependencyManager();
+    this.dependencyManager.loadVisualList();
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Editor);
     // create the menu bar and toolbar
@@ -183,6 +187,13 @@ Editor.prototype.getToolbox = function () {
     return this.children.toolbox;
 };
 
+/**
+    Returns the dependency manager.
+*/
+Editor.prototype.getDependencyManager = function () {
+    return this.dependencyManager;
+};
+
 exports.Editor = Editor;
 exports.GroupViewer = require('./groupviewer').GroupViewer;
 exports.SelectionBox = require('./selectionbox').SelectionBox;
@@ -192,11 +203,13 @@ exports.VisualInfo = require('./VisualInfo').VisualInfo;
 exports.EmptyPosition = require('./EmptyPosition').EmptyPosition;
 exports.ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet;
 exports.LayoutAnchors = require('./LayoutAnchors').LayoutAnchors;
-exports.VisualList = require('./Layering').Layering;
 exports.SelectionInfo = require('./SelectionInfo').SelectionInfo;
 exports.SnapButton = require('./SnapButton').SnapButton;
 exports.RotationBox = require('./RotationBox').RotationBox;
+exports.Layering = require('./Layering').Layering;
 exports.LayerInfo = require('./LayerInfo').LayerInfo;
+exports.Styling = require('./Layering').Styling;
+exports.StyleInfo = require('./StyleInfo').LayerInfo;
 exports.Panel = require('./Panel').Panel;
 
 // note: this should be last

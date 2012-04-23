@@ -30,30 +30,24 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
         var factory,
             Constr,
             preview;
-        define.meat.loadPackage(ti.factory, function (err) {
-            if (!err) {
-                factory = require(ti.factory);
-                if (factory) {
-                    Constr = factory[ti.type];
-                    if (Constr) {
-                        if (Constr.createPreview) {
-                            // specific preview
-                            preview = Constr.createPreview();
-                        } else {
-                            // generic preview
-                            preview = new Constr({});
-                            preview.setChildrenClipping('hidden');
-                            preview.enableScaling(true);
-                        }
-                        preview.setPosition('preview');
-                        preview.enableInteractions(false);
-                        that.addChild(preview, 'preview');
-                    }
+        factory = require(ti.factory);
+        if (factory) {
+            Constr = factory[ti.type];
+            if (Constr) {
+                if (Constr.createPreview) {
+                    // specific preview
+                    preview = Constr.createPreview();
+                } else {
+                    // generic preview
+                    preview = new Constr({});
+                    preview.setChildrenClipping('hidden');
+                    preview.enableScaling(true);
                 }
-            } /*else {
-                // display something to say that it did not work properly.
-            }*/
-        });
+                preview.setPosition('preview');
+                preview.enableInteractions(false);
+                that.addChild(preview, 'preview');
+            }
+        }
     }
     this.ti = ti;
     this.children.factoryName.setText(ti.factory);

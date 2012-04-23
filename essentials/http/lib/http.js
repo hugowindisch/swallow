@@ -1,6 +1,6 @@
 /**
     http.js
-    Copyright (c) Hugo Windisch 2012 All Rights Reserved    
+    Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 /*
     Do XMLHttpRequest in a node fashion. No we don't get the same as
@@ -50,13 +50,13 @@ ClientResponse.prototype.resume = function () {
 };
 ClientResponse.prototype.setEncoding = function () {
     // not currently supported
-};   
-    
+};
+
 function ClientRequest(options) {
     var url = '',
         that = this,
         response;
-        
+
     if (options.host) {
         url += options.host;
         if (options.port) {
@@ -72,7 +72,7 @@ function ClientRequest(options) {
     try {
         this.request.open(
             options.method,
-            url, 
+            url,
             true
         );
     } catch (e) {
@@ -101,13 +101,13 @@ function ClientRequest(options) {
             break;
         case readyStates.headersReceived:
             response = new ClientResponse(
-                parseHeaders(this.getAllResponseHeaders()), 
+                parseHeaders(this.getAllResponseHeaders()),
                 this.status
             );
             that.emit('response', response);
             update();
             break;
-        case readyStates.loading:        
+        case readyStates.loading:
             break;
         case readyStates.done:
             if (!response) {
@@ -133,7 +133,7 @@ ClientRequest.prototype.end = function (data) {
     if (data) {
         this.toSend += data;
     }
-    forEachProperty(this.options.headers, function (h, hn) {    
+    forEachProperty(this.options.headers, function (h, hn) {
         that.request.setRequestHeader(hn, h);
     });
     this.request.send(this.toSend);
@@ -158,4 +158,3 @@ function get(options, callback) {
 }
 exports.request = request;
 exports.get = get;
-

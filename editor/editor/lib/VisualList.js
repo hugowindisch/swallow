@@ -133,49 +133,38 @@ VisualList.prototype.applySelectedPosition = function () {
         }
     }
 };
-VisualList.prototype.reload = function () {
-    var data = '',
-        editor = this.editor,
+VisualList.prototype.updateVisualList = function () {
+    var editor = this.editor,
+        packageManager = editor.getDependencyManager(),
+        visualList = packageManager.getVisualList(),
+        l = visualList.length,
+        i,
+        jsd,
+        c,
         choices = this.children.choices,
         docInfo = editor.getDocInfo(),
         editedFactory = docInfo.factory,
         that = this;
+    function onClick() {
+        that.select(this, true);
+    }
+    // remove all children
     choices.removeAllChildren();
-    http.get({ path: '/visual'}, function (res) {
-        res.on('data', function (d) {
-            data += d;
-        });
-        res.on('end', function () {
-            var jsonData = JSON.parse(data),
-                i,
-                l = jsonData.length,
-                jsd,
-                c,
-                factories = {};
-            function onClick() {
-                that.select(this, true);
-            }
-            function packageLoaded(err) {
-            }
-            for (i = 0; i < l; i += 1) {
-                jsd = jsonData[i];
-                if ((!jsd.private || jsd.factory === editedFactory) && !(jsd.factory === docInfo.factory && jsd.type === docInfo.type)) {
-                    // keep a list of factories
-                    factories[jsd.factory] = jsd.factory;
-                    c = new VisualInfo({ typeInfo: jsd});
-                    c.init(that.editor);
-                    // FIXME: this needs some thinking... I want to flow the thing,
-                    // and doing so
-                    c.setHtmlFlowing({position: 'relative'}, true);
-                    choices.addChild(c);
-                    c.on('click', onClick);
-                    define.meat.loadPackage(jsonData[i].factory, packageLoaded);
-                }
-            }
-            that.setFactories(factories);
-            that.filterFactories();
-        });
-    });
+    for (i = 0; i < l; i += 1) {
+        jsd = visualList[i];
+        if ((!jsd.private || jsd.factory === editedFactory) && !(jsd.factory === docInfo.factory && jsd.type === docInfo.type)) {
+            // keep a list of factories
+            c = new VisualInfo({ typeInfo: jsd});
+            c.init(that.editor);
+            // FIXME: this needs some thinking... I want to flow the thing,
+            // and doing so
+            c.setHtmlFlowing({position: 'relative'}, true);
+            choices.addChild(c);
+            c.on('click', onClick);
+        }
+    }
+    that.setFactories(packageManager.getFactories());
+    that.filterFactories();
 };
 
 VisualList.prototype.init = function (editor) {
@@ -184,7 +173,10 @@ VisualList.prototype.init = function (editor) {
         that = this;
     this.editor = editor;
 
-    this.reload();
+    this.updateVisualList();
+    editor.getDependencyManager().on('change', function () {
+        that.updateVisualList();
+    });
     // a new box has been selected
     function newBoxSelected() {
         that.selectByTypeInfo(viewer.getSelectionTypeInfo());

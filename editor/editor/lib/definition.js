@@ -583,7 +583,7 @@ exports.definition = {
             children: {}
         },
         ComponentInfo: {
-            dimensions: [ 390, 140, 0],
+            dimensions: [ 360, 140, 0],
             positions: {
                 wLabel: {
                     type: "Position",
@@ -637,7 +637,7 @@ exports.definition = {
                 description: {
                     type: "Position",
                     order: 6,
-                    matrix: [ 380, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    matrix: [ 355, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 privateCheck: {
@@ -780,6 +780,62 @@ exports.definition = {
             }
         },
         Layering: {
+            dimensions: [390, 100, 0],
+            positions: {
+            },
+            children: {
+            }
+        },
+        StyleInfo: {
+            dimensions: [360, 25, 1],
+            positions: {
+                name: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 280, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 2, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                edit: {
+                    type: "Position",
+                    order: 1,
+                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   290, 2, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                delete: {
+                    type: "Position",
+                    order: 2,
+                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   320, 2, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+
+            },
+            children: {
+                name: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "name",
+                    config: {
+                    }
+                },
+                edit: {
+                    factory: "baseui",
+                    type: "Button",
+                    position: "edit",
+                    config: {
+                        text: 'edit'
+                    }
+                },
+                delete: {
+                    factory: "baseui",
+                    type: "Button",
+                    position: "edit",
+                    config: {
+                        text: 'delete'
+                    }
+                },
+            }
+        },
+        Styling: {
             dimensions: [390, 100, 0],
             positions: {
             },

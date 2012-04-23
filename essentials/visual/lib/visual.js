@@ -58,7 +58,7 @@ Then we could implement a visual on top of a canvas (other libray)
 A position can be a named position inside our parent or an unmanaged position.
 
 */
-
+/*global define*/
 var utils = require('utils'),
     events = require('events'),
     glmatrix = require('glmatrix'),
@@ -717,6 +717,18 @@ Visual.prototype.getStyleData = function () {
     return themes.getStyleData(style);
 };
 
+/**
+    Loads a package in a way that is coordinated with dirt handling.
+*/
+function loadPackage(p, callback) {
+    define.meat.loadPackage(p, function () {
+        if (callback) {
+            callback.apply(this, arguments);
+        }
+        dirty.update();
+    });
+}
+
 // export all what we want to export for the module
 exports.Visual = Visual;
 // this should not be there: a Visual is abstract. It should not be exposed
@@ -737,3 +749,4 @@ exports.Theme = themes.Theme;
 exports.update = dirty.update;
 exports.getEnclosingRect = position.getEnclosingRect;
 exports.rectToMatrix = position.rectToMatrix;
+exports.loadPackage = loadPackage;
