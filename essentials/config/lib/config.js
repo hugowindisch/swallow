@@ -1,6 +1,6 @@
 /**
     config.js
-    
+
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 /*globals define */
@@ -31,7 +31,7 @@ function loadConstructor(
 }
 
 function leftRightConfig(
-    labelTxt, 
+    labelTxt,
     factory,
     type,
     config,
@@ -44,7 +44,7 @@ function leftRightConfig(
     var domvisual = require('domvisual'),
         visual = require('visual'),
         baseui = require('baseui');
-        
+
     loadConstructor(factory, type, function (err, Constr) {
         var cnt, label, editor;
         if (err) {
@@ -59,14 +59,14 @@ function leftRightConfig(
         cnt.addChild(editor, 'data');
         label.setDimensions([labelWidth - 10, lineHeight, 1]);
         label.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, 0, 0, 1]);
-        editor.setDimensions([lineWidth - (labelWidth + 20), lineHeight, 1]);
+        editor.setDimensions([lineWidth - (labelWidth + 40), lineHeight, 1]);
         editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  labelWidth + 5, 0, 0, 1]);
         cb(null, cnt);
     });
 }
 
 function topBottomConfig(
-    labelTxt, 
+    labelTxt,
     factory,
     type,
     config,
@@ -79,7 +79,7 @@ function topBottomConfig(
     var domvisual = require('domvisual'),
         visual = require('visual'),
         baseui = require('baseui');
-        
+
     loadConstructor(factory, type, function (err, Constr) {
         var cnt, label, editor;
         if (err) {
@@ -104,7 +104,7 @@ function topBottomConfig(
 function inputConfig(label) {
     return function (editorInfo, cb) {
         leftRightConfig(
-            label, 
+            label,
             'baseui',
             'Input',
             {},
@@ -123,7 +123,7 @@ function inputConfig(label) {
                 ctrl.getData = function () {
                     return ctrl.children.data.getText();
                 };
-                cb(err, ctrl);                
+                cb(err, ctrl);
             }
         );
     };
@@ -133,7 +133,7 @@ function imageUrlConfig(label) {
     return function (editorInfo, cb) {
         var http = require('http'),
             data = '';
-    
+
         http.get({ path: '/image/' + editorInfo.factory}, function (res) {
             res.on('data', function (d) {
                 data += d;
@@ -141,7 +141,7 @@ function imageUrlConfig(label) {
             res.on('end', function () {
                 var jsonData = JSON.parse(data);
                 topBottomConfig(
-                    label, 
+                    label,
                     'baseui',
                     'ImagePicker',
                     { urls: jsonData },
@@ -163,7 +163,7 @@ function imageUrlConfig(label) {
                         ctrl.children.data.on('change', function (sel) {
                             ctrl.emit('change', sel);
                         });
-                        cb(err, ctrl);                
+                        cb(err, ctrl);
                     }
                 );
 
@@ -172,7 +172,7 @@ function imageUrlConfig(label) {
             res.on('error', function (e) {
                 cb(e);
             });
-        });    
+        });
     };
 }
 
@@ -180,4 +180,3 @@ function imageUrlConfig(label) {
 exports.leftRightConfig = leftRightConfig;
 exports.inputConfig = inputConfig;
 exports.imageUrlConfig = imageUrlConfig;
-

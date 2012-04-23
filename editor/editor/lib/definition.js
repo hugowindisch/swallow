@@ -192,7 +192,7 @@ exports.definition = {
             }
         },
         VisualInfo: {
-            dimensions: [390, 50, 0],
+            dimensions: [360, 50, 0],
             positions: {
                 preview: {
                     type: "Position",
@@ -209,7 +209,7 @@ exports.definition = {
                 typeName: {
                     type: "Position",
                     order: 2,
-                    matrix: [ 400, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 25, 0, 1 ],
+                    matrix: [ 200, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 25, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
@@ -227,7 +227,7 @@ exports.definition = {
                 configurationSheet: {
                     type: "Position",
                     order: 5,
-                    matrix: [ 400, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 80, 0, 1 ],
+                    matrix: [ 360, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -342,7 +342,7 @@ exports.definition = {
                 label: {
                     type: "Position",
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 10, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   0, 10, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 library: {
@@ -354,7 +354,7 @@ exports.definition = {
                 choices: {
                     type: "Position",
                     order: 2,
-                    matrix: [ 380, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   10, 50, 0, 1 ],
+                    matrix: [ 380, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   0, 50, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -578,7 +578,7 @@ exports.definition = {
             }
         },
         ConfigurationSheet: {
-            dimensions: [ 400, 1, 0],
+            dimensions: [ 360, 1, 0],
             positions: {},
             children: {}
         },
@@ -731,7 +731,7 @@ exports.definition = {
             }
         },
         LayerInfo: {
-            dimensions: [390, 25, 1],
+            dimensions: [360, 25, 1],
             positions: {
                 name: {
                     type: "Position",

@@ -94,9 +94,9 @@ VisualInfo.prototype.showDetails = function () {
     this.addChild(configurationSheet, 'configurationSheet');
 
     csPosMat[5] = csVertical;
-    configurationSheet.setPosition(new (visual.AbsolutePosition)(
+    configurationSheet.setPosition(new (visual.Position)(
         csPosMat,
-        { leftTo: 'left', rightTo: 'left', topTo: 'top', bottomTo: 'top' }
+        { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'px', height: 'auto' }
     ));
 
     function setConfigurationSheetContent() {
