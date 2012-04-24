@@ -67,6 +67,7 @@ var utils = require('utils'),
     position = require('./position'),
     themes = require('./themes'),
     isString = utils.isString,
+    isObject = utils.isObject,
     applyLayout = position.applyLayout,
     setDirty = dirty.setDirty,
     setChildrenDirty = dirty.setChildrenDirty,
@@ -688,8 +689,10 @@ Visual.prototype.getSkinStyle = function (styleName) {
 
 /**
     sets the style of this visual. This is either a string,
-    in which case it refers to a named style in the parent's
-    theme/skin, or a style (as defined in themes.js).
+    in which case it refers to:
+    - (string) a named style in the parent's theme/skin
+    - a style (as defined in themes.js).
+    - a {factory, type, style } object
 */
 Visual.prototype.setStyle = function (style) {
     if (style !== this.style) {
@@ -712,6 +715,12 @@ Visual.prototype.getStyleData = function () {
         }
         if (parentTheme) {
             style = parentTheme[style];
+        }
+    } else if (isObject(style) && style.factory && style.type && style.style) {
+        try {
+            style = require(style.factory)[style.type].prototype.theme[style.style];
+        } catch (e) {
+            throw new Error('Cannot find style ' + style.factory + '.' + style.type + '.' + style.style);
         }
     }
     return themes.getStyleData(style);

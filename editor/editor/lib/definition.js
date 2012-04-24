@@ -787,36 +787,49 @@ exports.definition = {
             }
         },
         StyleInfo: {
-            dimensions: [360, 25, 1],
+            dimensions: [360, 60, 1],
             positions: {
-                name: {
+                selectionBox: {
                     type: "Position",
                     order: 0,
-                    matrix: [ 280, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 2, 0, 1 ],
+                    matrix: [ 350, 0, 0, 0,  0, 45, 0, 0, 0, 0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                preview: {
+                    type: "Position",
+                    order: 1,
+                    matrix: [ 140, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 edit: {
                     type: "Position",
-                    order: 1,
-                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   290, 2, 0, 1 ],
+                    order: 2,
+                    matrix: [ 20, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   290, 2, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                delete: {
+                'delete': {
                     type: "Position",
-                    order: 2,
-                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   320, 2, 0, 1 ],
+                    order: 3,
+                    matrix: [ 20, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   290, 27, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
-
             },
             children: {
-                name: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "name",
+                selectionBox: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "selectionBox",
                     config: {
+                        style: {factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground'}
                     }
                 },
+                preview: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "preview",
+                    config: {
+                    }
+                }  /*,
                 edit: {
                     factory: "baseui",
                     type: "Button",
@@ -825,14 +838,14 @@ exports.definition = {
                         text: 'edit'
                     }
                 },
-                delete: {
+                'delete': {
                     factory: "baseui",
                     type: "Button",
-                    position: "edit",
+                    position: "delete",
                     config: {
                         text: 'delete'
                     }
-                },
+                } */
             }
         },
         Styling: {

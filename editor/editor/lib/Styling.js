@@ -16,61 +16,73 @@ var visual = require('visual'),
 function Styling(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Styling);
+    this.updateList(Styling.dependencyManager.getStyleList());
 }
 Styling.prototype = new (domvisual.DOMElement)();
 Styling.prototype.getConfigurationSheet = function () {
     return { };
 };
 
-Styling.prototype.init = function (editor) {
-    var viewer = editor.getViewer(),
-        that = this;
-    this.editor = editor;
-/*    function refresh() {
-        that.updateList();
+Styling.init = function (editor) {
+    Styling.dependencyManager = editor.getDependencyManager();
+};
+
+Styling.prototype.setData = function (st) {
+    var children = this.children,
+        selected = null;
+    forEachProperty(children, function (ch) {
+        var data = ch.getEditedStyle();
+        if (data.factory === st.factory && data.type === st.type && data.style === st.style) {
+            selected = ch;
+        }
+    });
+    this.select(selected);
+};
+Styling.prototype.getData = function () {
+    var data = null;
+    if (this.selected) {
+        data = this.selected.getEditedStyle();
     }
-    viewer.on('updateSelectionControlBox', refresh);
-    refresh(); */
+    return data;
 };
-/*
-Styling.prototype.updateList = function () {
-    var viewer = this.editor.getViewer(),
-        group = viewer.getGroup(),
-        that = this,
-        prevName,
-        documentData = group.documentData,
-        positions = documentData.positions,
-        it = [];
-
-    forEachProperty(documentData.positions, function (c, name) {
-        it.push({name: name, order: c.order});
-    });
-    it.sort(function (i1, i2) {
-        return i2.order - i1.order;
-    });
-    // remove the children that are not in the list
-    forEachProperty(this.children, function (c, name) {
-        if (!documentData.children[name]) {
-            that.removeChild(name);
+Styling.prototype.select = function (st) {
+    if (st !== this.selected) {
+        if (this.selected) {
+            this.selected.select(false);
         }
-    });
-    // add the ones that are missing and update the others
-    forEach(it, function (i) {
-        var name = i.name,
-            ch = that.getChild(name);
-
-        if (!ch) {
-            ch = new LayerInfo({contentName: name, viewer: viewer});
-            ch.setHtmlFlowing({position: 'relative'}, true);
-            that.addChild(ch, name);
-        } else {
-            // simply update it
-            ch.updateAll();
+        this.selected = st;
+        if (st !== null) {
+            this.selected.select(true);
         }
-        that.orderAfter(name, prevName);
-        prevName = name;
-    });
-    this.setDimensions([groups.Styling.dimensions[0], it.length * 25 + 10, 1]);
+    }
 };
-*/
+Styling.prototype.updateList = function (styleList) {
+    var that = this;
+    function stringDiff(s1, s2) {
+        return s1 < s2 ? -1 : (s1 > s2 ? 1 : 0);
+    }
+    styleList.sort(function (s1, s2) {
+        var d = stringDiff(s1.factory, s2.factory);
+        if (d === 0) {
+            d = stringDiff(s1.type, s2.type);
+            if (d === 0) {
+                d = stringDiff(s1.style, s2.style);
+            }
+        }
+        return d;
+    });
+    // clear all children
+    this.removeAllChildren();
+    // regenerate all children
+    forEach(styleList, function (st) {
+        var ch = new StyleInfo({editedStyle: st});
+        ch.setHtmlFlowing({position: 'relative'}, true);
+        that.addChild(ch);
+        ch.on('click', function () {
+            that.select(ch);
+            that.emit('change', ch.getEditedStyle());
+        });
+    });
+    this.setDimensions([groups.Styling.dimensions[0], styleList.length * 60 + 10, 1]);
+};
 exports.Styling = Styling;

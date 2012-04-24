@@ -25,6 +25,11 @@ function Editor(config) {
     // create the dependency manager
     this.dependencyManager = new DependencyManager();
     this.dependencyManager.loadVisualList();
+    // yurk hack to interface with configuration sheets
+    // NOTE: why not passing the editor to the config sheets? We already pass 'editor info'
+    // this would remove the need for this ugly thing!!
+    // FIXME FIXME FIXME
+    require('./Styling').Styling.init(this);
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Editor);
     // create the menu bar and toolbar
@@ -208,8 +213,8 @@ exports.SnapButton = require('./SnapButton').SnapButton;
 exports.RotationBox = require('./RotationBox').RotationBox;
 exports.Layering = require('./Layering').Layering;
 exports.LayerInfo = require('./LayerInfo').LayerInfo;
-exports.Styling = require('./Layering').Styling;
-exports.StyleInfo = require('./StyleInfo').LayerInfo;
+exports.Styling = require('./Styling').Styling;
+exports.StyleInfo = require('./StyleInfo').StyleInfo;
 exports.Panel = require('./Panel').Panel;
 
 // note: this should be last

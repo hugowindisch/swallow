@@ -483,7 +483,12 @@ function DOMElement(config, groupData) {
     DOMVisual.call(this, config, groupData, document.createElement('div'));
 }
 DOMElement.prototype = new DOMVisual();
-
+DOMElement.prototype.getConfigurationSheet = function () {
+    return {
+        "class": null,
+        "style": require('config').styleConfig('Style:')
+    };
+};
 /////////////////
 // an img element
 function DOMImg(config) {

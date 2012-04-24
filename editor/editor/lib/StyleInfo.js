@@ -13,6 +13,7 @@ function StyleInfo(config) {
     var that = this;
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.StyleInfo);
+    this.select(false);
 /*
     this.on('click', function (evt) {
         var viewer = that.viewer,
@@ -52,31 +53,21 @@ StyleInfo.prototype.theme = new (visual.Theme)({
     this.children.typeName.setText(ti.type);
 };*/
 StyleInfo.prototype.getConfigurationSheet = function () {
-    return { /*contentName: null, viewer: null*/ };
+    return { editedStyle: null };
 };
-/*StyleInfo.prototype.setContentName = function (txt) {
-    this.children.name.setText(txt);
-    this.contentName = txt;
+StyleInfo.prototype.setEditedStyle = function (st) {
+    var children = this.children,
+        preview = children.preview;
+
+    preview.setStyle(st);
+    preview.setInnerText(st.style);
+    this.editedStyle = st;
 };
-StyleInfo.prototype.setViewer = function (viewer) {
-    this.viewer = viewer;
+StyleInfo.prototype.getEditedStyle = function () {
+    return this.editedStyle;
 };
-StyleInfo.prototype.updateAll = function () {
-    var viewer = this.viewer,
-        name = this.contentName,
-        group = viewer.getGroup(),
-        position = group.documentData.positions[name],
-        selection = viewer.getSelection();
-    this.setStyle(selection[name] ? 'selectedBackground' : 'background');
-    this.children.enableSelection.setUrl(
-        position.enableSelect !== false ?
-            'editor/lib/enableSelect.png' :
-            'editor/lib/disableSelect.png'
-    );
-    this.children.enableView.setUrl(
-        position.enableDisplay !== false ?
-            'editor/lib/enableView.png' :
-            'editor/lib/disableView.png'
-    );
-};*/
+StyleInfo.prototype.select = function (selected) {
+    this.children.selectionBox.setVisible(selected);
+};
+
 exports.StyleInfo = StyleInfo;

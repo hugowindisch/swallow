@@ -11,7 +11,6 @@ var visual = require('visual'),
     SelectionInfo = require('./SelectionInfo').SelectionInfo,
     ComponentInfo = require('./ComponentInfo').ComponentInfo,
     Layering = require('./Layering').Layering,
-    Styling = require('./Styling').Styling,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
 
@@ -26,33 +25,27 @@ Panel.prototype.init = function (editor) {
         ciFolder = new (baseui.Folder)({ internal: ci, text: 'Component' }),
         li = new Layering({}),
         liFolder = new (baseui.Folder)({internal: li, text: 'Layering' }),
-        sti = new Styling({}),
-        stiFolder = new (baseui.Folder)({internal: sti, text: 'Style' }),
         si = new SelectionInfo({}),
         siFolder = new (baseui.Folder)({ internal: si, text: 'Position' }),
         vl = new VisualList({}),
         vlFolder = new (baseui.Folder)({ internal: vl, text: 'Content' });
     liFolder.setHtmlFlowing({});
     ciFolder.setHtmlFlowing({});
-    stiFolder.setHtmlFlowing({});
     vlFolder.setHtmlFlowing({});
     siFolder.setHtmlFlowing({});
     ciFolder.setExpanded(false);
     liFolder.setExpanded(false);
-    stiFolder.setExpanded(true);
     vlFolder.setExpanded(true);
     siFolder.setExpanded(true);
 
     this.addChild(ciFolder);
     this.addChild(liFolder);
     this.addChild(siFolder);
-    this.addChild(stiFolder);
     this.addChild(vlFolder);
 
     // setup the various panel items
     li.init(editor);
     ci.init(editor);
-    sti.init(editor);
     si.init(editor);
     vl.init(editor);
 

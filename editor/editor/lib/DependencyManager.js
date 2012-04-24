@@ -45,9 +45,35 @@ DependencyManager.prototype.getVisualList = function () {
 };
 
 /**
-    Returns all
+    Returns all available styles
+    {
+        factory:
+        type:
+        style: the name of the style
+    }
 */
 DependencyManager.prototype.getStyleList = function () {
+    var res = [];
+    forEach(this.visualList, function (v) {
+        var factory = v.factory,
+            l = require(factory),
+            type,
+            Constr,
+            theme;
+        if (l) {
+            type = v.type;
+            Constr = l[type];
+            if (Constr) {
+                theme = Constr.prototype.theme;
+                if (theme) {
+                    forEachProperty(theme, function (s, name) {
+                        res.push({ factory: factory, type: type, style: name});
+                    });
+                }
+            }
+        }
+    });
+    return res;
 };
 
 //////////////////
