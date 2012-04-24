@@ -28,9 +28,10 @@ Styling.init = function (editor) {
 };
 
 Styling.prototype.setData = function (st) {
-    var children = this.children,
+    var styleList = this.children.styleList,
+        styleListChildren = styleList.children,
         selected = null;
-    forEachProperty(children, function (ch) {
+    forEachProperty(styleListChildren, function (ch) {
         var data = ch.getEditedStyle();
         if (data.factory === st.factory && data.type === st.type && data.style === st.style) {
             selected = ch;
@@ -55,13 +56,22 @@ Styling.prototype.select = function (st) {
             this.selected.select(true);
         }
     }
+    this.updateStylePreview();
 };
-Styling.prototype.updateList = function (styleList) {
-    var that = this;
+Styling.prototype.updateStylePreview = function () {
+    if (this.selected) {
+        this.children.stylePreview.setStyle(this.selected.getEditedStyle());
+    } else {
+        this.children.stylePreview.setStyle(null);
+    }
+};
+Styling.prototype.updateList = function (list) {
+    var that = this,
+        styleList = this.children.styleList;
     function stringDiff(s1, s2) {
         return s1 < s2 ? -1 : (s1 > s2 ? 1 : 0);
     }
-    styleList.sort(function (s1, s2) {
+    list.sort(function (s1, s2) {
         var d = stringDiff(s1.factory, s2.factory);
         if (d === 0) {
             d = stringDiff(s1.type, s2.type);
@@ -72,17 +82,17 @@ Styling.prototype.updateList = function (styleList) {
         return d;
     });
     // clear all children
-    this.removeAllChildren();
+    styleList.removeAllChildren();
     // regenerate all children
-    forEach(styleList, function (st) {
+    forEach(list, function (st) {
         var ch = new StyleInfo({editedStyle: st});
         ch.setHtmlFlowing({position: 'relative'}, true);
-        that.addChild(ch);
+        styleList.addChild(ch);
         ch.on('click', function () {
             that.select(ch);
             that.emit('change', ch.getEditedStyle());
         });
     });
-    this.setDimensions([groups.Styling.dimensions[0], styleList.length * 60 + 10, 1]);
+    this.setDimensions([groups.Styling.dimensions[0], list.length * 60 + 10, 1]);
 };
 exports.Styling = Styling;

@@ -786,6 +786,167 @@ exports.definition = {
             children: {
             }
         },
+        StyleFeatureSelector: {
+            dimensions: [150, 120, 1],
+            positions: {
+                s: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 150, 0, 0, 0,  0, 120, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                tl: {
+                    type: "Position",
+                    order: 1,
+                    matrix: [ 22, 0, 0, 0,  0, 22, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                t: {
+                    type: "Position",
+                    order: 2,
+                    matrix: [ 82, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,  22, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                tr: {
+                    type: "Position",
+                    order: 3,
+                    matrix: [ 22, 0, 0, 0,  0, 22, 0, 0, 0, 0, 1, 0,   104, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                l: {
+                    type: "Position",
+                    order: 4,
+                    matrix: [ 22, 0, 0, 0,  0, 52, 0, 0, 0, 0, 1, 0,    0, 22, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                m: {
+                    type: "Position",
+                    order: 5,
+                    matrix: [ 82, 0, 0, 0,  0, 52, 0, 0, 0, 0, 1, 0,  22, 22, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                r: {
+                    type: "Position",
+                    order: 6,
+                    matrix: [ 22, 0, 0, 0,  0, 52, 0, 0, 0, 0, 1, 0,  104, 22, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                bl: {
+                    type: "Position",
+                    order: 7,
+                    matrix: [ 22, 0, 0, 0,  0, 22, 0, 0, 0, 0, 1, 0,  0, 74, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                b: {
+                    type: "Position",
+                    order: 8,
+                    matrix: [ 82, 0, 0, 0,  0, 22, 0, 0, 0, 0, 1, 0,  22, 74, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                br: {
+                    type: "Position",
+                    order: 9,
+                    matrix: [ 22, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0, 104, 74, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                txt: {
+                    type: "Position",
+                    order: 10,
+                    matrix: [ 35, 0, 0, 0,  0, 39, 0, 0,  0, 0, 1, 0, 27, 27, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+            },
+            children: {
+                s: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 's',
+                    config: {
+                        url: 'editor/lib/sp_s.png'
+                    }
+                },
+                tl: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'tl',
+                    config: {
+                        url: 'editor/lib/sp_tl.png'
+                    }
+                },
+                t: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 't',
+                    config: {
+                        url: 'editor/lib/sp_t.png'
+                    }
+                },
+                tr: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'tr',
+                    config: {
+                        url: 'editor/lib/sp_tr.png'
+                    }
+                },
+                l: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'l',
+                    config: {
+                        url: 'editor/lib/sp_l.png'
+                    }
+                },
+                m: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'm',
+                    config: {
+                        url: 'editor/lib/sp_m.png'
+                    }
+                },
+                r: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'r',
+                    config: {
+                        url: 'editor/lib/sp_r.png'
+                    }
+                },
+                bl: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'bl',
+                    config: {
+                        url: 'editor/lib/sp_bl.png'
+                    }
+                },
+                b: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'b',
+                    config: {
+                        url: 'editor/lib/sp_b.png'
+                    }
+                },
+                br: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'br',
+                    config: {
+                        url: 'editor/lib/sp_br.png'
+                    }
+                },
+                txt: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'txt',
+                    config: {
+                        url: 'editor/lib/sp_txt.png'
+                    }
+                }
+            }
+        },
         StyleInfo: {
             dimensions: [360, 60, 1],
             positions: {
@@ -829,30 +990,60 @@ exports.definition = {
                     position: "preview",
                     config: {
                     }
-                }  /*,
-                edit: {
-                    factory: "baseui",
-                    type: "Button",
-                    position: "edit",
-                    config: {
-                        text: 'edit'
-                    }
-                },
-                'delete': {
-                    factory: "baseui",
-                    type: "Button",
-                    position: "delete",
-                    config: {
-                        text: 'delete'
-                    }
-                } */
+                }
             }
         },
         Styling: {
             dimensions: [390, 100, 0],
             positions: {
+                styleFeature: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 150, 0, 0, 0,  0, 120, 0, 0,  0, 0, 1, 0,   15, 5, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                stylePreview: {
+                    type: "Position",
+                    order: 1,
+                    matrix: [ 150, 0, 0, 0,  0, 120, 0, 0,  0, 0, 1, 0,   180, 5, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleEdit : {
+                    type: "Position",
+                    order: 2,
+                    matrix: [ 340, 0, 0, 0,  0, 100, 0, 0, 0, 0, 0, 1, 0,   5, 130, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleList : {
+                    type: "Position",
+                    order: 3,
+                    matrix: [ 340, 0, 0, 0,  0, 120, 0, 0, 0, 0, 0, 1, 0,   160, 5, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
             },
             children: {
+                styleFeature: {
+                    factory: 'editor',
+                    type: 'StyleFeatureSelector',
+                    position: 'styleFeature',
+                    config: {
+                    }
+                },
+                stylePreview: {
+                    factory: 'domvisual',
+                    type: 'DOMElement',
+                    position: 'stylePreview',
+                    config: {
+
+                    }
+                },
+                styleList: {
+                    factory: 'domvisual',
+                    type: 'DOMElement',
+                    position: 'styleList',
+                    config: {
+                    }
+                }
             }
         },
         EmptyPosition: {
