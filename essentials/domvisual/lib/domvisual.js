@@ -214,8 +214,12 @@ DOMVisual.prototype.setOpacity = function (opacity) {
 DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
     repeat = repeat || 'repeat';
     var style = this.element.style;
-    style.backgroundImage = 'url(' + url + ')';
-    style.backgroundRepeat = 'repeat';
+    if (url !== null) {
+        style.backgroundImage = 'url(' + url + ')';
+        style.backgroundRepeat = 'repeat';
+    } else {
+        style.backgroundImage = null;
+    }
 };
 /**
     DOM update (we essentially treat the DOM as an output thing)
