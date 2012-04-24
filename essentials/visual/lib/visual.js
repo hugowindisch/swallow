@@ -192,6 +192,7 @@ Visual.prototype.setDimensions = function (v3) {
     setDirty(this, 'dimensions');
     // Keep all children in synch (in terms of position and matrix)
     this.applyLayout();
+    return this;
 };
 /**
     Sets the matrix.
@@ -201,12 +202,14 @@ Visual.prototype.setDimensions = function (v3) {
 Visual.prototype.setMatrix = function (m4) {
     this.matrix = m4;
     setDirty(this, 'matrix');
+    return this;
 };
 /**
     Sets a simple translation matrix.
 */
 Visual.prototype.setTranslationMatrix = function (pos) {
     this.setMatrix(glmatrix.mat4.create([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, pos[0], pos[1], pos[2], 1]));
+    return this;
 };
 /**
     Sets the matrix with a matrix that is normalized to scale a unity
@@ -282,6 +285,7 @@ Visual.prototype.setOpacity = function (opacity) {
     if (this.opacity !== prevOpacity) {
         setDirty(this, 'opacity');
     }
+    return this;
 };
 /**
     Returns the opacity of the visual.
@@ -311,6 +315,7 @@ Visual.prototype.setPosition = function (position) {
     if (parent && position !== null) {
         applyLayout(parent.dimensions, parent.layout, this);
     }
+    return this;
 };
 Visual.prototype.getPosition = function () {
     return this.position;
@@ -325,6 +330,7 @@ Visual.prototype.getPosition = function () {
 Visual.prototype.setLayout = function (groupData) {
     this.layout = new (position.Layout)(groupData.dimensions, groupData.positions);
     this.applyLayout();
+    return this;
 };
 Visual.prototype.getLayout = function () {
     return this.layout;
@@ -631,6 +637,7 @@ Visual.prototype.setConfiguration = function (config) {
             }
         });
     }
+    return this;
 };
 
 Visual.prototype.getSetFunctionName = function (name) {
@@ -666,6 +673,7 @@ Visual.prototype.setSkin = function (theme) {
     // this dirties at least our content
     themes.applySkin(this, theme);
     setDirty(this, 'style');
+    return this;
 };
 
 /**
@@ -677,6 +685,7 @@ Visual.prototype.setSkinStyle = function (styleName, style) {
     themes.applySkin(this, o);
     // this dirties our content
     setDirty(this, 'style');
+    return this;
 };
 
 /**
@@ -699,6 +708,7 @@ Visual.prototype.setStyle = function (style) {
         this.style = style;
         setDirty(this, 'style');
     }
+    return this;
 };
 
 /**

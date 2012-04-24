@@ -90,6 +90,7 @@ DOMVisual.prototype.setClass = function (cssClassName) {
         this.cssClasses[cssClassName] = true;
     }
     setDirty(this, 'style');
+    return this;
 };
 DOMVisual.prototype.clearClass = function (cssClassName) {
     if (this.cssClasses[cssClassName]) {
@@ -140,6 +141,7 @@ DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
         this.htmlFlowingApplySizing = applySizing;
         setDirty(this, 'matrix', 'dimensions');
     }
+    return this;
 };
 
 /**
@@ -152,6 +154,7 @@ DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
 DOMVisual.prototype.setChildrenClipping = function (mode) {
     this.childrenClipping = mode;
     setDirty(this, 'style');
+    return this;
 };
 
 /**
@@ -160,6 +163,7 @@ DOMVisual.prototype.setChildrenClipping = function (mode) {
 DOMVisual.prototype.setScroll = function (v3) {
     this.scroll = v3;
     setDirty(this, 'style');
+    return this;
 };
 
 /**
@@ -170,6 +174,7 @@ DOMVisual.prototype.setVisible = function (visible) {
         this.visible = visible;
         setDirty(this, 'dimensions');
     }
+    return this;
 };
 DOMVisual.prototype.getVisible = function () {
     return this.visible;
@@ -180,6 +185,7 @@ DOMVisual.prototype.getVisible = function () {
 */
 DOMVisual.prototype.setCursor = function (cursor) {
     this.element.style.cursor = cursor;
+    return this;
 };
 
 /**
@@ -199,6 +205,7 @@ DOMVisual.prototype.setTransition = function (
         easingFunction: easingFunction || 'easein'
     };
     setDirty(this, 'matrix');
+    return this;
 };
 DOMVisual.prototype.clearTransition = function () {
     // force update
@@ -210,6 +217,7 @@ DOMVisual.prototype.clearTransition = function () {
 DOMVisual.prototype.setOpacity = function (opacity) {
     this.opacity = opacity;
     setDirty(this, 'matrix');
+    return this;
 };
 DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
     repeat = repeat || 'repeat';
@@ -220,6 +228,7 @@ DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
     } else {
         style.backgroundImage = null;
     }
+    return this;
 };
 /**
     DOM update (we essentially treat the DOM as an output thing)
@@ -458,6 +467,7 @@ DOMVisual.prototype.setInnerHTML = function (html) {
     this.removeAllChildren();
     this.element.innerHTML = html;
     setDirty(this, 'matrix', 'dimensions', 'style');
+    return this;
 };
 
 /**
@@ -468,6 +478,7 @@ DOMVisual.prototype.setInnerText = function (text) {
     this.element.innerHTML = '';
     this.element.appendChild(document.createTextNode(text));
     setDirty(this, 'matrix', 'dimensions', 'style');
+    return this;
 };
 
 /**
@@ -478,6 +489,7 @@ DOMVisual.prototype.setElementAttributes = function (attr) {
     forEachProperty(attr, function (v, n) {
         element.setAttribute(String(n), String(v));
     });
+    return this;
 };
 
 
@@ -505,7 +517,7 @@ DOMImg.createPreview = function () {
 
 DOMImg.prototype.setUrl = function (url) {
     this.element.src = url;
-    //setDirty(this, 'content');
+    return this;
 };
 DOMImg.prototype.getConfigurationSheet = function () {
     return {
@@ -527,7 +539,7 @@ DOMVideo.createPreview = function () {
 
 DOMVideo.prototype.setUrl = function (url) {
     this.element.src = url;
-    //setDirty(this, 'content');
+    return this;
 };
 DOMVideo.prototype.getConfigurationSheet = function () {
     return {
@@ -546,6 +558,7 @@ function DOMInput(config) {
 DOMInput.prototype = new DOMVisual();
 DOMInput.prototype.setType = function (type) {
     this.element.type = type;
+    return this;
 };
 DOMInput.prototype.getType = function () {
     return this.element.type;
@@ -557,6 +570,7 @@ DOMInput.prototype.setText = function (text) {
         text = String(text);
     }
     this.element.value = text;
+    return this;
 };
 DOMInput.prototype.setValue = DOMInput.prototype.setText;
 DOMInput.prototype.getText = function () {
@@ -568,6 +582,7 @@ DOMInput.prototype.enable = function (enable) {
 };
 DOMInput.prototype.setChecked = function (state) {
     this.element.checked = state;
+    return this;
 };
 DOMInput.prototype.getChecked = function (state) {
     return this.element.checked === true;
@@ -592,9 +607,11 @@ DOMSelect.prototype.setOptions = function (options) {
         c = this.addHtmlChild('option', options[i], {}, i);
         c.setElementAttributes({ value: i});
     }
+    return this;
 };
 DOMSelect.prototype.setSelectedIndex = function (n) {
     this.element.selectedIndex = n;
+    return this;
 };
 DOMSelect.prototype.getSelectedIndex = function () {
     return this.element.selectedIndex;
@@ -607,6 +624,7 @@ DOMSelect.prototype.setSelectedOption = function (o) {
         }
     });
     this.setSelectedIndex(index);
+    return this;
 };
 DOMSelect.prototype.getSelectedOption = function () {
     var index = this.getSelectedIndex(),
@@ -633,9 +651,11 @@ DOMCanvas.prototype = new DOMVisual();
 
 DOMCanvas.prototype.setWidth = function (w) {
     this.element.setAttribute('width', w);
+    return this;
 };
 DOMCanvas.prototype.setHeight = function (h) {
     this.element.setAttribute('height', h);
+    return this;
 };
 DOMCanvas.prototype.getContext2D = function () {
     // return the 2d context
