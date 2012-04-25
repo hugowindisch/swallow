@@ -947,6 +947,40 @@ exports.definition = {
                 }
             }
         },
+        StylePreview: {
+            dimensions: [150, 120, 1],
+            positions: {
+                background: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 150, 0, 0, 0,  0, 120, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                },
+                preview: {
+                    type: "Position",
+                    order: 1,
+                    matrix: [ 76, 0, 0, 0,  0, 60, 0, 0, 0, 0, 1, 0,   37, 30, 0, 1],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                }
+            },
+            children: {
+                background: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    position: 'background',
+                    config: {
+                        url: 'editor/lib/previewbg.png'
+                    }
+                },
+                preview: {
+                    factory: 'domvisual',
+                    type: 'DOMElement',
+                    position: 'preview',
+                    config: {
+                    }
+                }
+            }
+        },
         StyleInfo: {
             dimensions: [360, 60, 1],
             positions: {
@@ -1030,8 +1064,8 @@ exports.definition = {
                     }
                 },
                 stylePreview: {
-                    factory: 'domvisual',
-                    type: 'DOMElement',
+                    factory: 'editor',
+                    type: 'StylePreview',
                     position: 'stylePreview',
                     config: {
 

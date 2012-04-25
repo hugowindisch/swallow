@@ -60,9 +60,9 @@ Styling.prototype.select = function (st) {
 };
 Styling.prototype.updateStylePreview = function () {
     if (this.selected) {
-        this.children.stylePreview.setStyle(this.selected.getEditedStyle());
+        this.children.stylePreview.setEditedStyle(this.selected.getEditedStyle());
     } else {
-        this.children.stylePreview.setStyle(null);
+        this.children.stylePreview.setEditedStyle(null);
     }
 };
 Styling.prototype.updateList = function (list) {

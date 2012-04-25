@@ -215,6 +215,7 @@ exports.Layering = require('./Layering').Layering;
 exports.LayerInfo = require('./LayerInfo').LayerInfo;
 exports.Styling = require('./Styling').Styling;
 exports.StyleInfo = require('./StyleInfo').StyleInfo;
+exports.StylePreview = require('./StylePreview').StylePreview;
 exports.StyleFeatureSelector = require('./StyleFeatureSelector').StyleFeatureSelector;
 exports.Panel = require('./Panel').Panel;
 
