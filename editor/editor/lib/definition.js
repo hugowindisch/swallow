@@ -1000,30 +1000,30 @@ exports.definition = {
                 clear: {
                     type: "Position",
                     order: 0,
-                    matrix: [ 100, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   240, 0, 0, 1],
+                    matrix: [ 100, 0, 0, 0,  0, 32, 0, 0,  0, 0, 1, 0,   240, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 radiusLabel: {
                     type: "Position",
                     order: 0,
-                    matrix: [ 100, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 50, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 radiusValue: {
                     type: "Position",
                     order: 0,
-                    matrix: [ 100, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   105, 30, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 50, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 radiusSlider: {
                     type: "Position",
                     order: 0,
-                    matrix: [ 130, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   210, 30, 0, 1],
+                    matrix: [ 210, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 50, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
             children: {
-/*                label: {
+                label: {
                     factory: "baseui",
                     type: "Label",
                     position: "label",
@@ -1045,14 +1045,14 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "radiusValue",
-                    config: { value: "0"}
+                    config: { text: "0"}
                 },
                 radiusSlider: {
                     factory: "baseui",
                     type: "Slider",
                     position: "radiusSlider",
-                    config: { value: 0 }
-                }*/
+                    config: { value: 0, minValue: 0, maxValue: 50 }
+                }
             }
         },
         StyleSettingBorder: {
@@ -1147,13 +1147,13 @@ exports.definition = {
                 styleEdit : {
                     type: "Position",
                     order: 2,
-                    matrix: [ 340, 0, 0, 0,  0, 100, 0, 0, 0, 0, 0, 1, 0,   5, 130, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 styleList : {
                     type: "Position",
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 120, 0, 0, 0, 0, 0, 1, 0,   160, 5, 0, 1],
+                    matrix: [ 340, 0, 0, 0,   0, 120, 0, 0,   0, 0, 1, 0,   160, 250, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
             },

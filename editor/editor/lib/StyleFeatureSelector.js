@@ -11,6 +11,10 @@ var visual = require('visual'),
     glmatrix = require('glmatrix'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
+
+function featureUrl(feature, selected) {
+    return 'editor/lib/sp_' + feature + (selected ? '_s.png' : '.png');
+}
 function StyleFeatureSelector(config) {
     var that = this,
         children;
@@ -19,8 +23,9 @@ function StyleFeatureSelector(config) {
     children = this.children;
     function toggleChild() {
         var n = this.name;
-        this.selected = !this.selected;
-        this.setUrl('editor/lib/sp_' + n + (this.selected ? '_s.png' : '.png'));
+        this.selected = true;
+        this.setUrl(featureUrl(n, true));
+        that.emit('select', n);
     }
     forEachProperty(children, function (c) {
         c.on('click', toggleChild);
@@ -32,15 +37,10 @@ StyleFeatureSelector.prototype.getConfigurationSheet = function () {
     return { editedStyle: null };
 };
 StyleFeatureSelector.prototype.setEditedStyle = function (st) {
-/*    var children = this.children,
-        preview = children.preview;
-
-    preview.setStyle(st);
-    preview.setInnerText(st.style);
-    this.editedStyle = st;*/
-};
-StyleFeatureSelector.prototype.getEditedStyle = function () {
-//    return this.editedStyle;
+    var children = this.children;
+    forEachProperty(children, function (ch, name) {
+        ch.setUrl(featureUrl(name, Boolean(st[name])));
+    });
 };
 
 exports.StyleFeatureSelector = StyleFeatureSelector;
