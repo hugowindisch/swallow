@@ -981,13 +981,115 @@ exports.definition = {
                 }
             }
         },
+        StylePicker: {
+            dimensions: [340, 100, 1],
+            positions: {
+            },
+            children: {
+            }
+        },
+        StyleSettingCorner: {
+            dimensions: [340, 100, 1],
+            positions: {
+                label: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 200, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                clear: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 100, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   240, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                radiusLabel: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 100, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                radiusValue: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 100, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   105, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                radiusSlider: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 130, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   210, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+            },
+            children: {
+/*                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "label",
+                    config: { text: "Corner"}
+                },
+                clear: {
+                    factory: "baseui",
+                    type: "Button",
+                    position: "clear",
+                    config: { text: "Clear"}
+                },
+                radiusLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "radiusLabel",
+                    config: { text: "Radius:"}
+                },
+                radiusValue: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "radiusValue",
+                    config: { value: "0"}
+                },
+                radiusSlider: {
+                    factory: "baseui",
+                    type: "Slider",
+                    position: "radiusSlider",
+                    config: { value: 0 }
+                }*/
+            }
+        },
+        StyleSettingBorder: {
+            dimensions: [340, 100, 1],
+            positions: {
+            },
+            children: {
+            }
+        },
+        StyleSettingBackground: {
+            dimensions: [340, 100, 1],
+            positions: {
+            },
+            children: {
+            }
+        },
+        StyleSettingText: {
+            dimensions: [340, 100, 1],
+            positions: {
+            },
+            children: {
+            }
+        },
+        StyleSettingShadow: {
+            dimensions: [340, 100, 1],
+            positions: {
+            },
+            children: {
+            }
+        },
         StyleInfo: {
             dimensions: [360, 60, 1],
             positions: {
                 selectionBox: {
                     type: "Position",
                     order: 0,
-                    matrix: [ 350, 0, 0, 0,  0, 45, 0, 0, 0, 0, 0, 1, 0,   0, 0, 0, 1],
+                    matrix: [ 350, 0, 0, 0,  0, 45, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 preview: {

@@ -216,6 +216,12 @@ exports.LayerInfo = require('./LayerInfo').LayerInfo;
 exports.Styling = require('./Styling').Styling;
 exports.StyleInfo = require('./StyleInfo').StyleInfo;
 exports.StylePreview = require('./StylePreview').StylePreview;
+exports.StylePicker = require('./StylePicker').StylePicker;
+exports.StyleSettingCorner = require('./StyleSettingCorner').StyleSettingCorner;
+exports.StyleSettingBorder = require('./StyleSettingBorder').StyleSettingBorder;
+exports.StyleSettingBackground = require('./StyleSettingBackground').StyleSettingBackground;
+exports.StyleSettingText = require('./StyleSettingText').StyleSettingText;
+exports.StyleSettingShadow = require('./StyleSettingShadow').StyleSettingShadow;
 exports.StyleFeatureSelector = require('./StyleFeatureSelector').StyleFeatureSelector;
 exports.Panel = require('./Panel').Panel;
 
