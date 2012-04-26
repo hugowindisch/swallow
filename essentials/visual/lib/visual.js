@@ -668,11 +668,31 @@ Visual.prototype.getConfigurationSheet = function (config) {
     Applies a skin (a per-instance theme).
     This is intentionally named setTheme, allowing the 'config' system to
     setup the skin.
+
+    Note: the difference between this and setLocalTheme is that setSkin
+    only copies styles that exit in the normal theme and that defaults
+    all styles to the existing theme.
 */
 Visual.prototype.setSkin = function (theme) {
     // this dirties at least our content
     themes.applySkin(this, theme);
-    setDirty(this, 'style');
+    forVisualAndAllChildrenDeep(this, function (v) {
+        setDirty(v, 'style');
+    });
+    return this;
+};
+
+/**
+    Applies a skin (a per-instance theme).
+    This is intentionally named setTheme, allowing the 'config' system to
+    setup the skin.
+*/
+Visual.prototype.setLocalTheme = function (theme) {
+    // this dirties at least our content
+    this.theme = theme;
+    forVisualAndAllChildrenDeep(this, function (v) {
+        setDirty(v, 'style');
+    });
     return this;
 };
 

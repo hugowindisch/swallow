@@ -19,9 +19,7 @@ function StyleSettingCorner(config) {
     children.radiusSlider.on('change', function (v, sliding) {
         that.editedFeature.radius = v;
         that.updateInput();
-        if (!sliding) {
-            that.emit('change', that.feature, that.editedFeature);
-        }
+        that.emit(sliding ? 'preview' : 'change', that.feature, that.editedFeature);
     });
     children.radiusValue.on('change', function (v) {
         var n = limitRange(this.getValue(), 0, 1000);

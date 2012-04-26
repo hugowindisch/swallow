@@ -75,6 +75,9 @@ function Styling(config) {
             styleEdit.on('change', function (feature, value) {
                 that.setLocalStyleFeature(feature, value);
             });
+            styleEdit.on('preview', function (feature, value) {
+                that.previewLocalStyleFeature(feature, value);
+            });
             styleEdit.on('reset', function (feat) {
                 feature.clearFeatureHighlight(feat);
                 that.removeChild(styleEdit);
@@ -95,6 +98,7 @@ Styling.prototype.clearLocalStyleFeature = function (feature) {
     }
     var group = this.editor.getViewer().getGroup();
     group.doCommand(group.cmdSetStyleFeature(this.editedStyle, feature, null));
+    this.updateStylePreview();
 };
 Styling.prototype.setLocalStyleFeature = function (feature, value) {
     if (!isString(this.editedStyle)) {
@@ -102,11 +106,13 @@ Styling.prototype.setLocalStyleFeature = function (feature, value) {
     }
     var group = this.editor.getViewer().getGroup();
     group.doCommand(group.cmdSetStyleFeature(this.editedStyle, feature, value));
+    this.updateStylePreview();
 };
 Styling.prototype.previewLocalStyleFeature = function (feature, value) {
     if (!isString(this.editedStyle)) {
         throw new Error('local style expected');
     }
+    this.updateStylePreview();
 };
 
 Styling.prototype.setEditor = function (editor) {
@@ -132,6 +138,19 @@ Styling.prototype.updateFeatureSelector = function () {
     styleFeature.setStyleData(this.localStyle);
 };
 
+Styling.prototype.updateStylePreview = function () {
+    var group = this.editor.getViewer().getGroup(),
+        es = this.editedStyle,
+        miniTheme = {};
+
+    miniTheme[es] = deepCopy(group.documentData.theme[es]);
+    this.children.stylePreview.setStyleData(
+        this.editedStyle,
+        miniTheme
+    );
+
+};
+
 Styling.prototype.setData = function (st) {
     var group = this.editor.getViewer().getGroup();
     //this.localStyle = group.documentData.theme[this.editeStyle];
@@ -150,7 +169,7 @@ Styling.prototype.setData = function (st) {
 
 // this is bad... we should hook this to the groupviewer and make it usurpate the
     // udpate the style preview
-//    this.updateStylePreview();
+    this.updateStylePreview();
 
 /*
     var styleList = this.children.styleList,
