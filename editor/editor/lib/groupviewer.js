@@ -763,6 +763,9 @@ GroupViewer.prototype.previewSelectionOpacity = function (opacity) {
         }
     });
 };
+GroupViewer.prototype.previewStyleChange = function (skin) {
+    this.children.visuals.setSkin(skin);
+};
 GroupViewer.prototype.getPositionRect = function (name) {
     var pos = this.documentData.positions[name],
         res;

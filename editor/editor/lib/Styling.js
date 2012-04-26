@@ -109,10 +109,15 @@ Styling.prototype.setLocalStyleFeature = function (feature, value) {
     this.updateStylePreview();
 };
 Styling.prototype.previewLocalStyleFeature = function (feature, value) {
+    var skin = {};
     if (!isString(this.editedStyle)) {
         throw new Error('local style expected');
     }
     this.updateStylePreview();
+    skin[this.editedStyle] = deepCopy(this.localStyle);
+    skin[this.editedStyle].jsData[feature] = value;
+
+    this.editor.getViewer().previewStyleChange(skin);
 };
 
 Styling.prototype.setEditor = function (editor) {
