@@ -23,8 +23,6 @@ function StyleFeatureSelector(config) {
     children = this.children;
     function toggleChild() {
         var n = this.name;
-        this.selected = true;
-        this.setUrl(featureUrl(n, true));
         that.emit('select', n);
     }
     forEachProperty(children, function (c) {
@@ -36,16 +34,23 @@ StyleFeatureSelector.prototype = new (domvisual.DOMElement)();
 StyleFeatureSelector.prototype.getConfigurationSheet = function () {
     return { editedStyle: null };
 };
-StyleFeatureSelector.prototype.setEditedStyle = function (st) {
-    // cannot work
-/*    var children = this.children;
+StyleFeatureSelector.prototype.setStyleData = function (st) {
+    var jsData = {},
+        children = this.children;
+    if (st && st.jsData) {
+        jsData = st.jsData;
+    }
     forEachProperty(children, function (ch, name) {
-        ch.setUrl(featureUrl(name, Boolean(st[name])));
-    });*/
+        ch.setUrl(featureUrl(name, Boolean(jsData[name])));
+    });
 };
 StyleFeatureSelector.prototype.clearFeatureHighlight = function (feature) {
     var children = this.children;
     children[feature].setUrl(featureUrl(feature, false));
+};
+StyleFeatureSelector.prototype.setFeatureHighlight = function (feature) {
+    var children = this.children;
+    children[feature].setUrl(featureUrl(feature, true));
 };
 
 exports.StyleFeatureSelector = StyleFeatureSelector;

@@ -5,6 +5,8 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
+    utils = require('utils'),
+    limitRange = utils.limitRange,
     glmatrix = require('glmatrix'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
@@ -24,16 +26,9 @@ ComponentInfo.prototype.init = function (editor) {
     function updateDoc() {
         var group = viewer.getGroup(),
             documentData = group.documentData,
-            gridSize = Number(children.grid.getValue());
-        if (isNaN(gridSize)) {
-            gridSize = 8;
-        } else if (gridSize > 64) {
-            gridSize = 64;
-        } else if (gridSize < 2) {
-            gridSize = 2;
-        }
+            gridSize = limitRange(children.grid.getValue(), 2, 64, 8);
         group.doCommand(group.cmdSetComponentProperties(
-            [children.w.getText(), children.h.getText(), 1],
+            [limitRange(children.w.getText(), 1, 100000), limitRange(children.h.getText(), 1, 10000), 1],
             children.description.getText(),
             children.privateCheck.getChecked(),
             gridSize

@@ -3,7 +3,7 @@
 
         A bunch of javascript utilities.
 
-    Copyright (c) Hugo Windisch 2012 All Rights Reserved    
+    Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 function forEachProperty(object, f) {
     var p;
@@ -52,7 +52,7 @@ function isFunction(f) {
 function deepCopy(o) {
     var res, i, l, v;
     switch (typeOf(o)) {
-    case 'object': 
+    case 'object':
         res = {};
         forEachProperty(o, function (p, n) {
             res[n] = deepCopy(p);
@@ -72,6 +72,17 @@ function deepCopy(o) {
         return o;
     }
 }
+function limitRange(n, minN, maxN, ifNaN) {
+    n = Number(n);
+    if (isNaN(n)) {
+        n = (ifNaN === undefined) ? minN : ifNaN;
+    } else if (n < minN) {
+        n = minN;
+    } else if (n > maxN) {
+        n = maxN;
+    }
+    return n;
+}
 exports.forEachProperty = forEachProperty;
 exports.forEach = forEach;
 exports.typeOf = typeOf;
@@ -81,4 +92,4 @@ exports.isArray = isArray;
 exports.isObject = isObject;
 exports.isFunction = isFunction;
 exports.deepCopy = deepCopy;
-
+exports.limitRange = limitRange;

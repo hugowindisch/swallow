@@ -34,6 +34,10 @@ var visual = require('visual'),
 
     };
 
+function isLocalStyle(st) {
+    return isString(st);
+}
+
 /*
     Let's directly use this as style names
     s, tl
@@ -65,7 +69,7 @@ function Styling(config) {
         }
         if (f) {
             styleEdit = new (f.FeatureEditor)(f.config);
-            styleEdit.setEditedStyle(that.editedStyle);
+            styleEdit.setStyleData(that.localStyle);
             that.addChild(styleEdit, 'styleEdit');
             styleEdit.setPosition('styleEdit');
             styleEdit.on('change', function (feature, value) {
@@ -76,6 +80,8 @@ function Styling(config) {
                 that.removeChild(styleEdit);
                 that.clearLocalStyleFeature(feat);
             });
+            // make sure the thing is highlighted
+            feature.setFeatureHighlight(featureName);
         }
     });
 }
@@ -108,25 +114,51 @@ Styling.prototype.setEditor = function (editor) {
 };
 
 Styling.prototype.makeLocalStyle = function () {
-    var group = this.editor.getViewer().getGroup();
+    var group = this.editor.getViewer().getGroup(), editedStyle;
     // if the currently edited style is not a local style
-    if (!isString(this.editedStyle)) {
-        this.editedStyle = group.getUniqueStyleName();
+    if (!isLocalStyle(this.editedStyle)) {
+        editedStyle = group.getUniqueStyleName();
         // add the style
-        group.doCommand(group.cmdAddStyle(this.editedStyle));
+        group.doCommand(group.cmdAddStyle(editedStyle));
+        // set the data
+        this.setData(editedStyle);
         // change the current style
-        this.emit('change', this.editedStyle);
+        this.emit('change', editedStyle);
     }
 };
 
+Styling.prototype.updateFeatureSelector = function () {
+    var styleFeature = this.children.styleFeature;
+    styleFeature.setStyleData(this.localStyle);
+};
+
 Styling.prototype.setData = function (st) {
+    var group = this.editor.getViewer().getGroup();
+    //this.localStyle = group.documentData.theme[this.editeStyle];
+
+    // this is a style as in (factory, type, style)
+    this.editedStyle = st;
+    // if the style is a local style
+    if (isLocalStyle(this.editedStyle)) {
+        this.localStyle = group.documentData.theme[this.editedStyle];
+    } else {
+        delete this.localStyle;
+    }
+
+    // update the feature selector
+    this.updateFeatureSelector();
+
+// this is bad... we should hook this to the groupviewer and make it usurpate the
+    // udpate the style preview
+//    this.updateStylePreview();
+
+/*
     var styleList = this.children.styleList,
         styleListChildren = styleList.children,
         selected = null;
 
-    // this is a style as in (factory, type, style)
-    this.editedStyle = st;
-/*    forEachProperty(styleListChildren, function (ch) {
+
+    forEachProperty(styleListChildren, function (ch) {
         var data = ch.getEditedStyle();
         if (data.factory === st.factory && data.type === st.type && data.style === st.style) {
             selected = ch;
@@ -158,14 +190,14 @@ Styling.prototype.select = function (st) {
     this.updateStylePreview();
 };
 */
-Styling.prototype.updateStylePreview = function () {
+/*Styling.prototype.updateStylePreview = function () {
     this.children.stylePreview.setEditedStyle(this.selectedStyle);
-/*    if (this.selectedStyle) {
+    if (this.selectedStyle) {
         this.children.stylePreview.setEditedStyle(this.selected.getEditedStyle());
     } else {
         this.children.stylePreview.setEditedStyle(null);
-    } */
-};
+    }
+};*/
 /*Styling.prototype.updateList = function (list) {
     var that = this,
         styleList = this.children.styleList;

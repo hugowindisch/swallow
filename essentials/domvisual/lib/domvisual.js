@@ -362,6 +362,8 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
         jsData = styleData.jsData;
         v = jsData.tl;
         if (v) {
+            // fake
+            style.backgroundColor = 'red';
             style.webkitBorderTopLeftRadius =
                 style.mozBorderRadiusTopleft =
                 style.borderTopLeftRadius = v.radius + 'px';

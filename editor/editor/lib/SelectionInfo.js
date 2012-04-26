@@ -7,6 +7,7 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups,
     glmatrix = require('glmatrix'),
     utils = require('utils'),
+    limitRange = utils.limitRange,
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEach,
     isNumber = utils.isNumber,
@@ -56,7 +57,7 @@ SelectionInfo.prototype.init = function (editor) {
             children.opacitySlider.setValue(100);
             children.opacityInput.setValue('');
         } else {
-            children.opacityInput.setValue(opacity * 100);
+            children.opacityInput.setValue(Math.round(opacity * 100));
             children.opacitySlider.setValue(opacity * 100);
         }
     }
@@ -71,21 +72,15 @@ SelectionInfo.prototype.init = function (editor) {
         return n;
     }
     function selectionBoxChanged() {
-        var x = toNumber(children.x.getText()),
-            y = toNumber(children.y.getText()),
-            w = toNumber(children.w.getText()),
-            h = toNumber(children.h.getText()),
+        var x = limitRange(children.x.getText(), -10000, 10000),
+            y = limitRange(children.y.getText(), -10000, 10000),
+            w = limitRange(children.w.getText(), -10000, 10000),
+            h = limitRange(children.h.getText(), -10000, 10000),
             selRect = viewer.getSelectionRect(),
             transform = mat4.identity(),
             selection = viewer.getSelection(),
             group = viewer.getGroup(),
             cg;
-        if (w < 1) {
-            w = 1;
-        }
-        if (h < 1) {
-            h = 1;
-        }
 
         mat4.translate(transform, [x, y, 0]);
         mat4.scale(transform, [w / (selRect[1][0] - selRect[0][0]), h / (selRect[1][1] - selRect[0][1]), 1]);
@@ -137,13 +132,8 @@ SelectionInfo.prototype.init = function (editor) {
             viewer.setSelectionOpacity(v / 100);
         }
     });
-    children.opacityInput.on('change', function (v) {
-        var opacity = Number(v);
-        if (opacity < 0) {
-            opacity = 0;
-        } else if (opacity > 100) {
-            opacity = 100;
-        }
+    children.opacityInput.on('change', function () {
+        var opacity = limitRange(children.opacityInput.getValue(), 0, 100);
         children.opacitySlider.setValue(opacity);
         viewer.setSelectionOpacity(opacity / 100);
 

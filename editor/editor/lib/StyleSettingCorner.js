@@ -6,6 +6,7 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups,
     glmatrix = require('glmatrix'),
     utils = require('utils'),
+    limitRange = utils.limitRange,
     deepCopy = utils.deepCopy,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
@@ -15,18 +16,18 @@ function StyleSettingCorner(config) {
     domvisual.DOMElement.call(this, config, groups.StyleSettingCorner);
     var children = this.children,
         that = this;
-    function getFeatureValue() {
-        return { radius: children.radiusValue.getValue() };
-    }
     children.radiusSlider.on('change', function (v, sliding) {
-        children.radiusValue.setValue(v);
+        that.editedFeature.radius = v;
+        that.updateInput();
         if (!sliding) {
-            that.emit('change', that.feature, getFeatureValue());
+            that.emit('change', that.feature, that.editedFeature);
         }
     });
     children.radiusValue.on('change', function (v) {
-        that.emit('change', Number(this.getValue()));
-        that.emit('change', that.feature, getFeatureValue());
+        var n = limitRange(this.getValue(), 0, 1000);
+        that.editedFeature.radius = n;
+        that.updateSlider();
+        that.emit('change', that.feature, that.editedFeature);
     });
     children.clear.on('click', function () {
         that.emit('reset', that.feature);
@@ -42,14 +43,27 @@ StyleSettingCorner.prototype.setLabel = function (txt) {
 StyleSettingCorner.prototype.setFeature = function (feature) {
     this.feature = feature;
 };
-StyleSettingCorner.prototype.setEditedStyle = function (st) {
+StyleSettingCorner.prototype.setStyleData = function (st) {
+    var children = this.children,
+        editedFeature;
     if (st) {
-        this.editedFeature = deepCopy(st[this.feature]);
-        if (!this.editedFeature) {
-            this.editedFeature = {};
+        editedFeature = deepCopy(st.jsData[this.feature]);
+        if (!editedFeature) {
+            editedFeature = { radius: 0 };
         }
     } else {
-        this.editedFeature = {};
+        editedFeature = { radius: 0 };
     }
+    this.editedFeature = editedFeature;
+    this.updateSlider();
+    this.updateInput();
 };
+
+StyleSettingCorner.prototype.updateSlider = function () {
+    this.children.radiusSlider.setValue(this.editedFeature.radius);
+};
+StyleSettingCorner.prototype.updateInput = function () {
+    this.children.radiusValue.setValue(Number(this.editedFeature.radius).toFixed(1));
+};
+
 exports.StyleSettingCorner = StyleSettingCorner;
