@@ -803,6 +803,8 @@ GroupViewer.prototype.setGroup = function (group) {
     this.documentData = documentData;
     function onDo(name, message, hint) {
         switch (name) {
+        case 'cmdAddStyle':
+            return;
         case 'cmdAddPosition':
             that.clearSelection();
             that.addToSelection(hint.name);
@@ -897,6 +899,7 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
             dimensions: documentData.dimensions,
             children: {},
             positions: {},
+            theme: deepCopy(documentData.theme)
         };
     forEachProperty(documentData.positions, function (pos, name) {
         var c = children[name];
@@ -967,6 +970,7 @@ GroupViewer.prototype.updateAll = function () {
         zoomMat = mat4.create(this.zoomStack[this.zoomStack.length - 1]),
         zoomTranslate,
         zoomMatNoTranslate = mat4.create(zoomMat),
+        displayableDocumentData = this.getDisplayableDocumentData(),
         extendedDimensions = vec3.create(this.documentData.dimensions);
 
     // remove the translation from the zoom matrix
@@ -991,10 +995,10 @@ GroupViewer.prototype.updateAll = function () {
     // regenerate content
     children.visuals.removeAllChildren();
     //children.decorations.removeAllChildren();
-    // children
+    children.visuals.theme = displayableDocumentData.theme;
     children.visuals.setPosition(null);
     try {
-        children.visuals.createGroup(this.getDisplayableDocumentData());
+        children.visuals.createGroup(displayableDocumentData);
     } catch (e) {
         // FIXME: this is wrong... because... the components we depend
         // on are not necessarily already loaded...

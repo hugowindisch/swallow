@@ -22,7 +22,7 @@ ConfigurationSheet.prototype.getConfigurationSheet = function () {
 };
 /**
     The configuration sheet
-    
+
     {
         label: 'abc',
         factory,
@@ -55,8 +55,8 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
     }
 
     sheet = vis.getConfigurationSheet();
-    this.selectedName = selectedName;   
-    this.removeAllChildren(); 
+    this.selectedName = selectedName;
+    this.removeAllChildren();
     forEachProperty(sheet, function (it, name) {
         if (it) {
             toLoad.push({name: name, fcn: it});
@@ -89,7 +89,7 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
             that.addChild(c, toLoad[i].name);
         }
     }
-    
+
     function getOnLoad(n) {
         return function (err, ctrl) {
             var i,
@@ -102,16 +102,16 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
             loading -= 1;
             if (loading === 0) {
                 createControls();
-                // append all our children            
+                // append all our children
                 cbWhenReady(err, that.getComputedDimensions());
             }
         };
     }
-    
+
     loading = toLoad.length;
     l = loading;
     for (i = 0; i < l; i += 1) {
-        toLoad[i].fcn(editor.getDocInfo(), getOnLoad(i));
+        toLoad[i].fcn(editor, getOnLoad(i));
     }
 
 };

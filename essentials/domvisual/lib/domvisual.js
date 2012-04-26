@@ -344,16 +344,46 @@ DOMVisual.prototype.updateChildrenOrderRepresentation = function () {
 DOMVisual.prototype.updateStyleRepresentation = function () {
     var cssClass,
         element = this.element,
+        styleData,
+        jsData,
+        v,
         style;
     if (element) {
-        cssClass = this.getStyleData().join(' ');
-        //console.log('updateStyleRepresentation ' + this.name + ' ' + this.style + ' ' + cssClass);
+        styleData = this.getStyleData();
+        // retrieve the css classes that apply
+        cssClass = styleData.data.join(' ');
         style = element.style;
         forEachProperty(this.cssClasses, function (c, name) {
             cssClass += ' ';
             cssClass += name;
         });
         element.setAttribute('class', cssClass);
+        // interpret the jsData
+        jsData = styleData.jsData;
+        v = jsData.tl;
+        if (v) {
+            style.webkitBorderTopLeftRadius =
+                style.mozBorderRadiusTopleft =
+                style.borderTopLeftRadius = v.radius + 'px';
+        }
+        v = jsData.tr;
+        if (v) {
+            style.webkitBorderTopRightRadius =
+                style.mozBorderRadiusTopright =
+                style.borderTopRightRadius = v.radius + 'px';
+        }
+        v = jsData.bl;
+        if (v) {
+            style.webkitBorderBottomLeftRadius =
+                style.mozBorderRadiusBottomleft =
+                style.borderBottomLeftRadius = v.radius + 'px';
+        }
+        v = jsData.br;
+        if (v) {
+            style.webkitBorderBottomRightRadius =
+                style.mozBorderRadiusBottomright =
+                style.borderBottomRightRadius = v.radius + 'px';
+        }
     }
 };
 DOMVisual.prototype.updateOpacityRepresentation = function () {

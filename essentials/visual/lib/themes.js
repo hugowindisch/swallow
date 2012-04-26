@@ -1,6 +1,6 @@
 /**
     themes.js
-    
+
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 
@@ -13,7 +13,7 @@
         basedOn: [
             // take the line styles from here
             { factory: xxx, type:, style: stylename }
-            
+
         ],
         data: [ "cssThing1", "cssThing2" ]
     }
@@ -47,7 +47,7 @@ function bindStyle(style) {
                         bindings.push({theme: t, style: dep.style});
                     }
                 } else {
-                    throw new Error('unresolved constructor ' + dep.type + ' in ' + dep.factory);                    
+                    throw new Error('unresolved constructor ' + dep.type + ' in ' + dep.factory);
                 }
             } else {
                 throw new Error('unresolved module ' + dep.factory);
@@ -65,6 +65,10 @@ function applyTheme(toTheme, fromTheme, all) {
 }
 
 function Theme(themeData) {
+    // support null theme data by returning a null theme.
+    if (themeData === null) {
+        return null;
+    }
     // import everything
     applyTheme(this, themeData, true);
 }
@@ -84,9 +88,9 @@ function applySkin(o, theme) {
 }
 
 function getStyleData(style) {
-    var results = [];
+    var results = { data: [], jsData: {} };
     function gS(s) {
-        var bindings, i, l, binding, data;
+        var bindings, i, l, binding, data, jsData;
         if (s) {
             // make sure the style is bound
             bindStyle(s);
@@ -102,7 +106,13 @@ function getStyleData(style) {
             // then add the new stuff
             data = s.data;
             if (data) {
-                results = results.concat(data);
+                results.data = results.data.concat(data);
+            }
+            jsData = s.jsData;
+            if (jsData) {
+                forEachProperty(jsData, function (p, pname) {
+                    results.jsData[pname] = p;
+                });
             }
         }
     }

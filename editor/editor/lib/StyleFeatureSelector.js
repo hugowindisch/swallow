@@ -37,10 +37,15 @@ StyleFeatureSelector.prototype.getConfigurationSheet = function () {
     return { editedStyle: null };
 };
 StyleFeatureSelector.prototype.setEditedStyle = function (st) {
-    var children = this.children;
+    // cannot work
+/*    var children = this.children;
     forEachProperty(children, function (ch, name) {
         ch.setUrl(featureUrl(name, Boolean(st[name])));
-    });
+    });*/
+};
+StyleFeatureSelector.prototype.clearFeatureHighlight = function (feature) {
+    var children = this.children;
+    children[feature].setUrl(featureUrl(feature, false));
 };
 
 exports.StyleFeatureSelector = StyleFeatureSelector;

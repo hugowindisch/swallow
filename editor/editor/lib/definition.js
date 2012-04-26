@@ -94,7 +94,7 @@ exports.definition = {
                     type: "DOMElement",
                     position: null,
                     config: {
-                        "style": "page"
+                        "style": { factory: 'editor', type: 'GroupViewer', style: 'page' }
                     }
                 },
                 grid: {
@@ -1130,7 +1130,7 @@ exports.definition = {
             }
         },
         Styling: {
-            dimensions: [390, 100, 0],
+            dimensions: [390, 500, 0],
             positions: {
                 styleFeature: {
                     type: "Position",

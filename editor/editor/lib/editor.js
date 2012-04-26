@@ -25,11 +25,6 @@ function Editor(config) {
     // create the dependency manager
     this.dependencyManager = new DependencyManager();
     this.dependencyManager.loadVisualList();
-    // yurk hack to interface with configuration sheets
-    // NOTE: why not passing the editor to the config sheets? We already pass 'editor info'
-    // this would remove the need for this ugly thing!!
-    // FIXME FIXME FIXME
-    require('./Styling').Styling.init(this);
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Editor);
     // create the menu bar and toolbar

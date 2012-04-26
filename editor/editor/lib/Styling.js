@@ -7,6 +7,7 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups,
     glmatrix = require('glmatrix'),
     utils = require('utils'),
+    isString = utils.isString,
     StyleInfo = require('./StyleInfo').StyleInfo,
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEach,
@@ -48,16 +49,17 @@ var visual = require('visual'),
 */
 
 function Styling(config) {
-    this.editedStyle = {};
+    this.editedStyle = null;
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Styling);
-    this.updateList(Styling.dependencyManager.getStyleList());
+//    this.updateList(Styling.dependencyManager.getStyleList());
 
     var feature = this.getChild('styleFeature'),
         that = this;
     feature.on('select', function (featureName) {
         var styleEdit = that.getChild('styleEdit'),
             f = styleFeatures[featureName];
+        that.makeLocalStyle();
         if (styleEdit) {
             that.removeChild(styleEdit);
         }
@@ -67,29 +69,54 @@ function Styling(config) {
             that.addChild(styleEdit, 'styleEdit');
             styleEdit.setPosition('styleEdit');
             styleEdit.on('change', function (feature, value) {
-                console.log('style change!!!');
-                // that.editedStyle[feature] = value;
+                that.setLocalStyleFeature(feature, value);
             });
-            styleEdit.on('reset', function (feature) {
-                delete that.editedStyle[feature];
-                console.log('reset!!!!!!!!!!!!!!!!!!');
+            styleEdit.on('reset', function (feat) {
+                feature.clearFeatureHighlight(feat);
+                that.removeChild(styleEdit);
+                that.clearLocalStyleFeature(feat);
             });
         }
     });
-
 }
 Styling.prototype = new (domvisual.DOMElement)();
 Styling.prototype.getConfigurationSheet = function () {
     return { };
 };
+Styling.prototype.clearLocalStyleFeature = function (feature) {
+    if (!isString(this.editedStyle)) {
+        throw new Error('local style expected');
+    }
+    var group = this.editor.getViewer().getGroup();
+    group.doCommand(group.cmdSetStyleFeature(this.editedStyle, feature, null));
+};
+Styling.prototype.setLocalStyleFeature = function (feature, value) {
+    if (!isString(this.editedStyle)) {
+        throw new Error('local style expected');
+    }
+    var group = this.editor.getViewer().getGroup();
+    group.doCommand(group.cmdSetStyleFeature(this.editedStyle, feature, value));
+};
+Styling.prototype.previewLocalStyleFeature = function (feature, value) {
+    if (!isString(this.editedStyle)) {
+        throw new Error('local style expected');
+    }
+};
 
+Styling.prototype.setEditor = function (editor) {
+    this.editor = editor;
+};
 
-
-//FIXME: this is yuck! we need the editor to be passed to the visuals that are
-// used in configuration sheets. This has to be tought more thoroughly.
-// Doing this will remove the need for this yuck function.
-Styling.init = function (editor) {
-    Styling.dependencyManager = editor.getDependencyManager();
+Styling.prototype.makeLocalStyle = function () {
+    var group = this.editor.getViewer().getGroup();
+    // if the currently edited style is not a local style
+    if (!isString(this.editedStyle)) {
+        this.editedStyle = group.getUniqueStyleName();
+        // add the style
+        group.doCommand(group.cmdAddStyle(this.editedStyle));
+        // change the current style
+        this.emit('change', this.editedStyle);
+    }
 };
 
 Styling.prototype.setData = function (st) {
@@ -98,22 +125,24 @@ Styling.prototype.setData = function (st) {
         selected = null;
 
     // this is a style as in (factory, type, style)
-    this.editedStyle = deepCopy(st);
-    forEachProperty(styleListChildren, function (ch) {
+    this.editedStyle = st;
+/*    forEachProperty(styleListChildren, function (ch) {
         var data = ch.getEditedStyle();
         if (data.factory === st.factory && data.type === st.type && data.style === st.style) {
             selected = ch;
         }
     });
-    this.select(selected);
+    this.select(selected); */
 };
 Styling.prototype.getData = function () {
-    var data = null;
+    return this.editedStyle;
+/*    var data = null;
     if (this.selected) {
         data = this.selected.getEditedStyle();
     }
-    return data;
+    return data;*/
 };
+/*
 Styling.prototype.select = function (st) {
     if (st !== this.selected) {
         if (this.selected) {
@@ -128,14 +157,16 @@ Styling.prototype.select = function (st) {
 
     this.updateStylePreview();
 };
+*/
 Styling.prototype.updateStylePreview = function () {
-    if (this.selected) {
+    this.children.stylePreview.setEditedStyle(this.selectedStyle);
+/*    if (this.selectedStyle) {
         this.children.stylePreview.setEditedStyle(this.selected.getEditedStyle());
     } else {
         this.children.stylePreview.setEditedStyle(null);
-    }
+    } */
 };
-Styling.prototype.updateList = function (list) {
+/*Styling.prototype.updateList = function (list) {
     var that = this,
         styleList = this.children.styleList;
     function stringDiff(s1, s2) {
@@ -164,5 +195,5 @@ Styling.prototype.updateList = function (list) {
         });
     });
     this.setDimensions([groups.Styling.dimensions[0], list.length * 60 + 10, 1]);
-};
+};*/
 exports.Styling = Styling;

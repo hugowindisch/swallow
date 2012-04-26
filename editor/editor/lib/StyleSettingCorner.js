@@ -15,15 +15,18 @@ function StyleSettingCorner(config) {
     domvisual.DOMElement.call(this, config, groups.StyleSettingCorner);
     var children = this.children,
         that = this;
+    function getFeatureValue() {
+        return { radius: children.radiusValue.getValue() };
+    }
     children.radiusSlider.on('change', function (v, sliding) {
         children.radiusValue.setValue(v);
         if (!sliding) {
-            that.emit('change', that.feature, this.getValue());
+            that.emit('change', that.feature, getFeatureValue());
         }
     });
     children.radiusValue.on('change', function (v) {
         that.emit('change', Number(this.getValue()));
-        that.emit('change', that.feature, this.getValue());
+        that.emit('change', that.feature, getFeatureValue());
     });
     children.clear.on('click', function () {
         that.emit('reset', that.feature);

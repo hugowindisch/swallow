@@ -13,6 +13,7 @@ function {clsname}(config) {
     domvisual.DOMElement.call(this, config, groups.{clsname});
 }
 {clsname}.prototype = new (domvisual.DOMElement)();
+{clsname}.prototype.theme = new (visual.Theme)(groups.{clsname}.theme);
 {clsname}.prototype.getConfigurationSheet = function () {
     return {  };
 };

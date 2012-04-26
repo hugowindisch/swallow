@@ -85,6 +85,9 @@ Group.prototype.normalizeDocument = function () {
     if (!d.children) {
         d.children = {};
     }
+    if (!d.theme) {
+        d.theme = {};
+    }
 };
 /**
     Fixes z orders.
@@ -143,6 +146,18 @@ Group.prototype.getUniqueVisualName = function (radical, optionalCheck) {
         }
     );
 };
+
+Group.prototype.getUniqueStyleName = function (radical, optionalCheck) {
+    var theme = this.documentData.theme;
+    radical = radical || 'style';
+    return makeUniqueName(
+        radical,
+        function (r) {
+            return theme[r] !== undefined || (optionalCheck && optionalCheck(r));
+        }
+    );
+};
+
 
 Group.prototype.getNumberOfPositions = function () {
     var n = 0;
@@ -511,6 +526,113 @@ Group.prototype.cmdSetComponentProperties = function (dimensions, description, p
         'cmdSetComponentProperties',
         'Set component properties',
         { model: this, dimensions: dimensions }
+    );
+};
+
+////////////////////////////
+// styles
+
+Group.prototype.cmdAddStyle = function (name, def) {
+    var that = this;
+    def = def || { jsData: {} };
+    return new Command(
+        function () {
+            var documentData = that.documentData,
+                theme = documentData.theme;
+            theme[name] = def;
+        },
+        function () {
+            var documentData = that.documentData,
+                theme = documentData.theme;
+            delete theme[name];
+        },
+        'cmdAddStyle',
+        'Add Style ' + name,
+        { model: this, name: name }
+    );
+};
+Group.prototype.cmdRemoveStyle = function (name) {
+    var that = this,
+        prev;
+    return new Command(
+        function () {
+            var documentData = that.documentData,
+                theme = documentData.theme;
+            prev = theme[name];
+            delete theme[name];
+        },
+        function () {
+            var documentData = that.documentData,
+                theme = documentData.theme;
+            theme[name] = prev;
+        },
+        'cmdRemoveStyle',
+        'Remove Style ' + name,
+        { model: this, name: name }
+    );
+};
+Group.prototype.cmdRenameStyle = function (oldname, newname) {
+    var that = this,
+        on = oldname;
+    function toggleNames() {
+        var documentData = that.documentData,
+            theme = documentData.theme,
+            style = theme[oldname],
+            n;
+        delete theme[oldname];
+        theme[newname] = style;
+        n = oldname;
+        oldname = newname;
+        newname = n;
+    }
+    return new Command(
+        toggleNames,
+        toggleNames,
+        'cmdRenameStyle',
+        'Rename Style ' + on,
+        { model: this, name: on }
+    );
+};
+Group.prototype.cmdSetStyleFeature = function (name, feature, value) {
+    var that = this;
+    function toggle() {
+        var documentData = that.documentData,
+            theme = documentData.theme,
+            style = theme[name],
+            jsData = style.jsData,
+            oldv = jsData[feature];
+        if (value) {
+            jsData[feature] = value;
+        } else {
+            delete jsData[feature];
+        }
+        value = oldv;
+    }
+    return new Command(
+        toggle,
+        toggle,
+        'cmdSetStyleFeature',
+        'Change Style ' + name,
+        { model: this, name: name }
+    );
+};
+Group.prototype.cmdSetStyleBase = function (name, baseStyleFactory, baseStyleType, baseStyleName) {
+    var that = this,
+        basedOn = [{factory: baseStyleFactory, type: baseStyleType, style: baseStyleName}];
+    function toggle() {
+        var documentData = that.documentData,
+            theme = documentData.theme,
+            style = theme[name],
+            oldb = style.basedOn;
+        style.basedOn = basedOn;
+        basedOn = oldb;
+    }
+    return new Command(
+        toggle,
+        toggle,
+        'cmdSetStyleBase',
+        'Change Style Base ' + name,
+        { model: this, name: name }
     );
 };
 

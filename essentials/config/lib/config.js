@@ -101,7 +101,7 @@ function topBottomConfig(
 }
 
 function inputConfig(label) {
-    return function (editorInfo, cb) {
+    return function (editor, cb) {
         leftRightConfig(
             label,
             'baseui',
@@ -129,7 +129,7 @@ function inputConfig(label) {
 }
 
 function styleConfig(labelTxt) {
-    return function (editorInfo, cb) {
+    return function (mainEditor, cb) {
         // intentionally here
         var domvisual = require('domvisual'),
             visual = require('visual'),
@@ -144,6 +144,7 @@ function styleConfig(labelTxt) {
             cnt = new (domvisual.DOMElement)({});
             label = new (baseui.Label)({ text: labelTxt});
             editor = new (e.Styling)();
+            editor.setEditor(mainEditor);
             cdim = editor.dimensions;
             cnt.addChild(label, 'label');
             cnt.addChild(editor, 'data');
@@ -195,8 +196,9 @@ function styleConfig(labelTxt) {
 
 
 function imageUrlConfig(label) {
-    return function (editorInfo, cb) {
+    return function (editor, cb) {
         var http = require('http'),
+            editorInfo = editor.getDocInfo(),
             data = '';
 
         http.get({ path: '/image/' + editorInfo.factory}, function (res) {

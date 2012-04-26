@@ -19,12 +19,6 @@ StylePreview.prototype.getConfigurationSheet = function () {
 };
 StylePreview.prototype.setEditedStyle = function (st) {
     this.children.preview.setStyle(st);
-/*    var children = this.children,
-        preview = children.preview;
-
-    preview.setStyle(st);
-    preview.setInnerText(st.style);
-    this.editedStyle = st;*/
 };
 
 exports.StylePreview = StylePreview;
