@@ -15,6 +15,27 @@ function forEachProperty(object, f) {
         }
     }
 }
+function forEachSortedProperty(object, f, optionalSortFunction) {
+    var a = [],
+        l,
+        i,
+        n;
+    function cmp(n1, n2) {
+        return n1 > n2;
+    }
+    optionalSortFunction = optionalSortFunction || cmp;
+    forEachProperty(object, function (p, name) {
+        a.push(name);
+    });
+    l = a.length;
+    if (l > 0) {
+        a.sort(cmp);
+        for (i = 0; i < l; i +=1) {
+            n = a[i];
+            f(object[n], n);
+        }
+    }
+}
 function forEach(array, f) {
     var l = array.length, i;
     for (i = 0; i < l; i += 1) {
@@ -84,6 +105,7 @@ function limitRange(n, minN, maxN, ifNaN) {
     return n;
 }
 exports.forEachProperty = forEachProperty;
+exports.forEachSortedProperty = forEachSortedProperty;
 exports.forEach = forEach;
 exports.typeOf = typeOf;
 exports.isString = isString;
