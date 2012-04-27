@@ -24,6 +24,7 @@ EventEmitter.prototype.addListener = EventEmitter.prototype.on = function (event
     // we should check for max Events
     // we should fire an event for addListener
     this.emit('addListener', event, listener);
+    return this;
 };
 EventEmitter.prototype.once = function (event, listener) {
     var that = this;
@@ -32,6 +33,7 @@ EventEmitter.prototype.once = function (event, listener) {
         listener.apply(this, arguments);
     }
     this.on(event, onetime);
+    return this;
 };
 EventEmitter.prototype.removeListener = function (event, listener) {
     var events, i, n, handlers;
@@ -53,11 +55,13 @@ EventEmitter.prototype.removeListener = function (event, listener) {
             }
         }
     }
+    return this;
 };
 EventEmitter.prototype.removeAllListeners = function (event) {
     if (this._events) {
         delete this._events[event];
     }
+    return this;
 };
 EventEmitter.prototype.setMaxListeners = function (n) {
     // FIXME: NOT SUPPORTED YET (this behaves weirdly in node)
