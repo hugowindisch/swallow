@@ -1145,7 +1145,7 @@ exports.definition = {
             }
         },
         Styling: {
-            dimensions: [390, 500, 0],
+            dimensions: [390, 1200, 0],
             positions: {
                 styleFeature: {
                     type: "Position",
@@ -1165,10 +1165,16 @@ exports.definition = {
                     matrix: [ 340, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                stylePicker : {
+                localStylePicker : {
                     type: "Position",
                     order: 3,
                     matrix: [ 340, 0, 0, 0,   0, 120, 0, 0,   0, 0, 1, 0,   10, 250, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                stylePicker : {
+                    type: "Position",
+                    order: 4,
+                    matrix: [ 340, 0, 0, 0,   0, 120, 0, 0,   0, 0, 1, 0,   10, 700, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
             },
@@ -1186,6 +1192,13 @@ exports.definition = {
                     position: 'stylePreview',
                     config: {
 
+                    }
+                },
+                localStylePicker : {
+                    factory: 'editor',
+                    type: 'StylePicker',
+                    position: 'localStylePicker',
+                    config: {
                     }
                 },
                 stylePicker: {

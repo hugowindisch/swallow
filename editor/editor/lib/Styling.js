@@ -118,11 +118,46 @@ Styling.prototype.previewLocalStyleFeature = function (feature, value) {
     this.updateStylePreview(feature, value);
 };
 
+Styling.prototype.computeNonLocalStyleList = function () {
+    // the dependency manager will get us a list that does
+    // not correctly take into account the currently edited document
+    var editor = this.editor,
+        docInfo = editor.getDocInfo,
+        factory = docInfo.factory,
+        type = docInfo.type,
+        sl = editor.getDependencyManager().getStyleList(),
+        filteredSl = [];
+
+    // here we must remove the local styles from the stylelist
+    forEach(sl, function (s) {
+        if (s.factory !== factory || s.type !== type) {
+            filteredSl.push(s);
+        }
+    });
+    return filteredSl;
+};
+
+Styling.prototype.computeLocalStyleList = function () {
+    var editor = this.editor,
+        group = editor.getViewer().getGroup(),
+        documentData = group.documentData,
+        sl = [];
+    forEachProperty(documentData.theme, function (st, name) {
+        sl.push({factory: null, type: null, style: name});
+    });
+    return sl;
+};
+
+Styling.prototype.updateLocalStyleList = function () {
+    this.children.localStylePicker.setStyleList(this.computeLocalStyleList());
+};
+
+
 Styling.prototype.setEditor = function (editor) {
     this.editor = editor;
     // we can retrieve the style list here and configure the style picker
-    var sl = editor.getDependencyManager().getStyleList();
-    this.children.stylePicker.setStyleList(sl);
+    this.children.stylePicker.setStyleList(this.computeNonLocalStyleList());
+    this.updateLocalStyleList();
 };
 
 Styling.prototype.makeLocalStyle = function () {

@@ -9,6 +9,8 @@ var visual = require('visual'),
     StyleInfo = require('./StyleInfo').StyleInfo,
     utils = require('utils'),
     forEach = utils.forEach,
+    forEachProperty = utils.forEachProperty,
+    forEachSortedProperty = utils.forEachSortedProperty,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
 
@@ -49,29 +51,62 @@ StylePicker.prototype.setStyleList = function (sl) {
 };
 
 /**
+    Generates all the sections that we want to create
+*/
+StylePicker.prototype.generateSections = function () {
+    var factoryMap = {};
+    forEach(this.styleList, function (s) {
+        var factory = s.factory,
+            type = s.type,
+            style = s.style,
+            m = factoryMap[factory],
+            styleMap;
+        if (m === undefined) {
+            m = factoryMap[factory] = {};
+        }
+        styleMap = m[type];
+        if (styleMap === undefined) {
+            styleMap = m[type] = {};
+        }
+        styleMap[style] = s;
+    });
+    return factoryMap;
+};
+
+/**
     Generates a given style section.
 */
-StylePicker.prototype.createStyleSection = function (title, selFcn) {
+StylePicker.prototype.createStyleSection = function (title, styleMap) {
     var txt = new (baseui.Label)({text: title}),
         that = this;
     txt.setHtmlFlowing({});
     this.addChild(txt);
-    forEach(this.styleList, function (st) {
-        var ch;
-        if (selFcn(st)) {
-            ch = new StyleInfo();
-            ch.setEditedStyle(st);
-            ch.setHtmlFlowing({display: 'inline-block', position: 'relative'}, true);
-            that.addChild(ch);
-        }
+    forEachSortedProperty(styleMap, function (st) {
+        var ch = new StyleInfo();
+        ch.setEditedStyle(st);
+        ch.setHtmlFlowing({display: 'inline-block', position: 'relative'}, true);
+        that.addChild(ch);
     });
 };
 /**
     Regenerates the whole thing
 */
 StylePicker.prototype.updateAll = function () {
+    var sections = this.generateSections(),
+        sarr,
+        that = this;
     this.removeAllChildren();
-    this.createStyleSection('all', function (st) { return true; });
+    forEachSortedProperty(sections, function (fact, factName) {
+        forEachSortedProperty(fact, function (type, typeName) {
+            var title;
+            if (factName === 'null' && typeName === 'null') {
+                title = 'Local styles';
+            } else {
+                title = 'In package ' + factName + ' module ' + typeName;
+            }
+            that.createStyleSection(title, type);
+        });
+    });
 };
 /*
     var styleList = this.children.styleList,
