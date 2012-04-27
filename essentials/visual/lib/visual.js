@@ -347,7 +347,7 @@ Visual.prototype.applyLayout = function () {
     updateChildrenPositions(this);
 };
 
-Visual.prototype.addChild = function (child, name) {
+Visual.prototype.addChild = function (child, name, atOptionalOrder) {
     name = name || this.getDefaultName();
     if (this.children && this.children[name]) {
         throw new Error("Child " + name + " already exists.");
@@ -361,12 +361,29 @@ Visual.prototype.addChild = function (child, name) {
     }
     this.children[name] = child;
     child.name = name;
-    child.order = this.numChildren;
+    if (atOptionalOrder !== undefined) {
+        if (atOptionalOrder >= 0 && atOptionalOrder < this.numChildren) {
+            forEachProperty(this.children, function (c) {
+                if (c.order >= atOptionalOrder) {
+                    c.order += 1;
+                }
+            });
+            child.order = atOptionalOrder;
+            setDirty(this, 'childrenOrder');
+        } else if (atOptionalOrder === this.numChildren) {
+            child.order = atOptionalOrder;
+        } else {
+            throw new Error('Invalid order ' + atOptionalOrder + 'must be between 0 and ' + this.numChildren);
+        }
+    } else {
+        child.order = this.numChildren;
+    }
     child.parent = this;
     this.numChildren += 1;
     setContainmentDepth(child, this.containmentDepth + 1);
     // immediately redimension this child
     applyLayout(this.dimensions, this.layout, child);
+    return this;
 };
 Visual.prototype.resolveChild = function (child) {
     // allow the use of a name
@@ -382,8 +399,10 @@ Visual.prototype.resolveChild = function (child) {
     }
     return child;
 };
-Visual.prototype.removeChild = function (child) {
+Visual.prototype.removeChild = function (child, unsafeBreakContainer) {
+    var order;
     child = this.resolveChild(child);
+    order = child.order;
     delete this.children[child.name];
     // you only have a name inside a parent
     delete child.name;
@@ -396,11 +415,19 @@ Visual.prototype.removeChild = function (child) {
     }
     child.parent = null;
     setContainmentDepth(child, 0);
+    // we also need to adjust all orders
+    if (!unsafeBreakContainer) {
+        forEachProperty(this.children, function (c) {
+            if (c.order > order) {
+                c.order -= 1;
+            }
+        });
+    }
 };
 Visual.prototype.removeAllChildren = function () {
     var that = this;
     forEachProperty(this.children, function (c) {
-        that.removeChild(c);
+        that.removeChild(c, true);
     });
 };
 Visual.prototype.getChild = function (name) {

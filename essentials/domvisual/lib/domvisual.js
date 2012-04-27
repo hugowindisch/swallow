@@ -36,16 +36,27 @@ function DOMVisual(config, groupData, element) {
 DOMVisual.prototype = new Visual();
 DOMVisual.prototype.superAddChild = DOMVisual.prototype.addChild;
 DOMVisual.prototype.superRemoveChild = DOMVisual.prototype.removeChild;
-DOMVisual.prototype.addChild = function (child, name) {
+DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
+    var connectedToTheStage,
+        disableEventHooks,
+        orderDirty = this.dirty ? this.childrenOrder === true : false;
     if (!child.element) {
         throw new Error('Non DOM child added to a DOM visual');
     }
     // it is easier to track element containement immediately instead
     // of waiting for the update function to be called.
-    this.superAddChild(child, name);
-    this.element.appendChild(child.element);
-    var connectedToTheStage = this.connectedToTheStage,
-        disableEventHooks = this.disableEventHooks;
+    this.superAddChild(child, name, optionalOrder);
+    // no need to worry, we can add the element at the end of the list
+    if (!this.dirty || !this.dirty.childrenOrder || orderDirty) {
+        this.element.appendChild(child.element);
+    } else {
+        // we need to find the element at optionalOrder+1 and put this thing before
+        this.element.insertBefore(child.element, this.getChildAtOrder(optionalOrder).element);
+        // and manually clear the dirt (ok, this is ugly)
+        delete this.dirty.orderDirty;
+    }
+    connectedToTheStage = this.connectedToTheStage;
+    disableEventHooks = this.disableEventHooks;
     visual.forVisualAndAllChildrenDeep(child, function (c) {
         c.connectedToTheStage = connectedToTheStage;
         if (disableEventHooks) {
