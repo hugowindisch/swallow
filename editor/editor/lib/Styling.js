@@ -113,11 +113,10 @@ Styling.prototype.previewLocalStyleFeature = function (feature, value) {
     if (!isString(this.editedStyle)) {
         throw new Error('local style expected');
     }
-    this.updateStylePreview();
     skin[this.editedStyle] = deepCopy(this.localStyle);
     skin[this.editedStyle].jsData[feature] = value;
-
     this.editor.getViewer().previewStyleChange(skin);
+    this.updateStylePreview(feature, value);
 };
 
 Styling.prototype.setEditor = function (editor) {
@@ -143,12 +142,15 @@ Styling.prototype.updateFeatureSelector = function () {
     styleFeature.setStyleData(this.localStyle);
 };
 
-Styling.prototype.updateStylePreview = function () {
+Styling.prototype.updateStylePreview = function (optionalFeature, optionalValue) {
     var group = this.editor.getViewer().getGroup(),
         es = this.editedStyle,
         miniTheme = {};
 
     miniTheme[es] = deepCopy(group.documentData.theme[es]);
+    if (optionalFeature) {
+        miniTheme[es].jsData[optionalFeature] = optionalValue;
+    }
     this.children.stylePreview.setStyleData(
         this.editedStyle,
         miniTheme
