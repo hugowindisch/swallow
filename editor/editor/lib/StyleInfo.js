@@ -10,42 +10,30 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3;
 
 function StyleInfo(config) {
-    var that = this;
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.StyleInfo);
+    var that = this,
+        children = this.children,
+        preview = children.preview,
+        innerPreview;
     this.select(false);
-/*
-    this.on('click', function (evt) {
-        var viewer = that.viewer,
-            name = that.contentName;
-        viewer.clearSelection();
-        viewer.addToSelection(name);
-        viewer.updateSelectionControlBox();
-    });
-    this.children.enableSelection.on('click', function (evt) {
-        var group = that.viewer.getGroup(),
-            name = that.contentName,
-            enable = group.documentData.positions[name].enableSelect === false ? true : false;
-        evt.stopPropagation();
-        group.doCommand(group.cmdEnableSelectPosition(name, enable));
-    });
-    this.children.enableView.on('click', function (evt) {
-        var group = that.viewer.getGroup(),
-            name = that.contentName,
-            enable = group.documentData.positions[name].enableDisplay === false ? true : false;
-        evt.stopPropagation();
-        group.doCommand(group.cmdEnableDisplayPosition(name, enable));
-    });
-    this.updateAll(); */
+    children.label.setChildrenClipping('hidden');
+    this.setChildrenClipping('hidden');
+    preview.setChildrenClipping('hidden');
+    innerPreview = new (domvisual.DOMElement)();
+    preview.addChild(innerPreview, 'preview');
+    innerPreview.setDimensions(preview.dimensions.slice(0));
+    innerPreview.setTranslationMatrix([0, 0, 0]);
 }
 StyleInfo.prototype = new (domvisual.DOMElement)();
 StyleInfo.prototype.theme = new (visual.Theme)({
-    background: {
-    },
     selectedBackground: {
         basedOn: [
             { factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground' }
         ]
+    },
+    label: {
+        data: [ 'editor_styleInfoLabel' ]
     }
 });
 /*StyleInfo.prototype.setTypeInfo = function (ti) {
@@ -57,10 +45,14 @@ StyleInfo.prototype.getConfigurationSheet = function () {
 };
 StyleInfo.prototype.setEditedStyle = function (st) {
     var children = this.children,
-        preview = children.preview;
+        preview = children.preview,
+        innerPreview = preview.children.preview,
+        label = children.label;
 
-    preview.setStyle(st);
-    preview.setInnerText(st.style);
+    innerPreview.setInnerText('Abc');
+    innerPreview.setStyle(st);
+    label.setInnerText(st.style);
+
     this.editedStyle = st;
 };
 StyleInfo.prototype.getEditedStyle = function () {

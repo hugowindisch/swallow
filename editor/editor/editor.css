@@ -42,3 +42,7 @@
 
     border: solid 1px #d0d0d0;
 }
+
+.editor_styleInfoLabel {
+    text-align: center;
+}

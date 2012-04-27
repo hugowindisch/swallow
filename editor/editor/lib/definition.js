@@ -1084,30 +1084,30 @@ exports.definition = {
             }
         },
         StyleInfo: {
-            dimensions: [360, 60, 1],
+            dimensions: [110, 110, 1],
             positions: {
                 selectionBox: {
                     type: "Position",
                     order: 0,
-                    matrix: [ 350, 0, 0, 0,  0, 45, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    matrix: [ 110, 0, 0, 0,  0, 110, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                background: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 50, 0, 0, 0,   0, 50, 0, 0,    0, 0, 1, 0,   30, 10, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 preview: {
                     type: "Position",
                     order: 1,
-                    matrix: [ 140, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
+                    matrix: [ 50, 0, 0, 0,   0, 50, 0, 0,    0, 0, 1, 0,   30, 10, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                edit: {
+                label: {
                     type: "Position",
                     order: 2,
-                    matrix: [ 20, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   290, 2, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                'delete': {
-                    type: "Position",
-                    order: 3,
-                    matrix: [ 20, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   290, 27, 0, 1 ],
+                    matrix: [ 90, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   10, 70, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1117,7 +1117,14 @@ exports.definition = {
                     type: "DOMElement",
                     position: "selectionBox",
                     config: {
-                        style: {factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground'}
+                    }
+                },
+                background: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "preview",
+                    config: {
+                        url: 'editor/lib/stylebgsmall.png'
                     }
                 },
                 preview: {
@@ -1125,6 +1132,14 @@ exports.definition = {
                     type: "DOMElement",
                     position: "preview",
                     config: {
+                    }
+                },
+                label: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "label",
+                    config: {
+                        style: 'label'
                     }
                 }
             }
@@ -1150,10 +1165,10 @@ exports.definition = {
                     matrix: [ 340, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                styleList : {
+                stylePicker : {
                     type: "Position",
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,   0, 120, 0, 0,   0, 0, 1, 0,   160, 250, 0, 1],
+                    matrix: [ 340, 0, 0, 0,   0, 120, 0, 0,   0, 0, 1, 0,   10, 250, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
             },
@@ -1173,10 +1188,10 @@ exports.definition = {
 
                     }
                 },
-                styleList: {
-                    factory: 'domvisual',
-                    type: 'DOMElement',
-                    position: 'styleList',
+                stylePicker: {
+                    factory: 'editor',
+                    type: 'StylePicker',
+                    position: 'stylePicker',
                     config: {
                     }
                 }

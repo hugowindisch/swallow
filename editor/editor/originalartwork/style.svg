@@ -285,9 +285,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.027643"
-     inkscape:cx="453.08785"
-     inkscape:cy="644.70165"
+     inkscape:zoom="1.4533067"
+     inkscape:cx="377.09939"
+     inkscape:cy="254.22152"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -1624,6 +1624,123 @@
            x="525"
            y="707.36218" />
       </g>
+    </g>
+    <g
+       id="g3663"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/lib/stylebgsmall.png"
+       inkscape:export-xdpi="29.74"
+       inkscape:export-ydpi="29.74">
+      <rect
+         transform="scale(-1,1)"
+         ry="0"
+         y="802.36218"
+         x="-530"
+         height="150"
+         width="150"
+         id="rect3122-2-15"
+         style="fill:#e6e6e6;fill-opacity:1;fill-rule:nonzero;stroke:#4d4d4d;stroke-width:1.28835881;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         transform="scale(1,-1)"
+         y="-832.36218"
+         x="380"
+         height="30"
+         width="30"
+         id="rect5709-75"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         y="802.36218"
+         x="440"
+         height="30"
+         width="30"
+         id="rect5709-75-6"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         y="802.36218"
+         x="500"
+         height="30"
+         width="30"
+         id="rect5709-75-6-0"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-862.36218"
+         x="410"
+         height="30"
+         width="30"
+         id="rect5709-75-3"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-862.36218"
+         x="470"
+         height="30"
+         width="30"
+         id="rect5709-75-9"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-892.36218"
+         x="380"
+         height="30"
+         width="30"
+         id="rect5709-75-7"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-892.36218"
+         x="440"
+         height="30"
+         width="30"
+         id="rect5709-75-7-4"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-892.36218"
+         x="500"
+         height="30"
+         width="30"
+         id="rect5709-75-7-1"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-922.36218"
+         x="410"
+         height="30"
+         width="30"
+         id="rect5709-75-7-7"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-922.36218"
+         x="470"
+         height="30"
+         width="30"
+         id="rect5709-75-7-44"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-952.36218"
+         x="380"
+         height="30"
+         width="30"
+         id="rect5709-75-7-43"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-952.36218"
+         x="440"
+         height="30"
+         width="30"
+         id="rect5709-75-7-3"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+      <rect
+         transform="scale(1,-1)"
+         y="-952.36218"
+         x="500"
+         height="30"
+         width="30"
+         id="rect5709-75-7-37"
+         style="opacity:0.66666667;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
     </g>
   </g>
 </svg>
