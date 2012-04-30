@@ -203,13 +203,13 @@ exports.definition = {
                 factoryName: {
                     type: "Position",
                     order: 1,
-                    matrix: [ 100, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 5, 0, 1 ],
+                    matrix: [ 100, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 typeName: {
                     type: "Position",
                     order: 2,
-                    matrix: [ 200, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   70, 25, 0, 1 ],
+                    matrix: [ 200, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 25, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
@@ -348,7 +348,7 @@ exports.definition = {
                 library: {
                     type: "Position",
                     order: 1,
-                    matrix: [ 180, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   80, 10, 0, 1 ],
+                    matrix: [ 180, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 10, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 choices: {
@@ -402,7 +402,7 @@ exports.definition = {
                 yLabel: {
                     type: "Position",
                     order: 2,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 30, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   165, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 wLabel: {
@@ -414,7 +414,7 @@ exports.definition = {
                 hLabel: {
                     type: "Position",
                     order: 4,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 55, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   165, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 opacityLabel: {
@@ -432,38 +432,38 @@ exports.definition = {
                 opacitySlider: {
                     type: "Position",
                     order: 7,
-                    matrix: [ 220, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 80, 0, 1 ],
+                    matrix: [ 230, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
                 name: {
                     type: "Position",
                     order: 10,
-                    matrix: [ 120, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 5, 0, 1 ],
+                    matrix: [ 120, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 x: {
                     type: "Position",
                     order: 11,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 y: {
                     type: "Position",
                     order: 12,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   215, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 w: {
                     type: "Position",
                     order: 13,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 55, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 h: {
                     type: "Position",
                     order: 14,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 55, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   215, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -594,7 +594,7 @@ exports.definition = {
                 hLabel: {
                     type: "Position",
                     order: 1,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 5, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   165, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 gridLabel: {
@@ -606,19 +606,19 @@ exports.definition = {
                 w: {
                     type: "Position",
                     order: 2,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 5, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 h: {
                     type: "Position",
                     order: 3,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   175, 5, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   215, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 grid: {
                     type: "Position",
                     order: 3,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   55, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
@@ -631,7 +631,7 @@ exports.definition = {
                 privateLabel: {
                     type: "Position",
                     order: 5,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   25, 105, 0, 1 ],
+                    matrix: [ 200, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   25, 105, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
@@ -685,7 +685,7 @@ exports.definition = {
                     type: "Label",
                     position: "privateLabel",
                     config: {
-                        "text": "private"
+                        "text": "hide to other libraries"
                     }
                 },
                 w: {
@@ -1144,6 +1144,95 @@ exports.definition = {
                 }
             }
         },
+        StyleName: {
+            dimensions: [360, 80, 9],
+            positions: {
+                styleNameLabel: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 30, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   5, 5, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleName: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 140, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   70, 5, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                basedOnLabel: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 30, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   5, 35, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                basedOn: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 140, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   70, 35, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                extendBtn: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 32, 0, 0,  0, 0, 1, 0,   220, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                deleteBtn: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 32, 0, 0,  0, 0, 1, 0,   290, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+            },
+            children: {
+                styleNameLabel: {
+                    factory: 'baseui',
+                    type: 'Label',
+                    position: 'styleNameLabel',
+                    config: {
+                        text: 'Style:'
+                    }
+                },
+                styleName: {
+                    factory: 'domvisual',
+                    type: 'DOMInput',
+                    position: 'styleName',
+                    config: {
+                    }
+                },
+                basedOnLabel: {
+                    factory: 'baseui',
+                    type: 'Label',
+                    position: 'basedOnLabel',
+                    config: {
+                        text: 'Extends:'
+                    }
+                },
+                basedOn: {
+                    factory: 'baseui',
+                    type: 'Label',
+                    position: 'basedOn',
+                    config: {
+                    }
+                },
+                extendBtn: {
+                    factory: 'baseui',
+                    type: 'Button',
+                    position: 'extendBtn',
+                    config: {
+                        text: 'Extend'
+                    }
+                },
+                deleteBtn: {
+                    factory: 'baseui',
+                    type: 'Button',
+                    position: 'deleteBtn',
+                    config: {
+                        text: 'Delete'
+                    }
+                }
+            }
+        },
         StylingHeading: {
             dimensions: [360, 150, 0],
             positions: {
@@ -1180,32 +1269,45 @@ exports.definition = {
         Styling: {
             dimensions: [360, 1200, 0],
             positions: {
-                styleHeading: {
+                styleName: {
                     type: "Position",
                     order: 0,
                     matrix: [ 360, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                styleEdit : {
+                styleHeading: {
                     type: "Position",
                     order: 1,
+                    matrix: [ 360, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleEdit : {
+                    type: "Position",
+                    order: 2,
                     matrix: [ 340, 0, 0, 0,  0, 120, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 localStylePicker : {
                     type: "Position",
-                    order: 2,
+                    order: 3,
                     matrix: [ 340, 0, 0, 0,   0, 20, 0, 0,   0, 0, 1, 0,   10, 250, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 stylePicker : {
                     type: "Position",
-                    order: 3,
+                    order: 4,
                     matrix: [ 340, 0, 0, 0,   0, 20, 0, 0,   0, 0, 1, 0,   10, 700, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
             },
             children: {
+                styleName: {
+                    factory: 'editor',
+                    type: 'StyleName',
+                    position: null,
+                    config: {
+                    }
+                },
                 stylingHeading : {
                     factory: 'editor',
                     type: 'StylingHeading',

@@ -142,14 +142,10 @@ function styleConfig(labelTxt) {
                 cdim;
             // create the graphic elements that we need
             cnt = new (domvisual.DOMElement)({});
-            label = new (baseui.Label)({ text: labelTxt});
             editor = new (e.Styling)();
             editor.setEditor(mainEditor);
             cdim = editor.dimensions;
-            cnt.addChild(label, 'label');
             cnt.addChild(editor, 'data');
-            label.setDimensions([lineWidth - 10, labelHeight, 1]);
-            label.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, 0, 0, 1]);
             editor.on('change', function (data) {
                 cnt.emit('change', data);
             });

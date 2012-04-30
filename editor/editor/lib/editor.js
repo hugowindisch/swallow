@@ -210,6 +210,7 @@ exports.Layering = require('./Layering').Layering;
 exports.LayerInfo = require('./LayerInfo').LayerInfo;
 exports.Styling = require('./Styling').Styling;
 exports.StylingHeading = require('./StylingHeading').StylingHeading;
+exports.StyleName = require('./StyleName').StyleName;
 exports.StyleInfo = require('./StyleInfo').StyleInfo;
 exports.StylePreview = require('./StylePreview').StylePreview;
 exports.StylePicker = require('./StylePicker').StylePicker;

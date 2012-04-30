@@ -71,7 +71,7 @@ function Styling(config) {
         if (f) {
             styleEdit = new (f.FeatureEditor)(f.config);
             styleEdit.setStyleData(that.localStyle);
-            that.addChild(styleEdit, 'styleEdit', 1);
+            that.addChild(styleEdit, 'styleEdit', 2);
             styleEdit.setPosition('styleEdit');
             styleEdit.setHtmlFlowing(flowing, true);
             styleEdit.on('change', function (feature, value) {
@@ -93,6 +93,7 @@ function Styling(config) {
     stylingHeading.setHtmlFlowing(flowing, true);
     this.getChild('localStylePicker').setHtmlFlowing(flowing, true);
     this.getChild('stylePicker').setHtmlFlowing(flowing, true);
+    this.getChild('styleName').setHtmlFlowing(flowing, true);
 }
 Styling.prototype = new (domvisual.DOMElement)();
 Styling.prototype.getConfigurationSheet = function () {
