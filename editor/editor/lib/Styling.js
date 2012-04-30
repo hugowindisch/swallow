@@ -57,9 +57,11 @@ function Styling(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Styling);
 
-    var feature = this.getChild('styleFeature'),
+    var stylingHeading = this.getChild('stylingHeading'),
+        styleFeature = stylingHeading.getChild('styleFeature'),
+        flowing = {position: 'relative'},
         that = this;
-    feature.on('select', function (featureName) {
+    styleFeature.on('select', function (featureName) {
         var styleEdit = that.getChild('styleEdit'),
             f = styleFeatures[featureName];
         that.makeLocalStyle();
@@ -69,8 +71,9 @@ function Styling(config) {
         if (f) {
             styleEdit = new (f.FeatureEditor)(f.config);
             styleEdit.setStyleData(that.localStyle);
-            that.addChild(styleEdit, 'styleEdit');
+            that.addChild(styleEdit, 'styleEdit', 1);
             styleEdit.setPosition('styleEdit');
+            styleEdit.setHtmlFlowing(flowing, true);
             styleEdit.on('change', function (feature, value) {
                 that.setLocalStyleFeature(feature, value);
             });
@@ -78,14 +81,18 @@ function Styling(config) {
                 that.previewLocalStyleFeature(feature, value);
             });
             styleEdit.on('reset', function (feat) {
-                feature.clearFeatureHighlight(feat);
+                styleFeature.clearFeatureHighlight(feat);
                 that.removeChild(styleEdit);
                 that.clearLocalStyleFeature(feat);
             });
             // make sure the thing is highlighted
-            feature.setFeatureHighlight(featureName);
+            styleFeature.setFeatureHighlight(featureName);
         }
     });
+    // flow all our children
+    stylingHeading.setHtmlFlowing(flowing, true);
+    this.getChild('localStylePicker').setHtmlFlowing(flowing, true);
+    this.getChild('stylePicker').setHtmlFlowing(flowing, true);
 }
 Styling.prototype = new (domvisual.DOMElement)();
 Styling.prototype.getConfigurationSheet = function () {
@@ -175,20 +182,23 @@ Styling.prototype.makeLocalStyle = function () {
 };
 
 Styling.prototype.updateFeatureSelector = function () {
-    var styleFeature = this.children.styleFeature;
+    var stylingHeading = this.getChild('stylingHeading'),
+        styleFeature = stylingHeading.getChild('styleFeature');
     styleFeature.setStyleData(this.localStyle);
 };
 
 Styling.prototype.updateStylePreview = function (optionalFeature, optionalValue) {
     var group = this.editor.getViewer().getGroup(),
         es = this.editedStyle,
+        stylingHeading = this.getChild('stylingHeading'),
+        stylePreview = stylingHeading.getChild('stylePreview'),
         miniTheme = {};
 
     miniTheme[es] = deepCopy(group.documentData.theme[es]);
     if (optionalFeature) {
         miniTheme[es].jsData[optionalFeature] = optionalValue;
     }
-    this.children.stylePreview.setStyleData(
+    stylePreview.setStyleData(
         this.editedStyle,
         miniTheme
     );
@@ -197,8 +207,6 @@ Styling.prototype.updateStylePreview = function (optionalFeature, optionalValue)
 
 Styling.prototype.setData = function (st) {
     var group = this.editor.getViewer().getGroup();
-    //this.localStyle = group.documentData.theme[this.editeStyle];
-
     // this is a style as in (factory, type, style)
     this.editedStyle = st;
     // if the style is a local style

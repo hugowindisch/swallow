@@ -989,7 +989,7 @@ exports.definition = {
             }
         },
         StyleSettingCorner: {
-            dimensions: [340, 100, 1],
+            dimensions: [340, 120, 1],
             positions: {
                 label: {
                     type: "Position",
@@ -1144,8 +1144,8 @@ exports.definition = {
                 }
             }
         },
-        Styling: {
-            dimensions: [390, 1200, 0],
+        StylingHeading: {
+            dimensions: [360, 150, 0],
             positions: {
                 styleFeature: {
                     type: "Position",
@@ -1158,25 +1158,7 @@ exports.definition = {
                     order: 1,
                     matrix: [ 150, 0, 0, 0,  0, 120, 0, 0,  0, 0, 1, 0,   180, 5, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                styleEdit : {
-                    type: "Position",
-                    order: 2,
-                    matrix: [ 340, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                localStylePicker : {
-                    type: "Position",
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,   0, 120, 0, 0,   0, 0, 1, 0,   10, 250, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                stylePicker : {
-                    type: "Position",
-                    order: 4,
-                    matrix: [ 340, 0, 0, 0,   0, 120, 0, 0,   0, 0, 1, 0,   10, 700, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
+                }
             },
             children: {
                 styleFeature: {
@@ -1191,20 +1173,57 @@ exports.definition = {
                     type: 'StylePreview',
                     position: 'stylePreview',
                     config: {
-
+                    }
+                },
+            }
+        },
+        Styling: {
+            dimensions: [360, 1200, 0],
+            positions: {
+                styleHeading: {
+                    type: "Position",
+                    order: 0,
+                    matrix: [ 360, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleEdit : {
+                    type: "Position",
+                    order: 1,
+                    matrix: [ 340, 0, 0, 0,  0, 120, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                localStylePicker : {
+                    type: "Position",
+                    order: 2,
+                    matrix: [ 340, 0, 0, 0,   0, 20, 0, 0,   0, 0, 1, 0,   10, 250, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                stylePicker : {
+                    type: "Position",
+                    order: 3,
+                    matrix: [ 340, 0, 0, 0,   0, 20, 0, 0,   0, 0, 1, 0,   10, 700, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+            },
+            children: {
+                stylingHeading : {
+                    factory: 'editor',
+                    type: 'StylingHeading',
+                    position: null,
+                    config: {
                     }
                 },
                 localStylePicker : {
                     factory: 'editor',
                     type: 'StylePicker',
-                    position: 'localStylePicker',
+                    position: null,
                     config: {
                     }
                 },
                 stylePicker: {
                     factory: 'editor',
                     type: 'StylePicker',
-                    position: 'stylePicker',
+                    position: null,
                     config: {
                     }
                 }

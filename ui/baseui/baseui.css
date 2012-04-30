@@ -11,8 +11,8 @@
 }
 
 .baseui_theme_outlineShadow {
-   -moz-box-shadow: 3px  3px 3px #222;
-   -webkit-box-shadow: 3px 3px 3px #222;
+   -moz-box-shadow: 3px  3px 3px #aaa;
+   -webkit-box-shadow: 3px 3px 3px #aaa;
    box-shadow: 3px 3px 3px #aaa;
 }
 
@@ -80,6 +80,9 @@
 .baseui_theme_menuBar {
     background-color: #f0f0f0;
     border-bottom: 1px solid #cecece;
+    -moz-box-shadow: 0px  3px 3px #aaa;
+    -webkit-box-shadow: 0px 3px 3px #aaa;
+    box-shadow: 0px 3px 3px #aaa;
 }
 
 .baseui_theme_menuBoxColor > td {
