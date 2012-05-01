@@ -378,6 +378,12 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
             style.webkitBorderTopLeftRadius =
                 style.mozBorderRadiusTopleft =
                 style.borderTopLeftRadius = v.radius + 'px';
+        } else {
+// we must clear the forced styles... all of them when they are not used
+            style.backgroundColor = null;
+            style.webkitBorderTopLeftRadius =
+                style.mozBorderRadiusTopleft =
+                style.borderTopLeftRadius = null;
         }
         v = jsData.tr;
         if (v) {
