@@ -5,43 +5,6 @@
 
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-function forEachProperty(object, f) {
-    var p;
-    if (object) {
-        for (p in object) {
-            if (object.hasOwnProperty(p)) {
-                f(object[p], p, object);
-            }
-        }
-    }
-}
-function forEachSortedProperty(object, f, optionalSortFunction) {
-    var a = [],
-        l,
-        i,
-        n;
-    function cmp(n1, n2) {
-        return n1 > n2;
-    }
-    optionalSortFunction = optionalSortFunction || cmp;
-    forEachProperty(object, function (p, name) {
-        a.push(name);
-    });
-    l = a.length;
-    if (l > 0) {
-        a.sort(cmp);
-        for (i = 0; i < l; i +=1) {
-            n = a[i];
-            f(object[n], n);
-        }
-    }
-}
-function forEach(array, f) {
-    var l = array.length, i;
-    for (i = 0; i < l; i += 1) {
-        f(array[i], i, array);
-    }
-}
 function typeOf(value) {
     var s = typeof value;
     if (s === 'object') {
@@ -69,6 +32,43 @@ function isObject(o) {
 }
 function isFunction(f) {
     return typeOf(f) === 'function';
+}
+function forEachProperty(object, f) {
+    var p;
+    if (object) {
+        for (p in object) {
+            if (object.hasOwnProperty(p)) {
+                f(object[p], p, object);
+            }
+        }
+    }
+}
+function forEachSortedProperty(object, f, optionalSortFunction) {
+    var a = [],
+        l,
+        i,
+        n;
+    function cmp(n1, n2) {
+        return n1 > n2;
+    }
+    optionalSortFunction = optionalSortFunction || cmp;
+    forEachProperty(object, function (p, name) {
+        a.push(name);
+    });
+    l = a.length;
+    if (l > 0) {
+        a.sort(cmp);
+        for (i = 0; i < l; i += 1) {
+            n = a[i];
+            f(object[n], n);
+        }
+    }
+}
+function forEach(array, f) {
+    var l = array.length, i;
+    for (i = 0; i < l; i += 1) {
+        f(array[i], i, array);
+    }
 }
 function deepCopy(o) {
     var res, i, l, v;

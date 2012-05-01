@@ -11,6 +11,7 @@ var visual = require('visual'),
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty,
     forEachSortedProperty = utils.forEachSortedProperty,
+    isString = utils.isString,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3;
 
@@ -51,6 +52,22 @@ StylePicker.prototype.setStyleList = function (sl) {
 };
 
 /**
+    Highlights a style if it is present in the picker
+*/
+StylePicker.prototype.highlight = function (style) {
+    if (isString(style)) {
+        style = { factory: null, type: null, style: style };
+    }
+    forEachProperty(this.children, function (c, n) {
+        var es;
+        if (c instanceof StyleInfo) {
+            es = c.getEditedStyle();
+            c.highlight(es.factory === style.factory && es.type === style.type && es.style === style.style);
+        }
+    });
+};
+
+/**
     Generates all the sections that we want to create
 */
 StylePicker.prototype.generateSections = function () {
@@ -79,12 +96,15 @@ StylePicker.prototype.generateSections = function () {
 StylePicker.prototype.createStyleSection = function (title, styleMap) {
     var txt = new (baseui.Label)({text: title}),
         that = this;
-    txt.setHtmlFlowing({});
+    txt.setHtmlFlowing({marginTop: '20px', marginBottom: '10px', fontWeight: 'bold' });
     this.addChild(txt);
     forEachSortedProperty(styleMap, function (st) {
         var ch = new StyleInfo();
         ch.setEditedStyle(st);
         ch.setHtmlFlowing({display: 'inline-block', position: 'relative'}, true);
+        ch.on('click', function () {
+            that.emit('select', ch.getEditedStyle());
+        });
         that.addChild(ch);
     });
 };
@@ -94,7 +114,8 @@ StylePicker.prototype.createStyleSection = function (title, styleMap) {
 StylePicker.prototype.updateAll = function () {
     var sections = this.generateSections(),
         sarr,
-        that = this;
+        that = this,
+        dim;
     this.removeAllChildren();
     forEachSortedProperty(sections, function (fact, factName) {
         forEachSortedProperty(fact, function (type, typeName) {
@@ -107,6 +128,7 @@ StylePicker.prototype.updateAll = function () {
             that.createStyleSection(title, type);
         });
     });
+//    dim = this.getComputedDimensions
 };
 /*
     var styleList = this.children.styleList,

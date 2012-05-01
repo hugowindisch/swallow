@@ -60,6 +60,12 @@ function Styling(config) {
     var stylingHeading = this.getChild('stylingHeading'),
         styleFeature = stylingHeading.getChild('styleFeature'),
         flowing = {position: 'relative'},
+        localStylePicker = this.getChild('localStylePicker'),
+        stylePicker = this.getChild('stylePicker'),
+        styleName = this.getChild('styleName'),
+        styleNameName =  styleName.getChild('styleName'),
+        deleteBtn = styleName.getChild('deleteBtn'),
+        extendBtn = styleName.getChild('extendBtn'),
         that = this;
     styleFeature.on('select', function (featureName) {
         var styleEdit = that.getChild('styleEdit'),
@@ -91,14 +97,81 @@ function Styling(config) {
     });
     // flow all our children
     stylingHeading.setHtmlFlowing(flowing, true);
-    this.getChild('localStylePicker').setHtmlFlowing(flowing, true);
-    this.getChild('stylePicker').setHtmlFlowing(flowing, true);
+    localStylePicker.setHtmlFlowing(flowing, false);
+    stylePicker.setHtmlFlowing(flowing, false);
     this.getChild('styleName').setHtmlFlowing(flowing, true);
+
+    stylePicker.on('select', function (st) {
+        that.pickStyle(st);
+    });
+    localStylePicker.on('select', function (st) {
+        that.pickStyle(st.style);
+    });
+    styleNameName.on('change', function () {
+        that.renameStyle(styleNameName.getText());
+    });
+    extendBtn.on('pressed', function () {
+        that.extendLocalStyle();
+    });
+    deleteBtn.on('pressed', function () {
+        that.deleteLocalStyle();
+    });
 }
 Styling.prototype = new (domvisual.DOMElement)();
 Styling.prototype.getConfigurationSheet = function () {
     return { };
 };
+Styling.prototype.makeExtendedStyle = function (st) {
+    var group = this.editor.getViewer().getGroup(),
+        docInfo,
+        editedStyle,
+        newStyle;
+    // if the currently edited style is not a local style
+    editedStyle = group.getUniqueStyleName();
+    // create the style
+    newStyle = {
+        jsData: {}
+    };
+    if (st !== null) {
+        if (isString(st)) {
+            docInfo = this.editor.getDocInfo();
+            newStyle.basedOn = [{factory: docInfo.factory, type: docInfo.type, style: st}];
+        } else {
+            newStyle.basedOn = [deepCopy(st)];
+        }
+    }
+    // add the style
+    group.doCommand(group.cmdAddStyle(editedStyle, newStyle));
+    // set the data
+    this.setData(editedStyle);
+    // change the current style
+    this.emit('change', editedStyle);
+};
+
+Styling.prototype.pickStyle = function (style) {
+    this.setData(style);
+    this.emit('change', style);
+};
+
+Styling.prototype.renameStyle = function (name) {
+    var editor = this.editor,
+        docInfo = editor.getDocInfo(),
+        group = editor.getViewer().getGroup();
+    group.doCommand(group.cmdRenameStyleAndReferences(this.editedStyle, docInfo.factory, docInfo.type, name));
+};
+
+Styling.prototype.extendLocalStyle = function () {
+    this.makeExtendedStyle(this.editedStyle);
+};
+Styling.prototype.deleteLocalStyle = function () {
+    var editor = this.editor,
+        docInfo = editor.getDocInfo(),
+        group = editor.getViewer().getGroup();
+    group.doCommand(group.cmdRemoveStyleAndReferences(this.editedStyle, docInfo.factory, docInfo.type));
+// FIXME
+//    this.setData(null);
+};
+
 Styling.prototype.clearLocalStyleFeature = function (feature) {
     if (!isString(this.editedStyle)) {
         throw new Error('local style expected');
@@ -130,7 +203,7 @@ Styling.prototype.computeNonLocalStyleList = function () {
     // the dependency manager will get us a list that does
     // not correctly take into account the currently edited document
     var editor = this.editor,
-        docInfo = editor.getDocInfo,
+        docInfo = editor.getDocInfo(),
         factory = docInfo.factory,
         type = docInfo.type,
         sl = editor.getDependencyManager().getStyleList(),
@@ -166,19 +239,17 @@ Styling.prototype.setEditor = function (editor) {
     // we can retrieve the style list here and configure the style picker
     this.children.stylePicker.setStyleList(this.computeNonLocalStyleList());
     this.updateLocalStyleList();
-};
+    // FIXME: set data is not called when there is no data in the selection (this is kinda
+    // bad and should be fixed but until then this will put adequate defaults.
+    this.updateStyleName();
 
+};
 Styling.prototype.makeLocalStyle = function () {
-    var group = this.editor.getViewer().getGroup(), editedStyle;
+    var group = this.editor.getViewer().getGroup(), editedStyle,
+        newStyle;
     // if the currently edited style is not a local style
     if (!isLocalStyle(this.editedStyle)) {
-        editedStyle = group.getUniqueStyleName();
-        // add the style
-        group.doCommand(group.cmdAddStyle(editedStyle));
-        // set the data
-        this.setData(editedStyle);
-        // change the current style
-        this.emit('change', editedStyle);
+        this.makeExtendedStyle(this.editedStyle);
     }
 };
 
@@ -203,11 +274,57 @@ Styling.prototype.updateStylePreview = function (optionalFeature, optionalValue)
         this.editedStyle,
         miniTheme
     );
+};
 
+Styling.prototype.updateStyleName = function () {
+    var group = this.editor.getViewer().getGroup(),
+        es = this.editedStyle,
+        localStyle = this.localStyle,
+        styleName = this.getChild('styleName'),
+        styleNameName = styleName.getChild('styleName'),
+        styleNameExtendBtn = styleName.getChild('extendBtn'),
+        styleNameDeleteBtn = styleName.getChild('deleteBtn'),
+        basedOnLabel = styleName.getChild('basedOnLabel'),
+        basedOn = styleName.getChild('basedOn'),
+        bo,
+        basedOnName;
+    if (localStyle) {
+        styleNameName.enable(true);
+        styleNameExtendBtn.setVisible(true);
+        styleNameDeleteBtn.setVisible(true);
+        styleNameName.setText(this.editedStyle);
+        basedOnLabel.setVisible(true);
+        basedOn.setVisible(true);
+        basedOnName = '';
+        if (localStyle.basedOn && localStyle.basedOn.length > 0) {
+            bo = localStyle.basedOn[0];
+            if (isString(bo)) {
+                basedOnName = bo;
+            } else {
+                basedOnName = bo.style;
+            }
+        }
+        basedOn.setText(basedOnName);
+    } else {
+        styleNameName.enable(false);
+        styleNameExtendBtn.setVisible(false);
+        styleNameDeleteBtn.setVisible(false);
+        styleNameName.setText(this.editedStyle ? this.editedStyle.style : '');
+        basedOnLabel.setVisible(false);
+        basedOn.setVisible(false);
+    }
+};
+
+Styling.prototype.updateStylePickers = function () {
+    var group = this.editor.getViewer().getGroup(),
+        children = this.children;
+    children.stylePicker.highlight(this.editedStyle);
+    children.localStylePicker.highlight(this.editedStyle);
 };
 
 Styling.prototype.setData = function (st) {
-    var group = this.editor.getViewer().getGroup();
+    var group = this.editor.getViewer().getGroup(),
+        styleEdit = this.getChild('styleEdit');
     // this is a style as in (factory, type, style)
     this.editedStyle = st;
     // if the style is a local style
@@ -217,11 +334,26 @@ Styling.prototype.setData = function (st) {
         delete this.localStyle;
     }
 
+    // remove the local style editor
+    if (styleEdit) {
+        this.removeChild(styleEdit);
+    }
+
+
+    // udpate the local style list
+    this.updateLocalStyleList();
+
+    // update the style pickers
+    this.updateStylePickers();
+
     // update the feature selector
     this.updateFeatureSelector();
 
     // udpate the style preview
     this.updateStylePreview();
+
+    // update the style name
+    this.updateStyleName();
 };
 
 Styling.prototype.getData = function () {

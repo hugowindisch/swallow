@@ -56,11 +56,13 @@ function Button(config) {
     this.setCursor('pointer');
     this.on('mousedown', function (evt) {
         evt.preventDefault();
+        evt.stopPropagation();
         that.children.background.setStyle('pressedBackground');
         this.once('mouseupc', function (evt) {
             evt.preventDefault();
+            evt.stopPropagation();
             that.children.background.setStyle('background');
-            that.emit('click');
+            that.emit('pressed');
         });
     });
 }

@@ -16,9 +16,9 @@ function StyleInfo(config) {
         children = this.children,
         preview = children.preview,
         innerPreview;
-    this.select(false);
+    this.setCursor('pointer');
+    this.highlight(false);
     children.label.setChildrenClipping('hidden');
-    this.setChildrenClipping('hidden');
     preview.setChildrenClipping('hidden');
     innerPreview = new (domvisual.DOMElement)();
     preview.addChild(innerPreview, 'preview');
@@ -27,7 +27,7 @@ function StyleInfo(config) {
 }
 StyleInfo.prototype = new (domvisual.DOMElement)();
 StyleInfo.prototype.theme = new (visual.Theme)({
-    selectedBackground: {
+    background: {
         basedOn: [
             { factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground' }
         ]
@@ -58,7 +58,7 @@ StyleInfo.prototype.setEditedStyle = function (st) {
 StyleInfo.prototype.getEditedStyle = function () {
     return this.editedStyle;
 };
-StyleInfo.prototype.select = function (selected) {
+StyleInfo.prototype.highlight = function (selected) {
     this.children.selectionBox.setVisible(selected);
 };
 

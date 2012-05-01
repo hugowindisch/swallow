@@ -1117,6 +1117,7 @@ exports.definition = {
                     type: "DOMElement",
                     position: "selectionBox",
                     config: {
+                        style: 'background'
                     }
                 },
                 background: {

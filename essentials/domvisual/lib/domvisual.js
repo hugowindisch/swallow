@@ -622,6 +622,7 @@ DOMInput.prototype.getText = function () {
 DOMInput.prototype.getValue = DOMInput.prototype.getText;
 DOMInput.prototype.enable = function (enable) {
     this.element.disabled = !enable;
+    return this;
 };
 DOMInput.prototype.setChecked = function (state) {
     this.element.checked = state;

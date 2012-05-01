@@ -5,6 +5,9 @@
 var glmatrix = require('glmatrix'),
     utils = require('utils'),
     forEachProperty = utils.forEachProperty,
+    forEach = utils.forEach,
+    deepCopy = utils.deepCopy,
+    isString = utils.isString,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     edit = require('./edit'),
@@ -571,9 +574,67 @@ Group.prototype.cmdRemoveStyle = function (name) {
         { model: this, name: name }
     );
 };
-Group.prototype.cmdRenameStyle = function (oldname, newname) {
+
+/*
+    This is pretty ugly and twisted but... don't know how to do it differently
+    at this time
+*/
+function forEachStyleConfig(visFactory, visType, fcn) {
+    var f = require(visFactory),
+        sc = require('config').styleConfig,
+        sheet = f[visType].prototype.getConfigurationSheet.call(null);
+    forEachProperty(sheet, function (prop) {
+        if (prop === sc) {
+            fcn(prop);
+        }
+    });
+}
+
+Group.prototype.cmdRemoveStyleAndReferences = function (factory, type, style) {
     var that = this,
-        on = oldname;
+        documentData = this.documentData,
+        cmdGroup = this.cmdCommandGroup('cmdRemoveStyleAndReferences', 'Remove Style ' + name, { model: this, name: name});
+    // remove all references to this style from visuals
+    forEachProperty(documentData.children, function (c, childName) {
+        var config = deepCopy(c.config),
+            change = false;
+        forEachStyleConfig(c.factory, c.type, function (prop) {
+            var s = config[prop];
+            if (isString(s)) {
+                if (s === style) {
+                    change = true;
+                    delete config[prop];
+                }
+            } else if (s.factory === factory && s.type === type && s.style === style) {
+                change = true;
+                delete config[prop];
+            }
+        });
+        if (change) {
+            cmdGroup.add(that.cmdSetVisualConfig(childName, config));
+        }
+    });
+    // remove all references to this style from other styles
+    forEachProperty(documentData.theme, function (s, sName) {
+        var basedOn = s.basedOn;
+        if (basedOn) {
+            forEach(basedOn, function (b) {
+                if (b.factory === factory && b.type === type && b.style === style) {
+                    cmdGroup.add(that.cmdUnsetStyleBase(sName, factory, type, style));
+                }
+            });
+        }
+    });
+    // remove the style
+    cmdGroup.add(that.cmdRemoveStyle(style));
+
+    // return the command group
+    return cmdGroup;
+
+};
+Group.prototype.cmdRenameStyleAndReferences = function (name, factory, type, newname) {
+    var that = this,
+        oldname = name;
     function toggleNames() {
         var documentData = that.documentData,
             theme = documentData.theme,
@@ -581,6 +642,37 @@ Group.prototype.cmdRenameStyle = function (oldname, newname) {
             n;
         delete theme[oldname];
         theme[newname] = style;
+
+        // do this in the children too
+        forEachProperty(documentData.children, function (c) {
+            var config = c.config;
+            forEachStyleConfig(c.factory, c.type, function (prop) {
+                var s = config[prop];
+                if (isString(s)) {
+                    if (s === oldname) {
+                        config[prop] = newname;
+                    }
+                } else {
+                    if (s.factory === factory && s.type === type && s.style === oldname) {
+                        config[prop].style = newname;
+                    }
+                }
+            });
+        });
+        // and do this in references to other styles (basedOn) within this
+        // document
+        forEachProperty(documentData.theme, function (t) {
+            var basedOn = t.basedOn;
+            if (basedOn) {
+                forEach(basedOn, function (tType) {
+                    if (tType.factory === factory && tType.type === type && tType.style === oldname) {
+                        tType.name = newname;
+                    }
+                });
+            }
+        });
+
+        // swap names
         n = oldname;
         oldname = newname;
         newname = n;
@@ -589,8 +681,8 @@ Group.prototype.cmdRenameStyle = function (oldname, newname) {
         toggleNames,
         toggleNames,
         'cmdRenameStyle',
-        'Rename Style ' + on,
-        { model: this, name: on }
+        'Rename Style ' + name,
+        { model: this, name: name }
     );
 };
 Group.prototype.cmdSetStyleFeature = function (name, feature, value) {
@@ -634,6 +726,35 @@ Group.prototype.cmdSetStyleBase = function (name, baseStyleFactory, baseStyleTyp
         'Change Style Base ' + name,
         { model: this, name: name }
     );
+};
+Group.prototype.cmdUnsetStyleBase = function (name, factory, type, style) {
+    var that = this,
+        prevBase;
+    return new Command(
+        function () {
+            var documentData = that.documentData,
+                theme = documentData.theme,
+                style = theme[name],
+                basedOn = [];
+            prevBase = style.basedOn;
+            forEach(style.basedOn, function (s) {
+                if (s.factory !== factory || s.type !== type || s.style !== style) {
+                    basedOn.push(s);
+                }
+            });
+            style.basedOn = basedOn;
+        },
+        function () {
+            var documentData = that.documentData,
+                theme = documentData.theme,
+                style = theme[name];
+            style.basedOn = prevBase;
+        },
+        'cmdUnsetStyleBase',
+        'Remove Style Base',
+        { model: this, name: name }
+    );
+
 };
 
 exports.Group = Group;
