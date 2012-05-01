@@ -36,10 +36,6 @@ StyleInfo.prototype.theme = new (visual.Theme)({
         data: [ 'editor_styleInfoLabel' ]
     }
 });
-/*StyleInfo.prototype.setTypeInfo = function (ti) {
-    this.children.factoryName.setText(ti.factory);
-    this.children.typeName.setText(ti.type);
-};*/
 StyleInfo.prototype.getConfigurationSheet = function () {
     return { editedStyle: null };
 };

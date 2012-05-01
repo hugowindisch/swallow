@@ -197,14 +197,21 @@ Styling.prototype.setLocalStyleFeature = function (feature, value) {
     this.updateStylePreview();
 };
 Styling.prototype.previewLocalStyleFeature = function (feature, value) {
-    var skin = {};
+    var editor = this.editor,
+        group = editor.getViewer().getGroup(),
+        skin = deepCopy(group.documentData.theme),
+        stylingHeading = this.getChild('stylingHeading'),
+        stylePreview = stylingHeading.getChild('stylePreview');
+
     if (!isString(this.editedStyle)) {
         throw new Error('local style expected');
     }
     skin[this.editedStyle] = deepCopy(this.localStyle);
     skin[this.editedStyle].jsData[feature] = value;
+    skin = group.createBoundThemeFromData(skin);
     this.editor.getViewer().previewStyleChange(skin);
-    this.updateStylePreview(feature, value);
+    stylePreview.previewStyleChange(skin);
+    this.getChild('localStylePicker').previewStyleChange(skin);
 };
 
 Styling.prototype.computeNonLocalStyleList = function () {
@@ -268,20 +275,12 @@ Styling.prototype.updateFeatureSelector = function () {
 };
 
 Styling.prototype.updateStylePreview = function (optionalFeature, optionalValue) {
-    var group = this.editor.getViewer().getGroup(),
-        es = this.editedStyle,
+    var viewer = this.editor.getViewer(),
         stylingHeading = this.getChild('stylingHeading'),
-        stylePreview = stylingHeading.getChild('stylePreview'),
-        miniTheme = {};
+        stylePreview = stylingHeading.getChild('stylePreview');
 
-    miniTheme[es] = deepCopy(group.documentData.theme[es]);
-    if (optionalFeature) {
-        miniTheme[es].jsData[optionalFeature] = optionalValue;
-    }
-    stylePreview.setStyleData(
-        this.editedStyle,
-        miniTheme
-    );
+    stylePreview.setStyle(this.editedStyle);
+    stylePreview.previewStyleChange(viewer.getPreviewTheme());
 };
 
 Styling.prototype.updateStyleName = function () {
@@ -324,10 +323,10 @@ Styling.prototype.updateStyleName = function () {
 };
 
 Styling.prototype.updateStylePickers = function () {
-    var group = this.editor.getViewer().getGroup(),
-        children = this.children;
+    var children = this.children;
     children.stylePicker.highlight(this.editedStyle);
     children.localStylePicker.highlight(this.editedStyle);
+    children.localStylePicker.previewStyleChange(this.editor.getViewer().getPreviewTheme());
 };
 
 Styling.prototype.setData = function (st) {
@@ -346,7 +345,6 @@ Styling.prototype.setData = function (st) {
     if (styleEdit) {
         this.removeChild(styleEdit);
     }
-
 
     // udpate the local style list
     this.updateLocalStyleList();

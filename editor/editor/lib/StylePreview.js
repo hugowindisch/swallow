@@ -17,10 +17,13 @@ StylePreview.prototype = new (domvisual.DOMElement)();
 StylePreview.prototype.getConfigurationSheet = function () {
     return { editedStyle: null };
 };
-StylePreview.prototype.setStyleData = function (st, theme) {
+StylePreview.prototype.setStyle = function (st) {
     var preview = this.children.preview;
-    preview.setLocalTheme(theme);
     preview.setStyle(st);
+};
+StylePreview.prototype.previewStyleChange = function (skin) {
+    var preview = this.children.preview;
+    preview.setLocalTheme(skin);
 };
 
 exports.StylePreview = StylePreview;

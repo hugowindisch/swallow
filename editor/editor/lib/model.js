@@ -4,6 +4,8 @@
 */
 var glmatrix = require('glmatrix'),
     utils = require('utils'),
+    visual = require('visual'),
+    Theme = visual.Theme,
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEach,
     deepCopy = utils.deepCopy,
@@ -60,10 +62,11 @@ var glmatrix = require('glmatrix'),
         }
 
 */
-function Group(documentData) {
+function Group(documentData, docInfo) {
     documentData = documentData || { positions: {}, children: {}, dimensions: [300, 300, 0]};
     this.commandChain = new CommandChain();
     this.documentData = documentData;
+    this.docInfo = docInfo;
     this.normalizeDocument();
     this.normalizeOrders();
 }
@@ -179,6 +182,46 @@ Group.prototype.getTopmostOrder = function () {
     });
     return order;
 };
+/*
+    It is difficult to preview the styles in the editor. Why? because
+    the style sheets have references to factories (a factory may have a
+    style sheet) while the factory of the type being edited does not
+    really exist. The styling system was not designed to be edited easily,
+    it was designed for being used.
+
+    So, we need to somehow trick things and this function does that. It will
+    create a style sheet that matches the current documentData and that
+    resolves inner depdendencies correctly. This could break if the styling
+    system changes.
+
+    Also note that this function is called by the group viewer that maintains
+    a valid local theme at all times (that can be used by other ui elements).
+
+    Also note that we don't support multiple inner bindings at this time
+    but that they are theoretically possible.
+*/
+Group.prototype.createBoundThemeFromData = function (optionalSkin) {
+    optionalSkin = optionalSkin || deepCopy(this.documentData.theme);
+    var theme = new Theme(optionalSkin),
+        docInfo = this.docInfo,
+        docFactory = docInfo.factory,
+        docType = docInfo.type;
+    forEachProperty(theme, function (s, name) {
+        var bindings = [];
+        if (s.basedOn) {
+            forEach(s.basedOn, function (sref) {
+                if (sref.factory === docFactory && sref.type === docType) {
+                    bindings.push(theme[sref.style]);
+                }
+            });
+        }
+        if (bindings.length > 0) {
+            s.bindings = bindings;
+        }
+    });
+    return theme;
+};
+
 /**
     Calls doCmd on the command chain.
 */
@@ -753,7 +796,5 @@ Group.prototype.cmdUnsetStyleBase = function (name, factory, type, style) {
         'Remove Style Base',
         { model: this, name: name }
     );
-
 };
-
 exports.Group = Group;

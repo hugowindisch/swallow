@@ -54,7 +54,7 @@ Editor.prototype.setGroupData = function (factory, type, groupData) {
         type: type
     };
     this.children.viewer.setGroup(
-        new (require('./model').Group)(groupData)
+        new (require('./model').Group)(groupData, this.docInfo)
     );
     this.children.panel.init(this);
     this.addPlugins(defaultPlugins);

@@ -764,7 +764,7 @@ GroupViewer.prototype.previewSelectionOpacity = function (opacity) {
     });
 };
 GroupViewer.prototype.previewStyleChange = function (skin) {
-    this.children.visuals.setSkin(skin);
+    this.children.visuals.setLocalTheme(skin);
 };
 GroupViewer.prototype.getPositionRect = function (name) {
     var pos = this.documentData.positions[name],
@@ -792,6 +792,12 @@ GroupViewer.prototype.getSelectionCopy = function () {
     });
     return res;
 };
+GroupViewer.prototype.getPreviewTheme = function () {
+    if (this.previewTheme === undefined) {
+        this.previewTheme = this.group.createBoundThemeFromData();
+    }
+    return this.previewTheme;
+};
 //////////////////////
 // private stuff (maybe should go in groupviewerprivate)
 GroupViewer.prototype.setGroup = function (group) {
@@ -806,7 +812,15 @@ GroupViewer.prototype.setGroup = function (group) {
     this.documentData = documentData;
     function onDo(name, message, hint) {
         switch (name) {
+        case 'cmdUnsetStyleBase':
+        case 'cmdSetStyleBase':
+        case 'cmdSetStyleFeature':
+        case 'cmdRenameStyle':
+        case 'cmdRemoveStyleAndReferences':
+            delete that.previewTheme;
+            break;
         case 'cmdAddStyle':
+            delete that.previewTheme;
             return;
         case 'cmdAddPosition':
             that.clearSelection();
@@ -902,7 +916,7 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
             dimensions: documentData.dimensions,
             children: {},
             positions: {},
-            theme: deepCopy(documentData.theme)
+            theme: this.getPreviewTheme()
         };
     forEachProperty(documentData.positions, function (pos, name) {
         var c = children[name];
