@@ -211,6 +211,7 @@ Styling.prototype.previewLocalStyleFeature = function (feature, value) {
     skin = group.createBoundThemeFromData(skin);
     this.editor.getViewer().previewStyleChange(skin);
     stylePreview.previewStyleChange(skin);
+    stylePreview.setStyle(this.editedStyle);
     this.getChild('localStylePicker').previewStyleChange(skin);
 };
 

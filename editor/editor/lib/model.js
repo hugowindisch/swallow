@@ -211,12 +211,13 @@ Group.prototype.createBoundThemeFromData = function (optionalSkin) {
         if (s.basedOn) {
             forEach(s.basedOn, function (sref) {
                 if (sref.factory === docFactory && sref.type === docType) {
-                    bindings.push(theme[sref.style]);
+                    bindings.push({theme: theme, style: sref.style});
                 }
             });
         }
         if (bindings.length > 0) {
             s.bindings = bindings;
+            delete s.basedOn;
         }
     });
     return theme;
