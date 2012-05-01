@@ -258,6 +258,7 @@ Styling.prototype.setEditor = function (editor) {
     // FIXME: set data is not called when there is no data in the selection (this is kinda
     // bad and should be fixed but until then this will put adequate defaults.
     this.updateStyleName();
+    this.updateStylePickers();
 
 };
 Styling.prototype.makeLocalStyle = function () {
@@ -337,7 +338,7 @@ Styling.prototype.setData = function (st) {
     this.editedStyle = st;
     // if the style is a local style
     if (isLocalStyle(this.editedStyle)) {
-        this.localStyle = group.documentData.theme[this.editedStyle];
+        this.localStyle = deepCopy(group.documentData.theme[this.editedStyle]);
     } else {
         delete this.localStyle;
     }
