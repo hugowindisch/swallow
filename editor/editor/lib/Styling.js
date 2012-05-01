@@ -159,8 +159,14 @@ Styling.prototype.renameStyle = function (name) {
     var editor = this.editor,
         docInfo = editor.getDocInfo(),
         group = editor.getViewer().getGroup();
-    group.doCommand(group.cmdRenameStyleAndReferences(this.editedStyle, docInfo.factory, docInfo.type, name));
-    this.editedStyle = name;
+    if (!group.documentData.theme[name]) {
+        group.doCommand(group.cmdRenameStyleAndReferences(this.editedStyle, docInfo.factory, docInfo.type, name));
+        this.editedStyle = name;
+        this.updateLocalStyleList();
+    } else {
+        // reset the displayed name
+        this.updateStyleName();
+    }
 };
 
 Styling.prototype.extendLocalStyle = function () {
