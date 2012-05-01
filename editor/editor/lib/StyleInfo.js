@@ -46,7 +46,7 @@ StyleInfo.prototype.setEditedStyle = function (st) {
         label = children.label;
 
     innerPreview.setInnerText('Abc');
-    innerPreview.setStyle(st);
+    innerPreview.setStyle(st.factory === null ? st.style : st);
     label.setInnerText(st.style);
 
     this.editedStyle = st;
@@ -56,6 +56,12 @@ StyleInfo.prototype.getEditedStyle = function () {
 };
 StyleInfo.prototype.highlight = function (selected) {
     this.children.selectionBox.setVisible(selected);
+};
+StyleInfo.prototype.previewStyleChange = function (skin) {
+    var children = this.children,
+        preview = children.preview,
+        innerPreview = preview.children.preview;
+    innerPreview.setLocalTheme(skin);
 };
 
 exports.StyleInfo = StyleInfo;

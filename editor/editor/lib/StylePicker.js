@@ -58,7 +58,7 @@ StylePicker.prototype.previewStyleChange = function (skin) {
     forEachProperty(this.children, function (c, n) {
         var es;
         if (c instanceof StyleInfo) {
-            c.setLocalTheme(skin);
+            c.previewStyleChange(skin);
         }
     });
 };
@@ -115,7 +115,7 @@ StylePicker.prototype.createStyleSection = function (title, styleMap) {
     this.addChild(txt);
     forEachSortedProperty(styleMap, function (st) {
         var ch = new StyleInfo();
-        ch.setEditedStyle(st.factory === null ? st.style : st);
+        ch.setEditedStyle(st);
         ch.setHtmlFlowing({display: 'inline-block', position: 'relative'}, true);
         ch.on('click', function () {
             that.emit('select', ch.getEditedStyle());
