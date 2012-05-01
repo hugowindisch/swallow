@@ -129,7 +129,7 @@ function inputConfig(label) {
 }
 
 function styleConfig(labelTxt) {
-    return function (mainEditor, cb) {
+    function sc(mainEditor, cb) {
         // intentionally here
         var domvisual = require('domvisual'),
             visual = require('visual'),
@@ -161,33 +161,10 @@ function styleConfig(labelTxt) {
         }
         create();
     };
-/*
-    return function (editorInfo, cb) {
-        topBottomConfig(
-            label,
-            'editor',
-            'Styling',
-            {},
-            25,
-            360,
-            100,
-            function (err, ctrl) {
-                if (err) {
-                    return cb(err);
-                }
-                // we should setup the editor that we got,
-                // to add set data and get data and notification
-                ctrl.setData = function (st) {
-                    ctrl.children.data.setStyle(st);
-                };
-                ctrl.getData = function () {
-                    return ctrl.children.data.getStyle();
-                };
-
-                cb(err, ctrl);
-            }
-        );
-    };*/
+    // hack for being able to find stuff that is a style config
+    // (some more thought will probably be needed at some point to clean this up)
+    sc.isStyleConfig = true;
+    return sc;
 }
 
 

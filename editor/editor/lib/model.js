@@ -581,11 +581,10 @@ Group.prototype.cmdRemoveStyle = function (name) {
 */
 function forEachStyleConfig(visFactory, visType, fcn) {
     var f = require(visFactory),
-        sc = require('config').styleConfig,
         sheet = f[visType].prototype.getConfigurationSheet.call(null);
-    forEachProperty(sheet, function (prop) {
-        if (prop === sc) {
-            fcn(prop);
+    forEachProperty(sheet, function (prop, propName) {
+        if (prop && prop.isStyleConfig === true) {
+            fcn(propName);
         }
     });
 }
@@ -681,7 +680,7 @@ Group.prototype.cmdRenameStyleAndReferences = function (name, factory, type, new
         toggleNames,
         toggleNames,
         'cmdRenameStyle',
-        'Rename Style ' + name,
+        'Rename Style ' + name + ' to ' + newname,
         { model: this, name: name }
     );
 };

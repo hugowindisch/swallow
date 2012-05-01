@@ -107,7 +107,9 @@ function Styling(config) {
     localStylePicker.on('select', function (st) {
         that.pickStyle(st.style);
     });
-    styleNameName.on('change', function () {
+    styleNameName.on('change', function (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
         that.renameStyle(styleNameName.getText());
     });
     extendBtn.on('pressed', function () {
@@ -158,6 +160,7 @@ Styling.prototype.renameStyle = function (name) {
         docInfo = editor.getDocInfo(),
         group = editor.getViewer().getGroup();
     group.doCommand(group.cmdRenameStyleAndReferences(this.editedStyle, docInfo.factory, docInfo.type, name));
+    this.editedStyle = name;
 };
 
 Styling.prototype.extendLocalStyle = function () {
