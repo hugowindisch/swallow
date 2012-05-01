@@ -57,6 +57,8 @@ StylePicker.prototype.setStyleList = function (sl) {
 StylePicker.prototype.highlight = function (style) {
     if (isString(style)) {
         style = { factory: null, type: null, style: style };
+    } else if (style === null) {
+        style = { factory: null, type: null, style: null };
     }
     forEachProperty(this.children, function (c, n) {
         var es;

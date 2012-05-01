@@ -176,9 +176,8 @@ Styling.prototype.deleteLocalStyle = function () {
     var editor = this.editor,
         docInfo = editor.getDocInfo(),
         group = editor.getViewer().getGroup();
-    group.doCommand(group.cmdRemoveStyleAndReferences(this.editedStyle, docInfo.factory, docInfo.type));
-// FIXME
-//    this.setData(null);
+    group.doCommand(group.cmdRemoveStyleAndReferences(docInfo.factory, docInfo.type, this.editedStyle));
+    this.setData(null);
 };
 
 Styling.prototype.clearLocalStyleFeature = function (feature) {
