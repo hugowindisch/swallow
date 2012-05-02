@@ -121,7 +121,7 @@ function Styling(config) {
             styleEdit = new (f.FeatureEditor)(f.config);
             styleEdit.setStyleData(styleAttributesToEditorAttributes(
                 f.attributes,
-                that.localStyle
+                that.localStyle.jsData || {}
             ));
             that.addChild(styleEdit, 'styleEdit', 2);
             styleEdit.setPosition('styleEdit');
@@ -330,9 +330,18 @@ Styling.prototype.makeLocalStyle = function () {
 };
 
 Styling.prototype.updateFeatureSelector = function () {
-    var stylingHeading = this.getChild('stylingHeading'),
+    var activeFeatures = {},
+        localStyleJsData = this.localStyle.jsData || {},
+        stylingHeading = this.getChild('stylingHeading'),
         styleFeature = stylingHeading.getChild('styleFeature');
-    styleFeature.setStyleData(this.localStyle);
+    forEachProperty(styleFeatures, function (data, feature) {
+        forEachProperty(data.attributes, function (attr, attrName) {
+            if (localStyleJsData[attr] !== undefined) {
+                activeFeatures[feature] = true;
+            }
+        });
+    });
+    styleFeature.setStyleFeatures(activeFeatures);
 };
 
 Styling.prototype.updateStylePreview = function (optionalFeature, optionalValue) {

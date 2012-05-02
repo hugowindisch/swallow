@@ -32,25 +32,18 @@ function StyleFeatureSelector(config) {
 }
 StyleFeatureSelector.prototype = new (domvisual.DOMElement)();
 StyleFeatureSelector.prototype.getConfigurationSheet = function () {
-    return { editedStyle: null };
+    return { };
 };
-StyleFeatureSelector.prototype.setStyleData = function (st) {
-    var jsData = {},
-        children = this.children;
-    if (st && st.jsData) {
-        jsData = st.jsData;
-    }
-    forEachProperty(children, function (ch, name) {
-        ch.setUrl(featureUrl(name, Boolean(jsData[name])));
+StyleFeatureSelector.prototype.setStyleFeatures = function (stf) {
+    forEachProperty(this.children, function (ch, name) {
+        ch.setUrl(featureUrl(name, Boolean(stf[name])));
     });
 };
 StyleFeatureSelector.prototype.clearFeatureHighlight = function (feature) {
-    var children = this.children;
-    children[feature].setUrl(featureUrl(feature, false));
+    this.children[feature].setUrl(featureUrl(feature, false));
 };
 StyleFeatureSelector.prototype.setFeatureHighlight = function (feature) {
-    var children = this.children;
-    children[feature].setUrl(featureUrl(feature, true));
+    this.children[feature].setUrl(featureUrl(feature, true));
 };
 
 exports.StyleFeatureSelector = StyleFeatureSelector;
