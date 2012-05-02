@@ -3,61 +3,6 @@
 
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-
-/**
-Thinking
-========
-- I don't want something big but I want to be able to graphically deal with
-graphical stuff.
-
-- I don't want to be a dom manipulation framework. Somehow, people should be
-able to use the one they like. But, often web frameworks deal with component
-loading and for this I want to stick to CommonJS packages & modules. So there
-are clashing elements.
-
-- Positioning is an element of skinning that is somehow different (in terms
-of human manipulation of elements)
-
-
-- Maybe ids are good enough
-
-- user data vs container: the dom is shared by many components. Components
-may want to have userdata.
-
-Features I want:
-----------------
-* Theming: wellknown styles that apply to all components of a set (this could
-work with multiple classes)
-
-* Skinning should be done through css (css style)
-
-
-1. type of 'box', just like in html, the element.
-
-
-==============
-If I could use the same model for canvas, webgl, and html (i.e. see the dom
-as an output format)
-
-... th
-
-The first level of abstraction has in fact nothing to do with html.
-It is an abstraction of graphic elements that need to refreshs themselves
-=========================================================================
----------------
-Visual()
-Position()
-Event()
-Dirt()
-
-The second level of abstraction is the html thing (it has to do with
-implementing a visual on top of the DOM)
-
-Then we could implement a visual on top of a canvas (other libray)
-
-A position can be a named position inside our parent or an unmanaged position.
-
-*/
 /*global define*/
 var utils = require('utils'),
     events = require('events'),
