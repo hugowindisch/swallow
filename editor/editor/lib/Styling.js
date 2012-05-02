@@ -38,6 +38,22 @@ function isLocalStyle(st) {
     return isString(st);
 }
 
+function isSameStyle(s1, s2) {
+    var sameStyle;
+    if (typeof s1 !== typeof s2) {
+        sameStyle = false;
+    } else if (s1 === null) {
+        sameStyle = (s2 === null);
+    } else if (isString(s1)) {
+        sameStyle = (s1 === s2);
+    } else if (s2 !== null) {
+        sameStyle = (s1.factory === s2.factory && s1.type === s2.type && s1.style === s2.style);
+    } else {
+        sameStyle = false;
+    }
+    return sameStyle;
+}
+
 /*
     Let's directly use this as style names
     s, tl
@@ -151,6 +167,9 @@ Styling.prototype.makeExtendedStyle = function (st) {
 };
 
 Styling.prototype.pickStyle = function (style) {
+    if (isSameStyle(style, this.editedStyle)) {
+        style = null;
+    }
     this.setData(style);
     this.emit('change', style);
 };
