@@ -726,25 +726,32 @@ Group.prototype.cmdRenameStyleAndReferences = function (name, factory, type, new
         { model: this, name: name }
     );
 };
-Group.prototype.cmdSetStyleFeature = function (name, feature, value) {
+// note: use null value for features to clear them and non null to assign them
+Group.prototype.cmdSetStyleFeatures = function (name, features) {
     var that = this;
     function toggle() {
         var documentData = that.documentData,
             theme = documentData.theme,
             style = theme[name],
             jsData = style.jsData,
-            oldv = jsData[feature];
-        if (value) {
-            jsData[feature] = value;
-        } else {
-            delete jsData[feature];
-        }
-        value = oldv;
+            oldv = {};
+        forEachProperty(features, function (v, f) {
+            var old = jsData[f];
+            oldv[f] = (old === undefined) ? null : old;
+
+            if (v !== null) {
+                jsData[f] = v;
+            } else {
+                delete jsData[f];
+            }
+
+        });
+        features = oldv;
     }
     return new Command(
         toggle,
         toggle,
-        'cmdSetStyleFeature',
+        'cmdSetStyleFeatures',
         'Change Style ' + name,
         { model: this, name: name }
     );

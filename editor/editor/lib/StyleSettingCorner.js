@@ -17,51 +17,42 @@ function StyleSettingCorner(config) {
     var children = this.children,
         that = this;
     children.radiusSlider.on('change', function (v, sliding) {
-        that.editedFeature.radius = v;
+        that.styleData.radius = v;
         that.updateInput();
-        that.emit(sliding ? 'preview' : 'change', that.feature, that.editedFeature);
+        that.emit(sliding ? 'preview' : 'change', that.styleData);
     });
     children.radiusValue.on('change', function (v) {
         var n = limitRange(this.getValue(), 0, 1000);
-        that.editedFeature.radius = n;
+        that.styleData.radius = n;
         that.updateSlider();
-        that.emit('change', that.feature, that.editedFeature);
+        that.emit('change', that.styleData);
     });
     children.clear.on('click', function () {
-        that.emit('reset', that.feature);
+        that.emit('reset');
     });
 }
 StyleSettingCorner.prototype = new (domvisual.DOMElement)();
 StyleSettingCorner.prototype.getConfigurationSheet = function () {
-    return { label: null, feature: null };
+    return { label: null };
 };
 StyleSettingCorner.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
 };
-StyleSettingCorner.prototype.setFeature = function (feature) {
-    this.feature = feature;
-};
 StyleSettingCorner.prototype.setStyleData = function (st) {
     var children = this.children,
-        editedFeature;
-    if (st) {
-        editedFeature = deepCopy(st.jsData[this.feature]);
-        if (!editedFeature) {
-            editedFeature = { radius: 0 };
-        }
-    } else {
-        editedFeature = { radius: 0 };
-    }
-    this.editedFeature = editedFeature;
+        styleData;
+    this.styleData = {
+        radius: st.radius || 0
+    };
     this.updateSlider();
     this.updateInput();
 };
 
 StyleSettingCorner.prototype.updateSlider = function () {
-    this.children.radiusSlider.setValue(this.editedFeature.radius);
+    this.children.radiusSlider.setValue(this.styleData.radius);
 };
 StyleSettingCorner.prototype.updateInput = function () {
-    this.children.radiusValue.setValue(Number(this.editedFeature.radius).toFixed(1));
+    this.children.radiusValue.setValue(Number(this.styleData.radius).toFixed(1));
 };
 
 exports.StyleSettingCorner = StyleSettingCorner;

@@ -814,7 +814,7 @@ GroupViewer.prototype.setGroup = function (group) {
         switch (name) {
         case 'cmdUnsetStyleBase':
         case 'cmdSetStyleBase':
-        case 'cmdSetStyleFeature':
+        case 'cmdSetStyleFeatures':
         case 'cmdRenameStyle':
         case 'cmdRemoveStyleAndReferences':
             delete that.previewTheme;

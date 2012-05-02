@@ -9,6 +9,8 @@ var visual = require('visual'),
     position = require('/visual/lib/position'),
     glmatrix = require('glmatrix'),
     config = require('config'),
+    styles = require('./styles'),
+    styleToCss = styles.styleToCss,
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
     keycodes = require('./keycodes'),
     Visual = visual.Visual,
@@ -361,7 +363,6 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
     var cssClass,
         element = this.element,
         styleData,
-        jsData,
         v,
         style;
     if (element) {
@@ -374,40 +375,9 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
             cssClass += name;
         });
         element.setAttribute('class', cssClass);
-        // interpret the jsData
-        jsData = styleData.jsData;
-        v = jsData.tl;
-        if (v) {
-            // fake
-            style.backgroundColor = 'red';
-            style.webkitBorderTopLeftRadius =
-                style.mozBorderRadiusTopleft =
-                style.borderTopLeftRadius = v.radius + 'px';
-        } else {
-// we must clear the forced styles... all of them when they are not used
-            style.backgroundColor = null;
-            style.webkitBorderTopLeftRadius =
-                style.mozBorderRadiusTopleft =
-                style.borderTopLeftRadius = null;
-        }
-        v = jsData.tr;
-        if (v) {
-            style.webkitBorderTopRightRadius =
-                style.mozBorderRadiusTopright =
-                style.borderTopRightRadius = v.radius + 'px';
-        }
-        v = jsData.bl;
-        if (v) {
-            style.webkitBorderBottomLeftRadius =
-                style.mozBorderRadiusBottomleft =
-                style.borderBottomLeftRadius = v.radius + 'px';
-        }
-        v = jsData.br;
-        if (v) {
-            style.webkitBorderBottomRightRadius =
-                style.mozBorderRadiusBottomright =
-                style.borderBottomRightRadius = v.radius + 'px';
-        }
+//console.log(this.name + ', ' + this.style);
+//console.log(styleData);
+        styleToCss(style, styleData.jsData);
     }
 };
 DOMVisual.prototype.updateOpacityRepresentation = function () {

@@ -16,20 +16,32 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3,
     styleFeatures = {
         tl: {
+            attributes: {
+                radius: 'borderTopLeftRadius'
+            },
             FeatureEditor: require('./StyleSettingCorner').StyleSettingCorner,
-            config: { label: 'Top Left Corner', feature: 'tl' }
+            config: { label: 'Top Left Corner' }
         },
         tr: {
+            attributes: {
+                radius: 'borderTopRightRadius'
+            },
             FeatureEditor: require('./StyleSettingCorner').StyleSettingCorner,
-            config: { label: 'Top Right Corner', feature: 'tr' }
+            config: { label: 'Top Right Corner' }
         },
         bl: {
+            attributes: {
+                radius: 'borderBottomLeftRadius'
+            },
             FeatureEditor: require('./StyleSettingCorner').StyleSettingCorner,
-            config: { label: 'Bottom Left Corner', feature: 'bl' }
+            config: { label: 'Bottom Left Corner' }
         },
         br: {
+            attributes: {
+                radius: 'borderBottomRightRadius'
+            },
             FeatureEditor: require('./StyleSettingCorner').StyleSettingCorner,
-            config: { label: 'Bottom Right Corner', feature: 'br' }
+            config: { label: 'Bottom Right Corner' }
         }
 
     };
@@ -54,19 +66,31 @@ function isSameStyle(s1, s2) {
     return sameStyle;
 }
 
-/*
-    Let's directly use this as style names
-    s, tl
-                t
-                tr
-                l
-                m
-                r
-                bl
-                b
-                br
-                txt
-*/
+function styleAttributesToEditorAttributes(selector, data) {
+    var result = {};
+    forEachProperty(selector, function (attrName, editorName) {
+        var d = data[attrName];
+        if (d) {
+            result[editorName] = d;
+        }
+    });
+    return result;
+}
+
+function editorAttributesToStyleAttributes(selector, data) {
+    var result = {};
+    forEachProperty(selector, function (attrName, editorName) {
+        result[attrName] = data[editorName];
+    });
+    return result;
+}
+function getClearMap(selector) {
+    var result = {};
+    forEachProperty(selector, function (editorName, attrName) {
+        result[attrName] = null;
+    });
+    return result;
+}
 
 function Styling(config) {
     this.editedStyle = null;
@@ -91,21 +115,27 @@ function Styling(config) {
             that.removeChild(styleEdit);
         }
         if (f) {
+            if (f.clearMap === undefined) {
+                f.clearMap = getClearMap(f.attributes);
+            }
             styleEdit = new (f.FeatureEditor)(f.config);
-            styleEdit.setStyleData(that.localStyle);
+            styleEdit.setStyleData(styleAttributesToEditorAttributes(
+                f.attributes,
+                that.localStyle
+            ));
             that.addChild(styleEdit, 'styleEdit', 2);
             styleEdit.setPosition('styleEdit');
             styleEdit.setHtmlFlowing(flowing, true);
-            styleEdit.on('change', function (feature, value) {
-                that.setLocalStyleFeature(feature, value);
+            styleEdit.on('change', function (value) {
+                that.setLocalStyleFeature(editorAttributesToStyleAttributes(f.attributes, value));
             });
-            styleEdit.on('preview', function (feature, value) {
-                that.previewLocalStyleFeature(feature, value);
+            styleEdit.on('preview', function (value) {
+                that.previewLocalStyleFeature(editorAttributesToStyleAttributes(f.attributes, value));
             });
             styleEdit.on('reset', function (feat) {
-                styleFeature.clearFeatureHighlight(feat);
+                styleFeature.clearFeatureHighlight(featureName);
                 that.removeChild(styleEdit);
-                that.clearLocalStyleFeature(feat);
+                that.clearLocalStyleFeature(getClearMap(f.clearMap));
             });
             // make sure the thing is highlighted
             styleFeature.setFeatureHighlight(featureName);
@@ -199,34 +229,44 @@ Styling.prototype.deleteLocalStyle = function () {
     this.setData(null);
 };
 
-Styling.prototype.clearLocalStyleFeature = function (feature) {
-    if (!isString(this.editedStyle)) {
+Styling.prototype.setLocalStyleFeature = function (features) {
+    if (!this.localStyle) {
         throw new Error('local style expected');
     }
-    var group = this.editor.getViewer().getGroup();
-    group.doCommand(group.cmdSetStyleFeature(this.editedStyle, feature, null));
-    this.updateStylePreview();
+    var group = this.editor.getViewer().getGroup(),
+        localStyleData = this.localStyle.jsData;
+    group.doCommand(group.cmdSetStyleFeatures(this.editedStyle, features));
+    // update the local style
+    forEachProperty(features, function (v, f) {
+        if (v === null) {
+            delete localStyleData[f];
+        } else {
+            localStyleData[f] = v;
+        }
+    });
 };
-Styling.prototype.setLocalStyleFeature = function (feature, value) {
-    if (!isString(this.editedStyle)) {
-        throw new Error('local style expected');
-    }
-    var group = this.editor.getViewer().getGroup();
-    group.doCommand(group.cmdSetStyleFeature(this.editedStyle, feature, value));
-    this.updateStylePreview();
-};
-Styling.prototype.previewLocalStyleFeature = function (feature, value) {
+
+Styling.prototype.previewLocalStyleFeature = function (features) {
     var editor = this.editor,
         group = editor.getViewer().getGroup(),
         skin = deepCopy(group.documentData.theme),
         stylingHeading = this.getChild('stylingHeading'),
+        ss,
         stylePreview = stylingHeading.getChild('stylePreview');
 
-    if (!isString(this.editedStyle)) {
+    if (!this.localStyle) {
         throw new Error('local style expected');
     }
-    skin[this.editedStyle] = deepCopy(this.localStyle);
-    skin[this.editedStyle].jsData[feature] = value;
+    ss = skin[this.editedStyle] = deepCopy(this.localStyle);
+    ss = ss.jsData;
+    // update the local style
+    forEachProperty(features, function (v, f) {
+        if (v === null) {
+            delete ss[f];
+        } else {
+            ss[f] = v;
+        }
+    });
     skin = group.createBoundThemeFromData(skin);
     this.editor.getViewer().previewStyleChange(skin);
     stylePreview.previewStyleChange(skin);
