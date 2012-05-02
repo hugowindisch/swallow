@@ -601,9 +601,9 @@ Layout.prototype.setPosition = function (name, position) {
 
 
 function convertScaleToSize(matrix) {
-    var v1 = [matrix[0], matrix[4], matrix[8]],
-        v2 = [matrix[1], matrix[5], matrix[9]],
-        v3 = [matrix[2], matrix[6], matrix[10]],
+    var v1 = [matrix[0], matrix[1], matrix[2]],
+        v2 = [matrix[4], matrix[5], matrix[6]],
+        v3 = [matrix[8], matrix[9], matrix[10]],
         l1 = vec3.length(v1),
         l2 = vec3.length(v2),
         l3 = vec3.length(v3),
