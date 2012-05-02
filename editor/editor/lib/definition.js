@@ -1028,7 +1028,7 @@ exports.definition = {
                 },
                 preview: {
                     order: 1,
-                    matrix: [ 50, 0, 0, 0,   0, 50, 0, 0,    0, 0, 1, 0,   30, 10, 0, 1 ],
+                    matrix: [ 40, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   35, 15, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 label: {
@@ -1049,7 +1049,7 @@ exports.definition = {
                 background: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "preview",
+                    position: "background",
                     config: {
                         url: 'editor/lib/stylebgsmall.png'
                     }
@@ -1062,11 +1062,11 @@ exports.definition = {
                     }
                 },
                 label: {
-                    factory: "domvisual",
-                    type: "DOMElement",
+                    factory: "baseui",
+                    type: "Label",
                     position: "label",
                     config: {
-                        style: 'label'
+                        textAlign: 'right'
                     }
                 }
             }

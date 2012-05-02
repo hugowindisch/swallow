@@ -40,7 +40,12 @@ Label.prototype.getText = function () {
 };
 
 Label.prototype.getConfigurationSheet = function () {
-    return { text: require('config').inputConfig('Text') }; 
+    return { text: require('config').inputConfig('Text'), textAlign: null };
+};
+
+Label.prototype.setTextAlign = function (enable) {
+// FIXME: (this is fake, there is no right way to do this yet)
+    this.element.style.textAlign = enable ? 'center' : null;
 };
 
 exports.Label = Label;

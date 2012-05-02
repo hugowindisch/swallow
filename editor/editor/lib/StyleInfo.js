@@ -31,9 +31,6 @@ StyleInfo.prototype.theme = new (visual.Theme)({
         basedOn: [
             { factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground' }
         ]
-    },
-    label: {
-        data: [ 'editor_styleInfoLabel' ]
     }
 });
 StyleInfo.prototype.getConfigurationSheet = function () {
@@ -47,7 +44,7 @@ StyleInfo.prototype.setEditedStyle = function (st) {
 
     innerPreview.setInnerText('Abc');
     innerPreview.setStyle(st.factory === null ? st.style : st);
-    label.setInnerText(st.style);
+    label.setText(st.style);
 
     this.editedStyle = st;
 };
