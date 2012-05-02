@@ -115,14 +115,19 @@ DOMVisual.prototype.getDisplayMatrix = function () {
         scrollY = this.element.scrollTop,
         mat;
 
+    if (this.htmlFlowing) {
+        mat = this.getComputedMatrix();
+
+    } else {
+        mat = this.getMatrix();
+    }
+
     if (scrollX || scrollY) {
         mat = glmatrix.mat4.translate(
-            this.matrix,
+            mat,
             [-scrollX, -scrollY, 0],
             glmatrix.mat4.create()
         );
-    } else {
-        mat = this.getMatrix();
     }
     return mat;
 };
