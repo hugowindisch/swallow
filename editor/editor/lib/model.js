@@ -25,13 +25,11 @@ var glmatrix = require('glmatrix'),
             dimensions: [ 640, 400, 0],
             positions: {
                 toolbox: {
-                    type: "TransformPosition",
                     order: 0,
                     matrix: [ 200, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
                     scalemode: 'distort'
                 },
                 viewer: {
-                    type: "TransformPosition",
                     order: 1,
                     matrix: [ 440, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   200, 0, 0, 0 ],
                     scalemode: 'distort'

@@ -269,7 +269,6 @@ function setupToolMenu(editor) {
                         group.getUniquePositionName(),
                         {
                             matrix: mat,
-                            type: "Position",
                             order: group.getTopmostOrder(),
                             snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                         }

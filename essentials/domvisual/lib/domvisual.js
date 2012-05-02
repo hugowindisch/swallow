@@ -745,9 +745,8 @@ exports.createFullScreenApplication = function (child) {
             dimensions: [100, 100, 0],
             positions: {
                 root: {
-                    type: "TransformPosition",
                     matrix: [ 100, 0, 0, 0,   0, 100, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                    scalemode: "distort"
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
                 }
             }
         }

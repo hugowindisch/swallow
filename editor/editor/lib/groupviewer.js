@@ -363,7 +363,7 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
                 newpos.type = pos.type;
                 newpos.snapping = pos.snapping;
                 newpos.matrix = mat4.multiply(transform, pos.matrix, mat4.create());
-                vis.setPosition(visual.deserializePosition(newpos));
+                vis.setPosition(new (visual.Position)(newpos.matrix, newpos.snapping, newpos.opacity));
             }
         }
     });
