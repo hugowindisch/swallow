@@ -13,8 +13,22 @@ function StyleSettingShadow(config) {
     domvisual.DOMElement.call(this, config, groups.StyleSettingShadow);
 }
 StyleSettingShadow.prototype = new (domvisual.DOMElement)();
+
 StyleSettingShadow.prototype.getConfigurationSheet = function () {
-    return {  };
+    return { label: null };
 };
+StyleSettingShadow.prototype.setLabel = function (txt) {
+    this.children.label.setText(txt);
+};
+StyleSettingShadow.prototype.setStyleData = function (st) {
+    var children = this.children,
+        styleData;
+    this.styleData = {
+        color: st.shadow
+    };
+//    this.updateSlider();
+//    this.updateInput();
+};
+
 
 exports.StyleSettingShadow = StyleSettingShadow;

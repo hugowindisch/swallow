@@ -1423,8 +1423,74 @@ exports.definition = {
         StyleSettingShadow: {
             dimensions: [340, 100, 1],
             positions: {
+                label: {
+                    order: 0,
+                    matrix: [ 200, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                clear: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                offsetX: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                offsetY: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                blurRadius: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                spreadRadius: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
             },
             children: {
+                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "label",
+                    config: { text: "Corner", bold: true}
+                },
+                clear: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "clear",
+                    config: { value: true }
+                },
+                offsetX: {
+                    factory: 'editor',
+                    type: 'LabelValueSliderCheck',
+                    position: 'offsetX',
+                    config: { /*label: 'OffsetX:', value: 0, minValue: 0, maxValue: 100, check: true*/ }
+                },
+                offsetY: {
+                    factory: 'editor',
+                    type: 'LabelValueSliderCheck',
+                    position: 'offsetY',
+                    config: { label: 'OffsetY:', value: 0, minValue: 0, maxValue: 100, check: true }
+                },
+                blurRadius: {
+                    factory: 'editor',
+                    type: 'LabelValueSliderCheck',
+                    position: 'blurRadius',
+                    config: { label: 'Blur:', value: 0, minValue: 0, maxValue: 100, check: true }
+                },
+                spreadRadius: {
+                    factory: 'editor',
+                    type: 'LabelValueSliderCheck',
+                    position: 'spreadRadius',
+                    config: { label: 'Spread:', value: 0, minValue: 0, maxValue: 100, check: true }
+                }
             }
         },
         StyleInfo: {
@@ -1712,6 +1778,56 @@ exports.definition = {
                 }
             }
         },
-
+        LabelValueSliderCheck: {
+            dimensions: [340, 25, 0],
+            positions: {
+                label: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                value: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                slider: {
+                    order: 0,
+                    matrix: [ 180, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                check: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+            },
+            children: {
+                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "label",
+                    config: { text: "Size:"}
+                },
+                value: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "value",
+                    config: { text: "0"}
+                },
+                slider: {
+                    factory: "baseui",
+                    type: "Slider",
+                    position: "slider",
+                    config: { value: 0, minValue: 0, maxValue: 50 }
+                },
+                check: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "check",
+                    config: { value: true }
+                }
+            }
+        }
     }
 };

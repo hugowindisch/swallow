@@ -68,8 +68,14 @@ var visual = require('visual'),
             },
             FeatureEditor: require('./StyleSettingText').StyleSettingText,
             config: { label: 'Text' }
+        },
+        s: {
+            attributes: {
+                shadow: 'boxShadow'
+            },
+            FeatureEditor: require('./StyleSettingShadow').StyleSettingShadow,
+            config: { label: 'Shadow' }
         }
-
 
     };
 

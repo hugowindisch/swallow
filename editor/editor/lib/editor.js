@@ -220,6 +220,7 @@ exports.StyleSettingBackground = require('./StyleSettingBackground').StyleSettin
 exports.StyleSettingText = require('./StyleSettingText').StyleSettingText;
 exports.StyleSettingShadow = require('./StyleSettingShadow').StyleSettingShadow;
 exports.StyleFeatureSelector = require('./StyleFeatureSelector').StyleFeatureSelector;
+exports.LabelValueSliderCheck = require('./LabelValueSliderCheck').LabelValueSliderCheck;
 exports.Panel = require('./Panel').Panel;
 
 // note: this should be last
