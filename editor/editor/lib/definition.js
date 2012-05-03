@@ -924,7 +924,7 @@ exports.definition = {
             }
         },
         StyleSettingCorner: {
-            dimensions: [340, 120, 1],
+            dimensions: [340, 60, 1],
             positions: {
                 label: {
                     order: 0,
@@ -933,37 +933,43 @@ exports.definition = {
                 },
                 clear: {
                     order: 0,
-                    matrix: [ 100, 0, 0, 0,  0, 32, 0, 0,  0, 0, 1, 0,   240, 0, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 radiusLabel: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 50, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 radiusValue: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 50, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 radiusSlider: {
                     order: 0,
-                    matrix: [ 210, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 50, 0, 1],
+                    matrix: [ 180, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                radiusCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
+
             },
             children: {
                 label: {
                     factory: "baseui",
                     type: "Label",
                     position: "label",
-                    config: { text: "Corner"}
+                    config: { text: "Corner", bold: true}
                 },
                 clear: {
                     factory: "baseui",
-                    type: "Button",
+                    type: "CheckBox",
                     position: "clear",
-                    config: { text: "Clear"}
+                    config: { value: true }
                 },
                 radiusLabel: {
                     factory: "baseui",
@@ -982,6 +988,12 @@ exports.definition = {
                     type: "Slider",
                     position: "radiusSlider",
                     config: { value: 0, minValue: 0, maxValue: 50 }
+                },
+                radiusCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "radiusCheck",
+                    config: { value: true }
                 }
             }
         },

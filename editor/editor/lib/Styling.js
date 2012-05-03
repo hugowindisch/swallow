@@ -80,14 +80,11 @@ function styleAttributesToEditorAttributes(selector, data) {
 function editorAttributesToStyleAttributes(selector, data) {
     var result = {};
     forEachProperty(selector, function (attrName, editorName) {
-        result[attrName] = data[editorName];
-    });
-    return result;
-}
-function getClearMap(selector) {
-    var result = {};
-    forEachProperty(selector, function (editorName, attrName) {
-        result[attrName] = null;
+        var d = data[editorName];
+        if (d === undefined) {
+            d = null;
+        }
+        result[attrName] = d;
     });
     return result;
 }
@@ -109,33 +106,31 @@ function Styling(config) {
         that = this;
     styleFeature.on('select', function (featureName) {
         var styleEdit = that.getChild('styleEdit'),
-            f = styleFeatures[featureName];
+            f = styleFeatures[featureName],
+            attributes = f.attributes;
         that.makeLocalStyle();
         if (styleEdit) {
             that.removeChild(styleEdit);
         }
         if (f) {
-            if (f.clearMap === undefined) {
-                f.clearMap = getClearMap(f.attributes);
-            }
             styleEdit = new (f.FeatureEditor)(f.config);
             styleEdit.setStyleData(styleAttributesToEditorAttributes(
-                f.attributes,
+                attributes,
                 that.localStyle.jsData || {}
             ));
             that.addChild(styleEdit, 'styleEdit', 2);
             styleEdit.setPosition('styleEdit');
             styleEdit.setHtmlFlowing(flowing, true);
             styleEdit.on('change', function (value) {
-                that.setLocalStyleFeature(editorAttributesToStyleAttributes(f.attributes, value));
+                that.setLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
             });
             styleEdit.on('preview', function (value) {
-                that.previewLocalStyleFeature(editorAttributesToStyleAttributes(f.attributes, value));
+                that.previewLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
             });
-            styleEdit.on('reset', function (feat) {
+            styleEdit.on('reset', function (value) {
                 styleFeature.clearFeatureHighlight(featureName);
                 that.removeChild(styleEdit);
-                that.clearLocalStyleFeature(getClearMap(f.clearMap));
+                that.setLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
             });
             // make sure the thing is highlighted
             styleFeature.setFeatureHighlight(featureName);
@@ -233,8 +228,12 @@ Styling.prototype.setLocalStyleFeature = function (features) {
     if (!this.localStyle) {
         throw new Error('local style expected');
     }
-    var group = this.editor.getViewer().getGroup(),
-        localStyleData = this.localStyle.jsData;
+    var viewer = this.editor.getViewer(),
+        group = viewer.getGroup(),
+        localStyleData = this.localStyle.jsData,
+        stylingHeading = this.getChild('stylingHeading'),
+        skin,
+        stylePreview = stylingHeading.getChild('stylePreview');
     group.doCommand(group.cmdSetStyleFeatures(this.editedStyle, features));
     // update the local style
     forEachProperty(features, function (v, f) {
@@ -244,6 +243,9 @@ Styling.prototype.setLocalStyleFeature = function (features) {
             localStyleData[f] = v;
         }
     });
+    skin = viewer.getPreviewTheme();
+    stylePreview.previewStyleChange(skin);
+    this.getChild('localStylePicker').previewStyleChange(skin);
 };
 
 Styling.prototype.previewLocalStyleFeature = function (features) {
@@ -331,9 +333,12 @@ Styling.prototype.makeLocalStyle = function () {
 
 Styling.prototype.updateFeatureSelector = function () {
     var activeFeatures = {},
-        localStyleJsData = this.localStyle.jsData || {},
+        localStyleJsData = {},
         stylingHeading = this.getChild('stylingHeading'),
         styleFeature = stylingHeading.getChild('styleFeature');
+    if (this.localStyle) {
+        localStyleJsData = this.localStyle.jsData || localStyleJsData;
+    }
     forEachProperty(styleFeatures, function (data, feature) {
         forEachProperty(data.attributes, function (attr, attrName) {
             if (localStyleJsData[attr] !== undefined) {
