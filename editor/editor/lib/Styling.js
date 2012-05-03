@@ -59,6 +59,16 @@ var visual = require('visual'),
             FeatureEditor: require('./StyleSettingBackground').StyleSettingBackground,
             config: { label: 'Background' }
         },
+        txt: {
+            attributes: {
+                color: 'color',
+                family: 'fontFamily',
+                weight: 'fontWeight',
+                size: 'fontSize'
+            },
+            FeatureEditor: require('./StyleSettingText').StyleSettingText,
+            config: { label: 'Text' }
+        }
 
 
     };

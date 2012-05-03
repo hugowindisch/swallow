@@ -353,19 +353,6 @@
          offset="1"
          id="stop4027-7-6-4-3" />
     </linearGradient>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter4093-1-8-3-0"
-       x="-0.03300786"
-       width="1.0660157"
-       y="-0.14028341"
-       height="1.2805668">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="2.3380567"
-         id="feGaussianBlur4095-3-8-5-0" />
-    </filter>
     <linearGradient
        id="linearGradient4023-2-0-94">
       <stop
@@ -377,19 +364,6 @@
          offset="1"
          id="stop4027-7-6-8" />
     </linearGradient>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter4093-1-8-9"
-       x="-0.03300786"
-       width="1.0660157"
-       y="-0.14028341"
-       height="1.2805668">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="2.3380567"
-         id="feGaussianBlur4095-3-8-54" />
-    </filter>
     <linearGradient
        id="linearGradient4023-2-1">
       <stop
@@ -401,19 +375,6 @@
          offset="1"
          id="stop4027-7-5" />
     </linearGradient>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter4093-1-9"
-       x="-0.03300786"
-       width="1.0660157"
-       y="-0.14028341"
-       height="1.2805668">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="2.3380567"
-         id="feGaussianBlur4095-3-6" />
-    </filter>
     <linearGradient
        id="linearGradient4023-6">
       <stop
@@ -425,19 +386,6 @@
          offset="1"
          id="stop4027-75" />
     </linearGradient>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter4093-2"
-       x="-0.03300786"
-       width="1.0660157"
-       y="-0.14028341"
-       height="1.2805668">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="2.3380567"
-         id="feGaussianBlur4095-8" />
-    </filter>
     <filter
        inkscape:collect="always"
        id="filter5595"
@@ -544,15 +492,106 @@
     <filter
        color-interpolation-filters="sRGB"
        inkscape:collect="always"
-       id="filter4645-9-8"
-       x="-0.049555589"
-       width="1.0991112"
-       y="-0.24777795"
-       height="1.4955559">
+       id="filter5595-0"
+       x="-0.046377275"
+       width="1.0927546"
+       y="-0.19710343"
+       height="1.3942068">
       <feGaussianBlur
          inkscape:collect="always"
-         stdDeviation="4.1296324"
-         id="feGaussianBlur4647-7-3" />
+         stdDeviation="3.2850571"
+         id="feGaussianBlur5597-3" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5595-85-6"
+       x="-0.046377275"
+       width="1.0927546"
+       y="-0.19710343"
+       height="1.3942068">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2850571"
+         id="feGaussianBlur5597-6-9" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5595-85-6-2"
+       x="-0.046377275"
+       width="1.0927546"
+       y="-0.19710343"
+       height="1.3942068">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2850571"
+         id="feGaussianBlur5597-6-9-8" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5595-0-1"
+       x="-0.046377275"
+       width="1.0927546"
+       y="-0.19710343"
+       height="1.3942068">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2850571"
+         id="feGaussianBlur5597-3-5" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5595-85-6-2-4"
+       x="-0.046377275"
+       width="1.0927546"
+       y="-0.19710343"
+       height="1.3942068">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2850571"
+         id="feGaussianBlur5597-6-9-8-4" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5595-0-1-7"
+       x="-0.046377275"
+       width="1.0927546"
+       y="-0.19710343"
+       height="1.3942068">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2850571"
+         id="feGaussianBlur5597-3-5-1" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5595-0-7"
+       x="-0.046377275"
+       width="1.0927546"
+       y="-0.19710343"
+       height="1.3942068">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2850571"
+         id="feGaussianBlur5597-3-0" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5595-85-6-21"
+       x="-0.046377275"
+       width="1.0927546"
+       y="-0.19710343"
+       height="1.3942068">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2850571"
+         id="feGaussianBlur5597-6-9-3" />
     </filter>
   </defs>
   <sodipodi:namedview
@@ -562,15 +601,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.72665335"
-     inkscape:cx="603.91772"
-     inkscape:cy="203.15142"
+     inkscape:zoom="1.3775059"
+     inkscape:cx="353.14895"
+     inkscape:cy="-82.805349"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:window-width="1254"
+     inkscape:window-width="1685"
      inkscape:window-height="874"
-     inkscape:window-x="628"
+     inkscape:window-x="166"
      inkscape:window-y="65"
      inkscape:window-maximized="0">
     <inkscape:grid
@@ -2217,6 +2256,281 @@
          id="path3253-7-8-0"
          d="m 280,1032.3622 120,0"
          style="fill:none;stroke:#808080;stroke-width:7.81400013000000015;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:7.81400000000000006, 7.81400000000000006;stroke-dashoffset:0" />
+    </g>
+    <g
+       id="g4138"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/originalartwork/fsnormal.png"
+       inkscape:export-xdpi="32.276413"
+       inkscape:export-ydpi="32.276413">
+      <rect
+         transform="matrix(0.70588235,0,0,1,207.94118,189.99998)"
+         y="1002.3622"
+         x="10"
+         height="40"
+         width="170"
+         id="rect3251-7-8-0"
+         style="opacity:0.70999995;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter5595-85-6)" />
+      <rect
+         y="1192.3622"
+         x="215"
+         height="40"
+         width="120"
+         id="rect3251-71-2"
+         style="fill:#cccccc;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:1.84836972;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3773"
+         y="1222.2196"
+         x="274.9248"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#808080;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           style="font-size:28px;font-weight:normal;text-align:center;text-anchor:middle;fill:#808080;-inkscape-font-specification:Arial"
+           y="1222.2196"
+           x="274.9248"
+           id="tspan3775"
+           sodipodi:role="line">Normal</tspan></text>
+    </g>
+    <g
+       id="g4132"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/originalartwork/fsnormal_s.png"
+       inkscape:export-xdpi="32.276413"
+       inkscape:export-ydpi="32.276413">
+      <rect
+         transform="matrix(0.70588235,0,0,1,207.94117,110)"
+         y="1002.3622"
+         x="10"
+         height="40"
+         width="170"
+         id="rect3251-7-9"
+         style="opacity:0.70999995;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter5595-0)" />
+      <rect
+         y="1112.3622"
+         x="215"
+         height="40"
+         width="120"
+         id="rect3251-75"
+         style="fill:#ececec;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:1.84836972;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3773-8"
+         y="1142.2196"
+         x="274.9248"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           style="font-size:28px;font-weight:normal;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial"
+           y="1142.2196"
+           x="274.9248"
+           id="tspan3775-8"
+           sodipodi:role="line">Normal</tspan></text>
+    </g>
+    <g
+       id="g4150"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/originalartwork/fsbold.png"
+       inkscape:export-xdpi="32.276413"
+       inkscape:export-ydpi="32.276413">
+      <rect
+         transform="matrix(0.70588235,0,0,1,367.94118,189.99998)"
+         y="1002.3622"
+         x="10"
+         height="40"
+         width="170"
+         id="rect3251-7-8-0-4"
+         style="opacity:0.70999995;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter5595-85-6-2)" />
+      <rect
+         y="1192.3622"
+         x="375"
+         height="40"
+         width="120"
+         id="rect3251-71-2-9"
+         style="fill:#cccccc;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:1.84836972;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3773-4"
+         y="1222.2196"
+         x="434.9248"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#808080;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           style="font-size:28px;font-weight:bold;text-align:center;text-anchor:middle;fill:#808080;-inkscape-font-specification:Arial Bold"
+           y="1222.2196"
+           x="434.9248"
+           id="tspan3775-4"
+           sodipodi:role="line">Bold</tspan></text>
+    </g>
+    <g
+       id="g4144"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/originalartwork/fsbold_s.png"
+       inkscape:export-xdpi="32.276413"
+       inkscape:export-ydpi="32.276413">
+      <rect
+         transform="matrix(0.70588235,0,0,1,367.94118,110)"
+         y="1002.3622"
+         x="10"
+         height="40"
+         width="170"
+         id="rect3251-7-9-4"
+         style="opacity:0.70999995;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter5595-0-1)" />
+      <rect
+         y="1112.3622"
+         x="375"
+         height="40"
+         width="120"
+         id="rect3251-75-3"
+         style="fill:#ececec;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:1.84836972;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3773-8-3"
+         y="1142.2196"
+         x="434.9248"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           style="font-size:28px;font-weight:bold;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial Bold"
+           y="1142.2196"
+           x="434.9248"
+           id="tspan3775-8-5"
+           sodipodi:role="line">Bold</tspan></text>
+    </g>
+    <g
+       id="g4162"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/originalartwork/fsbolder.png"
+       inkscape:export-xdpi="32.276413"
+       inkscape:export-ydpi="32.276413">
+      <rect
+         transform="matrix(0.70588235,0,0,1,542.94118,189.99998)"
+         y="1002.3622"
+         x="10"
+         height="40"
+         width="170"
+         id="rect3251-7-8-0-4-2"
+         style="opacity:0.70999995;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter5595-85-6-2-4)" />
+      <rect
+         y="1192.3622"
+         x="550"
+         height="40"
+         width="120"
+         id="rect3251-71-2-9-6"
+         style="fill:#cccccc;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:1.84836972;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3773-4-5"
+         y="1222.2196"
+         x="609.9248"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#808080;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           style="font-size:28px;font-weight:bold;text-align:center;text-anchor:middle;fill:#808080;-inkscape-font-specification:Arial Bold"
+           y="1222.2196"
+           x="609.9248"
+           id="tspan3775-4-6"
+           sodipodi:role="line">Bolder</tspan></text>
+    </g>
+    <g
+       id="g4156"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/originalartwork/fsbolder_s.png"
+       inkscape:export-xdpi="32.276413"
+       inkscape:export-ydpi="32.276413">
+      <rect
+         transform="matrix(0.70588235,0,0,1,542.94118,110)"
+         y="1002.3622"
+         x="10"
+         height="40"
+         width="170"
+         id="rect3251-7-9-4-0"
+         style="opacity:0.70999995;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter5595-0-1-7)" />
+      <rect
+         y="1112.3622"
+         x="550"
+         height="40"
+         width="120"
+         id="rect3251-75-3-0"
+         style="fill:#ececec;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:1.84836972;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3773-8-3-3"
+         y="1142.2196"
+         x="609.9248"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           style="font-size:28px;font-weight:bold;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial Bold"
+           y="1142.2196"
+           x="609.9248"
+           id="tspan3775-8-5-7"
+           sodipodi:role="line">Bolder</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+       x="493.64581"
+       y="1141.6541"
+       id="text4046"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4048"
+         x="493.64581"
+         y="1141.6541" /></text>
+    <g
+       id="g4120"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/originalartwork/fslight_s.png"
+       inkscape:export-xdpi="32.276413"
+       inkscape:export-ydpi="32.276413">
+      <rect
+         transform="matrix(0.70588235,0,0,1,42.94117,110)"
+         y="1002.3622"
+         x="10"
+         height="40"
+         width="170"
+         id="rect3251-7-9-7"
+         style="opacity:0.70999995;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter5595-0-7)" />
+      <rect
+         y="1112.3622"
+         x="50"
+         height="40"
+         width="120"
+         id="rect3251-75-6"
+         style="fill:#ececec;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:1.84836972;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3773-8-1"
+         y="1142.2196"
+         x="109.9248"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           style="font-size:28px;font-weight:normal;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial"
+           y="1142.2196"
+           x="109.9248"
+           id="tspan3775-8-0"
+           sodipodi:role="line">Light</tspan></text>
+    </g>
+    <g
+       id="g4126"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/originalartwork/fslight.png"
+       inkscape:export-xdpi="32.276413"
+       inkscape:export-ydpi="32.276413">
+      <rect
+         transform="matrix(0.70588235,0,0,1,43.016375,180.14256)"
+         y="1002.3622"
+         x="10"
+         height="40"
+         width="170"
+         id="rect3251-7-8-0-7"
+         style="opacity:0.70999995;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter5595-85-6-21)" />
+      <rect
+         y="1182.5048"
+         x="50.075195"
+         height="40"
+         width="120"
+         id="rect3251-71-2-0"
+         style="fill:#cccccc;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:1.84836972;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3773-88"
+         y="1212.3622"
+         x="110"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#808080;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           style="font-size:28px;font-weight:normal;text-align:center;text-anchor:middle;fill:#808080;-inkscape-font-specification:Arial"
+           y="1212.3622"
+           x="110"
+           id="tspan3775-6"
+           sodipodi:role="line">Light</tspan></text>
     </g>
   </g>
 </svg>

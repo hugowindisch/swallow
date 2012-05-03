@@ -1221,8 +1221,203 @@ exports.definition = {
         StyleSettingText: {
             dimensions: [340, 100, 1],
             positions: {
+                label: {
+                    order: 0,
+                    matrix: [ 200, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                clear: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontFamilyLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontFamily: {
+                    order: 0,
+                    matrix: [ 120, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontFamilyCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontSizeLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontSizeValue: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontSizeSlider: {
+                    order: 0,
+                    matrix: [ 180, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontSizeCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontWeightLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontWeightNormal: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   65, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontWeightBold: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontWeightBolder: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   165, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontWeightLighter: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   215, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                fontWeightCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                colorLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                colorCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
             },
             children: {
+                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "label",
+                    config: { text: "Corner", bold: true}
+                },
+                clear: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "clear",
+                    config: { value: true }
+                },
+                fontFamilyLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "fontFamilyLabel",
+                    config: { text: "Family:"}
+                },
+                fontFamily: {
+                    factory: "baseui",
+                    type: "Input",
+                    position: "fontFamily",
+                    config: { }
+                },
+                fontFamilyCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "fontFamilyCheck",
+                    config: { value: true }
+                },
+                fontSizeLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "fontSizeLabel",
+                    config: { text: "Size:"}
+                },
+                fontSizeValue: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "fontSizeValue",
+                    config: { text: "0"}
+                },
+                fontSizeSlider: {
+                    factory: "baseui",
+                    type: "Slider",
+                    position: "fontSizeSlider",
+                    config: { value: 0, minValue: 0, maxValue: 50 }
+                },
+                fontSizeCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "fontSizeCheck",
+                    config: { value: true }
+                },
+                fontWeightLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "fontWeightLabel",
+                    config: { text: "Weight:"}
+                },
+                fontWeightNormal: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "fontWeightNormal",
+                    config: {
+                        url: 'editor/lib/fsnormal.png'
+                    }
+                },
+                fontWeightBold: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "fontWeightBold",
+                    config: {
+                        url: 'editor/lib/fsbold.png'
+                    }
+                },
+                fontWeightBolder: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "fontWeightBolder",
+                    config: {
+                        url: 'editor/lib/fsbolder.png'
+                    }
+                },
+                fontWeightLighter: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "fontWeightLighter",
+                    config: {
+                        url: 'editor/lib/fslight.png'
+                    }
+                },
+                fontWeightCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "fontWeightCheck",
+                    config: { value: true }
+                },
+                colorLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "colorLabel",
+                    config: { text: "Color:"}
+                },
+                colorCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "colorCheck",
+                    config: { value: true }
+                }
             }
         },
         StyleSettingShadow: {

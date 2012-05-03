@@ -14,7 +14,22 @@ function StyleSettingText(config) {
 }
 StyleSettingText.prototype = new (domvisual.DOMElement)();
 StyleSettingText.prototype.getConfigurationSheet = function () {
-    return {  };
+    return { label: null };
+};
+StyleSettingText.prototype.setLabel = function (txt) {
+    this.children.label.setText(txt);
+};
+StyleSettingText.prototype.setStyleData = function (st) {
+    var children = this.children,
+        styleData;
+    this.styleData = {
+        family: st.family || '',
+        color: st.color,
+        size: st.size || 8,
+        style: st.style || 'normal',
+    };
+//    this.updateSlider();
+//    this.updateInput();
 };
 
 exports.StyleSettingText = StyleSettingText;
