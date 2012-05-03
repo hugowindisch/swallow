@@ -7,23 +7,19 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
     config = require('config'),
-    verticalmenu = require('./verticalmenu'),
     glmatrix = require('glmatrix'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
-    isFunction = utils.isFunction,
     group = {
         // authoring dimension
         dimensions: [ 400, 200, 0],
         positions: {
             background: {
-                type: "Position",
                 order: 0,
                 matrix: [ 400, 0, 0, 0,   0, 200, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                 snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
             },
             text: {
-                type: "Position",
                 order: 1,
                 matrix: [ 380, 0, 0, 0,   0, 180, 0, 0,    0, 0, 1, 0,   10, 10, 0, 1 ],
                 snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }

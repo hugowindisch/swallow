@@ -14,13 +14,11 @@ var visual = require('visual'),
         dimensions: [ 100, 24, 0],
         positions: {
             background: {
-                type: "Position",
                 order: 0,
                 matrix: [ 100, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                 snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
             },
             knob: {
-                type: "Position",
                 order: 1,
                 matrix: [ 24, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                 snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'px', height: 'auto' }

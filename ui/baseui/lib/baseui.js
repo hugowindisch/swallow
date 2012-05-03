@@ -48,6 +48,7 @@ exports.Accelerator = menuitem.Accelerator;
 exports.Label = require('./label').Label;
 exports.Input = require('./input').Input;
 exports.Slider = require('./slider').Slider;
+exports.CheckBox = require('./checkbox').CheckBox;
 
 // note: this should be last
 // we want this to be able to run as a standalone application
