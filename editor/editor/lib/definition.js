@@ -998,17 +998,224 @@ exports.definition = {
             }
         },
         StyleSettingBorder: {
-            dimensions: [340, 100, 1],
+            dimensions: [340, 60, 1],
             positions: {
+                label: {
+                    order: 0,
+                    matrix: [ 200, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                clear: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                widthLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                widthValue: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                widthSlider: {
+                    order: 0,
+                    matrix: [ 180, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                widthCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleSolid: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   65, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleDashed: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleDotted: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   165, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleNone: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   215, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                colorLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                colorCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
             },
             children: {
+                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "label",
+                    config: { text: "Corner", bold: true}
+                },
+                clear: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "clear",
+                    config: { value: true }
+                },
+                widthLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "widthLabel",
+                    config: { text: "Radius:"}
+                },
+                widthValue: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "widthValue",
+                    config: { text: "0"}
+                },
+                widthSlider: {
+                    factory: "baseui",
+                    type: "Slider",
+                    position: "widthSlider",
+                    config: { value: 0, minValue: 0, maxValue: 50 }
+                },
+                widthCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "widthCheck",
+                    config: { value: true }
+                },
+                styleLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "styleLabel",
+                    config: { text: "Style:"}
+                },
+                styleSolid: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "styleSolid",
+                    config: {
+                        url: 'editor/lib/bssolid.png'
+                    }
+                },
+                styleDashed: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "styleDashed",
+                    config: {
+                        url: 'editor/lib/bsdashed.png'
+                    }
+                },
+                styleDotted: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "styleDotted",
+                    config: {
+                        url: 'editor/lib/bsdotted.png'
+                    }
+                },
+                styleNone: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "styleNone",
+                    config: {
+                        url: 'editor/lib/bsnone.png'
+                    }
+                },
+                styleCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "styleCheck",
+                    config: { value: true }
+                },
+                colorLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "colorLabel",
+                    config: { text: "Color:"}
+                },
+                colorCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "colorCheck",
+                    config: { value: true }
+                }
+
             }
         },
         StyleSettingBackground: {
             dimensions: [340, 100, 1],
             positions: {
+                label: {
+                    order: 0,
+                    matrix: [ 200, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                clear: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                colorLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                colorCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
             },
             children: {
+                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "label",
+                    config: { text: "Corner", bold: true}
+                },
+                clear: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "clear",
+                    config: { value: true }
+                },
+                colorLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "colorLabel",
+                    config: { text: "Color:"}
+                },
+                colorCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "colorCheck",
+                    config: { value: true }
+                }
             }
         },
         StyleSettingText: {

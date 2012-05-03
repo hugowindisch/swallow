@@ -42,7 +42,24 @@ var visual = require('visual'),
             },
             FeatureEditor: require('./StyleSettingCorner').StyleSettingCorner,
             config: { label: 'Bottom Right Corner' }
-        }
+        },
+        l: {
+            attributes: {
+                style: 'borderLeftStyle',
+                color: 'borderLeftColor',
+                width: 'borderLeftWidth'
+            },
+            FeatureEditor: require('./StyleSettingBorder').StyleSettingBorder,
+            config: { label: 'Left Border' }
+        },
+        m: {
+            attributes: {
+                color: 'backgroundColor',
+            },
+            FeatureEditor: require('./StyleSettingBackground').StyleSettingBackground,
+            config: { label: 'Background' }
+        },
+
 
     };
 
