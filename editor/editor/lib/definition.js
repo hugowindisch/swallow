@@ -1010,24 +1010,9 @@ exports.definition = {
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                widthLabel: {
+                width: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                widthValue: {
-                    order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 30, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                widthSlider: {
-                    order: 0,
-                    matrix: [ 180, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 30, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                widthCheck: {
-                    order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 styleLabel: {
@@ -1084,29 +1069,11 @@ exports.definition = {
                     position: "clear",
                     config: { value: true }
                 },
-                widthLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "widthLabel",
-                    config: { text: "Radius:"}
-                },
-                widthValue: {
-                    factory: "domvisual",
-                    type: "DOMInput",
-                    position: "widthValue",
-                    config: { text: "0"}
-                },
-                widthSlider: {
-                    factory: "baseui",
-                    type: "Slider",
-                    position: "widthSlider",
-                    config: { value: 0, minValue: 0, maxValue: 50 }
-                },
-                widthCheck: {
-                    factory: "baseui",
-                    type: "CheckBox",
-                    position: "widthCheck",
-                    config: { value: true }
+                width: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    position: "width",
+                    config: { label: "Width:", minValue: 0, maxValue: 30, value: 0, check: true }
                 },
                 styleLabel: {
                     factory: "baseui",
@@ -1246,24 +1213,9 @@ exports.definition = {
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                fontSizeLabel: {
+                fontSize: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                fontSizeValue: {
-                    order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 60, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                fontSizeSlider: {
-                    order: 0,
-                    matrix: [ 180, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 60, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                fontSizeCheck: {
-                    order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 60, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 fontWeightLabel: {
@@ -1338,29 +1290,11 @@ exports.definition = {
                     position: "fontFamilyCheck",
                     config: { value: true }
                 },
-                fontSizeLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "fontSizeLabel",
-                    config: { text: "Size:"}
-                },
-                fontSizeValue: {
-                    factory: "domvisual",
-                    type: "DOMInput",
-                    position: "fontSizeValue",
-                    config: { text: "0"}
-                },
-                fontSizeSlider: {
-                    factory: "baseui",
-                    type: "Slider",
-                    position: "fontSizeSlider",
-                    config: { value: 0, minValue: 0, maxValue: 50 }
-                },
-                fontSizeCheck: {
-                    factory: "baseui",
-                    type: "CheckBox",
-                    position: "fontSizeCheck",
-                    config: { value: true }
+                fontSize: {
+                    factory: 'editor',
+                    type: 'LabelValueSliderCheck',
+                    position: 'fontSize',
+                    config: { label: 'Size:', value: 8, minValue: 8, maxValue: 60, check: true }
                 },
                 fontWeightLabel: {
                     factory: "baseui",
@@ -1471,7 +1405,7 @@ exports.definition = {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
                     position: 'offsetX',
-                    config: { /*label: 'OffsetX:', value: 0, minValue: 0, maxValue: 100, check: true*/ }
+                    config: { label: 'OffsetX:', value: 0, minValue: 0, maxValue: 100, check: true }
                 },
                 offsetY: {
                     factory: 'editor',
