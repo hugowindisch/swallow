@@ -93,6 +93,18 @@ function deepCopy(o) {
         return o;
     }
 }
+function apply(to, from) {
+    forEachProperty(from, function (v, n) {
+        to[n] = v;
+    });
+    return to;
+}
+function applyDeep(to, from) {
+    forEachProperty(from, function (v, n) {
+        to[n] = deepCopy(v);
+    });
+    return to;
+}
 function limitRange(n, minN, maxN, ifNaN) {
     n = Number(n);
     if (isNaN(n)) {
@@ -115,3 +127,5 @@ exports.isObject = isObject;
 exports.isFunction = isFunction;
 exports.deepCopy = deepCopy;
 exports.limitRange = limitRange;
+exports.apply = apply;
+exports.applyDeep = applyDeep;
