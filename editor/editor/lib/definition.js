@@ -936,27 +936,11 @@ exports.definition = {
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                radiusLabel: {
+                radius: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                radiusValue: {
-                    order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 30, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                radiusSlider: {
-                    order: 0,
-                    matrix: [ 180, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 30, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                radiusCheck: {
-                    order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
-
             },
             children: {
                 label: {
@@ -971,29 +955,11 @@ exports.definition = {
                     position: "clear",
                     config: { value: true }
                 },
-                radiusLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "radiusLabel",
-                    config: { text: "Radius:"}
-                },
-                radiusValue: {
-                    factory: "domvisual",
-                    type: "DOMInput",
-                    position: "radiusValue",
-                    config: { text: "0"}
-                },
-                radiusSlider: {
-                    factory: "baseui",
-                    type: "Slider",
-                    position: "radiusSlider",
-                    config: { value: 0, minValue: 0, maxValue: 50 }
-                },
-                radiusCheck: {
-                    factory: "baseui",
-                    type: "CheckBox",
-                    position: "radiusCheck",
-                    config: { value: true }
+                radius: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    position: "radius",
+                    config: { label: "Radius:", value: 0, minValue: 0, maxValue: 100, check: true}
                 }
             }
         },
