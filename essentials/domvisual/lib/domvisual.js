@@ -19,6 +19,7 @@ var visual = require('visual'),
     isObject = utils.isObject,
     isArray = utils.isArray,
     isNumber = utils.isNumber,
+    apply = utils.apply,
     setDirty = dirty.setDirty;
 
 function DOMVisual(config, groupData, element) {
@@ -363,8 +364,11 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
     var cssClass,
         element = this.element,
         styleData,
+        jsData,
         v,
         style;
+    // FIXME note: what if we have no style at all whatsoever? Why do this at all?
+    // (many groups will have no style of their own)
     if (element) {
         styleData = this.getStyleData();
         // retrieve the css classes that apply
@@ -375,9 +379,11 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
             cssClass += name;
         });
         element.setAttribute('class', cssClass);
-//console.log(this.name + ', ' + this.style);
-//console.log(styleData);
-        styleToCss(style, styleData.jsData);
+        jsData = styleData.jsData;
+        if (this.styleAttributes) {
+            apply(jsData, this.styleAttributes);
+        }
+        styleToCss(style, jsData);
     }
 };
 DOMVisual.prototype.updateOpacityRepresentation = function () {
@@ -513,6 +519,29 @@ DOMVisual.prototype.setElementAttributes = function (attr) {
     forEachProperty(attr, function (v, n) {
         element.setAttribute(String(n), String(v));
     });
+    return this;
+};
+
+/**
+    Sets style attributes (see styles.js for what is supported).
+
+    Note:
+        - some functions could be removed because they overlap on this one
+
+        - Clearing : set with null or undefined (+ uniformize this with
+            setElementAttributes).
+
+        - These attributes OVERRRIDE what is defined in the styles.
+
+
+        - FIXME: there is a clash between the setHtmlFlowing thing and this.
+*/
+DOMVisual.prototype.setStyleAttributes = function (attr) {
+    if (!this.styleAttributes) {
+        this.styleAttributes = {};
+    }
+    apply(this.styleAttributes, attr);
+    setDirty(this, 'style');
     return this;
 };
 

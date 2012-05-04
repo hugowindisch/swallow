@@ -111,7 +111,8 @@ StylePicker.prototype.generateSections = function () {
 StylePicker.prototype.createStyleSection = function (title, styleMap) {
     var txt = new (baseui.Label)({text: title}),
         that = this;
-    txt.setHtmlFlowing({marginTop: '20px', marginBottom: '10px', fontWeight: 'bold' });
+    txt.setHtmlFlowing({marginTop: '20px', marginBottom: '10px' });
+    txt.setStyleAttributes({ fontWeight: 'bold' });
     this.addChild(txt);
     forEachSortedProperty(styleMap, function (st) {
         var ch = new StyleInfo();

@@ -1446,7 +1446,7 @@ exports.definition = {
                     type: "Label",
                     position: "label",
                     config: {
-                        textAlign: 'right'
+                        textAlign: 'center'
                     }
                 }
             }
