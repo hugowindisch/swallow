@@ -8,20 +8,21 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups;
 
 function LabelValueSliderCheck(config) {
+    this.defaultValue = 0;
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.LabelValueSliderCheck);
     var children = this.children,
         that = this;
     children.slider.on('change', function (v, sliding) {
         that.value = v;
-        children.check.setValue(true);
+        that.updateCheck();
         that.updateInput();
         that.emit(sliding ? 'preview' : 'change', v);
     });
     children.value.on('change', function () {
         var n = limitRange(this.getValue(), 0, 1000);
         that.value = n;
-        children.check.setValue(true);
+        that.updateCheck();
         that.updateSlider();
         that.emit('change', n);
     });
@@ -39,15 +40,21 @@ function LabelValueSliderCheck(config) {
 }
 LabelValueSliderCheck.prototype = new (domvisual.DOMElement)();
 LabelValueSliderCheck.prototype.getConfigurationSheet = function () {
-    return { label: null, value: null, minValue: null, maxValue: null, check: null };
+    return { label: null, value: null, minValue: null, maxValue: null, defaultValue: null, check: null };
 };
 LabelValueSliderCheck.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
 };
 LabelValueSliderCheck.prototype.setValue = function (v) {
-    this.value = v;
+    if (v) {
+        this.value = v;
+    }
     this.updateSlider();
     this.updateInput();
+    this.updateCheck();
+};
+LabelValueSliderCheck.prototype.setDefaultValue = function (v) {
+    this.defaultValue = v;
 };
 LabelValueSliderCheck.prototype.setMinValue = function (v) {
     this.children.slider.setMinValue(v);
@@ -63,6 +70,9 @@ LabelValueSliderCheck.prototype.updateSlider = function () {
 };
 LabelValueSliderCheck.prototype.updateInput = function () {
     this.children.value.setValue(Number(this.value || 0).toFixed(1));
+};
+LabelValueSliderCheck.prototype.updateCheck = function () {
+    this.children.check.setValue(this.value !== undefined);
 };
 
 exports.LabelValueSliderCheck = LabelValueSliderCheck;

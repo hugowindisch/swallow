@@ -52,6 +52,33 @@ var visual = require('visual'),
             FeatureEditor: require('./StyleSettingBorder').StyleSettingBorder,
             config: { label: 'Left Border' }
         },
+        r: {
+            attributes: {
+                style: 'borderRightStyle',
+                color: 'borderRightColor',
+                width: 'borderRightWidth'
+            },
+            FeatureEditor: require('./StyleSettingBorder').StyleSettingBorder,
+            config: { label: 'Right Border' }
+        },
+        t: {
+            attributes: {
+                style: 'borderTopStyle',
+                color: 'borderTopColor',
+                width: 'borderTopWidth'
+            },
+            FeatureEditor: require('./StyleSettingBorder').StyleSettingBorder,
+            config: { label: 'Top Border' }
+        },
+        b: {
+            attributes: {
+                style: 'borderBottomStyle',
+                color: 'borderBottomColor',
+                width: 'borderBottomWidth'
+            },
+            FeatureEditor: require('./StyleSettingBorder').StyleSettingBorder,
+            config: { label: 'Bottom Border' }
+        },
         m: {
             attributes: {
                 color: 'backgroundColor',

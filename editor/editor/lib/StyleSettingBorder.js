@@ -4,13 +4,51 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    ImageOption = require('./ImageOption').ImageOption,
+    utils = require('utils'),
+    forEachProperty = utils.forEachProperty,
+    apply = utils.apply;
 
 function StyleSettingBorder(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.StyleSettingBorder);
+    var children = this.children,
+        that = this;
+    this.borderStyle = new ImageOption({
+        'solid':  [ 'editor/lib/bssolid_s.png', 'editor/lib/bssolid.png', children.styleSolid ],
+        'dashed': [ 'editor/lib/bsdashed_s.png', 'editor/lib/bsdashed.png', children.styleDashed ],
+        'dotted': [ 'editor/lib/bsdotted_s.png', 'editor/lib/bsdotted.png', children.styleDotted ],
+        'none': [ 'editor/lib/bsnone_s.png', 'editor/lib/bsnone.png', children.styleNone ]
+    }, children.styleCheck);
+
+    this.borderStyle.on('change', function (v) {
+        if (v === undefined) {
+            delete that.styleData.style;
+        } else {
+            that.styleData.style = v;
+        }
+        that.emit('change', that.styleData);
+    });
+    children.width.on('change', function (v) {
+        if (v === undefined) {
+            delete that.styleData.width;
+        } else {
+            that.styleData.width = v;
+        }
+        that.emit('change', that.styleData);
+    });
+    children.width.on('preview', function (v) {
+        if (v === undefined) {
+            delete that.styleData.width;
+        } else {
+            that.styleData.width = v;
+        }
+        that.emit('preview', that.styleData);
+    });
+    children.clear.on('click', function () {
+        that.styleData = {};
+        that.emit('reset', that.styleData);
+    });
 }
 StyleSettingBorder.prototype = new (domvisual.DOMElement)();
 StyleSettingBorder.prototype.getConfigurationSheet = function () {
@@ -23,15 +61,10 @@ StyleSettingBorder.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
 };
 StyleSettingBorder.prototype.setStyleData = function (st) {
-    var children = this.children,
-        styleData;
-    this.styleData = {
-        style: st.style || 'none',
-        color: st.color,
-        width: st.width || 0
-    };
-//    this.updateSlider();
-//    this.updateInput();
+    var children = this.children;
+    this.styleData = apply({}, st);
+    this.borderStyle.setSelectedValue(this.styleData.style);
+    this.children.width.setValue(this.styleData.width);
 };
 
 exports.StyleSettingBorder = StyleSettingBorder;

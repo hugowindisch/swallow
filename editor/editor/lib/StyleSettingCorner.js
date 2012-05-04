@@ -4,12 +4,10 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
-    glmatrix = require('glmatrix'),
     utils = require('utils'),
     limitRange = utils.limitRange,
     deepCopy = utils.deepCopy,
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    apply = utils.apply;
 
 function StyleSettingCorner(config) {
     // call the baseclass
@@ -44,9 +42,7 @@ StyleSettingCorner.prototype.setLabel = function (txt) {
 };
 StyleSettingCorner.prototype.setStyleData = function (st) {
     var children = this.children;
-    this.styleData = {
-        radius: st.radius || 0
-    };
+    this.styleData = apply({}, st);
     children.radius.setValue(this.styleData.radius);
 };
 
