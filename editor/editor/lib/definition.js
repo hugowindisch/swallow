@@ -363,68 +363,68 @@ exports.definition = {
             positions: {
                 nameLabel: {
                     order: 0,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 xLabel: {
                     order: 1,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 yLabel: {
                     order: 2,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   165, 30, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   165, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 wLabel: {
                     order: 3,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 hLabel: {
                     order: 4,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   165, 55, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   165, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 opacityLabel: {
                     order: 5,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 opacityInput: {
                     order: 6,
-                    matrix: [ 40, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 80, 0, 1 ],
+                    matrix: [ 40, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   75, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 opacitySlider: {
                     order: 7,
-                    matrix: [ 230, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   125, 80, 0, 1 ],
+                    matrix: [ 230, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   125, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
                 name: {
                     order: 10,
-                    matrix: [ 120, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
+                    matrix: [ 120, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 x: {
                     order: 11,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   75, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 y: {
                     order: 12,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   215, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   215, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 w: {
                     order: 13,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 55, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   75, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 h: {
                     order: 14,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   215, 55, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   215, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -548,53 +548,53 @@ exports.definition = {
             positions: {
                 wLabel: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 hLabel: {
                     order: 1,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   165, 5, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   165, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 gridLabel: {
                     order: 1,
-                    matrix: [ 30, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
+                    matrix: [ 30, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 w: {
                     order: 2,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 h: {
                     order: 3,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   215, 5, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   215, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 grid: {
                     order: 3,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 30, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   75, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
                 descriptionLabel: {
                     order: 4,
-                    matrix: [ 60, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 privateLabel: {
                     order: 5,
-                    matrix: [ 200, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   25, 105, 0, 1 ],
+                    matrix: [ 200, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   25, 105, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
                     order: 6,
-                    matrix: [ 355, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    matrix: [ 355, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 privateCheck: {
                     order: 7,
-                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 105, 0, 1 ],
+                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 100, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1171,7 +1171,7 @@ exports.definition = {
                 },
                 fontFamily: {
                     order: 0,
-                    matrix: [ 120, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 30, 0, 1],
+                    matrix: [ 120, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   65, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 fontFamilyCheck: {
@@ -1456,22 +1456,22 @@ exports.definition = {
             positions: {
                 styleNameLabel: {
                     order: 0,
-                    matrix: [ 30, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   5, 5, 0, 1],
+                    matrix: [ 30, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   5, 5, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 styleName: {
                     order: 0,
-                    matrix: [ 140, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   70, 5, 0, 1],
+                    matrix: [ 140, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   70, 5, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 basedOnLabel: {
                     order: 0,
-                    matrix: [ 30, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   5, 35, 0, 1],
+                    matrix: [ 30, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   5, 35, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 basedOn: {
                     order: 0,
-                    matrix: [ 140, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   70, 35, 0, 1],
+                    matrix: [ 140, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   70, 35, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 extendBtn: {
@@ -1683,22 +1683,22 @@ exports.definition = {
             positions: {
                 label: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 value: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   65, 0, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   65, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 slider: {
                     order: 0,
-                    matrix: [ 180, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   130, 0, 0, 1],
+                    matrix: [ 180, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   130, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 check: {
                     order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
