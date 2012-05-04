@@ -42,3 +42,10 @@
 
     border: solid 1px #d0d0d0;
 }
+
+input {
+    border: solid 1px #c0c0c0;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+}

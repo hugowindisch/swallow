@@ -64,7 +64,7 @@ StyleSettingBorder.prototype.setStyleData = function (st) {
     var children = this.children;
     this.styleData = apply({}, st);
     this.borderStyle.setSelectedValue(this.styleData.style);
-    this.children.width.setValue(this.styleData.width);
+    children.width.setValue(this.styleData.width);
 };
 
 exports.StyleSettingBorder = StyleSettingBorder;

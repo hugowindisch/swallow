@@ -4,13 +4,77 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    utils = require('utils'),
+    apply = utils.apply;
 
 function StyleSettingShadow(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.StyleSettingShadow);
+    var children = this.children,
+        that = this;
+
+    function makeShadow() {
+        if (!that.styleData.shadow) {
+            that.styleData.shadow = {
+                offsetX: 0,
+                offsetY: 0,
+                blurRadius: 0,
+                spreadRadius: 0
+            };
+        }
+        return that.styleData.shadow;
+    }
+
+    children.offsetX.on('change', function (v) {
+        var shadow = makeShadow();
+        shadow.offsetX = v || 0;
+        that.emit('change', that.styleData);
+    });
+    children.offsetX.on('preview', function (v) {
+        var shadow = makeShadow();
+        shadow.offsetX = v || 0;
+        that.emit('preview', that.styleData);
+    });
+
+    children.offsetY.on('change', function (v) {
+        var shadow = makeShadow();
+        shadow.offsetY = v || 0;
+        that.emit('change', that.styleData);
+    });
+    children.offsetY.on('preview', function (v) {
+        var shadow = makeShadow();
+        shadow.offsetY = v || 0;
+        that.emit('preview', that.styleData);
+    });
+
+    children.blurRadius.on('change', function (v) {
+        var shadow = makeShadow();
+        shadow.blurRadius = v || 0;
+        that.emit('change', that.styleData);
+    });
+    children.blurRadius.on('preview', function (v) {
+        var shadow = makeShadow();
+        shadow.blurRadius = v || 0;
+        that.emit('preview', that.styleData);
+    });
+
+    children.spreadRadius.on('change', function (v) {
+        var shadow = makeShadow();
+        shadow.spreadRadius = v || 0;
+        that.emit('change', that.styleData);
+    });
+    children.spreadRadius.on('preview', function (v) {
+        var shadow = makeShadow();
+        shadow.spreadRadius = v || 0;
+        that.emit('preview', that.styleData);
+    });
+
+
+    children.clear.on('click', function () {
+        that.styleData = {};
+        that.emit('reset', that.styleData);
+    });
+
 }
 StyleSettingShadow.prototype = new (domvisual.DOMElement)();
 
@@ -22,12 +86,14 @@ StyleSettingShadow.prototype.setLabel = function (txt) {
 };
 StyleSettingShadow.prototype.setStyleData = function (st) {
     var children = this.children,
-        styleData;
-    this.styleData = {
-        color: st.shadow
-    };
-//    this.updateSlider();
-//    this.updateInput();
+        shadow;
+    this.styleData = apply({}, st);
+
+    shadow = this.styleData.shadow || {};
+    children.offsetX.setValue(shadow.offsetX);
+    children.offsetY.setValue(shadow.offsetY);
+    children.blurRadius.setValue(shadow.blurRadius);
+    children.spreadRadius.setValue(shadow.spreadRadius);
 };
 
 
