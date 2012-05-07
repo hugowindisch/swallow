@@ -544,7 +544,7 @@ exports.definition = {
             children: {}
         },
         ComponentInfo: {
-            dimensions: [ 360, 140, 0],
+            dimensions: [ 360, 170, 0],
             positions: {
                 wLabel: {
                     order: 0,
@@ -587,6 +587,11 @@ exports.definition = {
                     matrix: [ 200, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   25, 105, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
+                privateStylesLabel: {
+                    order: 5,
+                    matrix: [ 200, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   25, 130, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
                 description: {
                     order: 6,
                     matrix: [ 355, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
@@ -595,6 +600,11 @@ exports.definition = {
                 privateCheck: {
                     order: 7,
                     matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 100, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                privateStylesCheck: {
+                    order: 7,
+                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 125, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -636,7 +646,15 @@ exports.definition = {
                     type: "Label",
                     position: "privateLabel",
                     config: {
-                        "text": "hide to other libraries"
+                        "text": "private component"
+                    }
+                },
+                privateStylesLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "privateStylesLabel",
+                    config: {
+                        "text": "private styles"
                     }
                 },
                 w: {
@@ -675,6 +693,14 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMInput",
                     position: "privateCheck",
+                    config: {
+                        "type": "checkbox"
+                    }
+                },
+                privateStylesCheck: {
+                    factory: "domvisual",
+                    type: "DOMInput",
+                    position: "privateStylesCheck",
                     config: {
                         "type": "checkbox"
                     }

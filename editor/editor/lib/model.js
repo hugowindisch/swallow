@@ -548,21 +548,24 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
 };
 
 ///////////////////////
-Group.prototype.cmdSetComponentProperties = function (dimensions, description, priv, gridSize) {
+Group.prototype.cmdSetComponentProperties = function (dimensions, description, priv, gridSize, privateStyles) {
     var that = this;
     function doUndo() {
         var documentData = that.documentData,
             dim = documentData.dimensions,
             descr = documentData.description,
             gs = documentData.gridSize,
-            prv = documentData.private;
+            prv = documentData.private,
+            prvStyles = documentData.privateStyles;
         documentData.dimensions = dimensions;
         documentData.description = description;
         documentData.private = priv;
+        documentData.privateStyles = privateStyles;
         documentData.gridSize = gridSize;
         dimensions = dim;
         description = descr;
         priv = prv;
+        privateStyles = prvStyles;
         gridSize = gs;
     }
     return new Command(

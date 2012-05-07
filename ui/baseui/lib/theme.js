@@ -6,14 +6,15 @@
 /*
     This provides the styling that is common to all ui components in baseui.
     Changing Theme.prototype.theme will re-theme all ui components.
-    
+
     (so: this provides a way to harmoniously change the look of many apparented
     UI elements at once)
-    
+
     See baseui.css.
 */
 function Theme() {
 }
+Theme.prototype.privateTheme = false;
 Theme.prototype.theme = new (require('visual').Theme)({
     // borders
     sectionBorder: {
@@ -108,12 +109,10 @@ Theme.prototype.theme = new (require('visual').Theme)({
     },
     // image picker
     imagePickerImage: {
-        data: [ 'baseui_theme_outlineTransparent' ] 
+        data: [ 'baseui_theme_outlineTransparent' ]
     },
     imagePickerImageSelected: {
-        data: [ 'baseui_theme_outlineColor' ] 
+        data: [ 'baseui_theme_outlineColor' ]
     }
 });
 exports.Theme = Theme;
-
-

@@ -31,7 +31,8 @@ ComponentInfo.prototype.init = function (editor) {
             [limitRange(children.w.getText(), 1, 100000), limitRange(children.h.getText(), 1, 10000), 1],
             children.description.getText(),
             children.privateCheck.getChecked(),
-            gridSize
+            gridSize,
+            children.privateStylesCheck.getChecked()
         ));
     }
 
@@ -42,6 +43,7 @@ ComponentInfo.prototype.init = function (editor) {
         children.h.setText(documentData.dimensions[1]);
         children.description.setText(documentData.description);
         children.privateCheck.setChecked(documentData.private === true);
+        children.privateStylesCheck.setChecked(documentData.privateTheme === true);
         children.grid.setValue(documentData.gridSize);
     }
 
@@ -49,6 +51,7 @@ ComponentInfo.prototype.init = function (editor) {
     children.h.on('change', updateDoc);
     children.description.on('change', updateDoc);
     children.privateCheck.on('change', updateDoc);
+    children.privateStylesCheck.on('change', updateDoc);
     children.grid.on('change', updateDoc);
     viewer.on('updateSelectionControlBox', updateControls);
     updateControls();

@@ -14,6 +14,7 @@ function {clsname}(config) {
 }
 {clsname}.prototype = new (domvisual.DOMElement)();
 {clsname}.prototype.theme = new (visual.Theme)(groups.{clsname}.theme);
+{clsname}.prototype.privateTheme = groups.{clsname}.privateTheme;
 {clsname}.prototype.getConfigurationSheet = function () {
     return {  };
 };
