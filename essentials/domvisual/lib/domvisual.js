@@ -552,6 +552,10 @@ function DOMElement(config, groupData) {
     DOMVisual.call(this, config, groupData, document.createElement('div'));
 }
 DOMElement.prototype = new DOMVisual();
+DOMElement.createPreview = function () {
+    return new (exports.DOMImg)({url: 'domvisual/lib/elementpreview.png'});
+};
+
 DOMElement.prototype.getConfigurationSheet = function () {
     return {
         "class": null,

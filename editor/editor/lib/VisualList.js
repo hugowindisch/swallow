@@ -2,17 +2,13 @@
     VisualList.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-/*globals define */
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
-    glmatrix = require('glmatrix'),
     VisualInfo = require('./VisualInfo').VisualInfo,
     utils = require('utils'),
-    forEachProperty = utils.forEachProperty,
-    http = require('http'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    forEach = utils.forEach,
+    forEachProperty = utils.forEachProperty;
 
 function VisualList(config) {
     // call the baseclass
@@ -30,11 +26,15 @@ VisualList.prototype.filterFactories = function () {
         docInfo = editor.getDocInfo(),
         filteredFactory = this.children.library.getSelectedOption(),
         editedFactory = docInfo.factory,
+        alwaysShow = this.alwaysShow,
         selected = this.selected;
     forEachProperty(choices.children, function (c) {
-        var cti = c.getTypeInfo(),
-            f = cti.factory;
-        c.setVisible(editedFactory === f || filteredFactory === f || c === selected);
+        // skip separators
+        if (c instanceof VisualInfo) {
+            var cti = c.getTypeInfo(),
+                f = cti.factory;
+            c.setVisible(alwaysShow[f] || filteredFactory === f || c === selected);
+        }
     });
 };
 VisualList.prototype.select = function (vi, apply) {
@@ -43,6 +43,7 @@ VisualList.prototype.select = function (vi, apply) {
         editor = this.editor,
         choices = this.children.choices,
         docInfo = editor.getDocInfo(),
+        alwaysShow = this.alwaysShow,
         filteredFactory = this.children.library.getSelectedOption(),
         f,
         editedFactory = docInfo.factory;
@@ -50,7 +51,7 @@ VisualList.prototype.select = function (vi, apply) {
         if (sel) {
             sel.select(false);
             f = sel.getTypeInfo().factory;
-            sel.setVisible(editedFactory === f || filteredFactory === f);
+            sel.setVisible(alwaysShow[f] || editedFactory === f || filteredFactory === f);
         }
         this.selected = vi;
         if (apply === true) {
@@ -72,9 +73,12 @@ VisualList.prototype.selectByTypeInfo = function (ti) {
             that = this,
             editor = this.editor;
         forEachProperty(choices.children, function (c) {
-            var cti = c.getTypeInfo();
-            if (cti.factory === factory && cti.type === type) {
-                that.select(c);
+            // skip separators
+            if (c instanceof VisualInfo) {
+                var cti = c.getTypeInfo();
+                if (cti.factory === factory && cti.type === type) {
+                    that.select(c);
+                }
             }
         });
     } else {
@@ -140,18 +144,17 @@ VisualList.prototype.updateVisualList = function () {
         l = visualList.length,
         i,
         jsd,
-        c,
+        alwaysShow = this.alwaysShow,
         choices = this.children.choices,
         docInfo = editor.getDocInfo(),
         editedFactory = docInfo.factory,
+        ve,
         that = this;
     function onClick() {
         that.select(this, true);
     }
-    // remove all children
-    choices.removeAllChildren();
-    for (i = 0; i < l; i += 1) {
-        jsd = visualList[i];
+    function add(jsd) {
+        var c;
         if ((!jsd.private || jsd.factory === editedFactory) && !(jsd.factory === docInfo.factory && jsd.type === docInfo.type)) {
             // keep a list of factories
             c = new VisualInfo({ typeInfo: jsd});
@@ -163,6 +166,27 @@ VisualList.prototype.updateVisualList = function () {
             c.on('click', onClick);
         }
     }
+    // remove all children
+    choices.removeAllChildren();
+    // create the always visible choices first
+    forEach(visualList, function (jsd) {
+        if (alwaysShow[jsd.factory]) {
+            add(jsd);
+        }
+    });
+    // add a separator
+    choices.addChild(
+        (new (domvisual.DOMElement)()).setHtmlFlowing({position: 'relative'}, true).setDimensions([1, 20, 1]),
+        'separator'
+    );
+
+    // then the other ones
+    forEach(visualList, function (jsd) {
+        if (!alwaysShow[jsd.factory]) {
+            add(jsd);
+        }
+    });
+    // then setup the factory selector
     that.setFactories(packageManager.getFactories());
     that.filterFactories();
 };
@@ -170,8 +194,10 @@ VisualList.prototype.updateVisualList = function () {
 VisualList.prototype.init = function (editor) {
     var viewer = editor.getViewer(),
         container = this.parent,
+        docInfo = editor.getDocInfo(),
         that = this;
     this.editor = editor;
+    this.alwaysShow = { domvisual: true };
 
     this.updateVisualList();
     editor.getDependencyManager().on('change', function () {
@@ -186,9 +212,14 @@ VisualList.prototype.init = function (editor) {
 };
 
 VisualList.prototype.setFactories = function (factories) {
-    var factArray = [];
+    var factArray = [],
+        docInfo = this.editor.getDocInfo(),
+        alwaysShow = this.alwaysShow || {};
     forEachProperty(factories, function (f, name) {
-        factArray.push(name);
+        // don't show the factories that are always present
+        if (!alwaysShow[name]) {
+            factArray.push(name);
+        }
     });
     factArray.sort(function (i1, i2) {
         return i1 > i2;
