@@ -159,7 +159,7 @@ function setupToolMenu(editor) {
             viewer.enableBoxSelection(
                 function (mat, nmat, startpos, endpos, evt) {
                     toggleControlBoxModeWhenFinished = true;
-                    if (!viewer.itemAtPositionIsSelected(startpos)) {
+                    if (!evt.ctrlKey && !viewer.itemAtPositionIsSelected(startpos)) {
                         toggleControlBoxModeWhenFinished = false;
                         select(evt, nmat);
                         viewer.resetSelectionControlBoxMode();
