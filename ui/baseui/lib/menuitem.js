@@ -27,9 +27,9 @@ Accelerator.prototype.toKeyString = function () {
     return makeKeyString(this.vkCode, this.ctrlk, this.altk, this.metak, this.shiftk);
 };
 Accelerator.prototype.toDecoratedVk = function () {
-    return decorateVk(this.vkCode, this.ctrlk, this.altk, this.metak, this.shiftk);  
+    return decorateVk(this.vkCode, this.ctrlk, this.altk, this.metak, this.shiftk);
 };
-        
+
 // it is fundamentally here that internationalization will be implemented
 // for menus
 function MenuItem(
@@ -37,14 +37,14 @@ function MenuItem(
     action,
     subMenu,        // null, array of items, function
     accelerator,
-    icon,    
+    icon,
     enabled,        // null, array of items, function (note: defaults to true if undefined)
     checkedState,   // null, true, false, function
     checkedMode     // 'radio', 'check', function returning 'radio' or 'check'
 ) {
     this.setText(text);
     this.setAction(action);
-    this.setAccelerator(accelerator);  
+    this.setAccelerator(accelerator);
     this.setIcon(icon);
     this.setSubMenu(subMenu);
     this.setEnabled(enabled);
@@ -60,6 +60,7 @@ MenuItem.prototype.setText = function (text) {
         this.text = text;
     }
     this.emit('change');
+    return this;
 };
 MenuItem.prototype.getText = function () {
     return this.text;
@@ -70,6 +71,7 @@ MenuItem.prototype.setAction = function (action) {
         this.actionFcn = action;
     }
     this.emit('change');
+    return this;
 };
 MenuItem.prototype.action = function () {
     // call the function
@@ -87,6 +89,7 @@ MenuItem.prototype.setAccelerator = function (accelerator) {
         this.accelerator = accelerator;
     }
     this.emit('change');
+    return this;
 };
 MenuItem.prototype.getAccelerator = function () {
     return this.accelerator;
@@ -99,6 +102,7 @@ MenuItem.prototype.setIcon = function (icon) {
         this.icon = icon;
     }
     this.emit('change');
+    return this;
 };
 MenuItem.prototype.getIcon = function () {
     return this.icon;
@@ -111,6 +115,7 @@ MenuItem.prototype.setEnabled = function (enabled) {
         this.enabled = (enabled !== false);
     }
     this.emit('change');
+    return this;
 };
 MenuItem.prototype.getEnabled = function () {
     return this.enabled;
@@ -123,6 +128,7 @@ MenuItem.prototype.setSubMenu = function (subMenu) {
         this.subMenu = subMenu;
     }
     this.emit('change');
+    return this;
 };
 MenuItem.prototype.getSubMenu = function () {
     return this.subMenu;
@@ -135,6 +141,7 @@ MenuItem.prototype.setCheckedState = function (checkedState) {
         this.checkedState = checkedState;
     }
     this.emit('change');
+    return this;
 };
 MenuItem.prototype.getCheckedState = function () {
     return this.checkedState;
@@ -148,10 +155,10 @@ MenuItem.prototype.setCheckedMode = function (checkedMode) {
         this.checkedMode = checkedMode;
     }
     this.emit('change');
+    return this;
 };
 MenuItem.prototype.getCheckedMode = function () {
     return this.checkedMode;
 };
 exports.MenuItem = MenuItem;
 exports.Accelerator = Accelerator;
-

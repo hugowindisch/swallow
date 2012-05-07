@@ -10,7 +10,7 @@ var visual = require('visual'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction;
-    
+
 
 function VerticalMenu(config) {
     var that = this;
@@ -67,7 +67,7 @@ VerticalMenu.prototype.handleKey = function (evt) {
         case 'VK_UP':
             nH -= 1;
             if (nH < 0) {
-                nH = maxH - 1; 
+                nH = maxH - 1;
             }
             this.highlightItem(String(nH));
             break;
@@ -77,7 +77,7 @@ VerticalMenu.prototype.handleKey = function (evt) {
                 nH = 0;
             }
             this.highlightItem(String(nH));
-            break; 
+            break;
         case 'VK_LEFT':
             if (this.children.subMenu && this.children.subMenu.highlighted) {
                 // highlight it
@@ -106,6 +106,7 @@ VerticalMenu.prototype.handleKey = function (evt) {
     } else if (parentMenu) {
         parentMenu.handleKey(evt);
     }
+    return this;
 };
 /**
     Performs the action.
@@ -118,6 +119,7 @@ VerticalMenu.prototype.action = function () {
             this.highlighted.item.action();
         }
     }
+    return this;
 };
 /**
     Hides the whole menu stack
@@ -128,6 +130,7 @@ VerticalMenu.prototype.hideMenuStack = function () {
         parent.highlightItem(null);
         parent = parent.parentMenu;
     }
+    return this;
 };
 /**
     Highlights an item.
@@ -145,11 +148,11 @@ VerticalMenu.prototype.highlightItem = function (itemName) {
         this.highlighted.setStyle('menuItem');
         if (this.children.subMenu) {
             this.removeChild(this.children.subMenu);
-        }        
+        }
     }
     toHighlight = table.children[itemName];
     if (toHighlight) {
-        this.highlighted = toHighlight;    
+        this.highlighted = toHighlight;
         toHighlight.setStyle('menuItemSelected');
         // do we have a submenu for this item?
         subItems = toHighlight.item.getSubMenu();
@@ -158,7 +161,7 @@ VerticalMenu.prototype.highlightItem = function (itemName) {
             subMenu = new VerticalMenu({ items: subItems});
             this.addChild(subMenu, 'subMenu');
             subMenu.parentMenu = this;
-            // we want to position it semi intelligently                
+            // we want to position it semi intelligently
             smMat = mat4.create(toHighlight.getComputedMatrix());
             smDim = toHighlight.getComputedDimensions();
             smMat[12] += smDim[0];
@@ -169,6 +172,7 @@ VerticalMenu.prototype.highlightItem = function (itemName) {
     } else {
         this.highlighted = null;
     }
+    return this;
 };
 /**
     It is way easier to create something like this in HTML (because the
@@ -184,7 +188,7 @@ VerticalMenu.prototype.updateChildren = function () {
         {'style': 'menuBox' },
         'table'
     );
-    
+
     // we now want to iterate our items and create children for them
     var items = this.getItems(),
         i,
@@ -201,11 +205,12 @@ VerticalMenu.prototype.updateChildren = function () {
         }
     }
     this.numItems = numEnabledItems;
+    return this;
 };
 VerticalMenu.prototype.createSeparator = function () {
     var table = this.children.table,
         c = table.addHtmlChild(
-            'tr', 
+            'tr',
             '',
             { style: 'menuItem' },
             name
@@ -213,7 +218,7 @@ VerticalMenu.prototype.createSeparator = function () {
         line = c.addHtmlChild('td', '', { style: 'menuItemSeparator' });
     line.setElementAttributes({colspan: 4});
     line.addHtmlChild('div', '');
-
+    return this;
 };
 VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIndex) {
     var that = this,
@@ -226,7 +231,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
         checked,
         checkimg = item.getCheckedMode() === 'radio' ? 'baseui/lib/menuradio.png' : 'baseui/lib/menucheck.png',
         c = table.addHtmlChild(
-            'tr', 
+            'tr',
             '',
             { style: enabled ? 'menuItem' : 'menuItemDisabled' },
             name
@@ -235,7 +240,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
     if (enabled) {
         numEnabled += 1;
     }
-    
+
     // keep the item
     c.item = item;
     // checked
@@ -254,7 +259,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
         {  },
         'icon'
     );
-    
+
     // add the stuff we want in our row
     c.addTextChild(
         'td',
@@ -274,7 +279,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
     if (enabled) {
         c.setCursor('pointer');
         c.on('mouseup', function () {
-            that.action();        
+            that.action();
         });
         c.on('mouseover', function () {
             // if something is already highlighted
@@ -290,6 +295,7 @@ VerticalMenu.prototype.setItems = function (items) {
         this.items = items;
     }
     this.updateChildren();
+    return this;
 };
 VerticalMenu.prototype.getItems = function () {
     return this.items;
@@ -298,4 +304,3 @@ VerticalMenu.prototype.getConfigurationSheet = function () {
     return { items: {} };
 };
 exports.VerticalMenu = VerticalMenu;
-

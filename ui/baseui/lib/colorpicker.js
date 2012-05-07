@@ -166,6 +166,7 @@ ColorPicker.prototype.setValue = function (v) {
     } else {
         this.showHSLA();
     }
+    return this;
 };
 
 ColorPicker.prototype.getValue = function () {

@@ -105,6 +105,7 @@ Button.prototype.getConfigurationSheet = function () {
 Button.prototype.setText = function (text) {
     this.children.text.removeAllChildren();
     this.children.text.addTextChild('div', text, null, 'text');
+    return this;
 };
 
 exports.Button = Button;

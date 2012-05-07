@@ -38,6 +38,7 @@ ImagePicker.prototype.setUrls = function (urls) {
         this.selected = null;
         this.updateChildren();
     }
+    return this;
 };
 
 ImagePicker.prototype.setSelectedUrl = function (url) {
@@ -52,6 +53,7 @@ ImagePicker.prototype.setSelectedUrl = function (url) {
         }
     }
     this.select(sel);
+    return this;
 };
 ImagePicker.prototype.getSelectedUrl = function (url) {
     if (this.selected !== null) {
@@ -61,7 +63,7 @@ ImagePicker.prototype.getSelectedUrl = function (url) {
 };
 
 ImagePicker.prototype.getConfigurationSheet = function () {
-    return { urls: {} }; 
+    return { urls: {} };
 };
 
 ImagePicker.prototype.select = function (n) {
@@ -74,6 +76,7 @@ ImagePicker.prototype.select = function (n) {
             this.cells[this.selected].setStyle('imageSelected');
         }
     }
+    return this;
 };
 
 ImagePicker.prototype.updateChildren = function () {
@@ -91,7 +94,7 @@ ImagePicker.prototype.updateChildren = function () {
     this.removeAllChildren();
     table = this.addHtmlChild('table', '', null, 'table');
     row = table.addHtmlChild('tr', '', null, 'row');
-    
+
     function onLoad() {
         var imageDimensions = this.getComputedDimensions();
         this.setHtmlFlowing({
@@ -121,6 +124,7 @@ ImagePicker.prototype.updateChildren = function () {
         c.on('click', getOnClick(i));
         c.setCursor('pointer');
     }
+    return this;
 };
 
 exports.ImagePicker = ImagePicker;

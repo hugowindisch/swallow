@@ -94,6 +94,7 @@ Slider.prototype.theme = new (visual.Theme)({
 Slider.prototype.setMinValue = function (minValue) {
     this.minValue = minValue;
     this.applyLayout();
+    return this;
 };
 
 Slider.prototype.getMinValue = function () {
@@ -103,11 +104,13 @@ Slider.prototype.getMinValue = function () {
 Slider.prototype.setMaxValue = function (maxValue) {
     this.maxValue = maxValue;
     this.applyLayout();
+    return this;
 };
 
 Slider.prototype.setValue = function (value) {
     this.value = value;
     this.applyLayout();
+    return this;
 };
 
 Slider.prototype.getValue = function () {
@@ -141,6 +144,7 @@ Slider.prototype.applyLayout = function () {
             pos = range * (this.getValue() - this.minValue) / (this.maxValue - this.minValue);
         knob.setTranslationMatrix([pos, 0, 0]);
     }
+    return this;
 };
 
 exports.Slider = Slider;

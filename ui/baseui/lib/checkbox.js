@@ -92,6 +92,7 @@ CheckBox.prototype.getConfigurationSheet = function () {
 CheckBox.prototype.setValue = function (value) {
     this.value = Boolean(value);
     this.children.image.setVisible(this.value);
+    return this;
 };
 CheckBox.prototype.getValue = function () {
     return this.value;

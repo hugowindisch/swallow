@@ -53,6 +53,7 @@ Folder.prototype.setInternal = function (o) {
             }
         }
     }
+    return this;
 };
 
 
@@ -60,6 +61,7 @@ Folder.prototype.setInternal = function (o) {
 */
 Folder.prototype.setText = function (o) {
     this.text = o;
+    return this;
 };
 
 /**
@@ -101,6 +103,7 @@ Folder.prototype.setExpanded = function (expanded) {
             children.content.setVisible(false);
         }
     }
+    return this;
 };
 
 /**
@@ -108,6 +111,7 @@ Folder.prototype.setExpanded = function (expanded) {
 */
 Folder.prototype.toggleExpansion = function () {
     this.setExpanded(!this.expanded);
+    return this;
 };
 
 /**
@@ -115,6 +119,7 @@ Folder.prototype.toggleExpansion = function () {
 */
 Folder.prototype.setIndent = function (indent) {
     this.indent = indent;
+    return this;
 };
 
 Folder.prototype.getConfigurationSheet = function () {

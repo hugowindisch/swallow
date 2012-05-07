@@ -33,6 +33,7 @@ Label.prototype.setText = function (text) {
     this.setInnerText(text);
     this.setStyle('text');
     this.text = text;
+    return this;
 };
 
 Label.prototype.getText = function () {
@@ -45,10 +46,12 @@ Label.prototype.getConfigurationSheet = function () {
 
 Label.prototype.setTextAlign = function (align) {
     this.setStyleAttributes({ textAlign: align});
+    return this;
 };
 
 Label.prototype.setBold = function (enable) {
     this.setStyleAttributes({ fontWeight: enable ? 'bold' : null});
+    return this;
 };
 
 

@@ -285,6 +285,7 @@ HorizontalMenu.prototype.setItems = function (items) {
         this.items = items;
     }
     this.updateChildren();
+    return this;
 };
 HorizontalMenu.prototype.getItems = function () {
     return this.items;
@@ -305,5 +306,6 @@ HorizontalMenu.prototype.setDimensions = function (dimensions) {
             c.setHtmlFlowing({height: height, display: 'inline-block'});
         });
     }
+    return this;
 };
 exports.HorizontalMenu = HorizontalMenu;

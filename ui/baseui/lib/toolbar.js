@@ -12,7 +12,7 @@ var visual = require('visual'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction;
-    
+
 
 function Toolbar(config) {
     var that = this;
@@ -71,7 +71,8 @@ Toolbar.prototype.clearItems = function () {
         }
     });
     // we want to remove all our children
-    this.removeAllChildren();    
+    this.removeAllChildren();
+    return this;
 };
 
 Toolbar.prototype.setItems = function (items) {
@@ -80,8 +81,9 @@ Toolbar.prototype.setItems = function (items) {
         this.getItems = items;
     } else {
         this.items = items;
-    }    
+    }
     this.updateChildren();
+    return this;
 };
 
 /**
@@ -92,7 +94,7 @@ Toolbar.prototype.setItems = function (items) {
     It is way easier to create something like this in HTML (because the
     automatic layouting fits this thing so well).
 */
-Toolbar.prototype.updateChildren = function () {    
+Toolbar.prototype.updateChildren = function () {
     // we now want to iterate our items and create children for them
     var items = this.getItems(),
         item,
@@ -104,13 +106,15 @@ Toolbar.prototype.updateChildren = function () {
             this.createItemHtml(item, i, l);
         } else {
             this.createSeparator();
-        }            
+        }
     }
+    return this;
 };
 Toolbar.prototype.createSeparator = function () {
     var c = new (domvisual.DOMElement)({style: 'separator'});
     c.setHtmlFlowing({ display: 'inline-block' });
     this.addChild(c);
+    return this;
 };
 Toolbar.prototype.createItemHtml = function (item, index, numIndex) {
     var that = this,
@@ -129,6 +133,7 @@ Toolbar.prototype.createItemHtml = function (item, index, numIndex) {
         // is it enabled?
         this.configureItem(c);
     }
+    return this;
 };
 Toolbar.prototype.configureItem = function (c) {
     var item = c.item;
@@ -148,9 +153,9 @@ Toolbar.prototype.configureItem = function (c) {
         c.once('mouseupc', function (evt) {
             noDefault(evt);
             // action
-            item.action();            
+            item.action();
             c.setStyle(getStyle());
-        });    
+        });
     }
     function unhookHandlers() {
         c.removeListener('mousedown', mouseDown);
@@ -167,6 +172,7 @@ Toolbar.prototype.configureItem = function (c) {
         c.on('mousedown', mouseDown);
         c.unhookHandlers = unhookHandlers;
     }
+    return this;
 };
 Toolbar.prototype.getItems = function () {
     return this.items;
