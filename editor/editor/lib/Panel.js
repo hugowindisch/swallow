@@ -35,8 +35,8 @@ Panel.prototype.init = function (editor) {
     siFolder.setHtmlFlowing({});
     ciFolder.setExpanded(false);
     liFolder.setExpanded(false);
+    siFolder.setExpanded(false);
     vlFolder.setExpanded(true);
-    siFolder.setExpanded(true);
 
     this.addChild(ciFolder);
     this.addChild(liFolder);
