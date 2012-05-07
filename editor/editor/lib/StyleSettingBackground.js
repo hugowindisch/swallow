@@ -11,6 +11,27 @@ var visual = require('visual'),
 function StyleSettingBackground(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.StyleSettingBackground);
+    var children = this.children,
+        that = this;
+
+    children.colorCheck.on('click', function (v) {
+        delete that.styleData.color;
+        that.emit('change', that.styleData);
+    });
+    children.color.on('change', function (v) {
+        that.styleData.color = v;
+        children.colorCheck.setValue(true);
+        that.emit('change', that.styleData);
+    });
+    children.color.on('preview', function (v) {
+        that.styleData.color = v;
+        children.colorCheck.setValue(true);
+        that.emit('preview', that.styleData);
+    });
+    children.clear.on('click', function () {
+        that.styleData = {};
+        that.emit('reset', that.styleData);
+    });
 }
 StyleSettingBackground.prototype = new (domvisual.DOMElement)();
 StyleSettingBackground.prototype.getConfigurationSheet = function () {
@@ -28,8 +49,8 @@ StyleSettingBackground.prototype.setStyleData = function (st) {
     this.styleData = {
         color: st.color
     };
-//    this.updateSlider();
-//    this.updateInput();
+
+    children.color.setValue(st.color || { r: 0, g: 0, b: 0, a: 0});
 };
 
 exports.StyleSettingBackground = StyleSettingBackground;

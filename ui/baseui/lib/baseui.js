@@ -48,6 +48,8 @@ exports.Accelerator = menuitem.Accelerator;
 exports.Label = require('./label').Label;
 exports.Input = require('./input').Input;
 exports.Slider = require('./slider').Slider;
+exports.LabelValueSlider = require('./labelvalueslider').LabelValueSlider;
+exports.ColorPicker = require('./colorpicker').ColorPicker;
 exports.CheckBox = require('./checkbox').CheckBox;
 
 // note: this should be last

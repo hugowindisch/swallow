@@ -1101,7 +1101,7 @@ exports.definition = {
             }
         },
         StyleSettingBackground: {
-            dimensions: [340, 100, 1],
+            dimensions: [340, 260, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1122,7 +1122,13 @@ exports.definition = {
                     order: 0,
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                }
+                },
+                color: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+
             },
             children: {
                 label: {
@@ -1148,6 +1154,12 @@ exports.definition = {
                     type: "CheckBox",
                     position: "colorCheck",
                     config: { value: true }
+                },
+                color: {
+                    factory: "baseui",
+                    type: "ColorPicker",
+                    position: "color",
+                    config: { }
                 }
             }
         },
@@ -1580,7 +1592,7 @@ exports.definition = {
                 },
                 styleEdit : {
                     order: 2,
-                    matrix: [ 340, 0, 0, 0,  0, 120, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 localStylePicker : {

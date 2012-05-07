@@ -44,6 +44,7 @@ LabelValueSliderCheck.prototype.getConfigurationSheet = function () {
 };
 LabelValueSliderCheck.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
+    return this;
 };
 LabelValueSliderCheck.prototype.setValue = function (v) {
     if (v) {
@@ -52,18 +53,23 @@ LabelValueSliderCheck.prototype.setValue = function (v) {
     this.updateSlider();
     this.updateInput();
     this.updateCheck();
+    return this;
 };
 LabelValueSliderCheck.prototype.setDefaultValue = function (v) {
     this.defaultValue = v;
+    return this;
 };
 LabelValueSliderCheck.prototype.setMinValue = function (v) {
     this.children.slider.setMinValue(v);
+    return this;
 };
 LabelValueSliderCheck.prototype.setMaxValue = function (v) {
     this.children.slider.setMaxValue(v);
+    return this;
 };
 LabelValueSliderCheck.prototype.setCheck = function (c) {
     this.children.check.setValue(c);
+    return this;
 };
 LabelValueSliderCheck.prototype.updateSlider = function () {
     this.children.slider.setValue(this.value || 0);
