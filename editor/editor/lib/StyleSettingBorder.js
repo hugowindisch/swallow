@@ -45,6 +45,21 @@ function StyleSettingBorder(config) {
         }
         that.emit('preview', that.styleData);
     });
+    children.colorCheck.on('click', function (v) {
+        delete that.styleData.color;
+        that.emit('change', that.styleData);
+    });
+    children.color.on('change', function (v) {
+        that.styleData.color = v;
+        children.colorCheck.setValue(true);
+        that.emit('change', that.styleData);
+    });
+    children.color.on('preview', function (v) {
+        that.styleData.color = v;
+        children.colorCheck.setValue(true);
+        that.emit('preview', that.styleData);
+    });
+
     children.clear.on('click', function () {
         that.styleData = {};
         that.emit('reset', that.styleData);
@@ -65,6 +80,7 @@ StyleSettingBorder.prototype.setStyleData = function (st) {
     this.styleData = apply({}, st);
     this.borderStyle.setSelectedValue(this.styleData.style);
     children.width.setValue(this.styleData.width);
+    children.color.setValue(st.color || { r: 0, g: 0, b: 0, a: 1});
 };
 
 exports.StyleSettingBorder = StyleSettingBorder;

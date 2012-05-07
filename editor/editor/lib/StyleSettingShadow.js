@@ -19,7 +19,8 @@ function StyleSettingShadow(config) {
                 offsetX: 0,
                 offsetY: 0,
                 blurRadius: 0,
-                spreadRadius: 0
+                spreadRadius: 0,
+                color: {r: 0, g: 0, b: 0, a: 1 }
             };
         }
         return that.styleData.shadow;
@@ -70,6 +71,17 @@ function StyleSettingShadow(config) {
     });
 
 
+    children.color.on('change', function (v) {
+        var shadow = makeShadow();
+        shadow.color = v;
+        that.emit('change', that.styleData);
+    });
+    children.color.on('preview', function (v) {
+        var shadow = makeShadow();
+        shadow.color = v;
+        that.emit('preview', that.styleData);
+    });
+
     children.clear.on('click', function () {
         that.styleData = {};
         that.emit('reset', that.styleData);
@@ -94,6 +106,7 @@ StyleSettingShadow.prototype.setStyleData = function (st) {
     children.offsetY.setValue(shadow.offsetY);
     children.blurRadius.setValue(shadow.blurRadius);
     children.spreadRadius.setValue(shadow.spreadRadius);
+    children.color.setValue(shadow.color || { r: 0, g: 0, b: 0, a: 1});
 };
 
 

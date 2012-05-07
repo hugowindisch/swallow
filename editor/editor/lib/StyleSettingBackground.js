@@ -50,7 +50,7 @@ StyleSettingBackground.prototype.setStyleData = function (st) {
         color: st.color
     };
 
-    children.color.setValue(st.color || { r: 0, g: 0, b: 0, a: 0});
+    children.color.setValue(st.color || { r: 0, g: 0, b: 0, a: 1});
 };
 
 exports.StyleSettingBackground = StyleSettingBackground;

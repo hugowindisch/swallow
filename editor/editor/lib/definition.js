@@ -964,7 +964,7 @@ exports.definition = {
             }
         },
         StyleSettingBorder: {
-            dimensions: [340, 60, 1],
+            dimensions: [340, 380, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1019,6 +1019,11 @@ exports.definition = {
                 colorCheck: {
                     order: 0,
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                color: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1096,8 +1101,13 @@ exports.definition = {
                     type: "CheckBox",
                     position: "colorCheck",
                     config: { value: true }
+                },
+                color: {
+                    factory: "baseui",
+                    type: "ColorPicker",
+                    position: "color",
+                    config: { }
                 }
-
             }
         },
         StyleSettingBackground: {
@@ -1235,6 +1245,11 @@ exports.definition = {
                     order: 0,
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 120, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                color: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
             children: {
@@ -1329,6 +1344,12 @@ exports.definition = {
                     type: "CheckBox",
                     position: "colorCheck",
                     config: { value: true }
+                },
+                color: {
+                    factory: "baseui",
+                    type: "ColorPicker",
+                    position: "color",
+                    config: { }
                 }
             }
         },
@@ -1363,6 +1384,11 @@ exports.definition = {
                 spreadRadius: {
                     order: 0,
                     matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                color: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 150, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1402,6 +1428,12 @@ exports.definition = {
                     type: 'LabelValueSliderCheck',
                     position: 'spreadRadius',
                     config: { label: 'Spread:', value: 0, minValue: 0, maxValue: 100, check: true }
+                },
+                color: {
+                    factory: "baseui",
+                    type: "ColorPicker",
+                    position: "color",
+                    config: { }
                 }
             }
         },
@@ -1592,7 +1624,7 @@ exports.definition = {
                 },
                 styleEdit : {
                     order: 2,
-                    matrix: [ 340, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 290, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 localStylePicker : {

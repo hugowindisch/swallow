@@ -35,6 +35,7 @@ BoxShadow
     offsetY
     blurRadius
     spreadRadius
+    color
 
 Attributes Supported so far
 ===========================
@@ -221,7 +222,8 @@ function boxShadowToCSSString(v) {
     return v.offsetX + ' px ' +
         v.offsetY + ' px ' +
         v.blurRadius + ' px ' +
-        v.spreadRadius + ' px #a0a0a0';
+        v.spreadRadius + ' px ' +
+        colorToCSSString(v.color);
 }
 
 function passThroughCSSString(v) {
