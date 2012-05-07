@@ -542,11 +542,13 @@ GroupViewer.prototype.itemAtPosition = function (position, subset) {
         ret = null;
     subset = subset || positions;
     forEachProperty(subset, function (it, name) {
-        var r = getEnclosingRect(it.matrix);
-        if (intersects(r, rp)) {
-            if (ret === null || it.order > retOrder) {
-                ret = name;
-                retOrder = it.order;
+        if (it.enableSelect !== false && it.enableDisplay !== false) {
+            var r = getEnclosingRect(it.matrix);
+            if (intersects(r, rp)) {
+                if (ret === null || it.order > retOrder) {
+                    ret = name;
+                    retOrder = it.order;
+                }
             }
         }
     });
