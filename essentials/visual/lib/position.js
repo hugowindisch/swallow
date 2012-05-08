@@ -100,7 +100,7 @@ Position.prototype.compute = function (
         dstRect[0][0] = srcRect[0][0];
         break;
     case '%':
-        dstRect[0][0] = containerDimensions[0] - (containerDimensions[0] * srcRect[0][0] / layoutDimensions[0]);
+        dstRect[0][0] = containerDimensions[0] - (containerDimensions[0] * (srcRect[1][0] - srcRect[0][0]) / layoutDimensions[0]);
         break;
     }
     switch (snapping.right) {
@@ -116,7 +116,7 @@ Position.prototype.compute = function (
         dstRect[0][1] = srcRect[0][1];
         break;
     case '%':
-        dstRect[0][1] = containerDimensions[1] - (containerDimensions[1] * srcRect[0][1] / layoutDimensions[1]);
+        dstRect[0][1] = containerDimensions[1] - (containerDimensions[1] * (srcRect[1][1] - srcRect[0][1]) / layoutDimensions[1]);
         break;
     }
     switch (snapping.bottom) {
