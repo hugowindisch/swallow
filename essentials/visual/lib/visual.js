@@ -40,6 +40,9 @@ function setContainmentDepth(v, depth) {
 }
 
 function matrixIsTranslateOnly(matrix) {
+    if (!matrix) {
+        throw new Error('Invalid matrix ' + matrix);
+    }
     function isOne(n) {
         return Math.round(n * 1000) === 10000;
     }
@@ -58,6 +61,10 @@ function matrixIsTranslateOnly(matrix) {
         isZero(matrix[8]) &&
         isZero(matrix[9])
     );
+}
+
+function vec3IsEqual(v1, v2) {
+    return v1 && v2 && v1[0] === v2[0] && v1[1] === v2[1] && v1[3] === v2[3];
 }
 
 function updateChildrenPositions(v) {
@@ -133,11 +140,72 @@ Visual.prototype.enableInteractions = function (enable) {
     by the content of the box.
 */
 Visual.prototype.setDimensions = function (v3) {
-    this.dimensions = v3;
-    setDirty(this, 'dimensions');
-    // Keep all children in synch (in terms of position and matrix)
-    this.applyLayout();
+    var dimensions = this.dimensions;
+    if (!vec3IsEqual(this.dimensions, v3)) {
+        this.dimensions = v3;
+        setDirty(this, 'dimensions');
+        // Keep all children in synch (in terms of position and matrix)
+        this.applyLayout();
+    }
     return this;
+};
+/**
+    Checks that this visual is unsconstrained.
+*/
+Visual.prototype.isUnconstrained = function () {
+    return this.position === undefined || this.htmlFlowingApplySizing;
+};
+/**
+    Sets a requested dimension. This allows a contained element to
+    resize its container to fit its size under certain circumstances.
+    If the container is unconstrained and that the element is at a
+    position that allows the container to resize (e.g. the position has
+    an auto height or an auto width), the position is unconstrained,
+    and the container is free to resize itself, the dedimensioning will
+    happen.
+*/
+Visual.prototype.requestDimensions = function (v3) {
+    var parent;
+    if (!vec3IsEqual(this.requestedDimensions, v3)) {
+        if (!v3) {
+            delete this.requestedDimensions;
+        } else {
+            this.requestedDimensions = v3;
+            if (this.isUnconstrained()) {
+                // resize myself right now
+                this.setDimensions(this.requestedDimensions);
+            } else {
+                parent = this.parent;
+                // ask my container
+                parent.requestDimensions(parent.computeDimensionsFromContent());
+            }
+        }
+    }
+    return this;
+};
+/**
+    This will compute the dimensions from the content if possible.
+*/
+Visual.prototype.computeDimensionsFromContent = function () {
+    //-------------------
+    // for all our children
+    var dimensions = this.dimensions,
+        that = this,
+        ret;
+    forEachProperty(this.children, function (c, name) {
+        if (c.requestedDimensions) {
+            var pos = c.getPositionObject(),
+                newd;
+            if (pos !== null && pos.isUnconstrained()) {
+                newd = position.computeReverseDimensioning(dimensions, that.layout, c);
+                if (ret === undefined || newd[0] < ret[0] || newd[1] < ret[1]) {
+                    ret = newd;
+                }
+            }
+        }
+    });
+    // now, we no our requested dimensions
+    return ret;
 };
 /**
     Sets the matrix.
@@ -217,21 +285,21 @@ Visual.prototype.getFullDisplayMatrix = function (inverse) {
     Sets the opacity of the visual (1 = fully opaque, 0 = fully transparent).
 */
 Visual.prototype.setOpacity = function (opacity) {
-    var prevOpacity = this.opacity;
     opacity = Number(opacity);
-    if (opacity >= 1) {
-        delete this.opacity;
-    } else {
-        if (opacity < 0) {
-            opacity = 0;
+    if (opacity !== this.getOpacity()) {
+        if (opacity >= 1) {
+            delete this.opacity;
+        } else {
+            if (opacity < 0) {
+                opacity = 0;
+            }
+            this.opacity = opacity;
         }
-        this.opacity = opacity;
-    }
-    if (this.opacity !== prevOpacity) {
         setDirty(this, 'opacity');
     }
     return this;
 };
+
 /**
     Returns the opacity of the visual.
 */
@@ -242,6 +310,7 @@ Visual.prototype.getOpacity = function () {
     }
     return opacity;
 };
+
 /**
     Sets the position. The position is either a string
     (referring to a position name in the parent layout) OR
@@ -255,15 +324,31 @@ Visual.prototype.getOpacity = function () {
     to compute a matrix (or style) given the size of the parent container.
 */
 Visual.prototype.setPosition = function (position) {
-    this.position = position;
-    var parent = this.parent;
-    if (parent && position !== null) {
-        applyLayout(parent.dimensions, parent.layout, this);
+    if (this.position !== position) {
+        this.position = position;
+        var parent = this.parent;
+        if (parent && position !== null) {
+            applyLayout(parent.dimensions, parent.layout, this);
+        }
     }
     return this;
 };
 Visual.prototype.getPosition = function () {
     return this.position;
+};
+Visual.prototype.getPositionObject = function () {
+    var position = this.position,
+        parent = this.parent,
+        layout;
+    if (isString(position) && parent) {
+        layout = parent.layout;
+        if (layout) {
+            position = layout.positions[position];
+        } else {
+            position = null;
+        }
+    }
+    return position || null;
 };
 /**
     When a visual is a group it will use a layout object to move its

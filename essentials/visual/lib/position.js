@@ -64,9 +64,6 @@ function rectToMatrix(r) {
 }
 
 /**
-    in the end, I think we only need one type of position, and I will call it
-    position.
-
     it has the following attributes:
         matrix
         left : % px auto
@@ -77,23 +74,42 @@ function rectToMatrix(r) {
         bottom: % px auto
         height: % px auto
 */
-function Position(matrix, snapping, opacity) {
+function Position(matrix, snapping, opacity, unconstrained) {
     this.matrix = matrix;
     this.snapping = snapping;
     this.opacity = opacity;
+    var srcRect = this.srcRect = getEnclosingRect(matrix);
+    this.srcExt = vec3.subtract(srcRect[1], srcRect[0], vec3.create());
+/*    if (unconstrained) {
+        this.unconstrained = [
+            unconstrained[0] && (snapping[0] === 'auto'),
+            unconstrained[1] && (snapping[1] === 'auto'),
+            false
+        ];
+    }*/
 }
-Position.prototype.compute = function (
+/**
+    Checks if this position is fully constrained.
+*/
+Position.prototype.isUnconstrained = function () {
+    var snapping = this.snapping;
+    return snapping.width === 'auto' || snapping.height === 'auto';
+/*    var u = this.unconstrained;
+    return (u !== undefined) &&
+        ((u[0] === true) ||
+        (u[1] === true));*/
+};
+/**
+    Computes the rects in the context of the specified container dimensions.
+*/
+Position.prototype.computeDstRect = function (
     containerDimensions,
     layoutDimensions
 ) {
     var snapping = this.snapping,
         matrix = this.matrix,
-        srcRect = getEnclosingRect(matrix),
-        dstRect = [vec3.create(), vec3.create()],
-        scale,
-        srcExt,
-        dstExt,
-        outm = mat4.identity();
+        srcRect = this.srcRect,
+        dstRect = [vec3.create(), vec3.create()];
 
     switch (snapping.left) {
     case 'px':
@@ -201,8 +217,26 @@ Position.prototype.compute = function (
         }
     }
     dstRect[1][2] = 1;
+    return dstRect;
+};
+
+/**
+    Computes the matrix in the context of the specified container dimensions.
+*/
+Position.prototype.compute = function (
+    containerDimensions,
+    layoutDimensions
+) {
+    var snapping = this.snapping,
+        matrix = this.matrix,
+        srcRect = this.srcRect,
+        dstRect = this.computeDstRect(containerDimensions, layoutDimensions),
+        scale,
+        srcExt = this.srcExt,
+        dstExt,
+        outm = mat4.identity();
+
     // compute the scaling
-    srcExt = vec3.subtract(srcRect[1], srcRect[0], vec3.create());
     dstExt = vec3.subtract(dstRect[1], dstRect[0], vec3.create());
     scale = [
         srcExt[0] === 0 ? 0 : dstExt[0] / srcExt[0],
@@ -297,6 +331,103 @@ function applyLayout(containerDimensions, layout, v) {
     }
 }
 
+/**
+    Computes the reverse dimensioning of a container.
+*/
+function computeReverseDimensioning(containerDimensions, layout, v) {
+    var positions = layout.positions,
+        layoutDimensions = layout.dimensions,
+        pos = v.getPositionObject(),
+        requestedDimensions = v.requestedDimensions,
+        res = vec3.create(containerDimensions),
+        //unconstrained = this.unconstrained,
+        srcRect,
+        dstRect,
+        srcExt,
+        dstExt,
+        delta;
+    // if we know what to do with that
+    // note: it is totally valid not to have a position. When we don't have
+    // a position, our dimensions and matrix remain as they are.
+    if (requestedDimensions && pos !== null && !v.scalingEnabled) {
+        srcRect = pos.srcRect;
+        srcExt = pos.srcExt;
+        dstRect = pos.computeDstRect(containerDimensions, layoutDimensions);
+        dstExt = vec3.subtract(dstRect[1], dstRect[0], vec3.create());
+        delta = vec3.subtract(requestedDimensions, dstExt, vec3.create());
+        res[0] += delta[0];
+        res[1] += delta[1];
+    }
+    return res;
+}
+
+/*
+Reverse dimensioning.
+---------------------
+
+Event an absolute positioning system can be driven bottom up (i.e.
+the container adapts its size from its content size instead of adapting its
+content size to its own size).
+
+
+A container that is 'unconstrained' may resize itself to its content. A
+container is unscontrained if:
+    a) it is in an unconstrained container
+    AND
+    b) it has been marked as unconstrained (we want this behavior)
+        AND
+        we know how to adapt its container to its size (... more on this...)
+        this is easy if the width and height are set to 'auto'
+
+        But this means that 'unconstrainedW' is an option of autoW
+        AND
+        'unscontstrainedH' is an option of autoH
+
+
++ We may be able to detect that a flowed element has been resized by hooking
+    on a DOM event.
++ For a non flowed element, it is an explicit call (nothing is done automatically)
+
+The stuff we need
+-----------------
+Position.unconstrained[false, false, false]
+Containee.requestDimension(vec3)
+    -> keep the requestedDimension
+    -> if the dimension is the current dimension, return (why bother?)
+    -> if no container or no position inside the container or flowed and NOT submitted to container dimensioning
+        - redimension + return (or FAIL / DO NOTHING?) === > DO NOTHING AND RETURN
+    -> if in an unconstrained position of the container:
+        => compute size of container
+        => parent.requestDimension(vec3)
+
+Refreshing the size of a container... Compute the dimension from the content (by checking
+
+                all requested dimensions of children + curent dimension of container)
+    -> if no container or no position inside the container or flowed and NOT submitted to container dimensioning
+        - resize
+    -> call the internal requestDimension on the upper container
+
+
+USELESS RECOMPUTATIONS
+----------------------
+This should use the dirty mechanism. For example, if we are triggered by
+a html event (telling us that a subtree has changed), we only want to
+actually relayout ONCE
+
+==> NO, this will not work properly I think (because of events... events
+will be fired in different call stacks so this will be totally useless in
+the only case it would have been useful, the case of hooking an event
+on a dom change).
+
+NOTE
+----
+Eventually add a topmost container that is either constrained or not in x and y,
+this can be put in the
+
+This will allow incredibly easy blog page design.
+*/
+
+
 
 // library interface
 exports.Layout = Layout;
@@ -305,3 +436,4 @@ exports.Position = Position;
 exports.convertScaleToSize = convertScaleToSize;
 exports.getEnclosingRect = getEnclosingRect;
 exports.rectToMatrix = rectToMatrix;
+exports.computeReverseDimensioning = computeReverseDimensioning;
