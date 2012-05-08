@@ -57,12 +57,14 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
     sheet = vis.getConfigurationSheet();
     this.selectedName = selectedName;
     this.removeAllChildren();
+    // computes the list of all input controls to load
     forEachProperty(sheet, function (it, name) {
         if (it) {
             toLoad.push({name: name, fcn: it});
         }
     });
 
+    // updates the edited stuff with the sheet's content.
     function updateContent() {
         forEachProperty(sheet, function (it, name) {
             var vis, valueName, newConfig = {};
@@ -75,7 +77,8 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
         });
     }
 
-    function createControls() {
+    // initializes all controls
+    function initControls() {
         var i, l = toLoad.length, tl, c, data;
         for (i = 0; i < l; i += 1) {
             tl = toLoad[i];
@@ -90,6 +93,7 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
         }
     }
 
+    // returns a function to be called when the controls are loaded
     function getOnLoad(n) {
         return function (err, ctrl) {
             var i,
@@ -101,13 +105,14 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
             }
             loading -= 1;
             if (loading === 0) {
-                createControls();
+                initControls();
                 // append all our children
                 cbWhenReady(err, that.getComputedDimensions());
             }
         };
     }
 
+    // loads the controls needed for the sheet
     loading = toLoad.length;
     l = loading;
     for (i = 0; i < l; i += 1) {
