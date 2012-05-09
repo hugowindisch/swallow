@@ -144,5 +144,8 @@ StylePicker.prototype.updateAll = function () {
             that.createStyleSection(title, type);
         });
     });
+    // this will let an outer container grow to our generated content
+    that.notifyDOMChanged();
+
 };
 exports.StylePicker = StylePicker;

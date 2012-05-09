@@ -191,10 +191,12 @@ function Styling(config) {
                 styleFeature.clearFeatureHighlight(featureName);
                 that.removeChild(styleEdit);
                 that.setLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
+                that.notifyDOMChanged();
             });
             // make sure the thing is highlighted
             styleFeature.setFeatureHighlight(featureName);
         }
+        that.notifyDOMChanged();
     });
     // flow all our children
     stylingHeading.setHtmlFlowing(flowing, true);
@@ -380,6 +382,7 @@ Styling.prototype.setEditor = function (editor) {
     // bad and should be fixed but until then this will put adequate defaults.
     this.updateStyleName();
     this.updateStylePickers();
+    this.notifyDOMChanged();
 
 };
 Styling.prototype.makeLocalStyle = function () {
@@ -495,6 +498,9 @@ Styling.prototype.setData = function (st) {
 
     // update the style name
     this.updateStyleName();
+    // this will let an outer container grow to our generated content
+    this.notifyDOMChanged();
+
 };
 
 Styling.prototype.getData = function () {

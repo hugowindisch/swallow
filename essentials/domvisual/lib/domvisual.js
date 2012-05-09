@@ -37,18 +37,19 @@ function DOMVisual(config, groupData, element) {
     });
 }
 DOMVisual.prototype = new Visual();
-DOMVisual.prototype.superAddChild = DOMVisual.prototype.addChild;
-DOMVisual.prototype.superRemoveChild = DOMVisual.prototype.removeChild;
 DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     var connectedToTheStage,
         disableEventHooks,
         orderDirty = this.dirty ? this.childrenOrder === true : false;
+    if (!child) {
+        throw new Error('Adding an invalid child ' + child);
+    }
     if (!child.element) {
         throw new Error('Non DOM child added to a DOM visual');
     }
     // it is easier to track element containement immediately instead
     // of waiting for the update function to be called.
-    this.superAddChild(child, name, optionalOrder);
+    Visual.prototype.addChild.call(this, child, name, optionalOrder);
     // no need to worry, we can add the element at the end of the list
     if (!this.dirty || !this.dirty.childrenOrder || orderDirty) {
         this.element.appendChild(child.element);
@@ -74,7 +75,7 @@ DOMVisual.prototype.removeChild = function (child) {
     // of waiting for the update function to be called.
     child = this.resolveChild(child);
     this.element.removeChild(child.element);
-    this.superRemoveChild(child);
+    Visual.prototype.removeChild.call(this, child);
     var connectedToTheStage = this.connectedToTheStage,
         disableEventHooks = this.disableEventHooks;
     visual.forVisualAndAllChildrenDeep(child, function (c) {
@@ -82,6 +83,17 @@ DOMVisual.prototype.removeChild = function (child) {
         // here we should revalidate the hooks for this child
         updateDOMEventHooks(c);
     });
+};
+DOMVisual.prototype.setDimensions = function (d) {
+    Visual.prototype.setDimensions.apply(this, arguments);
+    // the whole thing of upwards notification is still a bit experimental
+    // and maybe ugly... but... if we resize something that is flowed,
+    // we want the container of the flowed stuff to be notified
+    // so it can do something if it needs to adapt.
+    if (this.htmlFlowing && this.htmlFlowingApplySizing) {
+        this.notifyDOMChanged();
+    }
+    return this;
 };
 DOMVisual.prototype.enableInteractions = function (enable) {
     var disable = !enable;
@@ -135,7 +147,6 @@ DOMVisual.prototype.getDisplayMatrix = function () {
     return mat;
 };
 
-
 /**
     Flow relegates the positionning to the html engine, flowing
     the content.
@@ -162,6 +173,46 @@ DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
     }
     return this;
 };
+
+
+/**
+    As an explicit but quite ugly way to allow containers
+    that have a layout to be notified of a change in underlying
+    flowed content (not that these containers may be themselves flowed).
+    we have this method (that must be called manually) (by flowed content).
+
+    (this avoids the use of DOM mutation events)
+    (this pretty ugly/convoluted... but...)
+
+
+    NOTE: we could force a getDomAccces() and releaseDomAccess for
+    dealing with explicit 'html flowed' stuff and hook the event on the release.
+
+    This may be a very bad idea.
+*/
+DOMVisual.prototype.notifyDOMChanged = function () {
+    var that = this;
+    // quite ugly... but... (FIXME/thinking needed)
+    setTimeout(
+        function () {
+            var v;
+            for (v = that; v; v = v.parent) {
+                if (v.listeners('domchanged').length > 0) {
+                    v.emit('domchanged');
+                    break;
+                }
+                // don't notify above the first non-flowing parent.
+                if (!v.htmlFlowing) {
+                    break;
+                }
+            }
+            dirty.update();
+        },
+        0
+    );
+    return this;
+};
+
 
 /**
     Enables children clipping.

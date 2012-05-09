@@ -72,7 +72,7 @@ Layering.prototype.updateList = function () {
         that.orderAfter(name, prevName);
         prevName = name;
     });
-    this.setDimensions([groups.Layering.dimensions[0], it.length * 25 + 10, 1]);
+    this.requestDimensions([groups.Layering.dimensions[0], it.length * 25 + 10, 1]);
 };
 
 exports.Layering = Layering;

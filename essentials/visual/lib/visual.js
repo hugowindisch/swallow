@@ -106,6 +106,17 @@ Visual.prototype.getDefaultName = function () {
 };
 
 /**
+    Returns the full name from the current visual (useful for debugging)
+*/
+Visual.prototype.getFullName = function () {
+    var n = this.name;
+    if (this.parent) {
+        n = this.parent.getFullName() + '.' + n;
+    }
+    return n;
+};
+
+/**
     Allows scaling. When a visual is moved to a given position, it
     is resized. The resizing part of the transformation can either be
     interpreted as a scaling or as a resizing.
@@ -173,7 +184,7 @@ Visual.prototype.requestDimensions = function (v3) {
             this.requestedDimensions = v3;
             if (this.isUnconstrained()) {
                 // resize myself right now
-                this.setDimensions(this.requestedDimensions);
+                this.setDimensions(v3);
             } else {
                 parent = this.parent;
                 // ask my container

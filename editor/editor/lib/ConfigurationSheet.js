@@ -15,6 +15,12 @@ var visual = require('visual'),
 function ConfigurationSheet(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.ConfigurationSheet);
+    var that = this;
+    // when our (flowed) content is resized, we want to get notified
+    // and ask for a resize of ourselves!
+    this.on('domchanged', function () {
+        that.requestDimensions(that.getComputedDimensions());
+    });
 }
 ConfigurationSheet.prototype = new (domvisual.DOMElement)();
 ConfigurationSheet.prototype.getConfigurationSheet = function () {

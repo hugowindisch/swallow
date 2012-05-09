@@ -143,8 +143,14 @@ function styleConfig(labelTxt) {
             // create the graphic elements that we need
             cnt = new (domvisual.DOMElement)({});
             editor = new (e.Styling)();
+            editor.on('domchanged', function () {
+                var dim = editor.getComputedDimensions();
+                if (!cdim || cdim[0] !== dim[0] || cdim[1] !== dim[1]) {
+                    cdim = dim;
+                    cnt.requestDimensions([lineWidth, labelHeight + cdim[1] + 30, 1]);
+                }
+            });
             editor.setEditor(mainEditor);
-            cdim = editor.dimensions;
             cnt.addChild(editor, 'data');
             editor.on('change', function (data) {
                 cnt.emit('change', data);
@@ -156,11 +162,10 @@ function styleConfig(labelTxt) {
                 return editor.getData();
             };
             editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, labelHeight, 0, 1]);
-            cnt.setDimensions([lineWidth, labelHeight + cdim[1], 1]);
             cb(null, cnt);
         }
         create();
-    };
+    }
     // hack for being able to find stuff that is a style config
     // (some more thought will probably be needed at some point to clean this up)
     sc.isStyleConfig = true;
