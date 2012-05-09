@@ -180,7 +180,7 @@ exports.definition = {
             }
         },
         VisualInfo: {
-            dimensions: [360, 50, 0],
+            dimensions: [360, 60, 0],
             positions: {
                 preview: {
                     order: 0,
@@ -204,7 +204,7 @@ exports.definition = {
                 },
                 configurationSheet: {
                     order: 5,
-                    matrix: [ 360, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 80, 0, 1 ],
+                    matrix: [ 360, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
                 }
             },

@@ -96,9 +96,11 @@ VisualInfo.prototype.showDetails = function () {
     function setConfigurationSheetContent() {
         if (hooked) {
             configurationSheet.setEditedVisual(that.editor, function (error, dim) {
-                that.setDimensions(
-                    [that.dimensions[0], csPosMat[13] + dim[1] + 10, 1]
-                );
+// FIXME: we should not need to do that... because... the configuration sheet should be notified of a resize and
+// query an appropriate dimension.
+/*                that.setDimensions(
+                    [that.dimensions[0], csPosMat[13] + dim[1], 1]
+                ); */
             });
         }
     }

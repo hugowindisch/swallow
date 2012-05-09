@@ -177,7 +177,11 @@ Visual.prototype.isUnconstrained = function () {
 */
 Visual.prototype.requestDimensions = function (v3) {
     var parent;
-    if (!vec3IsEqual(this.requestedDimensions, v3)) {
+    // note: we compare with the actual dimensions, if they don't match
+    // we still do everything (i.e. potentially ask our outer container
+    // to do something)...
+    // note: some more thought must be given to the 'reverse' resizing of things.
+    if (!vec3IsEqual(this.dimensions, v3)) {
         if (!v3) {
             delete this.requestedDimensions;
         } else {
@@ -188,7 +192,7 @@ Visual.prototype.requestDimensions = function (v3) {
             } else {
                 parent = this.parent;
                 // ask my container
-                parent.requestDimensions(parent.computeDimensionsFromContent());
+                parent.requestDimensions(parent.getDimensionsAdjustedForContent());
             }
         }
     }
@@ -197,11 +201,11 @@ Visual.prototype.requestDimensions = function (v3) {
 /**
     This will compute the dimensions from the content if possible.
 */
-Visual.prototype.computeDimensionsFromContent = function () {
+Visual.prototype.getDimensionsAdjustedForContent = function () {
     //-------------------
     // for all our children
-    var dimensions = this.dimensions,
-        that = this,
+    var that = this,
+        dimensions = this.dimensions,
         ret;
     forEachProperty(this.children, function (c, name) {
         if (c.requestedDimensions) {

@@ -74,19 +74,12 @@ function rectToMatrix(r) {
         bottom: % px auto
         height: % px auto
 */
-function Position(matrix, snapping, opacity, unconstrained) {
+function Position(matrix, snapping, opacity) {
     this.matrix = matrix;
     this.snapping = snapping;
     this.opacity = opacity;
     var srcRect = this.srcRect = getEnclosingRect(matrix);
     this.srcExt = vec3.subtract(srcRect[1], srcRect[0], vec3.create());
-/*    if (unconstrained) {
-        this.unconstrained = [
-            unconstrained[0] && (snapping[0] === 'auto'),
-            unconstrained[1] && (snapping[1] === 'auto'),
-            false
-        ];
-    }*/
 }
 /**
     Checks if this position is fully constrained.
@@ -94,10 +87,6 @@ function Position(matrix, snapping, opacity, unconstrained) {
 Position.prototype.isUnconstrained = function () {
     var snapping = this.snapping;
     return snapping.width === 'auto' || snapping.height === 'auto';
-/*    var u = this.unconstrained;
-    return (u !== undefined) &&
-        ((u[0] === true) ||
-        (u[1] === true));*/
 };
 /**
     Computes the rects in the context of the specified container dimensions.
@@ -338,9 +327,9 @@ function computeReverseDimensioning(containerDimensions, layout, v) {
     var positions = layout.positions,
         layoutDimensions = layout.dimensions,
         pos = v.getPositionObject(),
+        snapping = pos.snapping,
         requestedDimensions = v.requestedDimensions,
         res = vec3.create(containerDimensions),
-        //unconstrained = this.unconstrained,
         srcRect,
         dstRect,
         srcExt,
@@ -355,8 +344,13 @@ function computeReverseDimensioning(containerDimensions, layout, v) {
         dstRect = pos.computeDstRect(containerDimensions, layoutDimensions);
         dstExt = vec3.subtract(dstRect[1], dstRect[0], vec3.create());
         delta = vec3.subtract(requestedDimensions, dstExt, vec3.create());
-        res[0] += delta[0];
-        res[1] += delta[1];
+        // the width and height must be auto to be affected
+        if (pos.snapping.width === 'auto') {
+            res[0] += delta[0];
+        }
+        if (pos.snapping.height === 'auto') {
+            res[1] += delta[1];
+        }
     }
     return res;
 }

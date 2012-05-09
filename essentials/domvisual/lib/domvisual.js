@@ -85,12 +85,12 @@ DOMVisual.prototype.removeChild = function (child) {
     });
 };
 DOMVisual.prototype.setDimensions = function (d) {
-    Visual.prototype.setDimensions.apply(this, arguments);
-    // the whole thing of upwards notification is still a bit experimental
-    // and maybe ugly... but... if we resize something that is flowed,
-    // we want the container of the flowed stuff to be notified
-    // so it can do something if it needs to adapt.
-    if (this.htmlFlowing && this.htmlFlowingApplySizing) {
+    if (d[0] !== this.dimensions[0] || d[1] !== this.dimensions[1]) {
+        Visual.prototype.setDimensions.apply(this, arguments);
+        // the whole thing of upwards notification is still a bit experimental
+        // and maybe ugly... but... if we resize something that is flowed,
+        // we want the container of the flowed stuff to be notified
+        // so it can do something if it needs to adapt.
         this.notifyDOMChanged();
     }
     return this;
@@ -191,25 +191,25 @@ DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
     This may be a very bad idea.
 */
 DOMVisual.prototype.notifyDOMChanged = function () {
-    var that = this;
-    // quite ugly... but... (FIXME/thinking needed)
-    setTimeout(
-        function () {
-            var v;
-            for (v = that; v; v = v.parent) {
-                if (v.listeners('domchanged').length > 0) {
-                    v.emit('domchanged');
-                    break;
-                }
-                // don't notify above the first non-flowing parent.
-                if (!v.htmlFlowing) {
-                    break;
-                }
-            }
+    var that = this,
+        v = that;
+    function emitter(v) {
+        return function () {
+            v.emit('domchanged');
             dirty.update();
-        },
-        0
-    );
+        };
+    }
+    while (v) {
+        if (v.listeners('domchanged').length > 0) {
+            // quite ugly
+            setTimeout(emitter(v), 0);
+            break;
+        }
+        if (v !== that && !v.htmlFlowing) {
+            break;
+        }
+        v = v.parent;
+    }
     return this;
 };
 

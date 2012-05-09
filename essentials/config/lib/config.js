@@ -54,14 +54,14 @@ function leftRightConfig(
         cnt = new (domvisual.DOMElement)({});
         label = new (baseui.Label)({ text: labelTxt});
         editor = new Constr(config);
-        cnt.setDimensions([lineWidth, lineHeight, 1]);
         cnt.addChild(label, 'label');
         cnt.addChild(editor, 'data');
-        label.setDimensions([labelWidth - 10, lineHeight, 1]);
+        label.setDimensions([labelWidth, lineHeight, 1]);
         label.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, 0, 0, 1]);
-        editor.setDimensions([lineWidth - (labelWidth + 40), lineHeight, 1]);
+        editor.setDimensions([lineWidth - labelWidth - 20, lineHeight, 1]);
         editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  labelWidth + 5, 0, 0, 1]);
         cb(null, cnt);
+        cnt.setDimensions([lineWidth, lineHeight + 10, 1]);
     });
 }
 
@@ -89,7 +89,6 @@ function topBottomConfig(
         cnt = new (domvisual.DOMElement)({});
         label = new (baseui.Label)({ text: labelTxt});
         editor = new Constr(config);
-        cnt.setDimensions([lineWidth, lineHeight, 1]);
         cnt.addChild(label, 'label');
         cnt.addChild(editor, 'data');
         label.setDimensions([lineWidth - 10, labelHeight, 1]);
@@ -97,6 +96,7 @@ function topBottomConfig(
         editor.setDimensions([lineWidth - 10, lineHeight - labelHeight, 1]);
         editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, labelHeight, 0, 1]);
         cb(null, cnt);
+        cnt.setDimensions([lineWidth, lineHeight, 1]);
     });
 }
 
@@ -108,7 +108,7 @@ function inputConfig(label) {
             'Input',
             {},
             25,
-            390,
+            360,
             100,
             function (err, ctrl) {
                 if (err) {
