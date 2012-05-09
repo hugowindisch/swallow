@@ -68,9 +68,11 @@ function vec3IsEqual(v1, v2) {
 }
 
 function updateChildrenPositions(v) {
-    forEachProperty(v.children, function (c) {
-        applyLayout(v.dimensions, v.layout, c);
-    });
+    if (v.layout) {
+        forEachProperty(v.children, function (c) {
+            applyLayout(v.dimensions, v.layout, c);
+        });
+    }
 }
 
 

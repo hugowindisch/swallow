@@ -182,33 +182,46 @@ exports.definition = {
         VisualInfo: {
             dimensions: [360, 60, 0],
             positions: {
-                preview: {
+                selectionBox : {
                     order: 0,
+                    matrix: [ 360, 0, 0, 0,   0, 60, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                },
+                preview: {
+                    order: 1,
                     matrix: [ 60, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 factoryName: {
-                    order: 1,
+                    order: 2,
                     matrix: [ 100, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 typeName: {
-                    order: 2,
+                    order: 3,
                     matrix: [ 200, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 25, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
-                    order: 3,
+                    order: 4,
                     matrix: [ 300, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   180, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 configurationSheet: {
                     order: 5,
                     matrix: [ 360, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 55, 0, 1 ],
-                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'px', height: 'auto' }
                 }
             },
             children: {
+                selectionBox: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    position: "selectionBox",
+                    config: {
+                        "style": "selected"
+                    }
+                },
                 factoryName: {
                     factory: "baseui",
                     type: "Label",

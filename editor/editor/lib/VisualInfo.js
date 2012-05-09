@@ -6,15 +6,12 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
-    glmatrix = require('glmatrix'),
-    ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet,
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet;
 
 function VisualInfo(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.VisualInfo);
-    this.setChildrenClipping('hidden');
+    this.children.selectionBox.setVisible(false);
 }
 VisualInfo.prototype = new (domvisual.DOMElement)();
 VisualInfo.prototype.theme = new (visual.Theme)({
@@ -67,7 +64,7 @@ VisualInfo.prototype.init = function (editor) {
     this.editor = editor;
 };
 VisualInfo.prototype.select = function (selected) {
-    this.setStyle(selected ? 'selected' : null);
+    this.children.selectionBox.setVisible(selected);
     if (selected) {
         this.showDetails();
     } else {
@@ -79,28 +76,16 @@ VisualInfo.prototype.showDetails = function () {
     var children = this.children,
         viewer = this.editor.getViewer(),
         configurationSheet,
-        csPos = groups.VisualInfo.positions.configurationSheet,
-        csPosMat = mat4.create(csPos.matrix),
-        csVertical = 10,
         hooked = true,
         that = this;
     configurationSheet = new ConfigurationSheet({});
     this.addChild(configurationSheet, 'configurationSheet');
 
-    csPosMat[5] = csVertical;
-    configurationSheet.setPosition(new (visual.Position)(
-        csPosMat,
-        { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'px', height: 'auto' }
-    ));
+    configurationSheet.setPosition('configurationSheet');
 
     function setConfigurationSheetContent() {
         if (hooked) {
             configurationSheet.setEditedVisual(that.editor, function (error, dim) {
-// FIXME: we should not need to do that... because... the configuration sheet should be notified of a resize and
-// query an appropriate dimension.
-/*                that.setDimensions(
-                    [that.dimensions[0], csPosMat[13] + dim[1], 1]
-                ); */
             });
         }
     }
