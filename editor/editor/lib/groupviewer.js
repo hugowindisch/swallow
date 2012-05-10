@@ -893,14 +893,11 @@ GroupViewer.prototype.setGroup = function (group) {
         commandChain = group.getCommandChain(),
         documentData = group.documentData,
         borderPix = this.groupBorderPix;
-    if (this.unhookFromGroup) {
-        this.unhookFromGroup();
-    }
     this.group = group;
     this.documentData = documentData;
     // FIXME (or food for thoughts) maybe we should deal with command groups
     // by iterating all their sub commands
-    function onDo(name, message, hint, forEachSubCommand) {
+    function onCommand(command, name, message, hint, forEachSubCommand) {
         var redraw = false,
             notifySelectionChanged = false;
         function processCommand(name, message, hint) {
@@ -961,16 +958,7 @@ GroupViewer.prototype.setGroup = function (group) {
         }
     }
     // hook ourselves
-    commandChain.on('do', onDo);
-    commandChain.on('undo', onDo);
-    commandChain.on('redo', onDo);
-
-    // unhook current document
-    this.unhookFromGroup = function () {
-        commandChain.removeListener('do', onDo);
-        commandChain.removeListener('undo', onDo);
-        commandChain.removeListener('redo', onDo);
-    };
+    commandChain.on('command', onCommand);
 
     this.zoomStack = [
         mat4.scale(mat4.identity(), [0.25, 0.25, 1], mat4.create()),

@@ -76,7 +76,7 @@ CommandChain.prototype.doCommand = function (cmd) {
         this.commands.push(cmd);
         this.undoneCommands = [];
         cmd.doCmd();
-        this.emit('do', cmd.name, cmd.message, cmd.hint, cmd.getForEachSubCommand());
+        this.emit('command', 'do', cmd.name, cmd.message, cmd.hint, cmd.getForEachSubCommand());
     }
 };
 CommandChain.prototype.undo = function () {
@@ -84,7 +84,7 @@ CommandChain.prototype.undo = function () {
         var cmd = this.commands.pop();
         this.undoneCommands.push(cmd);
         cmd.undoCmd();
-        this.emit('undo', cmd.name, cmd.message, cmd.hint, cmd.getForEachSubCommand());
+        this.emit('command', 'undo', cmd.name, cmd.message, cmd.hint, cmd.getForEachSubCommand());
     }
 };
 CommandChain.prototype.redo = function () {
@@ -92,7 +92,7 @@ CommandChain.prototype.redo = function () {
         var cmd = this.undoneCommands.pop();
         this.commands.push(cmd);
         cmd.doCmd();
-        this.emit('redo', cmd.name, cmd.message, cmd.hint, cmd.getForEachSubCommand());
+        this.emit('command', 'redo', cmd.name, cmd.message, cmd.hint, cmd.getForEachSubCommand());
     }
 };
 CommandChain.prototype.getUndoMessage = function () {

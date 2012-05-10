@@ -94,7 +94,7 @@ VisualInfo.prototype.showDetails = function () {
             );
         }
     }
-    function checkConfigChange(name, message, hint, forEachSubCommand) {
+    function checkConfigChange(command, name, message, hint, forEachSubCommand) {
         var configChange = false;
         function test(name, message, hint) {
             if (hint && hint.visualConfig) {
@@ -118,14 +118,10 @@ VisualInfo.prototype.showDetails = function () {
     this.unhookConfigurationSheet = function () {
         hooked = false;
         viewer.removeListener('selectionChanged', setConfigurationSheetContent);
-        commandChain.removeListener('do', checkConfigChange);
-        commandChain.removeListener('undo', checkConfigChange);
-        commandChain.removeListener('redo', checkConfigChange);
+        commandChain.removeListener('command', checkConfigChange);
     };
     viewer.on('selectionChanged', setConfigurationSheetContent);
-    commandChain.on('do', checkConfigChange);
-    commandChain.on('undo', checkConfigChange);
-    commandChain.on('redo', checkConfigChange);
+    commandChain.on('command', checkConfigChange);
     setConfigurationSheetContent();
 };
 VisualInfo.prototype.hideDetails = function () {

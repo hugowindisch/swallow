@@ -36,7 +36,7 @@ Layering.prototype.init = function (editor) {
     }
     // we don't want to update this if not update is needed
     viewer.on('selectionChanged', refresh);
-    function checkIfLayeringChanged(name, message, hint, forEachSubCommand) {
+    function checkIfLayeringChanged(command, name, message, hint, forEachSubCommand) {
         var layeringChanged = false;
         function check(name, message, hint) {
             if (hint && hint.layeringChanged) {
@@ -51,9 +51,7 @@ Layering.prototype.init = function (editor) {
             refresh();
         }
     }
-    commandChain.on('do', checkIfLayeringChanged);
-    commandChain.on('undo', checkIfLayeringChanged);
-    commandChain.on('redo', checkIfLayeringChanged);
+    commandChain.on('command', checkIfLayeringChanged);
     refresh();
 };
 Layering.prototype.updateList = function () {

@@ -1007,12 +1007,10 @@ function setupObjectMenu(editor) {
         var group = viewer.getGroup(),
             documentData = group.documentData,
             commandChain = group.getCommandChain();
-        function signalChange(evt) {
+        function signalChange() {
             unsetContentTool.emit('change');
         }
-        commandChain.on('undo', signalChange);
-        commandChain.on('redo', signalChange);
-        commandChain.on('do', signalChange);
+        commandChain.on('command', signalChange);
     }());
 
     menus.object.push(
