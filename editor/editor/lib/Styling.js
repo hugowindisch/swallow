@@ -221,6 +221,8 @@ function Styling(config) {
     deleteBtn.on('pressed', function () {
         that.deleteLocalStyle();
     });
+    // we must react to document changes (because what we do here is special,
+    // we issues style change commands and want to react to them).
 }
 Styling.prototype = new (domvisual.DOMElement)();
 Styling.prototype.getConfigurationSheet = function () {

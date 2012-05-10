@@ -59,6 +59,22 @@ var glmatrix = require('glmatrix'),
             }
         }
 
+=====
+HINTS
+=====
+
+
+Hints that we use:
+------------------
+    layeringChanged: true
+        (when the layering ui element should be regenerated)
+    clearSelection: true
+        (when the viewer's selection should be cleared)
+    name
+        (in cmdAddPosition)
+
+Unused hints should probably be removed to prevent confusion.
+
 */
 function Group(documentData, docInfo) {
     documentData = documentData || { positions: {}, children: {}, dimensions: [300, 300, 0]};
@@ -250,7 +266,7 @@ Group.prototype.cmdAddPosition = function (name, position) {
         },
         'cmdAddPosition',
         "Add position " + name,
-        { model: this, name: name, position: position, clearSelection: true }
+        { model: this, name: name, position: position, clearSelection: true, layeringChanged: true }
     );
 };
 Group.prototype.cmdRemovePosition = function (name) {
@@ -268,7 +284,7 @@ Group.prototype.cmdRemovePosition = function (name) {
         },
         'cmdRemovePosition',
         "Remove position " + name,
-        { model: this, name: name, position: position }
+        { model: this, name: name, position: position, layeringChanged: true }
     );
 };
 Group.prototype.cmdUpdatePosition = function (name, position) {
@@ -285,7 +301,7 @@ Group.prototype.cmdUpdatePosition = function (name, position) {
         },
         'cmdUpdatePosition',
         "Update position " + name,
-        { model: this, name: name, position: position }
+        { model: this, name: name, position: position, layeringChanged: true }
     );
 };
 Group.prototype.cmdTransformPosition = function (name, transform) {
@@ -317,7 +333,7 @@ Group.prototype.cmdEnableSelectPosition = function (name, enable) {
         },
         'cmdEnableSelectPosition',
         'Enable Selection ' + name + ' ' + enable,
-        { model: this, name: name, enable: enable }
+        { model: this, name: name, enable: enable, layeringChanged: true }
     );
 };
 Group.prototype.cmdEnableDisplayPosition = function (name, enable) {
@@ -332,7 +348,7 @@ Group.prototype.cmdEnableDisplayPosition = function (name, enable) {
         },
         'cmdEnableDisplayPosition',
         'Enable Display ' + name + ' ' + enable,
-        { model: this, name: name, enable: enable }
+        { model: this, name: name, enable: enable, layeringChanged: true }
     );
 };
 Group.prototype.cmdSetPositionSnapping = function (name, snapping) {
@@ -367,7 +383,7 @@ Group.prototype.cmdSetPositionSnapping = function (name, snapping) {
         },
         'cmdSetPositionSnapping',
         'Set Snapping ' + name,
-        { model: this, name: name }
+        { model: this, name: name, layeringChanged: true }
     );
 };
 Group.prototype.cmdSetPositionOpacity = function (name, opacity) {
@@ -417,7 +433,7 @@ Group.prototype.cmdRenamePosition = function (name, newname) {
         },
         'cmdRenamePosition',
         "Rename position " + name + ' as ' + newname,
-        { model: this, name: name, newname: newname }
+        { model: this, name: name, newname: newname, layeringChanged: true }
     );
 
 };
@@ -492,7 +508,7 @@ Group.prototype.cmdSetVisualConfig = function (name, config) {
         },
         'cmdSetVisualConfig',
         'Set visual config ' + name,
-        { model: this, name: name }
+        { model: this, name: name, visualConfig: true }
     );
 };
 Group.prototype.cmdRenameVisual = function (name, newname) {
@@ -542,7 +558,7 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
         },
         'cmdSetVisualOrder',
         message || "Set visual order",
-        { model: this }
+        { model: this, layeringChanged: true }
     );
 
 };

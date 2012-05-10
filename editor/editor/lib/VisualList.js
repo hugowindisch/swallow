@@ -208,7 +208,7 @@ VisualList.prototype.init = function (editor) {
         that.selectByTypeInfo(viewer.getSelectionTypeInfo());
     }
 
-    viewer.on('updateSelectionControlBox', newBoxSelected);
+    viewer.on('selectionChanged', newBoxSelected);
 };
 
 VisualList.prototype.setFactories = function (factories) {

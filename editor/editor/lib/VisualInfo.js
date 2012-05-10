@@ -75,6 +75,8 @@ VisualInfo.prototype.select = function (selected) {
 VisualInfo.prototype.showDetails = function () {
     var children = this.children,
         viewer = this.editor.getViewer(),
+        group = viewer.getGroup(),
+        commandChain = group.getCommandChain(),
         configurationSheet,
         hooked = true,
         that = this;
@@ -92,11 +94,38 @@ VisualInfo.prototype.showDetails = function () {
             );
         }
     }
+    function checkConfigChange(name, message, hint, forEachSubCommand) {
+        var configChange = false;
+        function test(name, message, hint) {
+            if (hint && hint.visualConfig) {
+                configChange = true;
+            }
+        }
+        if (hooked) {
+            if (forEachSubCommand) {
+                forEachSubCommand(test);
+            }
+            test(name, message, hint);
+            if (configChange) {
+                configurationSheet.setEditedVisual(
+                    that.editor,
+                    that.getTypeInfo(),
+                    function (error, dim) {}
+                );
+            }
+        }
+    }
     this.unhookConfigurationSheet = function () {
         hooked = false;
-        viewer.removeListener('updateSelectionControlBox', setConfigurationSheetContent);
+        viewer.removeListener('selectionChanged', setConfigurationSheetContent);
+        commandChain.removeListener('do', checkConfigChange);
+        commandChain.removeListener('undo', checkConfigChange);
+        commandChain.removeListener('redo', checkConfigChange);
     };
-    viewer.on('updateSelectionControlBox', setConfigurationSheetContent);
+    viewer.on('selectionChanged', setConfigurationSheetContent);
+    commandChain.on('do', checkConfigChange);
+    commandChain.on('undo', checkConfigChange);
+    commandChain.on('redo', checkConfigChange);
     setConfigurationSheetContent();
 };
 VisualInfo.prototype.hideDetails = function () {

@@ -27,12 +27,33 @@ Layering.prototype.getConfigurationSheet = function () {
 };
 Layering.prototype.init = function (editor) {
     var viewer = editor.getViewer(),
+        group = viewer.getGroup(),
+        commandChain = group.getCommandChain(),
         that = this;
     this.editor = editor;
     function refresh() {
         that.updateList();
     }
-    viewer.on('updateSelectionControlBox', refresh);
+    // we don't want to update this if not update is needed
+    viewer.on('selectionChanged', refresh);
+    function checkIfLayeringChanged(name, message, hint, forEachSubCommand) {
+        var layeringChanged = false;
+        function check(name, message, hint) {
+            if (hint && hint.layeringChanged) {
+                layeringChanged = true;
+            }
+        }
+        if (forEachSubCommand) {
+            forEachSubCommand(check);
+        }
+        check(name, message, hint);
+        if (layeringChanged) {
+            refresh();
+        }
+    }
+    commandChain.on('do', checkIfLayeringChanged);
+    commandChain.on('undo', checkIfLayeringChanged);
+    commandChain.on('redo', checkIfLayeringChanged);
     refresh();
 };
 Layering.prototype.updateList = function () {

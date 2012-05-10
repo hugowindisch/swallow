@@ -567,20 +567,27 @@ GroupViewer.prototype.itemAtPositionIsSelected = function (position) {
 /**
     Selection.
 */
-GroupViewer.prototype.selectByMatrix = function (matrix, toggle, byContact) {
+GroupViewer.prototype.selectByMatrix = function (matrix, toggle, byContact, clearSelection) {
     var documentData = this.documentData,
+        selectionChanged = false,
         selrect,
         sel,
         selp,
         selfcn = byContact === true ? intersects : encloses,
         positions = documentData.positions,
         selection = this.selection;
+
+    if (clearSelection) {
+        this.selection = selection = {};
+        selectionChanged = true;
+    }
     function select(name) {
         if (toggle && selection[name]) {
             delete selection[name];
         } else {
             selection[name] = positions[name];
         }
+        selectionChanged = true;
     }
     // select a point
     if (matrix[0] === 0 && matrix[5] === 0 && matrix[10] === 0) {
@@ -603,23 +610,41 @@ GroupViewer.prototype.selectByMatrix = function (matrix, toggle, byContact) {
             }
         });
     }
+    // notify that the selection changed
+    if (selectionChanged) {
+        this.emit('selectionChanged');
+    }
 };
 
 /**
     Add a given position to the selection.
 */
-GroupViewer.prototype.addToSelection = function (name) {
-    var sel = this.documentData.positions[name];
-    if (sel) {
+GroupViewer.prototype.addToSelection = function (name, clearSelection, skipNotify) {
+    var sel = this.documentData.positions[name],
+        changed = false;
+    if (clearSelection) {
+        this.selection = {};
+        changed = true;
+    }
+    if (sel && !this.selection[name]) {
         this.selection[name] = sel;
+        changed = true;
+    }
+    if (changed && !skipNotify) {
+        this.emit('selectionChanged');
     }
 };
 GroupViewer.prototype.removeFromSelection = function (name) {
-    delete this.selection[name];
+    if (this.selection[name]) {
+        delete this.selection[name];
+        this.emit('selectionChanged');
+    }
 };
-GroupViewer.prototype.clearSelection = function (name) {
+GroupViewer.prototype.clearSelection = function (name, skipNotify) {
     this.selection = {};
-
+    if (!skipNotify) {
+        this.emit('selectionChanged');
+    }
 };
 GroupViewer.prototype.getSelection = function () {
     return this.selection;
@@ -628,7 +653,7 @@ GroupViewer.prototype.getSelection = function () {
 /**
     Remove stuff that does not exist from the selection.
 */
-GroupViewer.prototype.purgeSelection = function () {
+GroupViewer.prototype.purgeSelection = function (notify) {
     var positions = this.documentData.positions,
         selection = {};
     forEachProperty(this.selection, function (p, n) {
@@ -637,6 +662,9 @@ GroupViewer.prototype.purgeSelection = function () {
         }
     });
     this.selection = selection;
+    if (notify) {
+        this.emit('selectionChanged');
+    }
 };
 
 /**
@@ -653,6 +681,15 @@ GroupViewer.prototype.getSelectionLength = function () {
     });
     return n;
 };
+
+/*GroupViewer.prototype.getSelectionSignature = function () {
+    var s = '';
+    forEachProperty(this.selection, function (s, n) {
+        s = s + n + ',';
+    });
+    return s;
+};*/
+
 GroupViewer.prototype.selectionIsEmpty = function () {
     return this.getSelectionLength() === 0;
 };
@@ -864,7 +901,8 @@ GroupViewer.prototype.setGroup = function (group) {
     // FIXME (or food for thoughts) maybe we should deal with command groups
     // by iterating all their sub commands
     function onDo(name, message, hint, forEachSubCommand) {
-        var redraw = false;
+        var redraw = false,
+            notifySelectionChanged = false;
         function processCommand(name, message, hint) {
             switch (name) {
             case 'cmdUnsetStyleBase':
@@ -880,7 +918,8 @@ GroupViewer.prototype.setGroup = function (group) {
                 // no redraw
                 break;
             case 'cmdAddPosition':
-                that.addToSelection(hint.name);
+                that.addToSelection(hint.name, false, true);
+                notifySelectionChanged = true;
                 redraw = true;
                 break;
             case 'cmdSetComponentProperties':
@@ -896,11 +935,15 @@ GroupViewer.prototype.setGroup = function (group) {
                 }
                 // no redraw
                 break;
+            default:
+                redraw = true;
+                break;
             }
         }
         // clear the selection if needed (not done in subcommands)
-        if (hint.clearSelection) {
-            that.clearSelection();
+        if (hint && hint.clearSelection) {
+            that.clearSelection(true);
+            notifySelectionChanged = true;
         }
         // process the command
         processCommand(name, message, hint, forEachSubCommand);
@@ -912,6 +955,9 @@ GroupViewer.prototype.setGroup = function (group) {
         that.purgeSelection();
         if (redraw) {
             that.updateAll();
+        }
+        if (notifySelectionChanged) {
+            that.emit('selectionChanged');
         }
     }
     // hook ourselves

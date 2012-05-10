@@ -149,10 +149,7 @@ function setupToolMenu(editor) {
                 selectionControlBoxVisibility;
 
             function select(evt, nmat) {
-                if (!evt.ctrlKey) {
-                    viewer.clearSelection(nmat);
-                }
-                viewer.selectByMatrix(nmat, !evt.shiftKey, evt.ctrlKey);
+                viewer.selectByMatrix(nmat, !evt.shiftKey, evt.ctrlKey, !evt.ctrlKey);
                 viewer.updateSelectionControlBox();
             }
 

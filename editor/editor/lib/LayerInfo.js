@@ -17,8 +17,7 @@ function LayerInfo(config) {
     this.on('click', function (evt) {
         var viewer = that.viewer,
             name = that.contentName;
-        viewer.clearSelection();
-        viewer.addToSelection(name);
+        viewer.addToSelection(name, true);
         viewer.updateSelectionControlBox();
     });
     this.children.enableSelection.on('click', function (evt) {
