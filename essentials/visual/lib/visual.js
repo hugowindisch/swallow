@@ -477,6 +477,9 @@ Visual.prototype.removeAllChildren = function () {
         that.removeChild(c, true);
     });
 };
+Visual.prototype.getChildren = function () {
+    return this.children || {};
+};
 Visual.prototype.getChild = function (name) {
     var ch;
     if (this.children) {

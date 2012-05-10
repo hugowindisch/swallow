@@ -664,7 +664,7 @@ GroupViewer.prototype.getSelectedName = function () {
     return ret;
 };
 GroupViewer.prototype.getSelectedVisual = function () {
-    return this.children.visuals.children[this.getSelectedName()];
+    return this.getChildren().visuals.getChild(this.getSelectedName());
 };
 GroupViewer.prototype.getSelectedPosition = function () {
     var documentData = this.documentData;
