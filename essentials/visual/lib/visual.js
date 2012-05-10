@@ -85,7 +85,7 @@ function updateChildrenPositions(v) {
 function Visual(config, groupData) {
     this.containmentDepth = 0;
     // set default dimension
-    this.setDimensions([1, 1, 0]);
+    this.setDimensions(groupData ? groupData.dimensions : [1, 1, 0]);
     // construct optional goup, and setup optional config
     if (groupData) {
         this.createGroup(groupData);
