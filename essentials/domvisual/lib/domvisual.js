@@ -74,7 +74,11 @@ DOMVisual.prototype.removeChild = function (child) {
     // it is easier to track element containement immediately instead
     // of waiting for the update function to be called.
     child = this.resolveChild(child);
-    this.element.removeChild(child.element);
+    try {
+        this.element.removeChild(child.element);
+    } catch (e) {
+        throw new Error("Child " + child.name + " not in " + this.getFullName());
+    }
     Visual.prototype.removeChild.call(this, child);
     var connectedToTheStage = this.connectedToTheStage,
         disableEventHooks = this.disableEventHooks;
