@@ -250,7 +250,7 @@ Group.prototype.cmdAddPosition = function (name, position) {
         },
         'cmdAddPosition',
         "Add position " + name,
-        { model: this, name: name, position: position }
+        { model: this, name: name, position: position, clearSelection: true }
     );
 };
 Group.prototype.cmdRemovePosition = function (name) {

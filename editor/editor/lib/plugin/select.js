@@ -260,7 +260,7 @@ function setupToolMenu(editor) {
                 function (mat, nmat) {
                     var group = viewer.getGroup(),
                         posName = group.getUniquePositionName(),
-                        cmdGroup = group.cmdCommandGroup('drawPosition', 'Add Position', { name: posName }),
+                        cmdGroup = group.cmdCommandGroup('drawPosition', 'Add Position', { clearSelection: true }),
                         vis = viewer.getDefaultVisual(),
                         abs = Math.abs;
                     if (abs(mat[0]) < 32 && abs(mat[5]) < 32) {

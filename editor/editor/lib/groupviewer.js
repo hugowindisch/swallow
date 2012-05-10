@@ -863,38 +863,56 @@ GroupViewer.prototype.setGroup = function (group) {
     this.documentData = documentData;
     // FIXME (or food for thoughts) maybe we should deal with command groups
     // by iterating all their sub commands
-    function onDo(name, message, hint) {
-        switch (name) {
-        case 'cmdUnsetStyleBase':
-        case 'cmdSetStyleBase':
-        case 'cmdSetStyleFeatures':
-        case 'cmdRenameStyle':
-        case 'cmdRemoveStyleAndReferences':
-            delete that.previewTheme;
-            break;
-        case 'cmdAddStyle':
-            delete that.previewTheme;
-            return;
-        case 'drawPosition':
-        case 'cmdAddPosition':
-            that.clearSelection();
-            that.addToSelection(hint.name);
-            break;
-        case 'cmdSetComponentProperties':
-            that.adjustZoomToGridSize();
-            return;
-        case 'rename':
-            if (hint) {
-                delete that.selection[hint.from];
-                that.selection[hint.to] = documentData.positions[hint.to];
-            } else {
-                throw new Error('Missing rename hint');
+    function onDo(name, message, hint, forEachSubCommand) {
+        var redraw = false;
+        function processCommand(name, message, hint) {
+            switch (name) {
+            case 'cmdUnsetStyleBase':
+            case 'cmdSetStyleBase':
+            case 'cmdSetStyleFeatures':
+            case 'cmdRenameStyle':
+            case 'cmdRemoveStyleAndReferences':
+                delete that.previewTheme;
+                redraw = true;
+                break;
+            case 'cmdAddStyle':
+                delete that.previewTheme;
+                // no redraw
+                break;
+            case 'cmdAddPosition':
+                that.addToSelection(hint.name);
+                redraw = true;
+                break;
+            case 'cmdSetComponentProperties':
+                that.adjustZoomToGridSize();
+                // no redraw
+                break;
+            case 'rename':
+                if (hint) {
+                    delete that.selection[hint.from];
+                    that.selection[hint.to] = documentData.positions[hint.to];
+                } else {
+                    throw new Error('Missing rename hint');
+                }
+                // no redraw
+                break;
             }
-            return;
-
+        }
+        // clear the selection if needed (not done in subcommands)
+        if (hint.clearSelection) {
+            that.clearSelection();
+        }
+        // process the command
+        processCommand(name, message, hint, forEachSubCommand);
+        // if it is a group, also process the subcommands
+        if (forEachSubCommand) {
+            // if the command is a group
+            forEachSubCommand(processCommand);
         }
         that.purgeSelection();
-        that.updateAll();
+        if (redraw) {
+            that.updateAll();
+        }
     }
     // hook ourselves
     commandChain.on('do', onDo);
