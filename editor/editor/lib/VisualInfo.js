@@ -85,8 +85,11 @@ VisualInfo.prototype.showDetails = function () {
 
     function setConfigurationSheetContent() {
         if (hooked) {
-            configurationSheet.setEditedVisual(that.editor, function (error, dim) {
-            });
+            configurationSheet.setEditedVisual(
+                that.editor,
+                that.getTypeInfo(),
+                function (error, dim) {}
+            );
         }
     }
     this.unhookConfigurationSheet = function () {
@@ -100,6 +103,7 @@ VisualInfo.prototype.hideDetails = function () {
     var children = this.children,
         configurationSheet = children.configurationSheet;
     if (configurationSheet) {
+        this.editor.getViewer().setDefaultVisual(null);
         this.removeChild(configurationSheet);
         if (this.unhookConfigurationSheet) {
             this.unhookConfigurationSheet();

@@ -54,6 +54,8 @@ function GroupViewer(config) {
     var that = this;
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.GroupViewer);
+    // empty box by default
+    this.defaultVisual = null;
     // maybe this will be part of the config
     this.setStyle('background');
     this.setChildrenClipping('scroll');
@@ -195,7 +197,6 @@ GroupViewer.prototype.setShowAnchors = function (show) {
 GroupViewer.prototype.getShowAnchors = function () {
     return this.showAnchors;
 };
-
 
 /**
     Shows / hides the selection control box.
@@ -839,6 +840,15 @@ GroupViewer.prototype.getPreviewTheme = function () {
     }
     return this.previewTheme;
 };
+
+GroupViewer.prototype.setDefaultVisual = function (vis) {
+    this.defaultVisual = vis;
+};
+
+GroupViewer.prototype.getDefaultVisual = function () {
+    return this.defaultVisual;
+};
+
 //////////////////////
 // private stuff (maybe should go in groupviewerprivate)
 GroupViewer.prototype.setGroup = function (group) {
@@ -851,6 +861,8 @@ GroupViewer.prototype.setGroup = function (group) {
     }
     this.group = group;
     this.documentData = documentData;
+    // FIXME (or food for thoughts) maybe we should deal with command groups
+    // by iterating all their sub commands
     function onDo(name, message, hint) {
         switch (name) {
         case 'cmdUnsetStyleBase':
@@ -863,6 +875,7 @@ GroupViewer.prototype.setGroup = function (group) {
         case 'cmdAddStyle':
             delete that.previewTheme;
             return;
+        case 'drawPosition':
         case 'cmdAddPosition':
             that.clearSelection();
             that.addToSelection(hint.name);

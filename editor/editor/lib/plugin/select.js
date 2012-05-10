@@ -259,20 +259,29 @@ function setupToolMenu(editor) {
                 null,
                 function (mat, nmat) {
                     var group = viewer.getGroup(),
+                        posName = group.getUniquePositionName(),
+                        cmdGroup = group.cmdCommandGroup('drawPosition', 'Add Position', { name: posName }),
+                        vis = viewer.getDefaultVisual(),
                         abs = Math.abs;
                     if (abs(mat[0]) < 32 && abs(mat[5]) < 32) {
                         mat[0] = 32;
                         mat[5] = 32;
                     }
                     mat[10] = 1;
-                    group.doCommand(group.cmdAddPosition(
-                        group.getUniquePositionName(),
+                    cmdGroup.add(group.cmdAddPosition(
+                        posName,
                         {
                             matrix: mat,
                             order: group.getTopmostOrder(),
                             snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                         }
                     ));
+                    if (vis) {
+                        vis = deepCopy(vis);
+                        vis.position = posName;
+                        cmdGroup.add(group.cmdAddVisual(posName, vis));
+                    }
+                    group.doCommand(cmdGroup);
                 },
                 true
             );

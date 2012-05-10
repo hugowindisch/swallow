@@ -42,25 +42,29 @@ ConfigurationSheet.prototype.getConfigurationSheet = function () {
     }
     define.meat.loadPackage(jsonData[i].factory, packageLoaded);
 */
-ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
+ConfigurationSheet.prototype.setEditedVisual = function (editor, typeInfo, cbWhenReady) {
     var viewer = editor.getViewer(),
-        selectedName = viewer.getSelectedName(),
-        vis = viewer.getSelectedVisual(),
         group = viewer.getGroup(),
-        editedData = viewer.getSelectionConfig(),
+        editedData,
         sheet,
         toLoad = [],
         error = null,
         i,
         l,
         loading,
+        editingDefaultAttributes = viewer.getSelectionLength() === 0,
         that = this;
-    if (viewer.getSelectionLength() < 1 || vis === undefined || this.settingConfig) {
+
+    // prevent entering this function recursively
+    if (this.settingConfig) {
         return;
     }
+    // get the edited data
+    editedData = editingDefaultAttributes ? {} : viewer.getSelectionConfig();
 
-    sheet = vis.getConfigurationSheet();
-    this.selectedName = selectedName;
+    // get the configuration sheet of the edited type
+    sheet = require(typeInfo.factory)[typeInfo.type].prototype.getConfigurationSheet.call(null);
+
     this.removeAllChildren();
     // computes the list of all input controls to load
     forEachProperty(sheet, function (it, name) {
@@ -81,7 +85,15 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
         });
         // apply this to the model (and prevent updating the sheet while this happens)
         that.settingConfig = true;
-        viewer.setSelectionConfig(newConfig);
+        if (editingDefaultAttributes) {
+            viewer.setDefaultVisual({
+                factory: typeInfo.factory,
+                type: typeInfo.type,
+                config: newConfig
+            });
+        } else {
+            viewer.setSelectionConfig(newConfig);
+        }
         delete that.settingConfig;
     }
 
