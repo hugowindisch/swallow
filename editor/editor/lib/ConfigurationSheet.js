@@ -47,8 +47,7 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
         selectedName = viewer.getSelectedName(),
         vis = viewer.getSelectedVisual(),
         group = viewer.getGroup(),
-        documentData = group.documentData,
-        editedData = documentData.children[selectedName],
+        editedData = viewer.getSelectionConfig(),
         sheet,
         toLoad = [],
         error = null,
@@ -56,7 +55,7 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
         l,
         loading,
         that = this;
-    if (viewer.getSelectionLength() !== 1 || this.selectedName === selectedName || vis === undefined) {
+    if (viewer.getSelectionLength() < 1 || vis === undefined || this.settingConfig) {
         return;
     }
 
@@ -74,14 +73,16 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
     function updateContent() {
         var newConfig = {};
         forEachProperty(sheet, function (it, name) {
-            var vis, valueName;
+            var c;
             if (it) {
-                vis = that.children[name];
-                newConfig[name] = vis.getData();
+                c = that.children[name];
+                newConfig[name] = c.getData();
             }
         });
-        // apply this to the model
-        group.doCommand(group.cmdSetVisualConfig(selectedName, newConfig));
+        // apply this to the model (and prevent updating the sheet while this happens)
+        that.settingConfig = true;
+        viewer.setSelectionConfig(newConfig);
+        delete that.settingConfig;
     }
 
     // initializes all controls
@@ -91,9 +92,9 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
             tl = toLoad[i];
             c = tl.ctrl;
             c.setHtmlFlowing({position: 'relative'}, true);
-            data = editedData.config[tl.name];
+            data = editedData[tl.name];
             if (data) {
-                c.setData(editedData.config[tl.name]);
+                c.setData(data);
             }
             c.on('change', updateContent);
             that.addChild(c, toLoad[i].name);

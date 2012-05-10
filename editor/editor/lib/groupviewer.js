@@ -765,6 +765,45 @@ GroupViewer.prototype.previewSelectionOpacity = function (opacity) {
         }
     });
 };
+/**
+    This will gather a config object will all similarily defined
+    value from the selection.
+*/
+GroupViewer.prototype.getSelectionConfig = function () {
+    var config = {},
+        configDirty = {},
+        ch = this.documentData.children;
+    forEachProperty(this.selection, function (pos, name) {
+        var c = ch[name];
+        if (c) {
+            forEachProperty(c.config, function (confV, confN) {
+                var dirty = configDirty[confN];
+                if (dirty && config[confN] !== confV) {
+                    delete config[confN];
+                } else if (!dirty) {
+                    config[confN] = confV;
+                    configDirty[confN] = true;
+                }
+            });
+        }
+    });
+    return config;
+};
+/**
+    This will update the selection with a given config.
+*/
+GroupViewer.prototype.setSelectionConfig = function (config) {
+    var group = this.group,
+        cg = group.cmdCommandGroup('setSelectionConfig', 'Change Config'),
+        ch = this.documentData.children;
+    forEachProperty(this.selection, function (pos, name) {
+        var c = ch[name];
+        if (c) {
+            cg.add(group.cmdSetVisualConfig(name, config));
+        }
+    });
+    group.doCommand(cg);
+};
 GroupViewer.prototype.previewStyleChange = function (skin) {
     this.children.visuals.setLocalTheme(skin);
 };
