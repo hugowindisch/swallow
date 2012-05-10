@@ -462,19 +462,19 @@ Group.prototype.cmdRemoveVisual = function (name) {
 };
 Group.prototype.cmdUpdateVisual = function (name, visual) {
     var that = this;
+    function doUndo() {
+        var children = that.documentData.children,
+            old = children[name];
+        if (visual) {
+            children[name] = visual;
+        } else {
+            delete children[name];
+        }
+        visual = old;
+    }
     return new Command(
-        function () {
-            var newpos = visual,
-                documentData = that.documentData,
-                postion = documentData.children[name];
-            documentData.children[name] = newpos;
-        },
-        function () {
-            var newpos = visual,
-                documentData = that.documentData,
-                postion = documentData.children[name];
-            documentData.children[name] = newpos;
-        },
+        doUndo,
+        doUndo,
         'cmdUpdateVisual',
         "Update visual " + name,
         { model: this, name: name, visual: visual }
