@@ -470,12 +470,14 @@ Visual.prototype.removeChild = function (child, unsafeBreakContainer) {
             }
         });
     }
+    return this;
 };
 Visual.prototype.removeAllChildren = function () {
     var that = this;
     forEachProperty(this.children, function (c) {
         that.removeChild(c, true);
     });
+    return this;
 };
 Visual.prototype.getChildren = function () {
     return this.children || {};
@@ -511,14 +513,19 @@ Visual.prototype.swapOrder = function (d1, d2) {
     o1.order = o2.order;
     o2.order = d;
     setDirty(this, 'childrenOrder');
+    return this;
 };
 Visual.prototype.increaseOrder = function (d) {
+    return this;
 };
 Visual.prototype.decreaseOrder = function (d) {
+    return this;
 };
 Visual.prototype.toMaxOrder = function (d) {
+    return this;
 };
 Visual.prototype.toMinOrder = function (d) {
+    return this;
 };
 Visual.prototype.orderBefore = function (toMove, ref) {
     if (toMove === ref) {
@@ -543,6 +550,7 @@ Visual.prototype.orderBefore = function (toMove, ref) {
         cToMove.order = refOrder;
         setDirty(this, 'childrenOrder');
     }
+    return this;
 };
 Visual.prototype.orderAfter = function (toMove, ref) {
     if (toMove === ref) {
@@ -567,6 +575,7 @@ Visual.prototype.orderAfter = function (toMove, ref) {
         cToMove.order = refOrder;
         setDirty(this, 'childrenOrder');
     }
+    return this;
 };
 
 /**
@@ -600,6 +609,7 @@ Visual.prototype.update = function (why) {
         this.updateOpacityRepresentation();
     }
     this.updateDone();
+    return this;
 };
 
 /**
@@ -676,6 +686,7 @@ Visual.prototype.createChildren = function (groupData) {
         // add the child to the children list
         this.addChild(child, name);
     }
+    return this;
 };
 
 /**
@@ -688,6 +699,7 @@ Visual.prototype.createGroup = function (groupData) {
     this.setLayout(groupData);
     // construct our children
     this.createChildren(groupData);
+    return this;
 };
 
 /**
