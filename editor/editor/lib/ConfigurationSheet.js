@@ -28,19 +28,6 @@ ConfigurationSheet.prototype.getConfigurationSheet = function () {
 };
 /**
     The configuration sheet
-
-    {
-        label: 'abc',
-        factory,
-        type,
-        // optional
-            config,
-            valueName,  // assumed: 'value'
-            changeEvent, // assumed: 'change' (change event)
-            labelAbove: true
-            order // if you want a special ordering
-    }
-    define.meat.loadPackage(jsonData[i].factory, packageLoaded);
 */
 ConfigurationSheet.prototype.setEditedVisual = function (editor, typeInfo, cbWhenReady) {
     var viewer = editor.getViewer(),

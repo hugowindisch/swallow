@@ -268,7 +268,9 @@ Styling.prototype.renameStyle = function (name) {
         docInfo = editor.getDocInfo(),
         group = editor.getViewer().getGroup();
     if (!group.documentData.theme[name]) {
+        this.preventUpdates = true;
         group.doCommand(group.cmdRenameStyleAndReferences(this.editedStyle, docInfo.factory, docInfo.type, name));
+        delete this.preventUdpates;
         this.editedStyle = name;
         this.updateLocalStyleList();
     } else {
@@ -284,7 +286,9 @@ Styling.prototype.deleteLocalStyle = function () {
     var editor = this.editor,
         docInfo = editor.getDocInfo(),
         group = editor.getViewer().getGroup();
+    this.preventUpdates = true;
     group.doCommand(group.cmdRemoveStyleAndReferences(docInfo.factory, docInfo.type, this.editedStyle));
+    delete this.preventUdpates;
     this.setData(null);
 };
 
@@ -298,7 +302,9 @@ Styling.prototype.setLocalStyleFeature = function (features) {
         stylingHeading = this.getChild('stylingHeading'),
         skin,
         stylePreview = stylingHeading.getChild('stylePreview');
+    this.preventUpdates = true;
     group.doCommand(group.cmdSetStyleFeatures(this.editedStyle, features));
+    delete this.preventUdpates;
     // update the local style
     forEachProperty(features, function (v, f) {
         if (v === null) {
@@ -376,7 +382,10 @@ Styling.prototype.updateLocalStyleList = function () {
 
 
 Styling.prototype.setEditor = function (editor) {
+    var commandChain = editor.getViewer().getGroup().commandChain,
+        that = this;
     this.editor = editor;
+
     // we can retrieve the style list here and configure the style picker
     this.children.stylePicker.setStyleList(this.computeNonLocalStyleList());
     this.updateLocalStyleList();
@@ -386,9 +395,35 @@ Styling.prototype.setEditor = function (editor) {
     this.updateStylePickers();
     this.notifyDOMChanged();
 
+    // FIXME: this is quite a hack. we hook ourself on the command chain and
+    // unhook ourself only if we get notified and detect we are no longer
+    // 'hooked to the stage'... It will not break but it is quite ugly.
+    function detectStyleChanges(command, name, message, hint, forEachSubCommand) {
+        var styleChanged = false;
+        function check(name, message, hint) {
+            if (hint && hint.styleChanged) {
+                styleChanged = true;
+            }
+        }
+        if (!that.connectedToTheStage) {
+            // quite a hack!
+            commandChain.removeListener('command', detectStyleChanges);
+        } else {
+            if (forEachSubCommand) {
+                forEachSubCommand(check);
+            }
+            check(name, message, hint);
+            if (styleChanged) {
+                that.handleStyleChange();
+            }
+        }
+    }
+    commandChain.on('command', detectStyleChanges);
+
 };
 Styling.prototype.makeLocalStyle = function () {
-    var group = this.editor.getViewer().getGroup(), editedStyle,
+    var group = this.editor.getViewer().getGroup(),
+        editedStyle,
         newStyle;
     // if the currently edited style is not a local style
     if (!isLocalStyle(this.editedStyle)) {
@@ -421,6 +456,14 @@ Styling.prototype.updateStylePreview = function (optionalFeature, optionalValue)
 
     stylePreview.setStyle(this.editedStyle);
     stylePreview.previewStyleChange(viewer.getPreviewTheme());
+};
+
+Styling.prototype.handleStyleChange = function () {
+    console.log('some style changed in the document!!!');
+    if (!this.preventUdpates) {
+        // reset the whole shebang... not perfect but better than
+        this.setData(this.editedStyle);
+    }
 };
 
 Styling.prototype.updateStyleName = function () {

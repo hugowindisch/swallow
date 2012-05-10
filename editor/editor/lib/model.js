@@ -72,6 +72,8 @@ Hints that we use:
         (when the viewer's selection should be cleared)
     name
         (in cmdAddPosition)
+    styleChanged
+        (some style was changed)
 
 Unused hints should probably be removed to prevent confusion.
 
@@ -612,7 +614,7 @@ Group.prototype.cmdAddStyle = function (name, def) {
         },
         'cmdAddStyle',
         'Add Style ' + name,
-        { model: this, name: name }
+        { model: this, name: name, styleChanged: true }
     );
 };
 Group.prototype.cmdRemoveStyle = function (name) {
@@ -632,7 +634,7 @@ Group.prototype.cmdRemoveStyle = function (name) {
         },
         'cmdRemoveStyle',
         'Remove Style ' + name,
-        { model: this, name: name }
+        { model: this, name: name, styleChanged: true }
     );
 };
 
@@ -742,7 +744,7 @@ Group.prototype.cmdRenameStyleAndReferences = function (name, factory, type, new
         toggleNames,
         'cmdRenameStyle',
         'Rename Style ' + name + ' to ' + newname,
-        { model: this, name: name }
+        { model: this, name: name, styleChanged: true }
     );
 };
 // note: use null value for features to clear them and non null to assign them
@@ -772,7 +774,7 @@ Group.prototype.cmdSetStyleFeatures = function (name, features) {
         toggle,
         'cmdSetStyleFeatures',
         'Change Style ' + name,
-        { model: this, name: name }
+        { model: this, name: name, styleChanged: true }
     );
 };
 Group.prototype.cmdSetStyleBase = function (name, baseStyleFactory, baseStyleType, baseStyleName) {
@@ -791,7 +793,7 @@ Group.prototype.cmdSetStyleBase = function (name, baseStyleFactory, baseStyleTyp
         toggle,
         'cmdSetStyleBase',
         'Change Style Base ' + name,
-        { model: this, name: name }
+        { model: this, name: name, styleChanged: true }
     );
 };
 Group.prototype.cmdUnsetStyleBase = function (name, factory, type, style) {
@@ -819,7 +821,7 @@ Group.prototype.cmdUnsetStyleBase = function (name, factory, type, style) {
         },
         'cmdUnsetStyleBase',
         'Remove Style Base',
-        { model: this, name: name }
+        { model: this, name: name, styleChanged: true }
     );
 };
 exports.Group = Group;
