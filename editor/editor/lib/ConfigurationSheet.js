@@ -72,15 +72,16 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, cbWhenReady) {
 
     // updates the edited stuff with the sheet's content.
     function updateContent() {
+        var newConfig = {};
         forEachProperty(sheet, function (it, name) {
-            var vis, valueName, newConfig = {};
+            var vis, valueName;
             if (it) {
                 vis = that.children[name];
                 newConfig[name] = vis.getData();
             }
-            // apply this to the model
-            group.doCommand(group.cmdSetVisualConfig(selectedName, newConfig));
         });
+        // apply this to the model
+        group.doCommand(group.cmdSetVisualConfig(selectedName, newConfig));
     }
 
     // initializes all controls

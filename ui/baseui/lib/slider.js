@@ -92,7 +92,7 @@ Slider.prototype.theme = new (visual.Theme)({
 });
 
 Slider.prototype.setMinValue = function (minValue) {
-    this.minValue = minValue;
+    this.minValue = Number(minValue);
     this.applyLayout();
     return this;
 };
@@ -102,13 +102,13 @@ Slider.prototype.getMinValue = function () {
 };
 
 Slider.prototype.setMaxValue = function (maxValue) {
-    this.maxValue = maxValue;
+    this.maxValue = Number(maxValue);
     this.applyLayout();
     return this;
 };
 
 Slider.prototype.setValue = function (value) {
-    this.value = value;
+    this.value = Number(value);
     this.applyLayout();
     return this;
 };
