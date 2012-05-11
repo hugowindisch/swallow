@@ -19,7 +19,9 @@ function LabelValueSliderCheck(config) {
         that.updateInput();
         that.emit(sliding ? 'preview' : 'change', v);
     });
-    children.value.on('change', function () {
+    children.value.on('change', function (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
         var n = limitRange(this.getValue(), 0, 1000);
         that.value = n;
         that.updateCheck();
