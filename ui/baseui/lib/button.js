@@ -21,8 +21,8 @@ var visual = require('visual'),
             },
             text: {
                 order: 1,
-                matrix: [ 380, 0, 0, 0,   0, 180, 0, 0,    0, 0, 1, 0,   10, 10, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 380, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   10, 92, 0, 1 ],
+                snapping: { left: 'px', right: 'px', width: 'auto', top: 'cpx', bottom: 'cpx', height: 'auto' }
             }
         },
         children: {
@@ -61,6 +61,7 @@ function Button(config) {
             that.emit('pressed');
         });
     });
+    this.setChildrenClipping('hidden');
 }
 Button.prototype = new (domvisual.DOMElement)();
 Button.prototype.theme = new (visual.Theme)({
