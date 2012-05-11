@@ -15,34 +15,34 @@ function StyleSettingText(config) {
         that = this;
 
     this.fontWeight = new ImageOption({
-        'solid':  [ 'editor/lib/fsnormal_s.png', 'editor/lib/fsnormal.png', children.fontWeightNormal ],
-        'dashed': [ 'editor/lib/fsbold_s.png', 'editor/lib/fsbold.png', children.fontWeightBold ],
-        'dotted': [ 'editor/lib/fsbolder_s.png', 'editor/lib/fsbolder.png', children.fontWeightBolder ],
-        'none': [ 'editor/lib/fslight_s.png', 'editor/lib/fslight.png', children.fontWeightLighter ]
+        'normal':  [ 'editor/lib/fsnormal_s.png', 'editor/lib/fsnormal.png', children.fontWeightNormal ],
+        'bold': [ 'editor/lib/fsbold_s.png', 'editor/lib/fsbold.png', children.fontWeightBold ],
+        'bolder': [ 'editor/lib/fsbolder_s.png', 'editor/lib/fsbolder.png', children.fontWeightBolder ],
+        'lighter': [ 'editor/lib/fslight_s.png', 'editor/lib/fslight.png', children.fontWeightLighter ]
     }, children.fontWeightCheck);
 
 
     this.fontWeight.on('change', function (v) {
         if (v === undefined) {
-            delete that.styleData.fontWeight;
+            delete that.styleData.weight;
         } else {
-            that.styleData.fontWeight = v;
+            that.styleData.weight = v;
         }
         that.emit('change', that.styleData);
     });
     children.fontSize.on('change', function (v) {
         if (v === undefined) {
-            delete that.styleData.fontSize;
+            delete that.styleData.size;
         } else {
-            that.styleData.fontSize = v;
+            that.styleData.size = v;
         }
         that.emit('change', that.styleData);
     });
     children.fontSize.on('preview', function (v) {
         if (v === undefined) {
-            delete that.styleData.fontSize;
+            delete that.styleData.size;
         } else {
-            that.styleData.fontSize = v;
+            that.styleData.size = v;
         }
         that.emit('preview', that.styleData);
     });
@@ -50,16 +50,16 @@ function StyleSettingText(config) {
         evt.preventDefault();
         evt.stopPropagation();
         children.fontFamilyCheck.setValue(true);
-        that.styleData.fontFamily = this.getValue();
-        that.emit('preview', that.styleData);
+        that.styleData.family = this.getValue();
+        that.emit('change', that.styleData);
     });
     children.fontFamilyCheck.on('change', function (v) {
         if (!v) {
-            delete that.styleData.fontFamily;
+            delete that.styleData.family;
         } else {
-            that.styleData.fontFamily = '';
+            that.styleData.family = '';
         }
-        that.emit('preview', that.styleData);
+        that.emit('change', that.styleData);
     });
     children.colorCheck.on('click', function (v) {
         delete that.styleData.color;
@@ -94,10 +94,10 @@ StyleSettingText.prototype.setStyleData = function (st) {
     var children = this.children;
     this.styleData = apply({}, st);
 
-    this.fontWeight.setSelectedValue(this.styleData.fontWeight);
-    children.fontSize.setValue(this.styleData.fontSize);
-    children.fontFamily.setValue(this.styleData.fontFamily || '');
-    children.fontFamilyCheck.setValue(this.styleData.fontFamily !== undefined);
+    this.fontWeight.setSelectedValue(this.styleData.weight);
+    children.fontSize.setValue(this.styleData.size);
+    children.fontFamily.setValue(this.styleData.family || '');
+    children.fontFamilyCheck.setValue(this.styleData.family !== undefined);
     children.color.setValue(st.color || { r: 0, g: 0, b: 0, a: 1});
 };
 

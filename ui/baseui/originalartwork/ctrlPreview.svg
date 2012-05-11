@@ -613,9 +613,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.88040976"
-     inkscape:cx="221.14307"
-     inkscape:cy="560.57775"
+     inkscape:zoom="4.3026477"
+     inkscape:cx="262.54839"
+     inkscape:cy="556.55903"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -1014,7 +1014,7 @@
       </g>
     </g>
     <g
-       id="g5599"
+       id="g3546"
        inkscape:export-filename="/home/hugo/source/hugo/swagup/essentials/domvisual/lib/elementpreview.png"
        inkscape:export-xdpi="26.549999"
        inkscape:export-ydpi="26.549999">
@@ -1025,7 +1025,19 @@
          height="117.33334"
          width="184.49451"
          id="rect3006-9-3-9"
-         style="fill:#cccccc;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:7.41470575000000043;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:#cccccc;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:7.41470575;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         transform="scale(0.95430219,1.0478861)"
+         sodipodi:linespacing="125%"
+         id="text3538"
+         y="485.21942"
+         x="187.14893"
+         style="font-size:86.99298859px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           y="485.21942"
+           x="187.14893"
+           id="tspan3540"
+           sodipodi:role="line">Abc</tspan></text>
       <g
          transform="translate(192,200)"
          id="g4125-8">

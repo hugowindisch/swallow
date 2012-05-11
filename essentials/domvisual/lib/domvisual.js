@@ -591,7 +591,10 @@ DOMVisual.prototype.setInnerHTML = function (html) {
 DOMVisual.prototype.setInnerText = function (text) {
     this.removeAllChildren();
     this.element.innerHTML = '';
-    this.element.appendChild(document.createTextNode(text));
+    // skip obvious cases of emptyness
+    if (text !== null && text !== undefined && text !== '') {
+        this.element.appendChild(document.createTextNode(text));
+    }
     setDirty(this, 'matrix', 'dimensions', 'style');
     return this;
 };
@@ -644,9 +647,11 @@ DOMElement.createPreview = function () {
 DOMElement.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
+        "innerText": require('config').inputConfig('Text'),
         "style": require('config').styleConfig('Style:')
     };
 };
+
 /////////////////
 // an img element
 function DOMImg(config) {
