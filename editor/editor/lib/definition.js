@@ -958,7 +958,7 @@ exports.definition = {
             }
         },
         StyleSettingCorner: {
-            dimensions: [340, 60, 1],
+            dimensions: [340, 75, 1],
             positions: {
                 label: {
                     order: 0,
@@ -998,7 +998,7 @@ exports.definition = {
             }
         },
         StyleSettingBorder: {
-            dimensions: [340, 380, 1],
+            dimensions: [340, 300, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1145,7 +1145,7 @@ exports.definition = {
             }
         },
         StyleSettingBackground: {
-            dimensions: [340, 260, 1],
+            dimensions: [340, 240, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1208,7 +1208,7 @@ exports.definition = {
             }
         },
         StyleSettingText: {
-            dimensions: [340, 100, 1],
+            dimensions: [340, 300, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1388,7 +1388,7 @@ exports.definition = {
             }
         },
         StyleSettingShadow: {
-            dimensions: [340, 100, 1],
+            dimensions: [340, 330, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1658,7 +1658,7 @@ exports.definition = {
                 },
                 styleEdit : {
                     order: 2,
-                    matrix: [ 340, 0, 0, 0,  0, 290, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 10, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 localStylePicker : {

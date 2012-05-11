@@ -179,7 +179,6 @@ function Styling(config) {
                 that.localStyle.jsData || {}
             ));
             that.addChild(styleEdit, 'styleEdit', 2);
-            styleEdit.setPosition('styleEdit');
             styleEdit.setHtmlFlowing(flowing, true);
             styleEdit.on('change', function (value) {
                 that.setLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
