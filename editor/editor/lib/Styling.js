@@ -270,7 +270,7 @@ Styling.prototype.renameStyle = function (name) {
     if (!group.documentData.theme[name]) {
         this.preventUpdates = true;
         group.doCommand(group.cmdRenameStyleAndReferences(this.editedStyle, docInfo.factory, docInfo.type, name));
-        delete this.preventUdpates;
+        delete this.preventUpdates;
         this.editedStyle = name;
         this.updateLocalStyleList();
     } else {
@@ -288,7 +288,7 @@ Styling.prototype.deleteLocalStyle = function () {
         group = editor.getViewer().getGroup();
     this.preventUpdates = true;
     group.doCommand(group.cmdRemoveStyleAndReferences(docInfo.factory, docInfo.type, this.editedStyle));
-    delete this.preventUdpates;
+    delete this.preventUpdates;
     this.setData(null);
 };
 
@@ -304,7 +304,7 @@ Styling.prototype.setLocalStyleFeature = function (features) {
         stylePreview = stylingHeading.getChild('stylePreview');
     this.preventUpdates = true;
     group.doCommand(group.cmdSetStyleFeatures(this.editedStyle, features));
-    delete this.preventUdpates;
+    delete this.preventUpdates;
     // update the local style
     forEachProperty(features, function (v, f) {
         if (v === null) {
@@ -459,8 +459,7 @@ Styling.prototype.updateStylePreview = function (optionalFeature, optionalValue)
 };
 
 Styling.prototype.handleStyleChange = function () {
-    console.log('some style changed in the document!!!');
-    if (!this.preventUdpates) {
+    if (!this.preventUpdates) {
         // reset the whole shebang... not perfect but better than
         this.setData(this.editedStyle);
     }
