@@ -1443,13 +1443,13 @@ exports.definition = {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
                     position: 'offsetX',
-                    config: { label: 'OffsetX:', value: 0, minValue: 0, maxValue: 100, check: true }
+                    config: { label: 'OffsetX:', value: 0, minValue: -100, maxValue: 100, check: true }
                 },
                 offsetY: {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
                     position: 'offsetY',
-                    config: { label: 'OffsetY:', value: 0, minValue: 0, maxValue: 100, check: true }
+                    config: { label: 'OffsetY:', value: 0, minValue: -100, maxValue: 100, check: true }
                 },
                 blurRadius: {
                     factory: 'editor',
