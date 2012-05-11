@@ -64,7 +64,7 @@ function matrixIsTranslateOnly(matrix) {
 }
 
 function vec3IsEqual(v1, v2) {
-    return v1 && v2 && v1[0] === v2[0] && v1[1] === v2[1] && v1[3] === v2[3];
+    return v1 === v2 || (v1 && v2 && v1[0] === v2[0] && v1[1] === v2[1] && v1[3] === v2[3]);
 }
 
 function updateChildrenPositions(v) {
@@ -596,13 +596,13 @@ Visual.prototype.update = function (why) {
     if (why.matrix) {
         this.updateMatrixRepresentation();
     }
-    if (why.dimensions) {
-        // update dim representation of ourself
-        this.updateDimensionsRepresentation();
-    }
     if (why.style) {
         // update style representation of ourself
         this.updateStyleRepresentation();
+    }
+    if (why.dimensions) {
+        // update dim representation of ourself
+        this.updateDimensionsRepresentation();
     }
     if (why.opacity) {
         // update opacity representation of ourself
@@ -883,3 +883,4 @@ exports.update = dirty.update;
 exports.getEnclosingRect = position.getEnclosingRect;
 exports.rectToMatrix = position.rectToMatrix;
 exports.loadPackage = loadPackage;
+exports.vec3IsEqual = vec3IsEqual;

@@ -385,5 +385,32 @@ function styleToCss(style, jsData) {
     });
 }
 
+function getStyleDimensionAdjustment(jsData) {
+    var wa,
+        ha,
+        bsl = jsData.borderLeftStyle,
+        bsr = jsData.borderRightStyle,
+        bst = jsData.borderTopStyle,
+        bsb = jsData.borderBottomStyle;
+
+    function w(width, style) {
+        if (!style || style === 'none') {
+            return 0;
+        }
+        return width || 0;
+    }
+
+    wa = w(jsData.borderLeftWidth, jsData.borderLeftStyle) +
+        w(jsData.borderRightWidth, jsData.borderRightStyle);
+    ha = w(jsData.borderTopWidth, jsData.borderTopStyle) +
+        w(jsData.borderBottomWidth, jsData.borderBottomStyle);
+
+    if (wa || ha) {
+        return [wa, ha, 0];
+    }
+    return null;
+}
+
 exports.clearStyle = clearStyle;
 exports.styleToCss = styleToCss;
+exports.getStyleDimensionAdjustment = getStyleDimensionAdjustment;

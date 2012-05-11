@@ -20,6 +20,8 @@ var visual = require('visual'),
     isArray = utils.isArray,
     isNumber = utils.isNumber,
     apply = utils.apply,
+    vec3IsEqual = visual.vec3IsEqual,
+    getStyleDimensionAdjustment = styles.getStyleDimensionAdjustment,
     setDirty = dirty.setDirty;
 
 function DOMVisual(config, groupData, element) {
@@ -304,6 +306,23 @@ DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
     }
     return this;
 };
+
+DOMVisual.prototype.setStyleDimensionsAdjustment = function (v3) {
+    if (!vec3IsEqual(v3, this.styleDimensionsAdjustment)) {
+        if (!v3) {
+            if (this.styleDimensionsAdjustment) {
+                delete this.styleDimensionsAdjustment;
+                // dirty size representation
+                setDirty(this, 'dimensions');
+            }
+        } else {
+            this.styleDimensionsAdjustment = v3;
+            // dirty size representation
+            setDirty(this, 'dimensions');
+        }
+    }
+    return this;
+};
 /**
     DOM update (we essentially treat the DOM as an output thing)
 */
@@ -362,19 +381,27 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
     }
 };
 DOMVisual.prototype.updateDimensionsRepresentation = function () {
+    function adjust(v, a) {
+        if (a >= v) {
+            return 1;
+        }
+        return v - a;
+    }
     if (this.element && this.name !== 'stage') {
         var style = this.element.style,
-            htmlFlowing = this.htmlFlowing;
+            htmlFlowing = this.htmlFlowing,
+            dimensions = this.dimensions,
+            styleDimensionsAdjustement = this.styleDimensionsAdjustment || [0, 0];
         if (!htmlFlowing) {
-            style.width = this.dimensions[0] + 'px';
-            style.height = this.dimensions[1] + 'px';
+            style.width = adjust(dimensions[0], styleDimensionsAdjustement[0]) + 'px';
+            style.height = adjust(dimensions[1], styleDimensionsAdjustement[1]) + ' px';
             style.position = 'absolute';
             style.display = this.visible ? 'block' : 'none';
         } else {
             // clear our stuff
             if (this.htmlFlowingApplySizing) {
-                style.width = this.dimensions[0] + 'px';
-                style.height = this.dimensions[1] + 'px';
+                style.width = adjust(dimensions[0], styleDimensionsAdjustement[0]) + 'px';
+                style.height = adjust(dimensions[1], styleDimensionsAdjustement[1]) + 'px';
             } else {
                 style.width = null;
                 style.height = null;
@@ -439,6 +466,9 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
             apply(jsData, this.styleAttributes);
         }
         styleToCss(style, jsData);
+        // because of the weird effect of borders on the visible size of
+        // explicitely sized elements in html, we need to adjust for border size
+        this.setStyleDimensionsAdjustment(getStyleDimensionAdjustment(jsData));
     }
 };
 DOMVisual.prototype.updateOpacityRepresentation = function () {
