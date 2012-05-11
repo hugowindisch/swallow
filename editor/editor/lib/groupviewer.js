@@ -886,6 +886,23 @@ GroupViewer.prototype.getDefaultVisual = function () {
     return this.defaultVisual;
 };
 
+GroupViewer.prototype.untransformSelection = function () {
+    var group = this.group,
+        documentData = group.documentData,
+        selection = this.selection,
+        visuals = this.getChild('visuals'),
+        cmdGroup = group.cmdCommandGroup('clearTransformation', 'Clear Transformation');
+
+    // for everything in the selection
+    forEachProperty(selection, function (c, n) {
+        var vis = visuals.getChild(n),
+            authoringDimensions = vis ? vis.getNaturalDimensions() : null;
+
+        cmdGroup.add(group.cmdClearTransformationPosition(n, authoringDimensions));
+    });
+    // do the combined command
+    group.doCommand(cmdGroup);
+};
 //////////////////////
 // private stuff (maybe should go in groupviewerprivate)
 GroupViewer.prototype.setGroup = function (group) {

@@ -522,6 +522,7 @@ function setupObjectMenu(editor) {
         moveLeftTool,
         moveRightTool,
         unsetContentTool,
+        clearTransformationTool,
         menus = editor.menus;
 
     function selectionNotEmpty() {
@@ -1002,6 +1003,17 @@ function setupObjectMenu(editor) {
         selectionHasNonEmptyPositions
     );
 
+    clearTransformationTool = new MenuItem(
+        'Clear Transformation',
+        function () {
+            viewer.untransformSelection();
+        },
+        null,
+        null,
+        null,
+        selectionNotEmpty
+    );
+
     // setup auto update of some tools
     (function () {
         var group = viewer.getGroup(),
@@ -1032,7 +1044,8 @@ function setupObjectMenu(editor) {
         moveLeftTool,
         moveRightTool,
         null,
-        unsetContentTool
+        unsetContentTool,
+        clearTransformationTool
     );
 
 }

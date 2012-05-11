@@ -673,6 +673,13 @@ DOMImg.prototype.getConfigurationSheet = function () {
         "url": require('config').imageUrlConfig('Url')
     };
 };
+DOMImg.prototype.getImageDimensions = function () {
+    var element = this.element;
+    return [element.naturalWidth, element.naturalHeight, 0];
+};
+DOMImg.prototype.getNaturalDimensions = function () {
+    return this.getImageDimensions();
+};
 
 /////////////////
 // A video tag

@@ -13,6 +13,7 @@ var glmatrix = require('glmatrix'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     edit = require('./edit'),
+    convertScaleToSize = visual.convertScaleToSize,
     Command = edit.Command,
     CommandGroup = edit.CommandGroup,
     CommandChain = edit.CommandChain;
@@ -321,6 +322,29 @@ Group.prototype.cmdTransformPosition = function (name, transform) {
         'cmdTransformPosition',
         "Transform position " + name,
         { model: this, name: name, transform: transform }
+    );
+};
+Group.prototype.cmdClearTransformationPosition = function (name, authoringDimensions) {
+    var that = this,
+        m = this.documentData.positions[name].matrix;
+    return new Command(
+        function () {
+            var documentData = that.documentData,
+                pos = documentData.positions[name],
+                d = authoringDimensions;
+            if (!d) {
+                d = convertScaleToSize(m).dimensions;
+            }
+            pos.matrix = mat4.create([d[0], 0, 0, 0,   0, d[1], 0, 0,   0, 0, d[2], 0,   m[12], m[13], m[13], 1]);
+        },
+        function () {
+            var documentData = that.documentData,
+                pos = documentData.positions[name];
+            pos.matrix = m;
+        },
+        'cmdClearTransformationPosition',
+        "Clear Transformation " + name,
+        { model: this, name: name }
     );
 };
 Group.prototype.cmdEnableSelectPosition = function (name, enable) {

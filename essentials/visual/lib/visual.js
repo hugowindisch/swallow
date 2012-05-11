@@ -383,6 +383,17 @@ Visual.prototype.getLayout = function () {
     return this.layout;
 };
 /**
+    Returns the 'natural' dimensions of the element or default dimension.
+    This can be overriden but by default will return the layout dimensions.
+    It is ok to return null.
+*/
+Visual.prototype.getNaturalDimensions = function () {
+    if (this.layout) {
+        return this.layout.dimensions;
+    }
+    return null;
+};
+/**
     This is called each time a container decides to reposition all its children
     (mainly when its dimensions changes but also if its layout changes).
 

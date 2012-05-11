@@ -5,10 +5,7 @@
 /*globals define */
 var visual = require('visual'),
     domvisual = require('domvisual'),
-    groups = require('./definition').definition.groups,
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    groups = require('./definition').definition.groups;
 
 function EmptyPosition(config) {
     // call the baseclass
@@ -20,6 +17,8 @@ EmptyPosition.prototype.theme = new (visual.Theme)({
         data: [ 'editor_emptyPosition' ]
     }
 });
-
+EmptyPosition.prototype.getNaturalDimensions = function () {
+    return null;
+};
 
 exports.EmptyPosition = EmptyPosition;
