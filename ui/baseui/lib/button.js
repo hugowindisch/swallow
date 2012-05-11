@@ -61,7 +61,6 @@ function Button(config) {
             that.emit('pressed');
         });
     });
-    this.setChildrenClipping('hidden');
 }
 Button.prototype = new (domvisual.DOMElement)();
 Button.prototype.theme = new (visual.Theme)({
