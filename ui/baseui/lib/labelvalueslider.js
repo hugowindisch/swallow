@@ -100,5 +100,8 @@ LabelValueSlider.prototype.updateSlider = function () {
 LabelValueSlider.prototype.updateInput = function () {
     this.children.value.setValue(Number(this.value || 0).toFixed(1));
 };
+LabelValueSlider.prototype.setSliderBarStyleAttributes = function (a) {
+    this.children.slider.setBackgroundStyleAttributes(a);
+};
 
 exports.LabelValueSlider = LabelValueSlider;

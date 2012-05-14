@@ -174,26 +174,70 @@ ColorPicker.prototype.getValue = function () {
 };
 
 ColorPicker.prototype.showRGBA = function () {
-    var children = this.children;
+    var children = this.children,
+        that = this;
     children.hr.setLabel('R:').setMaxValue(255).setValue(this.value.r);
     children.sg.setLabel('G:').setMaxValue(255).setValue(this.value.g);
     children.lb.setLabel('B:').setMaxValue(255).setValue(this.value.b);
 
+    function updateSliderBackground() {
+        var value = that.value,
+            r = value.r,
+            g = value.g,
+            b = value.b,
+            a = value.a;
+        children.hr.setSliderBarStyleAttributes({
+            backgroundImage: {
+                colors: [{ r: 0, g: g, b: b, a: a}, { r: 255, g: g, b: b, a: a}],
+                stops: [ 0, 1],
+                type: 'horizontal'
+            }
+        });
+        children.sg.setSliderBarStyleAttributes({
+            backgroundImage: {
+                colors: [{ r: r, g: 0, b: b, a: a}, { r: r, g: 255, b: b, a: a}],
+                stops: [ 0, 1],
+                type: 'horizontal'
+            }
+        });
+        children.lb.setSliderBarStyleAttributes({
+            backgroundImage: {
+                colors: [{ r: r, g: g, b: 0, a: a}, { r: r, g: g, b: 255, a: a}],
+                stops: [ 0, 1],
+                type: 'horizontal'
+            }
+        });
+        children.a.setSliderBarStyleAttributes({
+            backgroundImage: {
+                colors: [{ r: r, g: g, b: b, a: 0}, { r: r, g: g, b: b, a: 1}],
+                stops: [ 0, 1],
+                type: 'horizontal'
+            }
+        });
+    }
+
+
     this.setHr = function (v) {
         this.value.r = v;
+        updateSliderBackground();
     };
     this.setSg = function (v) {
         this.value.g = v;
+        updateSliderBackground();
     };
     this.setLb = function (v) {
         this.value.b = v;
+        updateSliderBackground();
     };
     this.setA = function (v) {
         this.value.a = v;
+        updateSliderBackground();
     };
+    updateSliderBackground();
 
 };
 ColorPicker.prototype.showHSLA = function () {
 };
+
 
 exports.ColorPicker = ColorPicker;

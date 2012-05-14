@@ -58,13 +58,29 @@ color:                                      Color
 textAlign:                                  String (left, right, center)
 
 backgroundColor:                            Color
-backgroundImage:                            tbd
+backgroundImage:                            (currently: )gradient
 backgroundPosition:                         tbd
 backgroundRepeat:                           tbd
+
 
 boxShadow:                                  <offset-x> <offset-y> <blur-radius> spreadradius color
 
 */
+// oversimplistic browser detection
+function getBrowser() {
+    var ua = navigator.userAgent,
+        browser;
+    if (ua.indexOf("AppleWebKit") !== -1) {
+        browser = 'AppleWebKit';
+    } else if (ua.indexOf("MSIE") !== -1) {
+        browser = 'MSIE';
+    } else if (ua.indexOf("Mozilla") !== -1) {
+        browser = 'Mozilla';
+    }
+    return browser;
+}
+
+
 var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     attributeToCss,
@@ -72,7 +88,9 @@ var utils = require('utils'),
     min = Math.min,
     max = Math.max,
     abs = Math.abs,
-    round = Math.round;
+    round = Math.round,
+    browser = getBrowser(),
+    gradientToCssString;
 
 function hslaToRgba(hsla) {
     var h = hsla.h / 360,
@@ -180,7 +198,7 @@ function colorToCSSString(c) {
     }
 }
 
-function gradientToCSSStringMoz(gradient) {
+function gradientToCSSStringMozilla(gradient) {
     var angle = (gradient.type === 'horizontal') ? 0 : -90,
         res = '-moz-linear-gradient(' + angle + 'deg, ',
         colors = gradient.colors,
@@ -216,6 +234,17 @@ function gradientToCSSStringWebkit(gradient) {
         res += (i < l - 1) ? ',' : ')';
     }
     return res;
+}
+gradientToCssString = ({
+    'AppleWebKit': gradientToCSSStringWebkit,
+    'Mozilla': gradientToCSSStringMozilla
+})[browser] || function () { return null; };
+
+function backgroundImageToCssString(img) {
+    if (img.colors && img.stops && img.type) {
+        return gradientToCssString(img);
+    }
+    return null;
 }
 
 function boxShadowToCSSString(v) {
@@ -264,6 +293,7 @@ attributeToCssString = {
     textAlign: passThroughCSSString,
     // background
     backgroundColor: colorToCSSString,
+    backgroundImage: backgroundImageToCssString,
     // shadow
     boxShadow: boxShadowToCSSString
 };
@@ -359,6 +389,9 @@ attributeToCss = {
     // background
     backgroundColor: function (style, value) {
         style.backgroundColor = value;
+    },
+    backgroundImage: function (style, value) {
+        style.backgroundImage = value;
     },
     // shadow
     boxShadow: function (style, value) {

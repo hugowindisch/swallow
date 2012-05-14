@@ -124,6 +124,10 @@ Slider.prototype.getValue = function () {
     return v;
 };
 
+Slider.prototype.setBackgroundStyleAttributes = function (a) {
+    this.getChild('background').setStyleAttributes(a);
+};
+
 Slider.prototype.getConfigurationSheet = function () {
     var config = require('config'),
         inputConfig = config.inputConfig;
@@ -133,6 +137,7 @@ Slider.prototype.getConfigurationSheet = function () {
         value: inputConfig('Value')
     };
 };
+
 
 Slider.prototype.applyLayout = function () {
     domvisual.DOMElement.prototype.applyLayout.call(this);
