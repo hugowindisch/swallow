@@ -16,9 +16,7 @@ function StyleSettingText(config) {
 
     this.fontWeight = new ImageOption({
         'normal':  [ 'editor/lib/fsnormal_s.png', 'editor/lib/fsnormal.png', children.fontWeightNormal ],
-        'bold': [ 'editor/lib/fsbold_s.png', 'editor/lib/fsbold.png', children.fontWeightBold ],
-        'bolder': [ 'editor/lib/fsbolder_s.png', 'editor/lib/fsbolder.png', children.fontWeightBolder ],
-        'lighter': [ 'editor/lib/fslight_s.png', 'editor/lib/fslight.png', children.fontWeightLighter ]
+        'bold': [ 'editor/lib/fsbold_s.png', 'editor/lib/fsbold.png', children.fontWeightBold ]
     }, children.fontWeightCheck);
 
 
@@ -30,6 +28,22 @@ function StyleSettingText(config) {
         }
         that.emit('change', that.styleData);
     });
+    this.textAlign = new ImageOption({
+        'left':  [ 'editor/lib/faleft_s.png', 'editor/lib/faleft.png', children.textAlignLeft ],
+        'right':  [ 'editor/lib/faright_s.png', 'editor/lib/faright.png', children.textAlignRight ],
+        'center':  [ 'editor/lib/facenter_s.png', 'editor/lib/facenter.png', children.textAlignCenter ],
+        'justify':  [ 'editor/lib/fajustify_s.png', 'editor/lib/fajustify.png', children.textAlignJustify ],
+    }, children.textAlignCheck);
+
+    this.textAlign.on('change', function (v) {
+        if (v === undefined) {
+            delete that.styleData.align;
+        } else {
+            that.styleData.align = v;
+        }
+        that.emit('change', that.styleData);
+    });
+
     children.fontSize.on('change', function (v) {
         if (v === undefined) {
             delete that.styleData.size;
@@ -95,6 +109,7 @@ StyleSettingText.prototype.setStyleData = function (st) {
     this.styleData = apply({}, st);
 
     this.fontWeight.setSelectedValue(this.styleData.weight);
+    this.textAlign.setSelectedValue(this.styleData.align);
     children.fontSize.setValue(this.styleData.size);
     children.fontFamily.setValue(this.styleData.family || '');
     children.fontFamilyCheck.setValue(this.styleData.family !== undefined);

@@ -90,6 +90,7 @@ var visual = require('visual'),
             attributes: {
                 color: 'color',
                 family: 'fontFamily',
+                align: 'textAlign',
                 weight: 'fontWeight',
                 size: 'fontSize'
             },

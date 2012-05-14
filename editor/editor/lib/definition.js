@@ -1208,7 +1208,7 @@ exports.definition = {
             }
         },
         StyleSettingText: {
-            dimensions: [340, 300, 1],
+            dimensions: [340, 330, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1255,24 +1255,48 @@ exports.definition = {
                     matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 90, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                fontWeightBolder: {
-                    order: 0,
-                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   165, 90, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                fontWeightLighter: {
-                    order: 0,
-                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   215, 90, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
                 fontWeightCheck: {
                     order: 0,
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 90, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                colorLabel: {
+
+                textAlignLabel: {
                     order: 0,
                     matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                textAlignLeft: {
+                    order: 0,
+                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   65, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                textAlignRight: {
+                    order: 0,
+                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   95, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                textAlignCenter: {
+                    order: 0,
+                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   135, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                textAlignJustify: {
+                    order: 0,
+                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   165, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+
+                textAlignCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+
+
+                colorLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 150, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 colorCheck: {
@@ -1282,7 +1306,7 @@ exports.definition = {
                 },
                 color: {
                     order: 0,
-                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 150, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1345,28 +1369,61 @@ exports.definition = {
                         url: 'editor/lib/fsbold.png'
                     }
                 },
-                fontWeightBolder: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    position: "fontWeightBolder",
-                    config: {
-                        url: 'editor/lib/fsbolder.png'
-                    }
-                },
-                fontWeightLighter: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    position: "fontWeightLighter",
-                    config: {
-                        url: 'editor/lib/fslight.png'
-                    }
-                },
                 fontWeightCheck: {
                     factory: "baseui",
                     type: "CheckBox",
                     position: "fontWeightCheck",
                     config: { value: true }
                 },
+
+
+                textAlignLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "textAlignLabel",
+                    config: { text: "Align:"}
+                },
+                textAlignLeft: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "textAlignLeft",
+                    config: {
+                        url: 'editor/lib/faleft.png'
+                    }
+                },
+                textAlignRight: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "textAlignRight",
+                    config: {
+                        url: 'editor/lib/faright.png'
+                    }
+                },
+                textAlignCenter: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "textAlignCenter",
+                    config: {
+                        url: 'editor/lib/facenter.png'
+                    }
+                },
+                textAlignJustify: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "textAlignJustify",
+                    config: {
+                        url: 'editor/lib/fajustify.png'
+                    }
+                },
+                textAlignCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "textAlignCheck",
+                    config: { value: true }
+                },
+
+
+
                 colorLabel: {
                     factory: "baseui",
                     type: "Label",
