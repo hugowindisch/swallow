@@ -21,6 +21,10 @@ function Folder(config) {
 }
 Folder.prototype = new (domvisual.DOMElement)();
 
+Folder.prototype.getDescription = function () {
+    return "An expandable item in a list";
+};
+
 Folder.prototype.theme = new (visual.Theme)({
     expanded: {
         basedOn: [

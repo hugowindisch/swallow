@@ -66,6 +66,9 @@ function CheckBox(config) {
     });
 }
 CheckBox.prototype = new (domvisual.DOMElement)();
+CheckBox.prototype.getDescription = function () {
+    return "A CheckBox";
+};
 CheckBox.prototype.theme = new (visual.Theme)({
     normal: {
         basedOn: [

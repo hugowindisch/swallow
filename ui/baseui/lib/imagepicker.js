@@ -16,7 +16,9 @@ function ImagePicker(config) {
 }
 
 ImagePicker.prototype = new (domvisual.DOMElement)();
-
+ImagePicker.prototype.getDescription = function () {
+    return "An image selection box";
+};
 ImagePicker.prototype.theme = new (visual.Theme)({
     image: {
         basedOn: [

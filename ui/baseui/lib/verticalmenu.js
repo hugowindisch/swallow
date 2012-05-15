@@ -29,6 +29,9 @@ function VerticalMenu(config) {
     });
 }
 VerticalMenu.prototype = new (domvisual.DOMElement)();
+VerticalMenu.prototype.getDescription = function () {
+    return "A vertical menu";
+};
 VerticalMenu.prototype.theme = new (visual.Theme)({
     menuBox: {
         basedOn: [

@@ -43,12 +43,15 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
                 preview.setPosition('preview');
                 preview.enableInteractions(false);
                 that.addChild(preview, 'preview');
+                // description
+                if (Constr.prototype.getDescription) {
+                    that.children.description.setText(Constr.prototype.getDescription());
+                }
             }
         }
     }
     this.ti = ti;
-    this.children.factoryName.setText(ti.factory);
-    this.children.typeName.setText(ti.type);
+    this.children.name.setText(ti.type + (ti.factory === 'domvisual' ? '' : (' (' + ti.factory + ')')));
     this.children.description.setText(ti.description);
     // show the preview (normally, I would have to load it)
     loadPreview();

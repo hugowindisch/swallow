@@ -640,6 +640,9 @@ function DOMElement(config, groupData) {
     DOMVisual.call(this, config, groupData, document.createElement('div'));
 }
 DOMElement.prototype = new DOMVisual();
+DOMElement.prototype.getDescription = function () {
+    return "A styled rectangle with optional text";
+};
 DOMElement.createPreview = function () {
     return new (exports.DOMImg)({url: 'domvisual/lib/elementpreview.png'});
 };
@@ -658,6 +661,9 @@ function DOMImg(config) {
     DOMVisual.call(this, config, null, document.createElement('img'));
 }
 DOMImg.prototype = new DOMVisual();
+DOMImg.prototype.getDescription = function () {
+    return "A png or jpeg image";
+};
 DOMImg.createPreview = function () {
     return new (DOMImg)({url: 'domvisual/lib/imagepreview.png'});
 };
@@ -670,7 +676,7 @@ DOMImg.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
         "style": null,
-        "url": require('config').imageUrlConfig('Url')
+        "url": require('config').imageUrlConfig('Image')
     };
 };
 DOMImg.prototype.getImageDimensions = function () {
@@ -687,6 +693,9 @@ function DOMVideo(config) {
     DOMVisual.call(this, config, null, document.createElement('video'));
 }
 DOMVideo.prototype = new DOMVisual();
+DOMVideo.prototype.getDescription = function () {
+    return "A movie";
+};
 DOMVideo.createPreview = function () {
     return new (DOMImg)({url: 'domvisual/lib/videopreview.png'});
 };
@@ -850,18 +859,6 @@ DOMCanvas.prototype.getConfigurationSheet = function () {
     return { "width": {}, "height": {} };
 };
 
-
-exports.getVisualNames = function () {
-    return [ 'DOMElement', 'DOMImg', 'DOMVideo' ];
-};
-exports.DOMElement = DOMElement;
-exports.DOMImg = DOMImg;
-exports.DOMVideo = DOMVideo;
-exports.DOMInput = DOMInput;
-exports.DOMSelect = DOMSelect;
-exports.DOMCanvas = DOMCanvas;
-exports.hasTextAttributes = styles.hasTextAttributes;
-
 /*
     We will have to do more than that but we need something to
     setup the topmost container.
@@ -905,5 +902,16 @@ exports.createFullScreenApplication = function (child) {
     dirty.update();
     return child;
 };
+
+exports.getVisualNames = function () {
+    return [ 'DOMElement', 'DOMImg', 'DOMVideo' ];
+};
+exports.DOMElement = DOMElement;
+exports.DOMImg = DOMImg;
+exports.DOMVideo = DOMVideo;
+exports.DOMInput = DOMInput;
+exports.DOMSelect = DOMSelect;
+exports.DOMCanvas = DOMCanvas;
+exports.hasTextAttributes = styles.hasTextAttributes;
 exports.makeKeyString = keycodes.makeKeyString;
 exports.decorateVk = keycodes.decorateVk;

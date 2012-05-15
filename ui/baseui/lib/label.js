@@ -18,7 +18,9 @@ Label.createPreview = function () {
     return new (domvisual.DOMImg)({url: 'baseui/lib/labelpreview.png'});
 };
 Label.prototype = new (domvisual.DOMElement)();
-
+Label.prototype.getDescription = function () {
+    return "A label";
+};
 Label.prototype.theme = new (visual.Theme)({
     text: {
         basedOn: [

@@ -11,6 +11,7 @@ var utils = require('utils'),
     dirty = require('./dirty'),
     position = require('./position'),
     themes = require('./themes'),
+    Theme = themes.Theme,
     isString = utils.isString,
     isObject = utils.isObject,
     applyLayout = position.applyLayout,
@@ -95,6 +96,9 @@ function Visual(config, groupData) {
     }
 }
 Visual.prototype = new EventEmitter();
+Visual.prototype.getDescription = function () {
+    return 'Visual Component';
+};
 Visual.prototype.getSize = function () {
 };
 
@@ -883,6 +887,19 @@ function loadPackage(p, callback) {
     });
 }
 
+/**
+*/
+function inheritVisual(Base, groupData) {
+    var proto = new Base();
+    proto.theme = new Theme(groupData.theme);
+    proto.privateTheme = groupData.privateTheme;
+    proto.getDescription = function () {
+        return groupData.description;
+    };
+    return proto;
+}
+
+
 // export all what we want to export for the module
 exports.Visual = Visual;
 // this should not be there: a Visual is abstract. It should not be exposed
@@ -896,9 +913,10 @@ exports.Position = position.Position;
 exports.matrixIsTranslateOnly = matrixIsTranslateOnly;
 exports.convertScaleToSize = position.convertScaleToSize;
 exports.forVisualAndAllChildrenDeep = forVisualAndAllChildrenDeep;
-exports.Theme = themes.Theme;
+exports.Theme = Theme;
 exports.update = dirty.update;
 exports.getEnclosingRect = position.getEnclosingRect;
 exports.rectToMatrix = position.rectToMatrix;
 exports.loadPackage = loadPackage;
 exports.vec3IsEqual = vec3IsEqual;
+exports.inheritVisual = inheritVisual;

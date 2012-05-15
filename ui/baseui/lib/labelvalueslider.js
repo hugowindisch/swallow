@@ -67,6 +67,9 @@ function LabelValueSlider(config) {
     });
 }
 LabelValueSlider.prototype = new (domvisual.DOMElement)();
+LabelValueSlider.prototype.getDescription = function () {
+    return "A label, input and slider interconnected";
+};
 LabelValueSlider.prototype.getConfigurationSheet = function () {
     return { label: null, value: null, minValue: null, maxValue: null, defaultValue: null };
 };

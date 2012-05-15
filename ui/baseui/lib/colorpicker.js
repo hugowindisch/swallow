@@ -134,6 +134,9 @@ function ColorPicker(config) {
 }
 
 ColorPicker.prototype = new (domvisual.DOMElement)();
+ColorPicker.prototype.getDescription = function () {
+    return "A color picker";
+};
 
 ColorPicker.prototype.theme = new (visual.Theme)({
     background: {

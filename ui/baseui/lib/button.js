@@ -63,6 +63,9 @@ function Button(config) {
     });
 }
 Button.prototype = new (domvisual.DOMElement)();
+Button.prototype.getDescription = function () {
+    return "A Button";
+};
 Button.prototype.theme = new (visual.Theme)({
     background: {
         basedOn: [

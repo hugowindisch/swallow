@@ -14,7 +14,9 @@ function Input(config) {
     domvisual.DOMInput.call(this, config);
     this.setStyle('text');
 }
-
+Input.prototype.getDescription = function () {
+    return "A text input component";
+};
 Input.prototype = new (domvisual.DOMInput)();
 
 Input.createPreview = function () {
@@ -31,7 +33,7 @@ Input.prototype.theme = new (visual.Theme)({
 });
 
 Input.prototype.getConfigurationSheet = function () {
-    return { text: require('config').inputConfig('Text') }; 
+    return { text: require('config').inputConfig('Text') };
 };
 
 exports.Input = Input;

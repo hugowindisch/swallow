@@ -192,19 +192,14 @@ exports.definition = {
                     matrix: [ 60, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   5, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                factoryName: {
+                name: {
                     order: 2,
-                    matrix: [ 100, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
-                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                typeName: {
-                    order: 3,
-                    matrix: [ 200, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 25, 0, 1 ],
+                    matrix: [ 240, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
                     order: 4,
-                    matrix: [ 300, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   180, 5, 0, 1 ],
+                    matrix: [ 240, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   75, 25, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 configurationSheet: {
@@ -222,20 +217,13 @@ exports.definition = {
                         "style": "selected"
                     }
                 },
-                factoryName: {
+                name: {
                     factory: "baseui",
                     type: "Label",
-                    position: "factoryName",
+                    position: "name",
                     config: {
-                        "text": "factory name"
-                    }
-                },
-                typeName: {
-                    factory: "baseui",
-                    type: "Label",
-                    position: "typeName",
-                    config: {
-                        "text": "type name"
+                        "text": "factory name",
+                        "bold": true
                     }
                 },
                 description: {

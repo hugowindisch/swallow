@@ -74,6 +74,10 @@ function Slider(config) {
 
 Slider.prototype = new (domvisual.DOMElement)();
 
+Slider.prototype.getDescription = function () {
+    return "An horizontal Slider";
+};
+
 Slider.prototype.theme = new (visual.Theme)({
     background: {
         data: [

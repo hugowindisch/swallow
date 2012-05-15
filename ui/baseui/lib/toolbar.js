@@ -28,6 +28,9 @@ function Toolbar(config) {
     };
 }
 Toolbar.prototype = new (domvisual.DOMElement)();
+Toolbar.prototype.getDescription = function () {
+    return "A toolbar that will show menuitems";
+};
 Toolbar.createPreview = function () {
     return new (domvisual.DOMImg)({url: 'baseui/lib/toolbarpreview.png'});
 };

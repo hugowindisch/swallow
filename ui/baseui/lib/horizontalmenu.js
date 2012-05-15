@@ -46,6 +46,9 @@ function HorizontalMenu(config) {
     });
 }
 HorizontalMenu.prototype = new (domvisual.DOMElement)();
+HorizontalMenu.prototype.getDescription = function () {
+    return "A menu bar";
+};
 HorizontalMenu.createPreview = function () {
     return new (domvisual.DOMImg)({url: 'baseui/lib/menupreview.png'});
 };
