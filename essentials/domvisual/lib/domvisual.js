@@ -833,6 +833,7 @@ exports.DOMVideo = DOMVideo;
 exports.DOMInput = DOMInput;
 exports.DOMSelect = DOMSelect;
 exports.DOMCanvas = DOMCanvas;
+exports.hasTextAttributes = styles.hasTextAttributes;
 
 /*
     We will have to do more than that but we need something to

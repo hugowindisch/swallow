@@ -5,9 +5,7 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    hasTextAttributes = domvisual.hasTextAttributes;
 
 function StyleInfo(config) {
     // call the baseclass
@@ -42,11 +40,10 @@ StyleInfo.prototype.setEditedStyle = function (st) {
         innerPreview = preview.children.preview,
         label = children.label;
 
-    innerPreview.setInnerText('Abc');
     innerPreview.setStyle(st.factory === null ? st.style : st);
     label.setText(st.style);
-
     this.editedStyle = st;
+    this.showOrHideText();
 };
 StyleInfo.prototype.getEditedStyle = function () {
     return this.editedStyle;
@@ -59,6 +56,25 @@ StyleInfo.prototype.previewStyleChange = function (skin) {
         preview = children.preview,
         innerPreview = preview.children.preview;
     innerPreview.setLocalTheme(skin);
+    this.showOrHideText();
+};
+StyleInfo.prototype.showOrHideText = function () {
+    var children = this.children,
+        preview = children.preview,
+        innerPreview = preview.children.preview,
+        jsData;
+    jsData = innerPreview.getStyleData().jsData;
+    if (hasTextAttributes(jsData)) {
+        if (!this.textVisible) {
+            innerPreview.setInnerText('Abc');
+            this.textVisible = true;
+        }
+    } else {
+        if (this.textVisible) {
+            innerPreview.setInnerText('');
+            delete this.textVisible;
+        }
+    }
 };
 
 exports.StyleInfo = StyleInfo;

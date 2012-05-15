@@ -7,7 +7,9 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups,
     utils = require('utils'),
     forEachProperty = utils.forEachProperty,
-    forEach = utils.forEach;
+    forEach = utils.forEach,
+    hasTextAttributes = domvisual.hasTextAttributes;
+
 function StylePreview(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.StylePreview);
@@ -20,10 +22,28 @@ StylePreview.prototype.getConfigurationSheet = function () {
 StylePreview.prototype.setStyle = function (st) {
     var preview = this.children.preview;
     preview.setStyle(st);
+    this.showOrHideText();
 };
 StylePreview.prototype.previewStyleChange = function (skin) {
     var preview = this.children.preview;
     preview.setLocalTheme(skin);
+    this.showOrHideText();
+};
+StylePreview.prototype.showOrHideText = function () {
+    var preview = this.children.preview,
+        jsData;
+    jsData = preview.getStyleData().jsData;
+    if (hasTextAttributes(jsData)) {
+        if (!this.textVisible) {
+            preview.setInnerText('Abc');
+            this.textVisible = true;
+        }
+    } else {
+        if (this.textVisible) {
+            preview.setInnerText('');
+            delete this.textVisible;
+        }
+    }
 };
 
 exports.StylePreview = StylePreview;

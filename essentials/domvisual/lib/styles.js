@@ -53,7 +53,6 @@ borderBottomRightRadius                     Number
 fontFamily                                  String
 fontSize                                    Number
 fontWeight                                  String  (normal bold bolder lighter)
-padding<Left|Right|Top|Bottom>              Number
 color:                                      Color
 textAlign:                                  String (left, right, center)
 
@@ -90,7 +89,25 @@ var utils = require('utils'),
     abs = Math.abs,
     round = Math.round,
     browser = getBrowser(),
-    gradientToCssString;
+    gradientToCssString,
+    textAttributes = {
+        fontFamily: true,
+        fontSize: true,
+        fontWeight: true,
+        color: true,
+        textAlign: true
+    };
+
+function hasTextAttributes(jsData) {
+    var ret = false;
+    forEachProperty(jsData, function (d, name) {
+        if (textAttributes[name]) {
+            ret = true;
+        }
+    });
+    return ret;
+}
+
 
 function hslaToRgba(hsla) {
     var h = hsla.h / 360,
@@ -285,10 +302,6 @@ attributeToCssString = {
     fontFamily: passThroughCSSString,
     fontSize: dimToCSSString,
     fontWeight: passThroughCSSString,
-    paddingLeft: dimToCSSString,
-    paddingRight: dimToCSSString,
-    paddingTop: dimToCSSString,
-    paddingBottom: dimToCSSString,
     color: colorToCSSString,
     textAlign: passThroughCSSString,
     // background
@@ -368,18 +381,6 @@ attributeToCss = {
     fontWeight: function (style, value) {
         style.fontWeight = value;
     },
-    paddingLeft: function (style, value) {
-        style.paddingLeft = value;
-    },
-    paddingRight: function (style, value) {
-        style.paddingRight = value;
-    },
-    paddingTop: function (style, value) {
-        style.paddingTop = value;
-    },
-    paddingBottom: function (style, value) {
-        style.paddingBottom = value;
-    },
     color: function (style, value) {
         style.color = value;
     },
@@ -447,3 +448,4 @@ function getStyleDimensionAdjustment(jsData) {
 exports.clearStyle = clearStyle;
 exports.styleToCss = styleToCss;
 exports.getStyleDimensionAdjustment = getStyleDimensionAdjustment;
+exports.hasTextAttributes = hasTextAttributes;
