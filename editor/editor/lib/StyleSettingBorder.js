@@ -27,7 +27,7 @@ function StyleSettingBorder(config) {
         } else {
             that.styleData.style = v;
         }
-        that.emit('change', that.styleData);
+        that.emit('change', that.styleData, children.synchCheck.getValue());
     });
     children.width.on('change', function (v) {
         if (v === undefined) {
@@ -35,7 +35,7 @@ function StyleSettingBorder(config) {
         } else {
             that.styleData.width = v;
         }
-        that.emit('change', that.styleData);
+        that.emit('change', that.styleData, children.synchCheck.getValue());
     });
     children.width.on('preview', function (v) {
         if (v === undefined) {
@@ -43,26 +43,26 @@ function StyleSettingBorder(config) {
         } else {
             that.styleData.width = v;
         }
-        that.emit('preview', that.styleData);
+        that.emit('preview', that.styleData, children.synchCheck.getValue());
     });
     children.colorCheck.on('click', function (v) {
         delete that.styleData.color;
-        that.emit('change', that.styleData);
+        that.emit('change', that.styleData, children.synchCheck.getValue());
     });
     children.color.on('change', function (v) {
         that.styleData.color = v;
         children.colorCheck.setValue(true);
-        that.emit('change', that.styleData);
+        that.emit('change', that.styleData, children.synchCheck.getValue());
     });
     children.color.on('preview', function (v) {
         that.styleData.color = v;
         children.colorCheck.setValue(true);
-        that.emit('preview', that.styleData);
+        that.emit('preview', that.styleData, children.synchCheck.getValue());
     });
 
     children.clear.on('click', function () {
         that.styleData = {};
-        that.emit('reset', that.styleData);
+        that.emit('reset', that.styleData, children.synchCheck.getValue());
     });
 }
 StyleSettingBorder.prototype = new (domvisual.DOMElement)();

@@ -23,14 +23,14 @@ function StyleSettingCorner(config) {
         return that.styleData;
     }
     children.radius.on('change', function (v) {
-        that.emit('change', setRadius(v));
+        that.emit('change', setRadius(v), children.synchCheck.getValue());
     });
     children.radius.on('preview', function (v) {
-        that.emit('preview', setRadius(v));
+        that.emit('preview', setRadius(v), children.synchCheck.getValue());
     });
     children.clear.on('click', function () {
         that.styleData = {};
-        that.emit('reset', that.styleData);
+        that.emit('reset', that.styleData, children.synchCheck.getValue());
     });
 }
 StyleSettingCorner.prototype = new (domvisual.DOMElement)();

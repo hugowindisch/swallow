@@ -211,7 +211,7 @@ DOMVisual.prototype.notifyDOMChanged = function () {
             // some kind of delay seems to be needed (so that
             // the browser regenerates its content and it becomes possible
             // to measure it correctly...)
-            setTimeout(emitter(v), 100);
+            setTimeout(emitter(v), 20);
             break;
         }
         if (v !== that && !v.htmlFlowing) {

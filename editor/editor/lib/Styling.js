@@ -5,15 +5,13 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
-    glmatrix = require('glmatrix'),
     utils = require('utils'),
     isString = utils.isString,
     StyleInfo = require('./StyleInfo').StyleInfo,
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEach,
     deepCopy = utils.deepCopy,
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3,
+    apply = utils.apply,
     styleFeatures = {
         tl: {
             attributes: {
@@ -104,7 +102,18 @@ var visual = require('visual'),
             FeatureEditor: require('./StyleSettingShadow').StyleSettingShadow,
             config: { label: 'Shadow' }
         }
-
+    },
+    allCorners = [ 'tl', 'tr', 'bl', 'br' ],
+    allBorders = [ 'l', 'r', 'b', 't' ],
+    styleSync = {
+        tl: allCorners,
+        tr: allCorners,
+        bl: allCorners,
+        br: allCorners,
+        l: allBorders,
+        r: allBorders,
+        t: allBorders,
+        b: allBorders
     };
 
 function isLocalStyle(st) {
@@ -150,6 +159,20 @@ function editorAttributesToStyleAttributes(selector, data) {
     return result;
 }
 
+function editorAttributesToStyleAttributesSync(featureName, data, sync) {
+    var ss = styleSync[featureName],
+        res = {};
+    if (sync && ss) {
+        forEach(ss, function (s) {
+            res = apply(res, editorAttributesToStyleAttributes(styleFeatures[s].attributes, deepCopy(data)));
+        });
+        return res;
+    } else {
+        return editorAttributesToStyleAttributes(styleFeatures[featureName].attributes, data);
+    }
+}
+
+
 function Styling(config) {
     this.editedStyle = null;
     // call the baseclass
@@ -181,15 +204,15 @@ function Styling(config) {
             ));
             that.addChild(styleEdit, 'styleEdit', 2);
             styleEdit.setHtmlFlowing(flowing, true);
-            styleEdit.on('change', function (value) {
-                that.setLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
+            styleEdit.on('change', function (value, sync) {
+                that.setLocalStyleFeature(editorAttributesToStyleAttributesSync(featureName, value, sync));
             });
-            styleEdit.on('preview', function (value) {
-                that.previewLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
+            styleEdit.on('preview', function (value, sync) {
+                that.previewLocalStyleFeature(editorAttributesToStyleAttributesSync(featureName, value, sync));
             });
-            styleEdit.on('reset', function (value) {
+            styleEdit.on('reset', function (value, sync) {
                 that.removeChild(styleEdit);
-                that.setLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
+                that.setLocalStyleFeature(editorAttributesToStyleAttributesSync(featureName, value, sync));
                 that.notifyDOMChanged();
             });
         }

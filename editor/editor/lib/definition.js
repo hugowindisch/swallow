@@ -1078,7 +1078,7 @@ exports.definition = {
             }
         },
         StyleSettingCorner: {
-            dimensions: [340, 75, 1],
+            dimensions: [340, 105, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1090,9 +1090,19 @@ exports.definition = {
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
+                synch: {
+                    order: 0,
+                    matrix: [ 200, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                synchCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
                 radius: {
                     order: 0,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1108,6 +1118,18 @@ exports.definition = {
                     type: "CheckBox",
                     position: "clear",
                     config: { value: true }
+                },
+                synch: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "synch",
+                    config: { text: "All corners in synch"}
+                },
+                synchCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "synchCheck",
+                    config: { value: false }
                 },
                 radius: {
                     factory: "editor",
@@ -1118,7 +1140,7 @@ exports.definition = {
             }
         },
         StyleSettingBorder: {
-            dimensions: [340, 300, 1],
+            dimensions: [340, 330, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1130,54 +1152,64 @@ exports.definition = {
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
+                synch: {
+                    order: 0,
+                    matrix: [ 200, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                synchCheck: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
                 width: {
                     order: 0,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 styleLabel: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 90, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 styleSolid: {
                     order: 0,
-                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   65, 60, 0, 1],
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   65, 90, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 styleDashed: {
                     order: 0,
-                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 60, 0, 1],
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 90, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 styleDotted: {
                     order: 0,
-                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   165, 60, 0, 1],
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   165, 90, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 styleNone: {
                     order: 0,
-                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   215, 60, 0, 1],
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   215, 90, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 styleCheck: {
                     order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 60, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 90, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 colorLabel: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 90, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 colorCheck: {
                     order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 90, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 120, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 color: {
                     order: 0,
-                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 150, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1186,13 +1218,25 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     position: "label",
-                    config: { text: "Corner", bold: true}
+                    config: { text: "Border", bold: true}
                 },
                 clear: {
                     factory: "baseui",
                     type: "CheckBox",
                     position: "clear",
                     config: { value: true }
+                },
+                synch: {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "synch",
+                    config: { text: "All borders in synch"}
+                },
+                synchCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    position: "synchCheck",
+                    config: { value: false }
                 },
                 width: {
                     factory: "editor",
