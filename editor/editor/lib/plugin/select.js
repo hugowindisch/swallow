@@ -444,7 +444,7 @@ function setupEditMenu(editor) {
                 c,
                 positions = documentData.positions,
                 selection = viewer.getSelection(),
-                cmdGroup = group.cmdCommandGroup('cmdPaste', 'Paste'),
+                cmdGroup = group.cmdCommandGroup('cmdPaste', 'Paste', { clearSelection: true }),
                 order = group.getTopmostOrder(),
                 minorder,
                 posmap = {},
