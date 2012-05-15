@@ -207,8 +207,11 @@ DOMVisual.prototype.notifyDOMChanged = function () {
     }
     while (v) {
         if (v.listeners('domchanged').length > 0) {
-            // quite ugly
-            setTimeout(emitter(v), 0);
+            // quite ugly FIXME: the 100 here is arbitrary BUT...
+            // some kind of delay seems to be needed (so that
+            // the browser regenerates its content and it becomes possible
+            // to measure it correctly...)
+            setTimeout(emitter(v), 100);
             break;
         }
         if (v !== that && !v.htmlFlowing) {
@@ -675,8 +678,8 @@ DOMImg.prototype.setUrl = function (url) {
 DOMImg.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
-        "style": null,
-        "url": require('config').imageUrlConfig('Image')
+        "url": require('config').imageUrlConfig('Image'),
+        "style": require('config').styleConfig('Style:')
     };
 };
 DOMImg.prototype.getImageDimensions = function () {
@@ -707,8 +710,8 @@ DOMVideo.prototype.setUrl = function (url) {
 DOMVideo.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
-        "style": null,
-        "url": require('config').inputConfig('Url')
+        "url": require('config').inputConfig('Url'),
+        "style": require('config').styleConfig('Style:')
     };
 };
 
