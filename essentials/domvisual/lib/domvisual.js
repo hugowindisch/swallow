@@ -647,7 +647,7 @@ DOMElement.createPreview = function () {
 DOMElement.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
-        "innerText": require('config').inputConfig('Text'),
+        "innerText": require('config').inputConfigFullLine('Text'),
         "style": require('config').styleConfig('Style:')
     };
 };
@@ -745,6 +745,33 @@ DOMInput.prototype.getChecked = function (state) {
 
 DOMInput.prototype.getConfigurationSheet = function () {
     return { "class": {}, "style": {}, "text": {}, "type": {} };
+};
+
+///////////////
+// a text area tag
+// this is pretty bad... because of the difficulty of sizing it...
+function DOMTextArea(config) {
+}
+DOMTextArea.prototype = new DOMVisual();
+DOMTextArea.prototype.getConfigurationSheet = function () {
+    return { "text": {}, "rows": {}, "cols": {} };
+};
+DOMTextArea.prototype.setText = function (txt) {
+    this.element.value = txt;
+    return this;
+};
+DOMTextArea.prototype.setValue = DOMTextArea.prototype.setText;
+DOMTextArea.prototype.getText = function (txt) {
+    return this.element.value;
+};
+DOMTextArea.prototype.getValue = DOMTextArea.prototype.getText;
+DOMTextArea.prototype.setRows = function (r) {
+    this.element.rows = r;
+    return this;
+};
+DOMTextArea.prototype.setCols = function (c) {
+    this.element.cols = c;
+    return this;
 };
 
 ///////////////

@@ -70,8 +70,8 @@ function topBottomConfig(
     factory,
     type,
     config,
-    lineHeight,
     lineWidth,
+    lineHeight,
     labelHeight,
     cb
 ) {
@@ -98,6 +98,34 @@ function topBottomConfig(
         cb(null, cnt);
         cnt.setDimensions([lineWidth, lineHeight, 1]);
     });
+}
+
+function inputConfigFullLine(label) {
+    return function (editor, cb) {
+        topBottomConfig(
+            label,
+            'baseui',
+            'Input',
+            {},
+            360,
+            50,
+            25,
+            function (err, ctrl) {
+                if (err) {
+                    return cb(err);
+                }
+                // we should setup the editor that we got,
+                // to add set data and get data and notification
+                ctrl.setData = function (txt) {
+                    ctrl.children.data.setText(txt);
+                };
+                ctrl.getData = function () {
+                    return ctrl.children.data.getText();
+                };
+                cb(err, ctrl);
+            }
+        );
+    };
 }
 
 function inputConfig(label) {
@@ -190,8 +218,8 @@ function imageUrlConfig(label) {
                     'baseui',
                     'ImagePicker',
                     { urls: jsonData },
-                    100,
                     390,
+                    100,
                     25,
                     function (err, ctrl) {
                         if (err) {
@@ -224,5 +252,6 @@ function imageUrlConfig(label) {
 
 exports.leftRightConfig = leftRightConfig;
 exports.inputConfig = inputConfig;
+exports.inputConfigFullLine = inputConfigFullLine;
 exports.imageUrlConfig = imageUrlConfig;
 exports.styleConfig = styleConfig;
