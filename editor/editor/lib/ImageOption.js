@@ -10,6 +10,7 @@ var utils = require('utils'),
 */
 function ImageOption(options, optionalCheck) {
     this.options = options;
+    this.optionalCheck = optionalCheck;
     var that = this,
         i,
         l = arguments.length,
@@ -45,6 +46,9 @@ ImageOption.prototype.setSelectedValue = function (c) {
     if (selOption) {
         this.selected = c;
         selOption[2].setUrl(selOption[0]);
+    }
+    if (this.optionalCheck) {
+        this.optionalCheck.setValue(Boolean(selOption));
     }
 };
 ImageOption.prototype.getSelectedValue = function (c) {

@@ -7,9 +7,19 @@ var visual = require('visual'),
     groups = require('./definition').definition.groups,
     utils = require('utils'),
     limitRange = utils.limitRange,
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    ImageOption = require('./ImageOption').ImageOption;
+/*
+function StyleSettingText(config) {
+    // call the baseclass
+    domvisual.DOMElement.call(this, config, groups.StyleSettingText);
+    var children = this.children,
+        that = this;
+
+    this.fontWeight = new ImageOption({
+        'normal':  [ 'editor/lib/fsnormal_s.png', 'editor/lib/fsnormal.png', children.fontWeightNormal ],
+        'bold': [ 'editor/lib/fsbold_s.png', 'editor/lib/fsbold.png', children.fontWeightBold ]
+    }, children.fontWeightCheck);
+*/
 
 function ComponentInfo(config) {
     // call the baseclass
@@ -20,8 +30,23 @@ ComponentInfo.prototype.getConfigurationSheet = function () {
     return { typeInfo: {} };
 };
 ComponentInfo.prototype.init = function (editor) {
-    var viewer = editor.getViewer(),
+    var that = this,
+        viewer = editor.getViewer(),
         children = this.children;
+
+    this.overflowX = new ImageOption({
+        'visible':  [ 'editor/lib/ofxvisible_s.png', 'editor/lib/ofxvisible.png', children.overflowXVisible ],
+        'hidden':  [ 'editor/lib/ofxhidden_s.png', 'editor/lib/ofxhidden.png', children.overflowXHidden ],
+        'auto':  [ 'editor/lib/ofxauto_s.png', 'editor/lib/ofxauto.png', children.overflowXAuto ],
+        'scroll':  [ 'editor/lib/ofxscroll_s.png', 'editor/lib/ofxscroll.png', children.overflowXScroll ]
+    });
+
+    this.overflowY = new ImageOption({
+        'visible':  [ 'editor/lib/ofyvisible_s.png', 'editor/lib/ofyvisible.png', children.overflowYVisible ],
+        'hidden':  [ 'editor/lib/ofyhidden_s.png', 'editor/lib/ofyhidden.png', children.overflowYHidden ],
+        'auto':  [ 'editor/lib/ofyauto_s.png', 'editor/lib/ofyauto.png', children.overflowYAuto ],
+        'scroll':  [ 'editor/lib/ofyscroll_s.png', 'editor/lib/ofyscroll.png', children.overflowYScroll ]
+    });
 
     function updateDoc() {
         var group = viewer.getGroup(),
@@ -32,7 +57,9 @@ ComponentInfo.prototype.init = function (editor) {
             children.description.getText(),
             children.privateCheck.getChecked(),
             gridSize,
-            children.privateStylesCheck.getChecked()
+            children.privateStylesCheck.getChecked(),
+            that.overflowX.getSelectedValue(),
+            that.overflowY.getSelectedValue()
         ));
     }
 
@@ -45,6 +72,8 @@ ComponentInfo.prototype.init = function (editor) {
         children.privateCheck.setChecked(documentData.private === true);
         children.privateStylesCheck.setChecked(documentData.privateTheme === true);
         children.grid.setValue(documentData.gridSize);
+        that.overflowX.setSelectedValue(documentData.overflowX);
+        that.overflowY.setSelectedValue(documentData.overflowY);
     }
 
     children.w.on('change', updateDoc);
@@ -54,6 +83,8 @@ ComponentInfo.prototype.init = function (editor) {
     children.privateStylesCheck.on('change', updateDoc);
     children.grid.on('change', updateDoc);
     viewer.on('updateSelectionControlBox', updateControls);
+    this.overflowX.on('change', updateDoc);
+    this.overflowY.on('change', updateDoc);
     updateControls();
 };
 

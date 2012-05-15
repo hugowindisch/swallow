@@ -963,6 +963,7 @@ GroupViewer.prototype.setGroup = function (group) {
         processCommand(name, message, hint, forEachSubCommand);
         // if it is a group, also process the subcommands
         if (forEachSubCommand) {
+            redraw = false;
             // if the command is a group
             forEachSubCommand(processCommand);
         }

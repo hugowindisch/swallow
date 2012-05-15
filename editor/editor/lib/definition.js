@@ -552,7 +552,7 @@ exports.definition = {
             children: {}
         },
         ComponentInfo: {
-            dimensions: [ 360, 170, 0],
+            dimensions: [ 360, 230, 0],
             positions: {
                 wLabel: {
                     order: 0,
@@ -585,34 +585,85 @@ exports.definition = {
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
+                overflowXLabel : {
+                    order: 3,
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                overflowXVisible: {
+                    order: 3,
+                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   75, 55, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                overflowXHidden: {
+                    order: 3,
+                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   105, 55, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                overflowXAuto: {
+                    order: 3,
+                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   135, 55, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                overflowXScroll: {
+                    order: 3,
+                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   165, 55, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                overflowYLabel : {
+                    order: 3,
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 85, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                overflowYVisible: {
+                    order: 3,
+                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   75, 85, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                overflowYHidden: {
+                    order: 3,
+                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   105, 85, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                overflowYAuto: {
+                    order: 3,
+                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   135, 85, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                overflowYScroll: {
+                    order: 3,
+                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   165, 85, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+
                 descriptionLabel: {
                     order: 4,
-                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 115, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 privateLabel: {
                     order: 5,
-                    matrix: [ 200, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   25, 105, 0, 1 ],
+                    matrix: [ 200, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   25, 165, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 privateStylesLabel: {
                     order: 5,
-                    matrix: [ 200, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   25, 130, 0, 1 ],
+                    matrix: [ 200, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   25, 190, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
                     order: 6,
-                    matrix: [ 355, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    matrix: [ 355, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 140, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 privateCheck: {
                     order: 7,
-                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 100, 0, 1 ],
+                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 160, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 privateStylesCheck: {
                     order: 7,
-                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 125, 0, 1 ],
+                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 185, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -712,7 +763,88 @@ exports.definition = {
                     config: {
                         "type": "checkbox"
                     }
+                },
+                overflowXLabel : {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "overflowXLabel",
+                    config: {
+                        "text": "xoverflow:"
+                    }
+                },
+                overflowXVisible: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "overflowXVisible",
+                    config: {
+                        url: 'editor/lib/ofxvisible.png'
+                    }
+                },
+                overflowXHidden: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "overflowXHidden",
+                    config: {
+                        url: 'editor/lib/ofxhidden.png'
+                    }
+                },
+                overflowXAuto: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "overflowXAuto",
+                    config: {
+                        url: 'editor/lib/ofxauto.png'
+                    }
+                },
+                overflowXScroll: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "overflowXScroll",
+                    config: {
+                        url: 'editor/lib/ofxscroll.png'
+                    }
+                },
+                overflowYLabel : {
+                    factory: "baseui",
+                    type: "Label",
+                    position: "overflowYLabel",
+                    config: {
+                        "text": "yoverflow:"
+                    }
+                },
+                overflowYVisible: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "overflowYVisible",
+                    config: {
+                        url: 'editor/lib/ofyvisible.png'
+                    }
+                },
+                overflowYHidden: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "overflowYHidden",
+                    config: {
+                        url: 'editor/lib/ofyhidden.png'
+                    }
+                },
+                overflowYAuto: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "overflowYAuto",
+                    config: {
+                        url: 'editor/lib/ofyauto.png'
+                    }
+                },
+                overflowYScroll: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    position: "overflowYScroll",
+                    config: {
+                        url: 'editor/lib/ofyscroll.png'
+                    }
                 }
+
             }
         },
         LayerInfo: {
@@ -1208,7 +1340,7 @@ exports.definition = {
             }
         },
         StyleSettingText: {
-            dimensions: [340, 330, 1],
+            dimensions: [340, 360, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1301,12 +1433,12 @@ exports.definition = {
                 },
                 colorCheck: {
                     order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 120, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 150, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 color: {
                     order: 0,
-                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 150, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 180, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1500,25 +1632,25 @@ exports.definition = {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
                     position: 'offsetX',
-                    config: { label: 'OffsetX:', value: 0, minValue: -100, maxValue: 100, check: true }
+                    config: { label: 'OffsetX:', value: 0, minValue: -100, maxValue: 100, check: true, checkVisible: false }
                 },
                 offsetY: {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
                     position: 'offsetY',
-                    config: { label: 'OffsetY:', value: 0, minValue: -100, maxValue: 100, check: true }
+                    config: { label: 'OffsetY:', value: 0, minValue: -100, maxValue: 100, check: true, checkVisible: false }
                 },
                 blurRadius: {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
                     position: 'blurRadius',
-                    config: { label: 'Blur:', value: 0, minValue: 0, maxValue: 100, check: true }
+                    config: { label: 'Blur:', value: 0, minValue: 0, maxValue: 100, check: true, checkVisible: false }
                 },
                 spreadRadius: {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
                     position: 'spreadRadius',
-                    config: { label: 'Spread:', value: 0, minValue: 0, maxValue: 100, check: true }
+                    config: { label: 'Spread:', value: 0, minValue: 0, maxValue: 100, check: true, checkVisible: false }
                 },
                 color: {
                     factory: "baseui",

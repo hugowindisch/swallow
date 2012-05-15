@@ -114,6 +114,8 @@ StyleSettingText.prototype.setStyleData = function (st) {
     children.fontFamily.setValue(this.styleData.family || '');
     children.fontFamilyCheck.setValue(this.styleData.family !== undefined);
     children.color.setValue(st.color || { r: 0, g: 0, b: 0, a: 1});
+
+    children.colorCheck.setValue(st.color);
 };
 
 exports.StyleSettingText = StyleSettingText;

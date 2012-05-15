@@ -81,6 +81,7 @@ StyleSettingBorder.prototype.setStyleData = function (st) {
     this.borderStyle.setSelectedValue(this.styleData.style);
     children.width.setValue(this.styleData.width);
     children.color.setValue(st.color || { r: 0, g: 0, b: 0, a: 1});
+    children.colorCheck.setValue(st.color);
 };
 
 exports.StyleSettingBorder = StyleSettingBorder;

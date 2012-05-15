@@ -42,7 +42,7 @@ function LabelValueSliderCheck(config) {
 }
 LabelValueSliderCheck.prototype = new (domvisual.DOMElement)();
 LabelValueSliderCheck.prototype.getConfigurationSheet = function () {
-    return { label: null, value: null, minValue: null, maxValue: null, defaultValue: null, check: null };
+    return { label: null, value: null, minValue: null, maxValue: null, defaultValue: null, check: null, checkVisible: null };
 };
 LabelValueSliderCheck.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
@@ -81,6 +81,9 @@ LabelValueSliderCheck.prototype.updateInput = function () {
 };
 LabelValueSliderCheck.prototype.updateCheck = function () {
     this.children.check.setValue(this.value !== undefined);
+};
+LabelValueSliderCheck.prototype.setCheckVisible = function (visible) {
+    this.children.check.setVisible(visible);
 };
 
 exports.LabelValueSliderCheck = LabelValueSliderCheck;

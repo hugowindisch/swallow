@@ -704,12 +704,19 @@ Visual.prototype.createChildren = function (groupData) {
     Creates the content of this visual element from editor data.
 */
 Visual.prototype.createGroup = function (groupData) {
+    var overflowX, overflowY;
     // set position
     this.setDimensions(groupData.dimensions);
     // set layout
     this.setLayout(groupData);
     // construct our children
     this.createChildren(groupData);
+    // set our clipmode
+    overflowX = groupData.overflowX || 'visible';
+    overflowY = groupData.overflowY || 'visible';
+    if (overflowX !== 'visible' || overflowY !== 'visible') {
+        this.setChildrenClipping([overflowX, overflowY]);
+    }
     return this;
 };
 

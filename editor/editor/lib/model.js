@@ -111,6 +111,12 @@ Group.prototype.normalizeDocument = function () {
     if (!d.theme) {
         d.theme = {};
     }
+    if (!d.overflowX) {
+        d.overflowX = 'visible';
+    }
+    if (!d.overflowY) {
+        d.overflowY = 'visible';
+    }
 };
 /**
     Fixes z orders.
@@ -590,7 +596,15 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
 };
 
 ///////////////////////
-Group.prototype.cmdSetComponentProperties = function (dimensions, description, priv, gridSize, privateStyles) {
+Group.prototype.cmdSetComponentProperties = function (
+    dimensions,
+    description,
+    priv,
+    gridSize,
+    privateStyles,
+    overflowX,
+    overflowY
+) {
     var that = this;
     function doUndo() {
         var documentData = that.documentData,
@@ -598,17 +612,23 @@ Group.prototype.cmdSetComponentProperties = function (dimensions, description, p
             descr = documentData.description,
             gs = documentData.gridSize,
             prv = documentData.private,
-            prvStyles = documentData.privateStyles;
+            prvStyles = documentData.privateStyles,
+            ofx = documentData.overflowX,
+            ofy = documentData.overflowY;
         documentData.dimensions = dimensions;
         documentData.description = description;
         documentData.private = priv;
         documentData.privateStyles = privateStyles;
         documentData.gridSize = gridSize;
+        documentData.overflowX = overflowX;
+        documentData.overflowY = overflowY;
         dimensions = dim;
         description = descr;
         priv = prv;
         privateStyles = prvStyles;
         gridSize = gs;
+        overflowX = ofx;
+        overflowY = ofy;
     }
     return new Command(
         doUndo,
