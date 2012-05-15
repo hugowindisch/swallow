@@ -1477,7 +1477,7 @@ exports.definition = {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
                     position: 'fontSize',
-                    config: { label: 'Size:', value: 8, minValue: 8, maxValue: 60, check: true }
+                    config: { label: 'Size:', value: 8, minValue: 4, maxValue: 120, check: true }
                 },
                 fontWeightLabel: {
                     factory: "baseui",
