@@ -175,7 +175,7 @@ function styleConfig(labelTxt) {
                 var dim = editor.getComputedDimensions();
                 if (!cdim || cdim[0] !== dim[0] || cdim[1] !== dim[1]) {
                     cdim = dim;
-                    cnt.requestDimensions([lineWidth, labelHeight + cdim[1] + 30, 1]);
+                    cnt.requestDimensions([lineWidth, labelHeight + cdim[1], 1]);
                 }
             });
             editor.setEditor(mainEditor);

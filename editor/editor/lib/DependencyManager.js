@@ -67,7 +67,9 @@ DependencyManager.prototype.getStyleList = function () {
                 theme = Constr.prototype.theme;
                 if (theme) {
                     forEachProperty(theme, function (s, name) {
-                        res.push({ factory: factory, type: type, style: name});
+                        if (!s.private) {
+                            res.push({ factory: factory, type: type, style: name});
+                        }
                     });
                 }
             }
