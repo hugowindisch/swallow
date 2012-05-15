@@ -39,11 +39,5 @@ StyleFeatureSelector.prototype.setStyleFeatures = function (stf) {
         ch.setUrl(featureUrl(name, Boolean(stf[name])));
     });
 };
-StyleFeatureSelector.prototype.clearFeatureHighlight = function (feature) {
-    this.children[feature].setUrl(featureUrl(feature, false));
-};
-StyleFeatureSelector.prototype.setFeatureHighlight = function (feature) {
-    this.children[feature].setUrl(featureUrl(feature, true));
-};
 
 exports.StyleFeatureSelector = StyleFeatureSelector;

@@ -188,13 +188,10 @@ function Styling(config) {
                 that.previewLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
             });
             styleEdit.on('reset', function (value) {
-                styleFeature.clearFeatureHighlight(featureName);
                 that.removeChild(styleEdit);
                 that.setLocalStyleFeature(editorAttributesToStyleAttributes(attributes, value));
                 that.notifyDOMChanged();
             });
-            // make sure the thing is highlighted
-            styleFeature.setFeatureHighlight(featureName);
         }
         that.notifyDOMChanged();
     });
@@ -316,6 +313,7 @@ Styling.prototype.setLocalStyleFeature = function (features) {
     skin = viewer.getPreviewTheme();
     stylePreview.previewStyleChange(skin);
     this.getChild('localStylePicker').previewStyleChange(skin);
+    this.updateFeatureSelector();
 };
 
 Styling.prototype.previewLocalStyleFeature = function (features) {
