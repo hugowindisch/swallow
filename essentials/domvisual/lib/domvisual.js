@@ -29,7 +29,7 @@ function DOMVisual(config, groupData, element) {
     this.element = element;
     this.cssClasses = {};
     this.connectedToTheStage = false;
-    this.disableEventHooks = false;
+    this.disableInteractiveEventHooks = false;
     this.visible = true;
     Visual.call(this, config, groupData);
     // this might not be the best idea, maybe overriding addListener would
@@ -41,7 +41,7 @@ function DOMVisual(config, groupData, element) {
 DOMVisual.prototype = new Visual();
 DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     var connectedToTheStage,
-        disableEventHooks,
+        disableInteractiveEventHooks,
         orderDirty = this.dirty ? this.childrenOrder === true : false;
     if (!child) {
         throw new Error('Adding an invalid child ' + child);
@@ -62,11 +62,11 @@ DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
         delete this.dirty.orderDirty;
     }
     connectedToTheStage = this.connectedToTheStage;
-    disableEventHooks = this.disableEventHooks;
+    disableInteractiveEventHooks = this.disableInteractiveEventHooks;
     visual.forVisualAndAllChildrenDeep(child, function (c) {
         c.connectedToTheStage = connectedToTheStage;
-        if (disableEventHooks) {
-            c.disableEventHooks = true;
+        if (disableInteractiveEventHooks) {
+            c.disableInteractiveEventHooks = true;
         }
         // here we should revalidate the hooks for this child
         updateDOMEventHooks(c);
@@ -83,7 +83,7 @@ DOMVisual.prototype.removeChild = function (child) {
     }
     Visual.prototype.removeChild.call(this, child);
     var connectedToTheStage = this.connectedToTheStage,
-        disableEventHooks = this.disableEventHooks;
+        disableInteractiveEventHooks = this.disableInteractiveEventHooks;
     visual.forVisualAndAllChildrenDeep(child, function (c) {
         c.connectedToTheStage = false;
         // here we should revalidate the hooks for this child
@@ -104,7 +104,7 @@ DOMVisual.prototype.setDimensions = function (d) {
 DOMVisual.prototype.enableInteractions = function (enable) {
     var disable = !enable;
     visual.forVisualAndAllChildrenDeep(this, function (c) {
-        c.disableEventHooks = disable;
+        c.disableInteractiveEventHooks = disable;
         // here we should revalidate the hooks for this child
         updateDOMEventHooks(c);
     });
@@ -206,7 +206,7 @@ DOMVisual.prototype.notifyDOMChanged = function () {
         };
     }
     while (v) {
-        if (v.listeners('domchanged').length > 0) {
+        if (v.getListeners('domchanged').length > 0) {
             // quite ugly FIXME: the 100 here is arbitrary BUT...
             // some kind of delay seems to be needed (so that
             // the browser regenerates its content and it becomes possible
@@ -679,7 +679,7 @@ DOMImg.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
         "url": require('config').imageUrlConfig('Image'),
-        "style": require('config').styleConfig('Style:')
+        "style": null //require('config').styleConfig('Style:')
     };
 };
 DOMImg.prototype.getImageDimensions = function () {

@@ -1,6 +1,6 @@
 /**
     domhooks.js
-    
+
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 var utils = require('utils'),
@@ -14,7 +14,7 @@ var utils = require('utils'),
     hookMap;
 
 /**
-    Filters a key event to uniformize it. 
+    Filters a key event to uniformize it.
 */
 function FilterKeyEvent(evt) {
     var ret = {
@@ -25,7 +25,7 @@ function FilterKeyEvent(evt) {
             altKey: evt.altKey
         },
         vk = numToVk(evt.keyCode);
-        
+
     ret.keyString = makeKeyString(
         vk,
         evt.ctrlKey,
@@ -54,7 +54,7 @@ function getTopmostElement(vis) {
     var el = vis.element;
     while (el.parentNode) {
         el = el.parentNode;
-    }       
+    }
     return el;
 }
 
@@ -66,71 +66,84 @@ hookMap = {
         getDOMElement: function (vis) {
             return document;
         },
-        filterEvent: FilterKeyEvent
+        filterEvent: FilterKeyEvent,
+        interactive: true
     },
     keyup: {
         getDOMElement: function (vis) {
             return document;
         },
-        filterEvent: FilterKeyEvent
+        filterEvent: FilterKeyEvent,
+        interactive: true
     },
     resize: {
         getDOMElement: function (vis) {
             return window;
-        }            
+        }
     },
     click: {
-        getDOMElement: function (vis) {            
+        getDOMElement: function (vis) {
             return vis.element;
-        }            
+        },
+        interactive: true
     },
     mousedown: {
-        getDOMElement: function (vis) {            
+        getDOMElement: function (vis) {
             return vis.element;
-        }            
+        },
+        interactive: true
     },
     mousedownt: {
         domEvent: 'mousedown',
-        getDOMElement: getTopmostElement
+        getDOMElement: getTopmostElement,
+        interactive: true
     },
     mousedownc: {
         capture: true,
         domEvent: 'mousedown',
-        getDOMElement: getTopmostElement
+        getDOMElement: getTopmostElement,
+        interactive: true
     },
     mouseup: {
-        getDOMElement: function (vis) {            
+        getDOMElement: function (vis) {
             return vis.element;
-        }            
+        },
+        interactive: true
     },
     mouseupc: {
         capture: true,
         domEvent: 'mouseup',
-        getDOMElement: getTopmostElement
+        getDOMElement: getTopmostElement,
+        interactive: true
     },
     mouseupt: {
         domEvent: 'mouseup',
-        getDOMElement: getTopmostElement
+        getDOMElement: getTopmostElement,
+        interactive: true
     },
     mouseover: {
-        getDOMElement: function (vis) {            
+        getDOMElement: function (vis) {
             return vis.element;
-        }            
+        },
+        interactive: true
     },
     mousemove: {
-        getDOMElement: function (vis) {            
+        getDOMElement: function (vis) {
             return vis.element;
-        }            
+        },
+        interactive: true
     },
     mousemovec: {
         capture: true,
         domEvent: 'mousemove',
-        getDOMElement: getTopmostElement
+        getDOMElement: getTopmostElement,
+        interactive: true
     },
     mouseout: {
-        getDOMElement: function (vis) {            
+        getDOMElement: function (vis) {
             return vis.element;
-        }            
+        },
+        interactive: true
     },
     change: {
         getDOMElement: function (vis) {
@@ -147,7 +160,7 @@ hookMap = {
             return vis.element;
         }
     }
-    
+
 };
 
 
@@ -183,12 +196,12 @@ function enforceDOMHooks(v) {
 */
 function removeDOMHook(v, event, hook) {
     var hooks = v.domHooks,
-        element;   
+        element;
     // we must be unhooked from keydown
     if (hooks && hooks[event]) {
         element = hook.getDOMElement(v);
         element.removeEventListener(
-            hook.domEvent ? hook.domEvent : event, 
+            hook.domEvent ? hook.domEvent : event,
             hooks[event],
             hook.capture === true
         );
@@ -201,11 +214,11 @@ function removeDOMHook(v, event, hook) {
 */
 function addDOMHook(v, event, hook) {
     var hooks = enforceDOMHooks(v);
-    if (!hooks[event]) {    
+    if (!hooks[event]) {
         hooks[event] = { handleEvent: createHandler(event, v, hook.filterEvent) };
         hook.getDOMElement(v).addEventListener(
-            hook.domEvent ? hook.domEvent : event, 
-            hooks[event], 
+            hook.domEvent ? hook.domEvent : event,
+            hooks[event],
             hook.capture === true
         );
     }
@@ -216,17 +229,18 @@ function addDOMHook(v, event, hook) {
     This will inspect the type of events that we have and update the
     dom event hooks accordingly (i.e. connect us to the keyboard and mouse
     or not).
-*/   
+*/
 
 updateDOMEventHooks = function (v) {
-    var enabled = v.connectedToTheStage && !v.disableEventHooks;
+    var enabled = v.connectedToTheStage,
+        interactiveEnabled = !v.disableInteractiveEventHooks;
     forEachProperty(hookMap, function (value, key) {
-        var listeners = v.listeners(key);
-        if (enabled && listeners.length > 0) {
+        var listeners = v.getListeners(key);
+        if ((!value.interactive || interactiveEnabled) && listeners.length > 0) {
             addDOMHook(v, key, value);
         } else {
             removeDOMHook(v, key, value);
-        }        
+        }
     });
 };
 
