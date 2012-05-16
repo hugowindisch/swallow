@@ -42,7 +42,7 @@ ImageViewer.createPreview = function () {
 
 ImageViewer.prototype.getConfigurationSheet = function () {
     return {
-        url: require('config').imageUrlConfig('ImageViewer'),
+        url: require('config').imageUrlConfig('Image'),
         scaling: null
     };
 };
