@@ -565,7 +565,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1358,7 +1358,10 @@
       </g>
     </g>
     <g
-       id="g4908">
+       id="g4908"
+       inkscape:export-filename="/home/hugo/source/hugo/swagup/editor/editor/lib/snapcpx.png"
+       inkscape:export-xdpi="31.84"
+       inkscape:export-ydpi="31.84">
       <rect
          ry="6.1538463"
          y="371.40475"
