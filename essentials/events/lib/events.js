@@ -66,6 +66,8 @@ EventEmitter.prototype.removeAllListeners = function (event) {
 EventEmitter.prototype.setMaxListeners = function (n) {
     // FIXME: NOT SUPPORTED YET (this behaves weirdly in node)
 };
+// this sucks badly (imo) because we get something and something potentially
+// gets created.
 EventEmitter.prototype.listeners = function (event) {
     var events = ensureEvents(this),
         ret = events[event];
@@ -73,6 +75,20 @@ EventEmitter.prototype.listeners = function (event) {
         ret = events[event] = [];
     } else if (!(ret instanceof Array)) {
         ret = events[event] = [ret];
+    }
+    return ret;
+};
+// same as above without altering the emitter
+EventEmitter.prototype.getListeners = function (event) {
+    var ret;
+    if (this._events) {
+        ret = this._events[event] || [];
+        // buggy: what if the listener IS an array?
+        if (!(ret instanceof Array)) {
+            ret = [ret];
+        }
+    } else {
+        ret = [];
     }
     return ret;
 };
