@@ -51,6 +51,7 @@ exports.Slider = require('./slider').Slider;
 exports.LabelValueSlider = require('./labelvalueslider').LabelValueSlider;
 exports.ColorPicker = require('./colorpicker').ColorPicker;
 exports.CheckBox = require('./checkbox').CheckBox;
+exports.ImageViewer = require('./imageviewer').ImageViewer;
 
 // note: this should be last
 // we want this to be able to run as a standalone application
