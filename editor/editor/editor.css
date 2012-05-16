@@ -29,6 +29,11 @@
     border-color: blue;
 }
 
+.editor_layoutAnchorCpx {
+    border-color: green;
+}
+
+
 .editor_emptyPosition {
     background: #ffffff; /* Old browsers */
     /* IE9 SVG, needs conditional override of 'filter' to 'none' */

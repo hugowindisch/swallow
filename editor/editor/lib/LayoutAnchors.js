@@ -13,6 +13,7 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3,
     anchorColor = {
         px: 'editor_layoutAnchorPx',
+        cpx: 'editor_layoutAnchorCpx',
         '%': 'editor_layoutAnchorPercent'
     };
 
@@ -71,6 +72,7 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
         sb,
         a,
         ac,
+        target,
         anchors = this.anchors;
     this.removeAllChildren();
 
@@ -78,12 +80,13 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
     a = anchors.right;
     ac = anchorColor[a];
     if (ac) {
-        if ((prmaxx - xmax) > small) {
-            this.h(xmax, prmaxx, ymid, ac);
+        target = (a === 'cpx' ? prmidx : prmaxx);
+        if ((target - xmax) > small) {
+            this.h(xmax, target, ymid, ac);
             if (ymid > prmaxy) {
-                this.v(prmaxx, ymid, prmaxy, ac);
+                this.v(target, ymid, prmaxy, ac);
             } else if (ymid < prminy) {
-                this.v(prmaxx, prminy, ymid, ac);
+                this.v(target, prminy, ymid, ac);
             }
         } else {
             d = xmax + big;
@@ -94,14 +97,14 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
                     d2 = big;
                 }
                 this.v(d, ymid, ymid - d2, ac);
-                this.h(d, prmaxx, ymid - d2, ac);
+                this.h(d, target, ymid - d2, ac);
             } else {
                 d2 = small + prminy - ymid;
                 if (d2 < small) {
                     d2 = big;
                 }
                 this.v(d, ymid, ymid + d2, ac);
-                this.h(d, prmaxx, ymid + d2, ac);
+                this.h(d, target, ymid + d2, ac);
             }
         }
     }
@@ -109,12 +112,13 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
     a = anchors.left;
     ac = anchorColor[a];
     if (ac) {
-        if ((xmin - prminx) > small) {
-            this.h(xmin, prminx, ymid, ac);
+        target = (a === 'cpx' ? prmidx : prminx);
+        if ((xmin - target) > small) {
+            this.h(xmin, target, ymid, ac);
             if (ymid > prmaxy) {
-                this.v(prminx, ymid, prmaxy, ac);
+                this.v(target, ymid, prmaxy, ac);
             } else if (ymid < prminy) {
-                this.v(prminx, prminy, ymid, ac);
+                this.v(target, prminy, ymid, ac);
             }
         } else {
             d = xmin - big;
@@ -125,14 +129,14 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
                     d2 = big;
                 }
                 this.v(d, ymid, ymid - d2, ac);
-                this.h(d, prminx, ymid - d2, ac);
+                this.h(d, target, ymid - d2, ac);
             } else {
                 d2 = small + prminy - ymid;
                 if (d2 < small) {
                     d2 = big;
                 }
                 this.v(d, ymid, ymid + d2, ac);
-                this.h(d, prminx, ymid + d2, ac);
+                this.h(d, target, ymid + d2, ac);
             }
         }
     }
@@ -141,12 +145,13 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
     a = anchors.bottom;
     ac = anchorColor[a];
     if (ac) {
-        if ((prmaxy - ymax) > small) {
-            this.v(xmid, ymax, prmaxy, ac);
+        target = (a === 'cpx' ? prmidy : prmaxy);
+        if ((target - ymax) > small) {
+            this.v(xmid, ymax, target, ac);
             if (xmid > prmaxx) {
-                this.h(xmid, prmaxx, prmaxy, ac);
+                this.h(xmid, prmaxx, target, ac);
             } else if (xmid < prminx) {
-                this.h(xmid, prminx, prmaxy, ac);
+                this.h(xmid, prminx, target, ac);
             }
         } else {
             d = ymax + big;
@@ -157,14 +162,14 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
                     d2 = big;
                 }
                 this.h(xmid, xmid - d2, d, ac);
-                this.v(xmid - d2, prmaxy, d, ac);
+                this.v(xmid - d2, target, d, ac);
             } else {
                 d2 = small + prminx - xmid;
                 if (d2 < small) {
                     d2 = big;
                 }
                 this.h(xmid, xmid + d2, d, ac);
-                this.v(xmid + d2, prmaxy, d, ac);
+                this.v(xmid + d2, target, d, ac);
             }
         }
     }
@@ -172,12 +177,13 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
     a = anchors.top;
     ac = anchorColor[a];
     if (ac) {
-        if ((ymin - prminy) > small) {
-            this.v(xmid, ymin, prminy, ac);
+        target = (a === 'cpx' ? prmidy : prminy);
+        if ((ymin - target) > small) {
+            this.v(xmid, ymin, target, ac);
             if (xmid < prminx) {
-                this.h(xmid, prminx, prminy, ac);
+                this.h(xmid, prminx, target, ac);
             } else if (xmid > prmaxx) {
-                this.h(xmid, prmaxx, prminy, ac);
+                this.h(xmid, prmaxx, target, ac);
             }
         } else {
             d = ymin - big;
@@ -188,14 +194,14 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
                     d2 = big;
                 }
                 this.h(xmid, xmid - d2, d, ac);
-                this.v(xmid - d2, prminy, d, ac);
+                this.v(xmid - d2, target, d, ac);
             } else {
                 d2 = small + prminx - xmid;
                 if (d2 < small) {
                     d2 = big;
                 }
                 this.h(xmid, xmid + d2, d, ac);
-                this.v(xmid + d2, prminy, d, ac);
+                this.v(xmid + d2, target, d, ac);
             }
         }
     }
@@ -215,28 +221,28 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
     }
 
     // all snap buttons
-    sb = new SnapButton({snapping: anchors.left});
+    sb = new SnapButton({snapping: anchors.left, cpx: true});
     sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmin - 20, ymid - 9, 0, 1]);
     this.addChild(sb, 'sbLeft');
     sb.on('change', function (snapping) {
         that.emit('anchor', { left: snapping, width: 'auto', right: 'snap' });
     });
 
-    sb = new SnapButton({snapping: anchors.right});
+    sb = new SnapButton({snapping: anchors.right, cpx: true});
     sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmax + 4, ymid - 9, 0, 1]);
     this.addChild(sb, 'sbRight');
     sb.on('change', function (snapping) {
         that.emit('anchor', { right: snapping, width: 'auto', left: 'snap' });
     });
 
-    sb = new SnapButton({snapping: anchors.top});
+    sb = new SnapButton({snapping: anchors.top, cpx: true});
     sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmid - 9, ymin - 20, 0, 1]);
     this.addChild(sb, 'sbTop');
     sb.on('change', function (snapping) {
         that.emit('anchor', { top: snapping, height: 'auto', bottom: 'snap'});
     });
 
-    sb = new SnapButton({snapping: anchors.bottom});
+    sb = new SnapButton({snapping: anchors.bottom, cpx: true});
     sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmid - 9, ymax + 4, 0, 1]);
     this.addChild(sb, 'sbBottom');
     sb.on('change', function (snapping) {

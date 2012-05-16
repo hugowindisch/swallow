@@ -12,6 +12,7 @@ var visual = require('visual'),
     snappingUrl = {
         'px': 'editor/lib/snappx.png',
         '%': 'editor/lib/snappercent.png',
+        'cpx': 'editor/lib/snapcpx.png',
         'auto': 'editor/lib/snapnone.png',
         'unknown': 'editor/lib/snapunknown.png'
     },
@@ -20,10 +21,18 @@ var visual = require('visual'),
         '%': 'px',
         'auto': 'px',
         'unknown': 'px'
+    },
+    snappingToggleCpx = {
+        'px': '%',
+        '%': 'cpx',
+        'cpx': 'px',
+        'auto': 'px',
+        'unknown': 'px'
     };
 
 function SnapButton(config) {
     var that = this;
+    this.sToggle = snappingToggle;
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.SnapButton);
     // default snapping to unknown
@@ -32,7 +41,7 @@ function SnapButton(config) {
     }
     // events
     this.on('mousedown', function (evt) {
-        that.setSnapping(snappingToggle[that.snapping] || 'px');
+        that.setSnapping(that.sToggle[that.snapping] || 'px');
         evt.preventDefault();
         evt.stopPropagation();
         that.emit('change', that.snapping);
@@ -41,7 +50,7 @@ function SnapButton(config) {
 }
 SnapButton.prototype = new (domvisual.DOMElement)();
 SnapButton.prototype.getConfigurationSheet = function () {
-    return { snapping: null };
+    return { snapping: null, cpx: null };
 };
 
 /**
@@ -59,6 +68,13 @@ SnapButton.prototype.setSnapping = function (snapping) {
 */
 SnapButton.prototype.getSnapping = function () {
     return this.snapping;
+};
+
+/**
+    Enable cpx.
+*/
+SnapButton.prototype.setCpx = function (enable) {
+    this.sToggle = enable ? snappingToggleCpx : snappingToggle;
 };
 
 

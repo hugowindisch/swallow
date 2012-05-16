@@ -393,7 +393,7 @@ Group.prototype.cmdSetPositionSnapping = function (name, snapping) {
                 var csn = cs[n];
                 // this allows to force consistency (always having 2 things snapped out of 3)
                 if (s === 'snap') {
-                    if (csn !== 'px' && csn !== '%') {
+                    if (csn !== 'px' && csn !== '%' && csn !== 'cpx') {
                         prev[n] = csn;
                         cs[n] = 'px';
                     }
