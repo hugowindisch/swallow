@@ -30,6 +30,7 @@ function ImageViewer(config) {
         image = this.getChild('image');
     image.on('load', function () {
         that.updateImage();
+        that.emit('load', this.url);
     });
 }
 ImageViewer.prototype = new (domvisual.DOMElement)();
@@ -47,9 +48,15 @@ ImageViewer.prototype.getConfigurationSheet = function () {
     };
 };
 ImageViewer.prototype.setUrl = function (value) {
-    var image = this.getChild('image');
-    image.setUrl(value);
-    image.setVisible(false);
+    if (value !== this.url) {
+        var image = this.getChild('image');
+        this.url = value;
+        image.setUrl(value);
+        image.setVisible(false);
+    }
+};
+ImageViewer.prototype.getUrl = function () {
+    return this.url;
 };
 ImageViewer.prototype.setScaling = function (s) {
     this.scaling = s;
