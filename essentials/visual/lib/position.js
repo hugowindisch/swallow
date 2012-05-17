@@ -105,7 +105,7 @@ Position.prototype.computeDstRect = function (
         dstRect[0][0] = srcRect[0][0];
         break;
     case '%':
-        dstRect[0][0] = containerDimensions[0] - (containerDimensions[0] * (srcRect[1][0] - srcRect[0][0]) / layoutDimensions[0]);
+        dstRect[0][0] = containerDimensions[0] * srcRect[0][0] / layoutDimensions[0];
         break;
     case 'cpx':
         dstRect[0][0] = (containerDimensions[0] / 2) - ((layoutDimensions[0] / 2) - srcRect[0][0]);
@@ -116,7 +116,7 @@ Position.prototype.computeDstRect = function (
         dstRect[1][0] = containerDimensions[0] - (layoutDimensions[0] - srcRect[1][0]);
         break;
     case '%':
-        dstRect[1][0] = containerDimensions[0] - (containerDimensions[0] * (layoutDimensions[0] - srcRect[1][0]) / layoutDimensions[0]);
+        dstRect[1][0] = containerDimensions[0] * srcRect[1][0] / layoutDimensions[0];
         break;
     case 'cpx':
         dstRect[1][0] = (containerDimensions[0] / 2) - ((layoutDimensions[0] / 2) - srcRect[1][0]);
@@ -127,7 +127,7 @@ Position.prototype.computeDstRect = function (
         dstRect[0][1] = srcRect[0][1];
         break;
     case '%':
-        dstRect[0][1] = containerDimensions[1] - (containerDimensions[1] * (srcRect[1][1] - srcRect[0][1]) / layoutDimensions[1]);
+        dstRect[0][1] = containerDimensions[1] * srcRect[0][1] / layoutDimensions[1];
         break;
     case 'cpx':
         dstRect[0][1] = (containerDimensions[1] / 2) - ((layoutDimensions[1] / 2) - srcRect[0][1]);
@@ -138,7 +138,7 @@ Position.prototype.computeDstRect = function (
         dstRect[1][1] = containerDimensions[1] - (layoutDimensions[1] - srcRect[1][1]);
         break;
     case '%':
-        dstRect[1][1] = containerDimensions[1] - (containerDimensions[1] * (layoutDimensions[1] - srcRect[1][1]) / layoutDimensions[1]);
+        dstRect[1][1] = containerDimensions[1] * srcRect[1][1] / layoutDimensions[1];
         break;
     case 'cpx':
         dstRect[1][1] = (containerDimensions[1] / 2) - ((layoutDimensions[1] / 2) - srcRect[1][1]);
