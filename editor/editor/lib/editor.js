@@ -30,6 +30,12 @@ function Editor(config) {
     // create the menu bar and toolbar
     this.setStyle('background');
     this.setChildrenClipping('hidden');
+    // a bit ugly. but the viewer does not know the editor and must
+    // be notifed of this.
+    var viewer = this.getChild('viewer');
+    this.dependencyManager.on('change', function () {
+        viewer.updateAll();
+    });
 }
 Editor.prototype = new (domvisual.DOMElement)();
 
