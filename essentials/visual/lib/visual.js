@@ -693,14 +693,6 @@ Visual.prototype.createChildren = function (groupData) {
         }
 
         child = new Constr(it.config);
-
-/*        // set the position of the child (this will override whatever
-        // position that the child set in its constructor)
-        if (isString(it.position)) {
-            // we want position altered properties to remain in their constructed
-            // state
-            child.setPosition(it.position);
-        }*/
         // add the child to the children list
         this.addChild(child, name);
     }
@@ -742,21 +734,14 @@ Visual.prototype.createGroup = function (groupData) {
 */
 Visual.prototype.setConfiguration = function (config) {
     if (utils.isObject(config)) {
-        var configSheet = this.getConfigurationSheet(),
-            that = this;
+        var that = this;
         forEachProperty(config, function (cnf, name) {
-            var fcn,
-                fname = that.getSetFunctionName(name);
-            // validate that this thing works
-            if (name === 'position' || configSheet.hasOwnProperty(name)) {
+            var fname = that.getSetFunctionName(name),
                 fcn = that[fname];
-                if (!utils.isFunction(fcn)) {
-                    throw new Error('Configuration function not found: ' + fname);
-                }
-                fcn.call(that, cnf);
-            } else {
-                throw new Error("The configuration has an unexpected member: " + name);
+            if (!utils.isFunction(fcn)) {
+                throw new Error('Configuration function not found: ' + fname);
             }
+            fcn.call(that, cnf);
         });
     }
     return this;
