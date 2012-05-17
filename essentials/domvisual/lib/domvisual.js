@@ -293,11 +293,6 @@ DOMVisual.prototype.clearTransition = function () {
     delete this.transition;
     setDirty(this, 'matrix');
 };
-DOMVisual.prototype.setOpacity = function (opacity) {
-    this.opacity = opacity;
-    setDirty(this, 'matrix');
-    return this;
-};
 DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
     repeat = repeat || 'repeat';
     var style = this.element.style;
@@ -335,15 +330,7 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
             style = this.element.style,
             htmlFlowing = this.htmlFlowing,
             transition = this.transition,
-            opacity = this.opacity,
             transform;
-        // opacity FIXME: not sure this should be here
-        if (opacity !== undefined) {
-            style.webkitOpacity = opacity;
-
-        } else {
-            style.webkitOpacity = null;
-        }
         // transitions FIXME: not sure this should be here
         if (transition) {
             style.webkitTransitionProperty = 'all';
@@ -475,12 +462,15 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
     }
 };
 DOMVisual.prototype.updateOpacityRepresentation = function () {
-    var element = this.element;
+    var element = this.element,
+        style;
     if (element) {
+        style = element.style;
         if (this.opacity) {
-            element.opacity = this.opacity;
+            style.webkitOpacity = this.opacity;
         } else {
-            element.opacity = null;
+
+            style.webkitOpacity = null;
         }
     }
 };
