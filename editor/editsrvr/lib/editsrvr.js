@@ -9,27 +9,27 @@
 /*
     There can be many visual elements in a given package.
     A visual component is identified by a package/constructorName pair.
-    
+
     There will be, in the visual component:
         constructorName.vis
         constructorName.js
-    
+
     Generated during the save phase
     ===============================
         groups.js
             // exports all needed stuff (exports.xyz)
             // including a function that will add all needed exports
-            // to the 
-            
+            // to the
+
         package.json
             // the dependencies are updated to reflect all what's listed
             // in the various vis files
-            
-            
+
+
         so, saving a .vis will cause the following things to happen:
             - Update the lib/group.js file
             - Update the package.json file
-            
+
     URLS that we support
     ====================
     visual/package/Constructor
@@ -39,10 +39,10 @@
     visual/
         GET: returns a list of all visuals
     visual/package/Constructor/img
-        GET: returns a list of all images available to the 
-        
-        
-        
+        GET: returns a list of all images available to the
+
+
+
    // EXPORTED visuals
    // from the editor a vis can be marked as private (only accessible to
    // is containing package) or public (accessible to everyone).
@@ -60,15 +60,15 @@ var meatgrinder = require('meatgrinder'),
     };
 
 // disable newline and whitespace removal
-dust.optimizers.format = function (ctx, node) { 
+dust.optimizers.format = function (ctx, node) {
     return node;
 };
-  
+
 dust.loadSource(
     dust.compile(
         fs.readFileSync(
             path.join(__dirname, 'templates/visual.js')
-        ).toString(), 
+        ).toString(),
         'jsFile'
     )
 );
@@ -77,7 +77,7 @@ dust.loadSource(
     dust.compile(
         fs.readFileSync(
             path.join(__dirname, 'templates/groups.js')
-        ).toString(), 
+        ).toString(),
         'groupFile'
     )
 );
@@ -94,7 +94,7 @@ function findVisualInPackage(pack, visual) {
         }
         return false;
     });
-    return ret;        
+    return ret;
 }
 
 // finds a given js in the specified package
@@ -109,7 +109,7 @@ function findJSInPackage(pack, visual) {
         }
         return false;
     });
-    return ret;        
+    return ret;
 }
 
 
@@ -117,12 +117,12 @@ function findJSInPackage(pack, visual) {
 function loadVisFiles(pack, cb) {
     var re = /([^\/\.]*)\.vis$/,
         // find all the visuals in the package
-        pVis = pack.other.filter(function (fn) {        
+        pVis = pack.other.filter(function (fn) {
             return re.test(fn);
         });
     // load all the vis files
     async.map(
-        pVis, 
+        pVis,
         function (v, cb) {
             fs.readFile(v, function (err, data) {
                 var visName = re.exec(v)[1];
@@ -135,7 +135,7 @@ function loadVisFiles(pack, cb) {
                     cb(e);
                 }
             });
-            
+
         },
         cb
     );
@@ -148,11 +148,11 @@ function saveVisualSourceFile(pack, visual, cb) {
     // js file).
     if (!js) {
         dust.render(
-            'jsFile', 
-            { 
-                packageName: pack.name,            
+            'jsFile',
+            {
+                packageName: pack.name,
                 clsname: visual
-            }, 
+            },
             function (err, data) {
                 if (err) {
                     return cb(err);
@@ -183,7 +183,7 @@ function saveGroupsJS(pack, allVis, cb) {
             ctr.path = ctr.path.slice(pack.dirname.length, -3);
             ctr.path = '/' + pack.name + ctr.path;
         }
-        
+
         constructors.push(ctr);
     });
     dust.render(
@@ -192,7 +192,7 @@ function saveGroupsJS(pack, allVis, cb) {
             packageName: pack.name,
             constructors: constructors,
             groups: JSON.stringify(json, null, 4),
-            
+
         },
         function (err, data) {
             if (err) {
@@ -206,7 +206,7 @@ function saveGroupsJS(pack, allVis, cb) {
         }
     );
 }
-// 
+//
 // regenerates the package.json
 function savePackageJSON(packages, pack, allVis, cb) {
     var json = pack.json;
@@ -219,10 +219,13 @@ function savePackageJSON(packages, pack, allVis, cb) {
             var vis = children[k],
                 pName = vis.factory,
                 dp = packages[pName];
-            if (dp) {
-                json.dependencies[pName] = dp.json.version;
-            } else {
-                return cb(new Error('Unresolved package ' + pName));
+            // we cannot be dependent on ourself
+            if (pName !== json.name) {
+                if (dp) {
+                    json.dependencies[pName] = dp.json.version;
+                } else {
+                    return cb(new Error('Unresolved package ' + pName));
+                }
             }
         });
     });
@@ -238,7 +241,7 @@ function saveVisual(options, packageName, constructorName, json, cb) {
     } catch (e) {
         return cb(e);
     }
-    
+
     // save it
     findPackages(options.srcFolder, function (err, packages) {
         var pack,
@@ -320,7 +323,7 @@ function serveVisual(req, res, match, options) {
         if (err) {
             res.write(String(err));
         }
-        res.end();    
+        res.end();
     }
 
     // sends a file
@@ -374,7 +377,7 @@ function serveVisualList(req, res, match, options) {
         if (err) {
             res.write(String(err));
         }
-        res.end();    
+        res.end();
     }
 
     if (req.method === 'GET') {
@@ -404,7 +407,7 @@ function serveVisualList(req, res, match, options) {
             // and for this... we need to load the vis files...
             // kinda sad...
             async.map(
-                ret, 
+                ret,
                 function (r, cb) {
                     fs.readFile(r.path, function (err, data) {
                         if (err) {
@@ -412,7 +415,7 @@ function serveVisualList(req, res, match, options) {
                         }
                         var js = JSON.parse(data);
                         cb(
-                            null, 
+                            null,
                             {
                                 factory: r.factory,
                                 type: r.type,
@@ -420,7 +423,7 @@ function serveVisualList(req, res, match, options) {
                                 private: js.private
                             }
                         );
-                    });                
+                    });
                 },
                 function (err, ret) {
                     if (err) {
@@ -432,7 +435,7 @@ function serveVisualList(req, res, match, options) {
                 }
             );
         });
-        
+
     } else {
         ret404();
     }
@@ -444,7 +447,7 @@ function serveImageList(req, res, match, options) {
         if (err) {
             res.write(String(err));
         }
-        res.end();    
+        res.end();
     }
 
     if (req.method === 'GET') {
@@ -472,7 +475,7 @@ function serveImageList(req, res, match, options) {
             res.write(JSON.stringify(ret, null, 4));
             res.end();
         });
-        
+
     } else {
         ret404();
     }
@@ -482,19 +485,19 @@ function serveImageList(req, res, match, options) {
 function getUrls(options) {
     var urls = meatgrinder.getUrls(options);
     urls.push({
-        filter: /^\/visual$/, 
+        filter: /^\/visual$/,
         handler: function (req, res, match) {
             serveVisualList(req, res, match, options);
         }
     });
     urls.push({
-        filter: /^\/visual\/([^\/]*)\/([^\/]*)$/, 
+        filter: /^\/visual\/([^\/]*)\/([^\/]*)$/,
         handler: function (req, res, match) {
             serveVisual(req, res, match, options);
         }
     });
     urls.push({
-        filter: /^\/image\/([^\/]*)$/, 
+        filter: /^\/image\/([^\/]*)$/,
         handler: function (req, res, match) {
             serveImageList(req, res, match, options);
         }
@@ -507,4 +510,3 @@ meatgrinder.serve(
         meatgrinder.processArgs(process.argv.slice(2))
     )
 );
-
