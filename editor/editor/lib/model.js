@@ -18,48 +18,6 @@ var glmatrix = require('glmatrix'),
     CommandGroup = edit.CommandGroup,
     CommandChain = edit.CommandChain;
 /**
-    A document can have multiple groups. Each of them have an independent
-    command chain.
-
-    This is the format of the data we edit:
-        {
-            dimensions: [ 640, 400, 0],
-            positions: {
-                toolbox: {
-                    order: 0,
-                    matrix: [ 200, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 0 ],
-                    scalemode: 'distort'
-                },
-                viewer: {
-                    order: 1,
-                    matrix: [ 440, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   200, 0, 0, 0 ],
-                    scalemode: 'distort'
-                }
-            },
-            children: {
-                toolbox: {
-                    factory: "editor",
-                    type: "Toolbox",
-                    position: "toolbox",
-                    config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "toolbox" ]
-                        }
-                    }
-                },
-                viewer: {
-                    factory: "domvisual",
-                    type: "DOMElement",
-                    position: "viewer",
-                    config: {
-                        "domvisual.DOMVisual": {
-                            "cssClass": [ "viewer" ]
-                        }
-                    }
-                }
-            }
-        }
-
 =====
 HINTS
 =====
@@ -442,27 +400,23 @@ Group.prototype.cmdSetPositionOpacity = function (name, opacity) {
 };
 Group.prototype.cmdRenamePosition = function (name, newname) {
     var that = this;
+    function toggle() {
+        var documentData = that.documentData,
+            n;
+        documentData.positions[newname] = documentData.positions[name];
+        forEachProperty(documentData.children, function (c) {
+            if (c.config.position === name) {
+                c.config.position = newname;
+            }
+        });
+        delete documentData.positions[name];
+        n = newname;
+        newname = name;
+        name = n;
+    }
     return new Command(
-        function () {
-            var documentData = that.documentData;
-            documentData.positions[newname] = documentData.positions[name];
-            forEachProperty(documentData.children, function (c) {
-                if (c.position === name) {
-                    c.position = newname;
-                }
-            });
-            delete documentData.positions[name];
-        },
-        function () {
-            var documentData = that.documentData;
-            documentData.positions[name] = documentData.positions[newname];
-            forEachProperty(documentData.children, function (c) {
-                if (c.position === newname) {
-                    c.position = name;
-                }
-            });
-            delete documentData.positions[newname];
-        },
+        toggle,
+        toggle,
         'cmdRenamePosition',
         "Rename position " + name + ' as ' + newname,
         { model: this, name: name, newname: newname, layeringChanged: true }

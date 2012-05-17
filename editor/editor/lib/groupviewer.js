@@ -19,7 +19,8 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3,
     mat4 = glmatrix.mat4,
     EmptyPosition = require('./EmptyPosition').EmptyPosition,
-    convertScaleToSize = visual.convertScaleToSize;
+    convertScaleToSize = visual.convertScaleToSize,
+    apply = utils.apply;
 
 /**
     Useful functions for dealing with selections.
@@ -837,7 +838,7 @@ GroupViewer.prototype.setSelectionConfig = function (config) {
     forEachProperty(this.selection, function (pos, name) {
         var c = ch[name];
         if (c) {
-            cg.add(group.cmdSetVisualConfig(name, config));
+            cg.add(group.cmdSetVisualConfig(name, apply({ position: c.config.position }, config)));
         }
     });
     group.doCommand(cg);
@@ -1059,8 +1060,9 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
                 fdd.children[name] = {
                     factory: "editor",
                     type: "EmptyPosition",
-                    position: name,
-                    config: {}
+                    config: {
+                        position: name
+                    }
                 };
             }
         }

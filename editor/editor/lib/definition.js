@@ -31,31 +31,30 @@ exports.definition = {
                 menu: {
                     factory: 'baseui',
                     type: 'HorizontalMenu',
-                    position: 'menu',
                     config: {
+                        position: 'menu'
                     }
                 },
                 tools: {
                     factory: "baseui",
                     type: "Toolbar",
-                    position: "tools",
-
                     config: {
+                        position: "tools"
                     }
                 },
                 panel: {
                     factory: "editor",
                     type: "Panel",
-                    position: "panel",
                     config: {
-                        "style": "panel"
+                        "style": "panel",
+                        position: "panel"
                     }
                 },
                 viewer: {
                     factory: "editor",
                     type: "GroupViewer",
-                    position: "viewer",
                     config: {
+                        position: "viewer"
                     }
                 }
             }
@@ -85,22 +84,25 @@ exports.definition = {
                 visuals: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: null,
                     config: {
-                        "style": { factory: 'editor', type: 'GroupViewer', style: 'page' }
+                        "style": { factory: 'editor', type: 'GroupViewer', style: 'page' },
+                        position: null
                     }
                 },
                 grid: {
                     factory: "domvisual",
                     type: "DOMCanvas",
-                    position: "grid",
-                    config: { width: 100, height: 100 }
+                    config: {
+                        width: 100,
+                        height: 100,
+                        position: "grid"
+                    }
                 },
                 decorations: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "decorations",
                     config: {
+                        position: "decorations"
                     }
                 }
             }
@@ -139,42 +141,41 @@ exports.definition = {
                 selectionArea: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "selectionArea",
-
                     config: {
-                        "class": [ "editor_SelectionBox_selectionArea" ]
+                        "class": [ "editor_SelectionBox_selectionArea" ],
+                        position: "selectionArea"
                     }
                 },
                 topLeft: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "topLeft",
                     config: {
-                        "class": [ "editor_SelectionBox_knob" ]
+                        "class": [ "editor_SelectionBox_knob" ],
+                        position: "topLeft"
                     }
                 },
                 topRight: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "topRight",
                     config: {
-                        "class": [ "editor_SelectionBox_knob" ]
+                        "class": [ "editor_SelectionBox_knob" ],
+                        position: "topRight"
                     }
                 },
                 bottomLeft: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "bottomLeft",
                     config: {
-                        "class": [ "editor_SelectionBox_knob" ]
+                        "class": [ "editor_SelectionBox_knob" ],
+                        position: "bottomLeft"
                     }
                 },
                 bottomRight: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "bottomRight",
                     config: {
-                        "class": [ "editor_SelectionBox_knob" ]
+                        "class": [ "editor_SelectionBox_knob" ],
+                        position: "bottomRight"
                     }
                 }
             }
@@ -212,25 +213,25 @@ exports.definition = {
                 selectionBox: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "selectionBox",
                     config: {
-                        "style": "selected"
+                        "style": "selected",
+                        position: "selectionBox"
                     }
                 },
                 name: {
                     factory: "baseui",
                     type: "Label",
-                    position: "name",
                     config: {
                         "text": "factory name",
-                        "bold": true
+                        "bold": true,
+                        position: "name"
                     }
                 },
                 description: {
                     factory: "baseui",
                     type: "Label",
-                    position: "description",
                     config: {
+                        position: "description"
                     }
                 }
             }
@@ -269,42 +270,41 @@ exports.definition = {
                 selectionArea: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "selectionArea",
-
                     config: {
-                        "class": [ "editor_SelectionBox_selectionArea" ]
+                        "class": [ "editor_SelectionBox_selectionArea" ],
+                        position: "selectionArea"
                     }
                 },
                 topLeft: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "topLeft",
                     config: {
-                        "class": [ "editor_RotationBox_knob" ]
+                        "class": [ "editor_RotationBox_knob" ],
+                        position: "topLeft"
                     }
                 },
                 topRight: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "topRight",
                     config: {
-                        "class": [ "editor_RotationBox_knob" ]
+                        "class": [ "editor_RotationBox_knob" ],
+                        position: "topRight"
                     }
                 },
                 bottomLeft: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "bottomLeft",
                     config: {
-                        "class": [ "editor_RotationBox_knob" ]
+                        "class": [ "editor_RotationBox_knob" ],
+                        position: "bottomLeft"
                     }
                 },
                 bottomRight: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "bottomRight",
                     config: {
-                        "class": [ "editor_RotationBox_knob" ]
+                        "class": [ "editor_RotationBox_knob" ],
+                        position: "bottomRight"
                     }
                 }
             }
@@ -332,24 +332,24 @@ exports.definition = {
                 label: {
                     factory: "baseui",
                     type: "Label",
-                    position: "label",
                     config: {
-                        "text": "Library:"
+                        "text": "Library:",
+                        position: "label"
                     }
                 },
                 library: {
                     factory: "domvisual",
                     type: "DOMSelect",
-                    position: "library",
                     config: {
-                        "options": [ "fake" ]
+                        "options": [ "fake" ],
+                        position: "library"
                     }
                 },
                 choices: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "choices",
                     config: {
+                        position: "choices"
                     }
                 }
             }
@@ -428,107 +428,107 @@ exports.definition = {
                 nameLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "nameLabel",
                     config: {
-                        "text": "name:"
+                        "text": "name:",
+                        position: "nameLabel"
                     }
                 },
                 xLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "xLabel",
                     config: {
-                        "text": "x:"
+                        "text": "x:",
+                        position: "xLabel"
                     }
                 },
                 yLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "yLabel",
                     config: {
-                        "text": "y:"
+                        "text": "y:",
+                        position: "yLabel"
                     }
                 },
                 wLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "wLabel",
                     config: {
-                        "text": "w:"
+                        "text": "w:",
+                        position: "wLabel"
                     }
                 },
                 hLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "hLabel",
                     config: {
-                        "text": "h:"
+                        "text": "h:",
+                        position: "hLabel"
                     }
                 },
                 name: {
                     factory: "baseui",
                     type: "Input",
-                    position: "name",
                     config: {
-                        "text": ""
+                        "text": "",
+                        position: "name"
                     }
                 },
                 x: {
                     factory: "baseui",
                     type: "Input",
-                    position: "x",
                     config: {
-                        "text": "0"
+                        "text": "0",
+                        position: "x"
                     }
                 },
                 y: {
                     factory: "baseui",
                     type: "Input",
-                    position: "y",
                     config: {
-                        "text": "0"
+                        "text": "0",
+                        position: "y"
                     }
                 },
                 w: {
                     factory: "baseui",
                     type: "Input",
-                    position: "w",
                     config: {
-                        "text": "0"
+                        "text": "0",
+                        position: "w"
                     }
                 },
                 h: {
                     factory: "baseui",
                     type: "Input",
-                    position: "h",
                     config: {
-                        "text": "0"
+                        "text": "0",
+                        position: "h"
                     }
                 },
                 opacityLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "opacityLabel",
                     config: {
-                        "text": "Opacity:"
+                        "text": "Opacity:",
+                        position: "opacityLabel"
                     }
                 },
                 opacityInput: {
                     factory: "baseui",
                     type: "Input",
-                    position: "opacityInput",
                     config: {
-                        "text": "100"
+                        "text": "100",
+                        position: "opacityInput"
                     }
                 },
                 opacitySlider: {
                     factory: "baseui",
                     type: "Slider",
-                    position: "opacitySlider",
                     config: {
                         "minValue": 0,
                         "maxValue": 100,
-                        "value": 100
+                        "value": 100,
+                        position: "opacitySlider"
                     }
                 },
 
@@ -659,177 +659,177 @@ exports.definition = {
                 wLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "wLabel",
                     config: {
-                        "text": "w:"
+                        "text": "w:",
+                        position: "wLabel"
                     }
                 },
                 hLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "hLabel",
                     config: {
-                        "text": "h:"
+                        "text": "h:",
+                        position: "hLabel"
                     }
                 },
                 gridLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "gridLabel",
                     config: {
-                        "text": "grid:"
+                        "text": "grid:",
+                        position: "gridLabel"
                     }
                 },
                 descriptionLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "descriptionLabel",
                     config: {
-                        "text": "description:"
+                        "text": "description:",
+                        position: "descriptionLabel"
                     }
                 },
                 privateLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "privateLabel",
                     config: {
-                        "text": "private component"
+                        "text": "private component",
+                        position: "privateLabel"
                     }
                 },
                 privateStylesLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "privateStylesLabel",
                     config: {
-                        "text": "private styles"
+                        "text": "private styles",
+                        position: "privateStylesLabel"
                     }
                 },
                 w: {
                     factory: "baseui",
                     type: "Input",
-                    position: "w",
                     config: {
-                        "text": "0"
+                        "text": "0",
+                        position: "w"
                     }
                 },
                 h: {
                     factory: "baseui",
                     type: "Input",
-                    position: "h",
                     config: {
-                        "text": "0"
+                        "text": "0",
+                        position: "h"
                     }
                 },
                 grid: {
                     factory: "baseui",
                     type: "Input",
-                    position: "grid",
                     config: {
-                        "text": "8"
+                        "text": "8",
+                        position: "grid"
                     }
                 },
                 description: {
                     factory: "baseui",
                     type: "Input",
-                    position: "description",
                     config: {
-                        "text": ""
+                        "text": "",
+                        position: "description"
                     }
                 },
                 privateCheck: {
                     factory: "domvisual",
                     type: "DOMInput",
-                    position: "privateCheck",
                     config: {
-                        "type": "checkbox"
+                        "type": "checkbox",
+                        position: "privateCheck"
                     }
                 },
                 privateStylesCheck: {
                     factory: "domvisual",
                     type: "DOMInput",
-                    position: "privateStylesCheck",
                     config: {
-                        "type": "checkbox"
+                        "type": "checkbox",
+                        position: "privateStylesCheck"
                     }
                 },
                 overflowXLabel : {
                     factory: "baseui",
                     type: "Label",
-                    position: "overflowXLabel",
                     config: {
-                        "text": "xoverflow:"
+                        "text": "xoverflow:",
+                        position: "overflowXLabel"
                     }
                 },
                 overflowXVisible: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "overflowXVisible",
                     config: {
-                        url: 'editor/lib/ofxvisible.png'
+                        url: 'editor/lib/ofxvisible.png',
+                        position: "overflowXVisible"
                     }
                 },
                 overflowXHidden: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "overflowXHidden",
                     config: {
-                        url: 'editor/lib/ofxhidden.png'
+                        url: 'editor/lib/ofxhidden.png',
+                        position: "overflowXHidden"
                     }
                 },
                 overflowXAuto: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "overflowXAuto",
                     config: {
-                        url: 'editor/lib/ofxauto.png'
+                        url: 'editor/lib/ofxauto.png',
+                        position: "overflowXAuto"
                     }
                 },
                 overflowXScroll: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "overflowXScroll",
                     config: {
-                        url: 'editor/lib/ofxscroll.png'
+                        url: 'editor/lib/ofxscroll.png',
+                        position: "overflowXScroll"
                     }
                 },
                 overflowYLabel : {
                     factory: "baseui",
                     type: "Label",
-                    position: "overflowYLabel",
                     config: {
-                        "text": "yoverflow:"
+                        "text": "yoverflow:",
+                        position: "overflowYLabel"
                     }
                 },
                 overflowYVisible: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "overflowYVisible",
                     config: {
-                        url: 'editor/lib/ofyvisible.png'
+                        url: 'editor/lib/ofyvisible.png',
+                        position: "overflowYVisible"
                     }
                 },
                 overflowYHidden: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "overflowYHidden",
                     config: {
-                        url: 'editor/lib/ofyhidden.png'
+                        url: 'editor/lib/ofyhidden.png',
+                        position: "overflowYHidden"
                     }
                 },
                 overflowYAuto: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "overflowYAuto",
                     config: {
-                        url: 'editor/lib/ofyauto.png'
+                        url: 'editor/lib/ofyauto.png',
+                        position: "overflowYAuto"
                     }
                 },
                 overflowYScroll: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "overflowYScroll",
                     config: {
-                        url: 'editor/lib/ofyscroll.png'
+                        url: 'editor/lib/ofyscroll.png',
+                        position: "overflowYScroll"
                     }
                 }
 
@@ -859,24 +859,24 @@ exports.definition = {
                 name: {
                     factory: "baseui",
                     type: "Label",
-                    position: "name",
                     config: {
+                        position: "name"
                     }
                 },
                 enableView: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "enableView",
                     config: {
-                        url: 'editor/lib/enableView.png'
+                        url: 'editor/lib/enableView.png',
+                        position: "enableView"
                     }
                 },
                 enableSelection: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "enableSelection",
                     config: {
-                        url: 'editor/lib/enableSelect.png'
+                        url: 'editor/lib/enableSelect.png',
+                        position: "enableSelection"
                     }
                 },
             }
@@ -951,89 +951,89 @@ exports.definition = {
                 s: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 's',
                     config: {
-                        url: 'editor/lib/sp_s.png'
+                        url: 'editor/lib/sp_s.png',
+                        position: 's'
                     }
                 },
                 tl: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'tl',
                     config: {
-                        url: 'editor/lib/sp_tl.png'
+                        url: 'editor/lib/sp_tl.png',
+                        position: 'tl'
                     }
                 },
                 t: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 't',
                     config: {
-                        url: 'editor/lib/sp_t.png'
+                        url: 'editor/lib/sp_t.png',
+                        position: 't'
                     }
                 },
                 tr: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'tr',
                     config: {
-                        url: 'editor/lib/sp_tr.png'
+                        url: 'editor/lib/sp_tr.png',
+                        position: 'tr'
                     }
                 },
                 l: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'l',
                     config: {
-                        url: 'editor/lib/sp_l.png'
+                        url: 'editor/lib/sp_l.png',
+                        position: 'l'
                     }
                 },
                 m: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'm',
                     config: {
-                        url: 'editor/lib/sp_m.png'
+                        url: 'editor/lib/sp_m.png',
+                        position: 'm'
                     }
                 },
                 r: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'r',
                     config: {
-                        url: 'editor/lib/sp_r.png'
+                        url: 'editor/lib/sp_r.png',
+                        position: 'r'
                     }
                 },
                 bl: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'bl',
                     config: {
-                        url: 'editor/lib/sp_bl.png'
+                        url: 'editor/lib/sp_bl.png',
+                        position: 'bl'
                     }
                 },
                 b: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'b',
                     config: {
-                        url: 'editor/lib/sp_b.png'
+                        url: 'editor/lib/sp_b.png',
+                        position: 'b'
                     }
                 },
                 br: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'br',
                     config: {
-                        url: 'editor/lib/sp_br.png'
+                        url: 'editor/lib/sp_br.png',
+                        position: 'br'
                     }
                 },
                 txt: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'txt',
                     config: {
-                        url: 'editor/lib/sp_txt.png'
+                        url: 'editor/lib/sp_txt.png',
+                        position: 'txt'
                     }
                 }
             }
@@ -1056,16 +1056,16 @@ exports.definition = {
                 background: {
                     factory: 'domvisual',
                     type: 'DOMImg',
-                    position: 'background',
                     config: {
-                        url: 'editor/lib/previewbg.png'
+                        url: 'editor/lib/previewbg.png',
+                        position: 'background'
                     }
                 },
                 preview: {
                     factory: 'domvisual',
                     type: 'DOMElement',
-                    position: 'preview',
                     config: {
+                        position: 'preview'
                     }
                 }
             }
@@ -1110,32 +1110,47 @@ exports.definition = {
                 label: {
                     factory: "baseui",
                     type: "Label",
-                    position: "label",
-                    config: { text: "Corner", bold: true}
+                    config: {
+                        text: "Corner",
+                        bold: true,
+                        position: "label"
+                    }
                 },
                 clear: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "clear",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "clear"
+                    }
                 },
                 synch: {
                     factory: "baseui",
                     type: "Label",
-                    position: "synch",
-                    config: { text: "All corners in synch"}
+                    config: {
+                        text: "All corners in synch",
+                        position: "synch"
+                    }
                 },
                 synchCheck: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "synchCheck",
-                    config: { value: false }
+                    config: {
+                        value: false,
+                        position: "synchCheck"
+                    }
                 },
                 radius: {
                     factory: "editor",
                     type: "LabelValueSliderCheck",
-                    position: "radius",
-                    config: { label: "Radius:", value: 0, minValue: 0, maxValue: 100, check: true}
+                    config: {
+                        label: "Radius:",
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 100,
+                        check: true,
+                        position: "radius"
+                    }
                 }
             }
         },
@@ -1217,94 +1232,118 @@ exports.definition = {
                 label: {
                     factory: "baseui",
                     type: "Label",
-                    position: "label",
-                    config: { text: "Border", bold: true}
+                    config: {
+                        text: "Border",
+                        bold: true,
+                        position: "label"
+                    }
                 },
                 clear: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "clear",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "clear"
+                    }
                 },
                 synch: {
                     factory: "baseui",
                     type: "Label",
-                    position: "synch",
-                    config: { text: "All borders in synch"}
+                    config: {
+                        text: "All borders in synch",
+                        position: "synch"
+                    }
                 },
                 synchCheck: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "synchCheck",
-                    config: { value: false }
+                    config: {
+                        value: false,
+                        position: "synchCheck"
+                    }
                 },
                 width: {
                     factory: "editor",
                     type: "LabelValueSliderCheck",
-                    position: "width",
-                    config: { label: "Width:", minValue: 0, maxValue: 30, value: 0, check: true }
+                    config: {
+                        label: "Width:",
+                        minValue: 0,
+                        maxValue: 30,
+                        value: 0,
+                        check: true,
+                        position: "width"
+                    }
                 },
                 styleLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "styleLabel",
-                    config: { text: "Style:"}
+                    config: {
+                        text: "Style:",
+                        position: "styleLabel"
+                    }
                 },
                 styleSolid: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "styleSolid",
                     config: {
-                        url: 'editor/lib/bssolid.png'
+                        url: 'editor/lib/bssolid.png',
+                        position: "styleSolid"
                     }
                 },
                 styleDashed: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "styleDashed",
                     config: {
-                        url: 'editor/lib/bsdashed.png'
+                        url: 'editor/lib/bsdashed.png',
+                        position: "styleDashed"
                     }
                 },
                 styleDotted: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "styleDotted",
                     config: {
-                        url: 'editor/lib/bsdotted.png'
+                        url: 'editor/lib/bsdotted.png',
+                        position: "styleDotted"
                     }
                 },
                 styleNone: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "styleNone",
                     config: {
-                        url: 'editor/lib/bsnone.png'
+                        url: 'editor/lib/bsnone.png',
+                        position: "styleNone"
                     }
                 },
                 styleCheck: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "styleCheck",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "styleCheck"
+                    }
                 },
                 colorLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "colorLabel",
-                    config: { text: "Color:"}
+                    config: {
+                        text: "Color:",
+                        position: "colorLabel"
+                    }
                 },
                 colorCheck: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "colorCheck",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "colorCheck"
+                    }
                 },
                 color: {
                     factory: "baseui",
                     type: "ColorPicker",
-                    position: "color",
-                    config: { }
+                    config: {
+                        position: "color"
+                    }
                 }
             }
         },
@@ -1342,32 +1381,42 @@ exports.definition = {
                 label: {
                     factory: "baseui",
                     type: "Label",
-                    position: "label",
-                    config: { text: "Corner", bold: true}
+                    config: {
+                        text: "Corner",
+                        bold: true,
+                        position: "label"
+                    }
                 },
                 clear: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "clear",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "clear"
+                    }
                 },
                 colorLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "colorLabel",
-                    config: { text: "Color:"}
+                    config: {
+                        text: "Color:",
+                        position: "colorLabel"
+                    }
                 },
                 colorCheck: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "colorCheck",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "colorCheck"
+                    }
                 },
                 color: {
                     factory: "baseui",
                     type: "ColorPicker",
-                    position: "color",
-                    config: { }
+                    config: {
+                        position: "color"
+                    }
                 }
             }
         },
@@ -1456,8 +1505,6 @@ exports.definition = {
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 120, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-
-
                 colorLabel: {
                     order: 0,
                     matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 150, 0, 1],
@@ -1478,133 +1525,159 @@ exports.definition = {
                 label: {
                     factory: "baseui",
                     type: "Label",
-                    position: "label",
-                    config: { text: "Corner", bold: true}
+                    config: {
+                        text: "Corner",
+                        bold: true,
+                        position: "label"
+                    }
                 },
                 clear: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "clear",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "clear"
+                    }
                 },
                 fontFamilyLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "fontFamilyLabel",
-                    config: { text: "Family:"}
+                    config: {
+                        text: "Family:",
+                        position: "fontFamilyLabel"
+                    }
                 },
                 fontFamily: {
                     factory: "baseui",
                     type: "Input",
-                    position: "fontFamily",
-                    config: { }
+                    config: {
+                        position: "fontFamily"
+                    }
                 },
                 fontFamilyCheck: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "fontFamilyCheck",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "fontFamilyCheck"
+                    }
                 },
                 fontSize: {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
-                    position: 'fontSize',
-                    config: { label: 'Size:', value: 8, minValue: 4, maxValue: 120, check: true }
+                    config: {
+                        label: 'Size:',
+                        value: 8,
+                        minValue: 4,
+                        maxValue: 120,
+                        check: true,
+                        position: 'fontSize'
+                    }
                 },
                 fontWeightLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "fontWeightLabel",
-                    config: { text: "Weight:"}
+                    config: {
+                        text: "Weight:",
+                        position: "fontWeightLabel"
+                    }
                 },
                 fontWeightNormal: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "fontWeightNormal",
                     config: {
-                        url: 'editor/lib/fsnormal.png'
+                        url: 'editor/lib/fsnormal.png',
+                        position: "fontWeightNormal"
                     }
                 },
                 fontWeightBold: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "fontWeightBold",
                     config: {
-                        url: 'editor/lib/fsbold.png'
+                        url: 'editor/lib/fsbold.png',
+                        position: "fontWeightBold"
                     }
                 },
                 fontWeightCheck: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "fontWeightCheck",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "fontWeightCheck"
+                    }
                 },
 
 
                 textAlignLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "textAlignLabel",
-                    config: { text: "Align:"}
+                    config: {
+                        text: "Align:",
+                        position: "textAlignLabel"
+                    }
                 },
                 textAlignLeft: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "textAlignLeft",
                     config: {
-                        url: 'editor/lib/faleft.png'
+                        url: 'editor/lib/faleft.png',
+                        position: "textAlignLeft"
                     }
                 },
                 textAlignRight: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "textAlignRight",
                     config: {
-                        url: 'editor/lib/faright.png'
+                        url: 'editor/lib/faright.png',
+                        position: "textAlignRight"
                     }
                 },
                 textAlignCenter: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "textAlignCenter",
                     config: {
-                        url: 'editor/lib/facenter.png'
+                        url: 'editor/lib/facenter.png',
+                        position: "textAlignCenter"
                     }
                 },
                 textAlignJustify: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "textAlignJustify",
                     config: {
-                        url: 'editor/lib/fajustify.png'
+                        url: 'editor/lib/fajustify.png',
+                        position: "textAlignJustify"
                     }
                 },
                 textAlignCheck: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "textAlignCheck",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "textAlignCheck"
+                    }
                 },
-
-
-
                 colorLabel: {
                     factory: "baseui",
                     type: "Label",
-                    position: "colorLabel",
-                    config: { text: "Color:"}
+                    config: {
+                        text: "Color:",
+                        position: "colorLabel"
+                    }
                 },
                 colorCheck: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "colorCheck",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "colorCheck"
+                    }
                 },
                 color: {
                     factory: "baseui",
                     type: "ColorPicker",
-                    position: "color",
-                    config: { }
+                    config: {
+                        position: "color"
+                    }
                 }
             }
         },
@@ -1651,44 +1724,78 @@ exports.definition = {
                 label: {
                     factory: "baseui",
                     type: "Label",
-                    position: "label",
-                    config: { text: "Corner", bold: true}
+                    config: {
+                        text: "Corner",
+                        bold: true,
+                        position: "label"
+                    }
                 },
                 clear: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "clear",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "clear"
+                    }
                 },
                 offsetX: {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
-                    position: 'offsetX',
-                    config: { label: 'OffsetX:', value: 0, minValue: -100, maxValue: 100, check: true, checkVisible: false }
+                    config: {
+                        label: 'OffsetX:',
+                        value: 0,
+                        minValue: -100,
+                        maxValue: 100,
+                        check: true,
+                        checkVisible: false,
+                        position: 'offsetX'
+                    }
                 },
                 offsetY: {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
-                    position: 'offsetY',
-                    config: { label: 'OffsetY:', value: 0, minValue: -100, maxValue: 100, check: true, checkVisible: false }
+                    config: {
+                        label: 'OffsetY:',
+                        value: 0,
+                        minValue: -100,
+                        maxValue: 100,
+                        check: true,
+                        checkVisible: false,
+                        position: 'offsetY'
+                    }
                 },
                 blurRadius: {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
-                    position: 'blurRadius',
-                    config: { label: 'Blur:', value: 0, minValue: 0, maxValue: 100, check: true, checkVisible: false }
+                    config: {
+                        label: 'Blur:',
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 100,
+                        check: true,
+                        checkVisible: false,
+                        position: 'blurRadius'
+                    }
                 },
                 spreadRadius: {
                     factory: 'editor',
                     type: 'LabelValueSliderCheck',
-                    position: 'spreadRadius',
-                    config: { label: 'Spread:', value: 0, minValue: 0, maxValue: 100, check: true, checkVisible: false }
+                    config: {
+                        label: 'Spread:',
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 100,
+                        check: true,
+                        checkVisible: false,
+                        position: 'spreadRadius'
+                    }
                 },
                 color: {
                     factory: "baseui",
                     type: "ColorPicker",
-                    position: "color",
-                    config: { }
+                    config: {
+                        position: "color"
+                    }
                 }
             }
         },
@@ -1720,32 +1827,32 @@ exports.definition = {
                 selectionBox: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "selectionBox",
                     config: {
-                        style: 'background'
+                        style: 'background',
+                        position: "selectionBox"
                     }
                 },
                 background: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "background",
                     config: {
-                        url: 'editor/lib/stylebgsmall.png'
+                        url: 'editor/lib/stylebgsmall.png',
+                        position: "background"
                     }
                 },
                 preview: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "preview",
                     config: {
+                        position: "preview"
                     }
                 },
                 label: {
                     factory: "baseui",
                     type: "Label",
-                    position: "label",
                     config: {
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        position: "label"
                     }
                 }
             }
@@ -1788,47 +1895,47 @@ exports.definition = {
                 styleNameLabel: {
                     factory: 'baseui',
                     type: 'Label',
-                    position: 'styleNameLabel',
                     config: {
-                        text: 'Style:'
+                        text: 'Style:',
+                        position: 'styleNameLabel'
                     }
                 },
                 styleName: {
                     factory: 'domvisual',
                     type: 'DOMInput',
-                    position: 'styleName',
                     config: {
+                        position: 'styleName'
                     }
                 },
                 basedOnLabel: {
                     factory: 'baseui',
                     type: 'Label',
-                    position: 'basedOnLabel',
                     config: {
-                        text: 'Extends:'
+                        text: 'Extends:',
+                        position: 'basedOnLabel'
                     }
                 },
                 basedOn: {
                     factory: 'baseui',
                     type: 'Label',
-                    position: 'basedOn',
                     config: {
+                        position: 'basedOn'
                     }
                 },
                 extendBtn: {
                     factory: 'baseui',
                     type: 'Button',
-                    position: 'extendBtn',
                     config: {
-                        text: 'Extend'
+                        text: 'Extend',
+                        position: 'extendBtn'
                     }
                 },
                 deleteBtn: {
                     factory: 'baseui',
                     type: 'Button',
-                    position: 'deleteBtn',
                     config: {
-                        text: 'Delete'
+                        text: 'Delete',
+                        position: 'deleteBtn'
                     }
                 }
             }
@@ -1851,15 +1958,15 @@ exports.definition = {
                 styleFeature: {
                     factory: 'editor',
                     type: 'StyleFeatureSelector',
-                    position: 'styleFeature',
                     config: {
+                        position: 'styleFeature'
                     }
                 },
                 stylePreview: {
                     factory: 'editor',
                     type: 'StylePreview',
-                    position: 'stylePreview',
                     config: {
+                        position: 'stylePreview'
                     }
                 },
             }
@@ -1897,29 +2004,29 @@ exports.definition = {
                 styleName: {
                     factory: 'editor',
                     type: 'StyleName',
-                    position: null,
                     config: {
+                        position: null
                     }
                 },
                 stylingHeading : {
                     factory: 'editor',
                     type: 'StylingHeading',
-                    position: null,
                     config: {
+                        position: null
                     }
                 },
                 localStylePicker : {
                     factory: 'editor',
                     type: 'StylePicker',
-                    position: null,
                     config: {
+                        position: null
                     }
                 },
                 stylePicker: {
                     factory: 'editor',
                     type: 'StylePicker',
-                    position: null,
                     config: {
+                        position: null
                     }
                 }
             }
@@ -1942,17 +2049,17 @@ exports.definition = {
                 pos: {
                     factory: "domvisual",
                     type: "DOMElement",
-                    position: "pos",
                     config: {
-                        style: "background"
+                        style: "background",
+                        position: "pos"
                     }
                 },
                 img: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "img",
                     config: {
-                        url: "editor/lib/topleft.png"
+                        url: "editor/lib/topleft.png",
+                        position: "img"
                     }
                 }
             }
@@ -1970,9 +2077,9 @@ exports.definition = {
                 pos: {
                     factory: "domvisual",
                     type: "DOMImg",
-                    position: "pos",
                     config: {
-                        url: "editor/lib/snappx.png"
+                        url: "editor/lib/snappx.png",
+                        position: "pos"
                     }
                 }
             }
@@ -2005,26 +2112,36 @@ exports.definition = {
                 label: {
                     factory: "baseui",
                     type: "Label",
-                    position: "label",
-                    config: { text: "Size:"}
+                    config: {
+                        text: "Size:",
+                        position: "label"
+                    }
                 },
                 value: {
                     factory: "domvisual",
                     type: "DOMInput",
-                    position: "value",
-                    config: { text: "0"}
+                    config: {
+                        text: "0",
+                        position: "value"
+                    }
                 },
                 slider: {
                     factory: "baseui",
                     type: "Slider",
-                    position: "slider",
-                    config: { value: 0, minValue: 0, maxValue: 50 }
+                    config: {
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 50,
+                        position: "slider"
+                    }
                 },
                 check: {
                     factory: "baseui",
                     type: "CheckBox",
-                    position: "check",
-                    config: { value: true }
+                    config: {
+                        value: true,
+                        position: "check"
+                    }
                 }
             }
         }

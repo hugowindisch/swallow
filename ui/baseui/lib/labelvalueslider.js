@@ -28,20 +28,28 @@ var visual = require('visual'),
             label: {
                 factory: "baseui",
                 type: "Label",
-                position: "label",
-                config: { text: "Size:"}
+                config: {
+                    text: "Size:",
+                    position: "label"
+                }
             },
             value: {
                 factory: "domvisual",
                 type: "DOMInput",
-                position: "value",
-                config: { text: "0"}
+                config: {
+                    text: "0",
+                    position: "value"
+                }
             },
             slider: {
                 factory: "baseui",
                 type: "Slider",
-                position: "slider",
-                config: { value: 0, minValue: 0, maxValue: 50 }
+                config: {
+                    value: 0,
+                    minValue: 0,
+                    maxValue: 50,
+                    position: "slider"
+                }
             }
         }
     };

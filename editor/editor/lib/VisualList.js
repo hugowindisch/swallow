@@ -107,8 +107,8 @@ VisualList.prototype.applySelectedPosition = function () {
                         {
                             factory: selTypeInfo.factory,
                             type: selTypeInfo.type,
-                            position: posName,
                             config: {
+                                position: posName
                             }
                         }
                     ));
@@ -118,8 +118,8 @@ VisualList.prototype.applySelectedPosition = function () {
                         {
                             factory: selTypeInfo.factory,
                             type: selTypeInfo.type,
-                            position: posName,
                             config: {
+                                position: posName
                             }
                         }
                     ));

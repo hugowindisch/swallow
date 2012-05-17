@@ -670,8 +670,8 @@ Visual.prototype.createChildren = function (groupData) {
         sortedChildrenNames.push(name);
     });
     sortedChildrenNames.sort(function (i1, i2) {
-        var pos1 = positions[children[i1].position],
-            pos2 = positions[children[i2].position],
+        var pos1 = positions[children[i1].config.position],
+            pos2 = positions[children[i2].config.position],
             l = children.length,
             o1 = pos1 ? pos1.order : l,
             o2 = pos2 ? pos2.order : l;
@@ -691,13 +691,16 @@ Visual.prototype.createChildren = function (groupData) {
         if (!Constr) {
             throw new Error('unknown constructor ' + it.type + ' in factory ' + it.factory);
         }
+
         child = new Constr(it.config);
 
-        // set the position of the child (this will override whatever
+/*        // set the position of the child (this will override whatever
         // position that the child set in its constructor)
         if (isString(it.position)) {
+            // we want position altered properties to remain in their constructed
+            // state
             child.setPosition(it.position);
-        }
+        }*/
         // add the child to the children list
         this.addChild(child, name);
     }
@@ -745,7 +748,7 @@ Visual.prototype.setConfiguration = function (config) {
             var fcn,
                 fname = that.getSetFunctionName(name);
             // validate that this thing works
-            if (configSheet.hasOwnProperty(name)) {
+            if (name === 'position' || configSheet.hasOwnProperty(name)) {
                 fcn = that[fname];
                 if (!utils.isFunction(fcn)) {
                     throw new Error('Configuration function not found: ' + fname);

@@ -275,7 +275,7 @@ function setupToolMenu(editor) {
                     ));
                     if (vis) {
                         vis = deepCopy(vis);
-                        vis.position = posName;
+                        vis.config.position = posName;
                         cmdGroup.add(group.cmdAddVisual(posName, vis));
                     }
                     group.doCommand(cmdGroup);
@@ -470,7 +470,7 @@ function setupEditMenu(editor) {
             forEachProperty(clipboard.children, function (c, n) {
                 var uniqueName = group.getUniqueVisualName(n, check),
                     newc = deepCopy(c);
-                newc.position = posmap[newc.position];
+                newc.config.position = posmap[newc.config.position];
                 usedmap[uniqueName] = true;
                 cmdGroup.add(group.cmdAddVisual(uniqueName, newc));
             });
@@ -539,7 +539,7 @@ function setupObjectMenu(editor) {
             cmdGroup = group.cmdCommandGroup('unsetContent', 'Unset Content'),
             ret = false;
         forEachProperty(children, function (c, n) {
-            var p = c.position;
+            var p = c.config.position;
             if (selection[p]) {
                 ret = true;
             }
@@ -989,7 +989,7 @@ function setupObjectMenu(editor) {
 
             // for everything in the selection
             forEachProperty(children, function (c, n) {
-                var p = c.position;
+                var p = c.config.position;
                 if (selection[p]) {
                     cmdGroup.add(group.cmdRemoveVisual(p));
                 }

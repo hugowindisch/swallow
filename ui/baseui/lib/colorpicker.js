@@ -48,44 +48,47 @@ var visual = require('visual'),
             rgba: {
                 factory: "domvisual",
                 type: "DOMElement",
-                position: "rgba",
                 config: {
+                    position: "rgba"
                 }
             },
             hsla: {
                 factory: "domvisual",
                 type: "DOMElement",
-                position: "hsla",
                 config: {
+                    position: "hsla"
                 }
             },
             hr: {
                 factory: "baseui",
                 type: "LabelValueSlider",
-                position: "hr",
-                config: {}
+                config: {
+                    position: "hr"
+                }
             },
             sg: {
                 factory: "baseui",
                 type: "LabelValueSlider",
-                position: "sg",
-                config: {}
+                config: {
+                    position: "sg"
+                }
             },
             lb: {
                 factory: "baseui",
                 type: "LabelValueSlider",
-                position: "lb",
-                config: {}
+                config: {
+                    position: "lb"
+                }
             },
             a: {
                 factory: "baseui",
                 type: "LabelValueSlider",
-                position: "a",
                 config: {
                     label: 'A:',
                     minValue: 0,
                     maxValue: 1,
-                    value: 1
+                    value: 1,
+                    position: "a"
                 }
             }
         }

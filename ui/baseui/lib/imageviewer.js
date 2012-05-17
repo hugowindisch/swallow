@@ -15,9 +15,9 @@ var visual = require('visual'),
             image: {
                 factory: "domvisual",
                 type: "DOMImg",
-                position: null,
                 config: {
-                    style: "normal"
+                    style: "normal",
+                    position: null
                 }
             },
         }

@@ -29,17 +29,17 @@ var visual = require('visual'),
             background: {
                 factory: "domvisual",
                 type: "DOMElement",
-                position: "background",
                 config: {
-                    style: "background"
+                    style: "background",
+                    position: "background"
                 }
             },
             text: {
                 factory: "domvisual",
                 type: "DOMElement",
-                position: "text",
                 config: {
-                    style: "text"
+                    style: "text",
+                    position: "text"
                 }
             }
         }

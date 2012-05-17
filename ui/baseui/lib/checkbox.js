@@ -29,17 +29,17 @@ var visual = require('visual'),
             background: {
                 factory: "domvisual",
                 type: "DOMElement",
-                position: "background",
                 config: {
-                    style: "normal"
+                    style: "normal",
+                    position: "background"
                 }
             },
             image: {
                 factory: "domvisual",
                 type: "DOMImg",
-                position: "image",
                 config: {
-                    url: "baseui/lib/menucheck.png"
+                    url: "baseui/lib/menucheck.png",
+                    position: "image"
                 }
             }
         }

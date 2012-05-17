@@ -327,7 +327,9 @@ function applyLayout(containerDimensions, layout, v) {
                 }
             }
             // opacity
-            v.setOpacity(pos.opacity);
+            if (pos.opacity) {
+                v.setOpacity(pos.opacity);
+            }
         }
     }
 }
