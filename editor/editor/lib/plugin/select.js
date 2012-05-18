@@ -999,8 +999,7 @@ function setupObjectMenu(editor) {
         },
         null,
         new Accelerator('VK_U', true),
-        'editor/lib/plugin/unsetcontent.png',
-        selectionHasNonEmptyPositions
+        'editor/lib/plugin/unsetcontent.png'
     );
 
     clearTransformationTool = new MenuItem(
@@ -1021,8 +1020,10 @@ function setupObjectMenu(editor) {
             commandChain = group.getCommandChain();
         function signalChange() {
             unsetContentTool.emit('change');
+            unsetContentTool.setEnabled(selectionHasNonEmptyPositions());
         }
         commandChain.on('command', signalChange);
+        viewer.on('selectionChanged', signalChange);
     }());
 
     menus.object.push(
