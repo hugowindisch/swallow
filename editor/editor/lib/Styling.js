@@ -291,8 +291,7 @@ Styling.prototype.renameStyle = function (name) {
         this.preventUpdates = true;
         group.doCommand(group.cmdRenameStyleAndReferences(this.editedStyle, docInfo.factory, docInfo.type, name));
         delete this.preventUpdates;
-        this.editedStyle = name;
-        this.updateLocalStyleList();
+        this.setData(name);
     } else {
         // reset the displayed name
         this.updateStyleName();
