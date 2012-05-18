@@ -94,28 +94,32 @@ DependencyManager.prototype.loadVisualList = function () {
 };
 DependencyManager.prototype.loadMissingFactories = function (visualList) {
     var factories = {},
+        toLoad = {},
         loading = 0,
         that = this;
     forEachProperty(this.factories, function (l, n) {
         factories[n] = l;
     });
     forEach(visualList, function (item) {
+        var f = item.factory;
+        if (!factories[f] && !toLoad[f]) {
+            toLoad[f] = item;
+            loading += 1;
+        }
+    });
+    forEachProperty(toLoad, function (item) {
         var factory = item.factory;
         // factory not already loaded?
-        if (!factories[factory]) {
-            loading += 1;
-
-            visual.loadPackage(factory, function (err) {
-                if (!err) {
-                    factories[factory] = factory;
-                }
-                loading -= 1;
-                if (loading === 0) {
-                    // we can update our data and notify
-                    that.update(visualList, factories);
-                }
-            });
-        }
+        visual.loadPackage(factory, function (err) {
+            if (!err) {
+                factories[factory] = factory;
+            }
+            loading -= 1;
+            if (loading === 0) {
+                // we can update our data and notify
+                that.update(visualList, factories);
+            }
+        });
     });
     // if at this point, we have nothing to load:
     if (loading === 0) {
