@@ -333,9 +333,19 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
             transform;
         // transitions FIXME: not sure this should be here
         if (transition) {
-            style.webkitTransitionProperty = 'all';
-            style.webkitTransitionDuration = transition.duration;
-            style.webkitTransitionTimingFunction = transition.easingFunction;
+            style.webkitTransitionProperty =
+                style.mozTransitionProperty =
+                style.transitionProperty =
+                'all';
+            style.webkitTransitionDuration =
+                style.mozTransitionProperty =
+                style.transitionDuration =
+                transition.duration;
+
+            style.webkitTransitionTimingFunction =
+                style.mozTransitionProperty =
+                style.transitionTimingFunction =
+                transition.easingFunction;
         } else {
             style.webkitTransitionProperty = null;
             style.webkitTransitionDuration = null;
@@ -384,7 +394,7 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
             styleDimensionsAdjustement = this.styleDimensionsAdjustment || [0, 0];
         if (!htmlFlowing) {
             style.width = adjust(dimensions[0], styleDimensionsAdjustement[0]) + 'px';
-            style.height = adjust(dimensions[1], styleDimensionsAdjustement[1]) + ' px';
+            style.height = adjust(dimensions[1], styleDimensionsAdjustement[1]) + 'px';
             style.position = 'absolute';
             style.display = this.visible ? 'block' : 'none';
         } else {
@@ -467,10 +477,15 @@ DOMVisual.prototype.updateOpacityRepresentation = function () {
     if (element) {
         style = element.style;
         if (this.opacity) {
-            style.webkitOpacity = this.opacity;
+            style.webkitOpacity =
+                style.opacity =
+                style.mozOpacity =
+                this.opacity;
         } else {
-
-            style.webkitOpacity = null;
+            style.webkitOpacity =
+                style.opacity =
+                style.mozOpacity =
+                null;
         }
     }
 };
@@ -879,10 +894,10 @@ exports.createFullScreenApplication = function (child) {
     child.setPosition('root');
     viz.name = 'stage';
     viz.matrix = glmatrix.mat4.identity();
-    viz.element.style.left = 0;
-    viz.element.style.right = 0;
-    viz.element.style.top = 0;
-    viz.element.style.bottom = 0;
+    viz.element.style.left = '0px';
+    viz.element.style.right = '0px';
+    viz.element.style.top = '0px';
+    viz.element.style.bottom = '0px';
     viz.element.style.position = 'absolute';
     function updateTopLayout() {
         viz.setDimensions([viz.element.offsetWidth, viz.element.offsetHeight, 0]);

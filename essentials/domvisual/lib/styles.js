@@ -265,10 +265,10 @@ function backgroundImageToCssString(img) {
 }
 
 function boxShadowToCSSString(v) {
-    return v.offsetX + ' px ' +
-        v.offsetY + ' px ' +
-        v.blurRadius + ' px ' +
-        v.spreadRadius + ' px ' +
+    return v.offsetX + 'px ' +
+        v.offsetY + 'px ' +
+        v.blurRadius + 'px ' +
+        v.spreadRadius + 'px ' +
         colorToCSSString(v.color);
 }
 
@@ -399,7 +399,7 @@ attributeToCss = {
         //<offset-x> <offset-y> <blur-radius> spreadradius
         style.boxShadow =
             style.mozBoxShadow =
-            style.webkitShadow = value;
+            style.webkitBoxShadow = value;
     }
 };
 
