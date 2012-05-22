@@ -15,7 +15,7 @@ function Label(config) {
 }
 
 Label.createPreview = function () {
-    return new (domvisual.DOMImg)({url: 'baseui/lib/labelpreview.png'});
+    return new (domvisual.DOMImg)({url: 'baseui/img/labelpreview.png'});
 };
 Label.prototype = new (domvisual.DOMElement)();
 Label.prototype.getDescription = function () {

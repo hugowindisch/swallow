@@ -50,7 +50,7 @@ HorizontalMenu.prototype.getDescription = function () {
     return "A menu bar";
 };
 HorizontalMenu.createPreview = function () {
-    return new (domvisual.DOMImg)({url: 'baseui/lib/menupreview.png'});
+    return new (domvisual.DOMImg)({url: 'baseui/img/menupreview.png'});
 };
 
 HorizontalMenu.prototype.theme = new (visual.Theme)({

@@ -38,7 +38,7 @@ var visual = require('visual'),
                 factory: "domvisual",
                 type: "DOMImg",
                 config: {
-                    url: "baseui/lib/menucheck.png",
+                    url: "baseui/img/menucheck.png",
                     position: "image"
                 }
             }

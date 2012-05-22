@@ -232,7 +232,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
         icon,
         radio,
         checked,
-        checkimg = item.getCheckedMode() === 'radio' ? 'baseui/lib/menuradio.png' : 'baseui/lib/menucheck.png',
+        checkimg = item.getCheckedMode() === 'radio' ? 'baseui/img/menuradio.png' : 'baseui/img/menucheck.png',
         c = table.addHtmlChild(
             'tr',
             '',

@@ -764,7 +764,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/ofxvisible.png',
+                        url: 'editor/img/ofxvisible.png',
                         position: "overflowXVisible"
                     }
                 },
@@ -772,7 +772,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/ofxhidden.png',
+                        url: 'editor/img/ofxhidden.png',
                         position: "overflowXHidden"
                     }
                 },
@@ -780,7 +780,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/ofxauto.png',
+                        url: 'editor/img/ofxauto.png',
                         position: "overflowXAuto"
                     }
                 },
@@ -788,7 +788,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/ofxscroll.png',
+                        url: 'editor/img/ofxscroll.png',
                         position: "overflowXScroll"
                     }
                 },
@@ -804,7 +804,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/ofyvisible.png',
+                        url: 'editor/img/ofyvisible.png',
                         position: "overflowYVisible"
                     }
                 },
@@ -812,7 +812,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/ofyhidden.png',
+                        url: 'editor/img/ofyhidden.png',
                         position: "overflowYHidden"
                     }
                 },
@@ -820,7 +820,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/ofyauto.png',
+                        url: 'editor/img/ofyauto.png',
                         position: "overflowYAuto"
                     }
                 },
@@ -828,7 +828,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/ofyscroll.png',
+                        url: 'editor/img/ofyscroll.png',
                         position: "overflowYScroll"
                     }
                 }
@@ -867,7 +867,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/enableView.png',
+                        url: 'editor/img/enableView.png',
                         position: "enableView"
                     }
                 },
@@ -875,7 +875,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/enableSelect.png',
+                        url: 'editor/img/enableSelect.png',
                         position: "enableSelection"
                     }
                 },
@@ -952,7 +952,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_s.png',
+                        url: 'editor/img/sp_s.png',
                         position: 's'
                     }
                 },
@@ -960,7 +960,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_tl.png',
+                        url: 'editor/img/sp_tl.png',
                         position: 'tl'
                     }
                 },
@@ -968,7 +968,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_t.png',
+                        url: 'editor/img/sp_t.png',
                         position: 't'
                     }
                 },
@@ -976,7 +976,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_tr.png',
+                        url: 'editor/img/sp_tr.png',
                         position: 'tr'
                     }
                 },
@@ -984,7 +984,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_l.png',
+                        url: 'editor/img/sp_l.png',
                         position: 'l'
                     }
                 },
@@ -992,7 +992,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_m.png',
+                        url: 'editor/img/sp_m.png',
                         position: 'm'
                     }
                 },
@@ -1000,7 +1000,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_r.png',
+                        url: 'editor/img/sp_r.png',
                         position: 'r'
                     }
                 },
@@ -1008,7 +1008,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_bl.png',
+                        url: 'editor/img/sp_bl.png',
                         position: 'bl'
                     }
                 },
@@ -1016,7 +1016,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_b.png',
+                        url: 'editor/img/sp_b.png',
                         position: 'b'
                     }
                 },
@@ -1024,7 +1024,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_br.png',
+                        url: 'editor/img/sp_br.png',
                         position: 'br'
                     }
                 },
@@ -1032,7 +1032,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/sp_txt.png',
+                        url: 'editor/img/sp_txt.png',
                         position: 'txt'
                     }
                 }
@@ -1057,7 +1057,7 @@ exports.definition = {
                     factory: 'domvisual',
                     type: 'DOMImg',
                     config: {
-                        url: 'editor/lib/previewbg.png',
+                        url: 'editor/img/previewbg.png',
                         position: 'background'
                     }
                 },
@@ -1286,7 +1286,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/bssolid.png',
+                        url: 'editor/img/bssolid.png',
                         position: "styleSolid"
                     }
                 },
@@ -1294,7 +1294,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/bsdashed.png',
+                        url: 'editor/img/bsdashed.png',
                         position: "styleDashed"
                     }
                 },
@@ -1302,7 +1302,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/bsdotted.png',
+                        url: 'editor/img/bsdotted.png',
                         position: "styleDotted"
                     }
                 },
@@ -1310,7 +1310,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/bsnone.png',
+                        url: 'editor/img/bsnone.png',
                         position: "styleNone"
                     }
                 },
@@ -1586,7 +1586,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/fsnormal.png',
+                        url: 'editor/img/fsnormal.png',
                         position: "fontWeightNormal"
                     }
                 },
@@ -1594,7 +1594,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/fsbold.png',
+                        url: 'editor/img/fsbold.png',
                         position: "fontWeightBold"
                     }
                 },
@@ -1620,7 +1620,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/faleft.png',
+                        url: 'editor/img/faleft.png',
                         position: "textAlignLeft"
                     }
                 },
@@ -1628,7 +1628,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/faright.png',
+                        url: 'editor/img/faright.png',
                         position: "textAlignRight"
                     }
                 },
@@ -1636,7 +1636,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/facenter.png',
+                        url: 'editor/img/facenter.png',
                         position: "textAlignCenter"
                     }
                 },
@@ -1644,7 +1644,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/fajustify.png',
+                        url: 'editor/img/fajustify.png',
                         position: "textAlignJustify"
                     }
                 },
@@ -1836,7 +1836,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: 'editor/lib/stylebgsmall.png',
+                        url: 'editor/img/stylebgsmall.png',
                         position: "background"
                     }
                 },
@@ -2058,7 +2058,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: "editor/lib/topleft.png",
+                        url: "editor/img/topleft.png",
                         position: "img"
                     }
                 }
@@ -2078,7 +2078,7 @@ exports.definition = {
                     factory: "domvisual",
                     type: "DOMImg",
                     config: {
-                        url: "editor/lib/snappx.png",
+                        url: "editor/img/snappx.png",
                         position: "pos"
                     }
                 }
