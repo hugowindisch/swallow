@@ -1,4 +1,4 @@
-exports.groups = {groups|s};
+exports.groups = {{html groups}};
 
 /**
     Exports all visual constructors in the specified module.
@@ -6,7 +6,7 @@ exports.groups = {groups|s};
 var constructors = {};
 exports.exportConstructors = function (to) {
 {{each constructors}}
-    constructors.${$value} = to.${$value} = require('${path}').${$value};
+    constructors.${$value.name} = to.${$value.name} = require('${path}').${$value.name};
 {{/each}}
     return exports;
 };
