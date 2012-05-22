@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/node
 /**
     editsrvr.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
@@ -48,7 +48,7 @@
    // is containing package) or public (accessible to everyone).
 */
 var meatgrinder = require('meatgrinder'),
-    dust = require('dust'),
+    jqtpl = require('jqtpl'),
     fs = require('fs'),
     path = require('path'),
     findPackages = meatgrinder.findPackages,
@@ -59,27 +59,18 @@ var meatgrinder = require('meatgrinder'),
         json: 'application/json'
     };
 
-// disable newline and whitespace removal
-dust.optimizers.format = function (ctx, node) {
-    return node;
-};
-
-dust.loadSource(
-    dust.compile(
-        fs.readFileSync(
-            path.join(__dirname, 'templates/visual.js')
-        ).toString(),
-        'jsFile'
-    )
+jqtpl.template(
+    'jsFile',
+    fs.readFileSync(
+        path.join(__dirname, 'templates/visual.js')
+    ).toString()
 );
 
-dust.loadSource(
-    dust.compile(
-        fs.readFileSync(
-            path.join(__dirname, 'templates/groups.js')
-        ).toString(),
-        'groupFile'
-    )
+jqtpl.template(
+    'groupFile',
+    fs.readFileSync(
+        path.join(__dirname, 'templates/groups.js')
+    ).toString()
 );
 
 // finds a given visual in the specified package
@@ -147,22 +138,16 @@ function saveVisualSourceFile(pack, visual, cb) {
     // only save it if it can't already be found (i.e. create a default
     // js file).
     if (!js) {
-        dust.render(
-            'jsFile',
-            {
-                packageName: pack.name,
-                clsname: visual
-            },
-            function (err, data) {
-                if (err) {
-                    return cb(err);
+        fs.writeFile(
+            path.join(pack.dirname, 'lib', visual + '.js'),
+            jqtpl.tmpl(
+                'jsFile',
+                {
+                    packageName: pack.name,
+                    clsname: visual
                 }
-                fs.writeFile(
-                    path.join(pack.dirname, 'lib', visual + '.js'),
-                    data,
-                    cb
-                );
-            }
+            ),
+            cb
         );
     } else {
         cb(null);
@@ -186,24 +171,18 @@ function saveGroupsJS(pack, allVis, cb) {
 
         constructors.push(ctr);
     });
-    dust.render(
-        'groupFile',
-        {
-            packageName: pack.name,
-            constructors: constructors,
-            groups: JSON.stringify(json, null, 4),
+    fs.writeFile(
+        path.join(pack.dirname, 'lib', 'groups.js'),
+        jqtpl.tmpl(
+            'groupFile',
+            {
+                packageName: pack.name,
+                constructors: constructors,
+                groups: JSON.stringify(json, null, 4),
 
-        },
-        function (err, data) {
-            if (err) {
-                return cb(err);
             }
-            fs.writeFile(
-                path.join(pack.dirname, 'lib', 'groups.js'),
-                data,
-                cb
-            );
-        }
+        ),
+        cb
     );
 }
 //

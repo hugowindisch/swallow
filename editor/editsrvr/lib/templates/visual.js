@@ -3,7 +3,7 @@
 */
 var visual = require('visual'),
     domvisual = require('domvisual'),
-    group = require('/{packageName}/lib/groups').groups.{clsname};
+    group = require('/${packageName}/lib/groups').groups.{clsname};
 
 function {clsname}(config) {
     // call the baseclass

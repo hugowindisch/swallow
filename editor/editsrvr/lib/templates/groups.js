@@ -5,9 +5,9 @@ exports.groups = {groups|s};
 */
 var constructors = {};
 exports.exportConstructors = function (to) {
-{#constructors}
-    constructors.{name} = to.{name} = require('{path}').{name};
-{/constructors}
+{{each constructors}}
+    constructors.${$value} = to.${$value} = require('${path}').${$value};
+{{/each}}
     return exports;
 };
 
@@ -25,4 +25,3 @@ exports.run = function(mainModule) {
         domvisual.createFullScreenApplication(vis);
     }
 }
-
