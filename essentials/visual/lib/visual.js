@@ -772,27 +772,9 @@ Visual.prototype.getConfigurationSheet = function (config) {
 };
 
 /**
-    Applies a skin (a per-instance theme).
-    This is intentionally named setTheme, allowing the 'config' system to
-    setup the skin.
-
-    Note: the difference between this and setLocalTheme is that setSkin
-    only copies styles that exit in the normal theme and that defaults
-    all styles to the existing theme.
-*/
-Visual.prototype.setSkin = function (theme) {
-    // this dirties at least our content
-    themes.applySkin(this, theme);
-    forVisualAndAllChildrenDeep(this, function (v) {
-        setDirty(v, 'style');
-    });
-    return this;
-};
-
-/**
-    Applies a skin (a per-instance theme).
-    This is intentionally named setTheme, allowing the 'config' system to
-    setup the skin.
+    This sets a 'local theme'. It is used by the editor. I'm not sure
+    it should be used in other contexts. Maybe even the editor could use
+    the skinning thing instead... maybe not...
 */
 Visual.prototype.setLocalTheme = function (theme) {
     // this dirties at least our content
@@ -804,23 +786,16 @@ Visual.prototype.setLocalTheme = function (theme) {
 };
 
 /**
-    Sets a skin style (a per instance theme style)
-*/
-Visual.prototype.setSkinStyle = function (styleName, style) {
-    var o = {};
-    o[styleName] = style;
-    themes.applySkin(this, o);
-    // this dirties our content
-    setDirty(this, 'style');
-    return this;
-};
+    The default version does not support skinning.
 
-/**
-    Retrieves a theme style.
-    (this is an array of information like css styles or something)
 */
-Visual.prototype.getSkinStyle = function (styleName) {
-    return themes.getStyle(this.theme, styleName);
+Visual.prototype.getActiveTheme = function () {
+    if (this.hasOwnProperty('theme')) {
+        return this.theme;
+    }
+    // FIXME: this is probably not needed we should go through the default
+    // skin if we do not have a skin
+    return this.theme || null;
 };
 
 /**
@@ -842,25 +817,34 @@ Visual.prototype.setStyle = function (style) {
     Returns the style data for this visual.
 */
 Visual.prototype.getStyleData = function () {
-    var style = this.style, parentTheme, parent;
+    var style = this.style,
+        parentTheme,
+        parent,
+        skin;
+    // if the style is a name, it refers to a style in this component's (or
+    // its container's) theme
     if (isString(style)) {
         // + we allow ourself as a container to use our own styles
         // and all our children an sub children that don't have their own
         // theme
         for (parent = this; parent && !parentTheme; parent = parent.parent) {
-            parentTheme = parent.theme;
+            parentTheme = parent.getActiveTheme();
         }
         if (parentTheme) {
-            style = parentTheme[style];
+            return parentTheme.getStyleData(style);
         }
     } else if (isObject(style) && style.factory && style.type && style.style) {
+        skin = this.skin || themes.defaultSkin;
+        // this is a precise theme (fully qualified)
         try {
-            style = require(style.factory)[style.type].prototype.theme[style.style];
+            return skin.getTheme(style.factory, style.type).getStyleData(style.style);
         } catch (e) {
             throw new Error('Cannot find style ' + style.factory + '.' + style.type + '.' + style.style);
         }
     }
-    return themes.getStyleData(style);
+    // FIXME: this would be better if it came from the themes thing
+    // (like getDefaultStyleData()).
+    return { data: [], jsData: {} };
 };
 
 /**
@@ -877,13 +861,28 @@ function loadPackage(p, callback) {
 
 /**
 */
-function inheritVisual(Base, groupData) {
+function inheritVisual(Base, groupData, factoryName, typeName) {
     var proto = new Base();
     proto.theme = new Theme(groupData.theme);
     proto.privateTheme = groupData.privateTheme;
     proto.getDescription = function () {
         return groupData.description;
     };
+    // for legacy reasons, we support not providing the typenames
+    // in this case, skinning will not work
+    if (factoryName && typeName) {
+        proto.getActiveTheme = function () {
+            var skin = this.skin; // || defaultskin
+            if (this.hasOwnProperty('theme')) {
+                return this.theme;
+            } else if (skin) {
+                return skin.getTheme(factoryName, typeName);
+            }
+            // FIXME: this is probably not needed we should go through the default
+            // skin if we do not have a skin
+            return this.theme || null;
+        };
+    }
     return proto;
 }
 

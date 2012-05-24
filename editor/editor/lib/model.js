@@ -181,13 +181,13 @@ Group.prototype.getTopmostOrder = function () {
     Also note that we don't support multiple inner bindings at this time
     but that they are theoretically possible.
 */
-Group.prototype.createBoundThemeFromData = function (optionalSkin) {
-    optionalSkin = optionalSkin || deepCopy(this.documentData.theme);
-    var theme = new Theme(optionalSkin),
+Group.prototype.createBoundThemeFromData = function (optionalThemeData) {
+    optionalThemeData = optionalThemeData || deepCopy(this.documentData.theme);
+    var theme = new Theme(optionalThemeData),
         docInfo = this.docInfo,
         docFactory = docInfo.factory,
         docType = docInfo.type;
-    forEachProperty(theme, function (s, name) {
+    forEachProperty(theme.getThemeData(), function (s, name) {
         var bindings = [];
         if (s.basedOn) {
             forEach(s.basedOn, function (sref) {

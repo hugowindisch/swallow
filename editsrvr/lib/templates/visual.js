@@ -9,7 +9,7 @@ function ${clsname}(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, group);
 }
-${clsname}.prototype = visual.inheritVisual(domvisual.DOMElement, group);
+${clsname}.prototype = visual.inheritVisual(domvisual.DOMElement, group, '${packageName}', '${clsname}');
 ${clsname}.prototype.getConfigurationSheet = function () {
     return {  };
 };

@@ -66,7 +66,7 @@ DependencyManager.prototype.getStyleList = function () {
             if (Constr && Constr.prototype.privateTheme === false) {
                 theme = Constr.prototype.theme;
                 if (theme) {
-                    forEachProperty(theme, function (s, name) {
+                    forEachProperty(theme.getThemeData(), function (s, name) {
                         if (!s.private) {
                             res.push({ factory: factory, type: type, style: name});
                         }
