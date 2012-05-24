@@ -105,6 +105,25 @@ function applyDeep(to, from) {
     });
     return to;
 }
+function prune(o) {
+    var n = 0;
+    forEachProperty(o, function (p, name) {
+        var empty;
+        if (isObject(p)) {
+            if (!prune(p)) {
+                empty = true;
+            }
+        } else if (p === null || p === undefined) {
+            empty = true;
+        }
+        if (empty) {
+            delete o[name];
+        } else {
+            n += 1;
+        }
+    });
+    return n;
+}
 function limitRange(n, minN, maxN, ifNaN) {
     n = Number(n);
     if (isNaN(n)) {
@@ -128,4 +147,5 @@ exports.isFunction = isFunction;
 exports.deepCopy = deepCopy;
 exports.limitRange = limitRange;
 exports.apply = apply;
+exports.prune = prune;
 exports.applyDeep = applyDeep;

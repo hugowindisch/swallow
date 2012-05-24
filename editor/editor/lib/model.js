@@ -10,6 +10,7 @@ var glmatrix = require('glmatrix'),
     forEach = utils.forEach,
     deepCopy = utils.deepCopy,
     isString = utils.isString,
+    prune = utils.prune,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     edit = require('./edit'),
@@ -74,6 +75,16 @@ Group.prototype.normalizeDocument = function () {
     }
     if (!d.overflowY) {
         d.overflowY = 'visible';
+    }
+    this.normalizeDocumentSkin();
+};
+/**
+    Normalizes the skin (removing the skin altoghether if it is empty).
+*/
+Group.prototype.normalizeDocumentSkin = function () {
+    var documentData = this.documentData;
+    if (documentData.skin && prune(documentData.skin) === 0) {
+        delete documentData.skin;
     }
 };
 /**
@@ -822,4 +833,87 @@ Group.prototype.cmdUnsetStyleBase = function (name, factory, type, style) {
         { model: this, name: name, styleChanged: true }
     );
 };
+Group.prototype.cmdSetRemoteStyleSkinFeatures = function (name, factory, type, features) {
+    var that = this,
+        oldState,
+        oldJSData;
+    return new Command(
+        function () {
+            var documentData = that.documentData,
+                skin = documentData.skin,
+                skinf,
+                skint,
+                jsData;
+            // make sure there is a skin
+            if (!skin) {
+                skin = documentData.skin = {};
+                oldState = oldState ? oldState : 'skin';
+            }
+            skinf = skin[factory];
+            if (!skinf) {
+                skinf = skin[factory] = {};
+                oldState = oldState ? oldState : 'factory';
+            }
+            skint = skinf[type];
+            if (!skint) {
+                skint = skinf[type] = { jsData: {} };
+                oldState = oldState ? oldState : 'type';
+            }
+            jsData = skint.jsData;
+            oldJSData = oldState ? null : deepCopy(jsData);
+
+            forEachProperty(features, function (f, fname) {
+                if (f === null) {
+                    delete jsData[fname];
+                } else {
+                    jsData[fname] = f;
+                }
+            });
+
+            that.normalizeDocumentSkin();
+        },
+        function () {
+            var documentData = that.documentData;
+            switch (oldState) {
+            case 'skin':
+                delete documentData.skin;
+                break;
+            case 'factory':
+                delete documentData.skin[factory];
+                break;
+            case 'type':
+                delete documentData.skin[factory][type];
+                break;
+            default:
+                documentData.skin[factory][type].jsData = oldJSData;
+                break;
+            }
+            that.normalizeDocumentSkin();
+        },
+        'cmdSetRemoteStyleSkinFeatures',
+        'Skin remote style features',
+        { model: this, styleChanged: true }
+    );
+};
+Group.prototype.cmdRemoveRemoteStyleSkin = function (name, factory, type) {
+    var that = this,
+        old;
+    return new Command(
+        function () {
+            var documentData = that.documentData;
+            old = documentData.skin[factory][type];
+            delete documentData.skin[factory][type];
+            that.normalizeDocumentSkin();
+        },
+        function () {
+            var documentData = that.documentData;
+            documentData.skin[factory][type] = old;
+            that.normalizeDocumentSkin();
+        },
+        'cmdRemoveRemoteStyleSkin',
+        'Remove remote style skin',
+        { model: this, styleChanged: true }
+    );
+};
+
 exports.Group = Group;
