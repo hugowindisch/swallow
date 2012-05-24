@@ -13,6 +13,7 @@ var utils = require('utils'),
     themes = require('./themes'),
     Theme = themes.Theme,
     Skin = themes.Skin,
+    defaultSkin = themes.defaultSkin,
     isString = utils.isString,
     isObject = utils.isObject,
     applyLayout = position.applyLayout,
@@ -865,7 +866,7 @@ Visual.prototype.getStyleData = function () {
             return parentTheme.getStyleData(style);
         }
     } else if (isObject(style) && style.factory && style.type && style.style) {
-        skin = this.skin || themes.defaultSkin;
+        skin = this.skin || defaultSkin;
         // this is a precise theme (fully qualified)
         try {
             return skin.getTheme(style.factory, style.type).getStyleData(style.style);
@@ -938,6 +939,8 @@ exports.matrixIsTranslateOnly = matrixIsTranslateOnly;
 exports.convertScaleToSize = position.convertScaleToSize;
 exports.forVisualAndAllChildrenDeep = forVisualAndAllChildrenDeep;
 exports.Theme = Theme;
+exports.Skin = Skin;
+exports.defaultskin = defaultSkin;
 exports.update = dirty.update;
 exports.getEnclosingRect = position.getEnclosingRect;
 exports.rectToMatrix = position.rectToMatrix;

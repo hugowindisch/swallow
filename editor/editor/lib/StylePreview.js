@@ -24,9 +24,11 @@ StylePreview.prototype.setStyle = function (st) {
     preview.setStyle(st);
     this.showOrHideText();
 };
-StylePreview.prototype.previewStyleChange = function (skin) {
-    var preview = this.children.preview;
-    preview.setLocalTheme(skin);
+StylePreview.prototype.previewStyleChange = function (localTheme) {
+    var preview = this.children.preview,
+        skin = localTheme.getSkin();
+    preview.setLocalTheme(localTheme);
+    preview.setSkin(skin);
     this.showOrHideText();
 };
 StylePreview.prototype.showOrHideText = function () {

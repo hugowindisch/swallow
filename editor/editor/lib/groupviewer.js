@@ -843,8 +843,10 @@ GroupViewer.prototype.setSelectionConfig = function (config) {
     });
     group.doCommand(cg);
 };
-GroupViewer.prototype.previewStyleChange = function (skin) {
-    this.children.visuals.setLocalTheme(skin);
+GroupViewer.prototype.previewStyleChange = function (localTheme) {
+    var visuals = this.children.visuals;
+    visuals.setLocalTheme(localTheme);
+    visuals.setSkin(localTheme.skin, true);
 };
 GroupViewer.prototype.getPositionRect = function (name) {
     var pos = this.documentData.positions[name],
@@ -925,6 +927,8 @@ GroupViewer.prototype.setGroup = function (group) {
             case 'cmdSetStyleFeatures':
             case 'cmdRenameStyle':
             case 'cmdRemoveStyleAndReferences':
+            case 'cmdRemoveRemoteStyleSkin':
+            case 'cmdSetRemoteStyleSkinFeatures':
                 delete that.previewTheme;
                 redraw = true;
                 break;
@@ -1037,12 +1041,14 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
     var documentData = this.documentData,
         positions = documentData.positions,
         children = documentData.children,
+        theme = this.getPreviewTheme(),
         fdd = {
             dimensions: documentData.dimensions,
             children: {},
             positions: {},
-            theme: this.getPreviewTheme()
+            theme: theme
         };
+
     forEachProperty(documentData.positions, function (pos, name) {
         var c = children[name];
         if (positions[name].enableDisplay !== false) {
@@ -1148,6 +1154,7 @@ GroupViewer.prototype.updateAll = function () {
         // kinda shitty.
     }
     children.visuals.setMatrix(zoomMat);
+    children.visuals.setSkin(displayableDocumentData.theme.getSkin(), true);
 
     forEachProperty(children.visuals.children, function (c) {
         // Sets the preview mode

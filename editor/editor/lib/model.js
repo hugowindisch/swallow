@@ -6,6 +6,8 @@ var glmatrix = require('glmatrix'),
     utils = require('utils'),
     visual = require('visual'),
     Theme = visual.Theme,
+    Skin = visual.Skin,
+    defaultSkin = visual.defaultSkin,
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEach,
     deepCopy = utils.deepCopy,
@@ -178,40 +180,35 @@ Group.prototype.getTopmostOrder = function () {
     It is difficult to preview the styles in the editor. Why? because
     the style sheets have references to factories (a factory may have a
     style sheet) while the factory of the type being edited does not
-    really exist. The styling system was not designed to be edited easily,
-    it was designed for being used.
+    really exist.
 
-    So, we need to somehow trick things and this function does that. It will
-    create a style sheet that matches the current documentData and that
-    resolves inner depdendencies correctly. This could break if the styling
-    system changes.
-
-    Also note that this function is called by the group viewer that maintains
-    a valid local theme at all times (that can be used by other ui elements).
-
-    Also note that we don't support multiple inner bindings at this time
-    but that they are theoretically possible.
+    So, we need to somehow trick things and this function does that.
 */
-Group.prototype.createBoundThemeFromData = function (optionalThemeData) {
+Group.prototype.createBoundThemeFromData = function (optionalThemeData, optionalSkinData) {
     optionalThemeData = optionalThemeData || deepCopy(this.documentData.theme);
-    var theme = new Theme(optionalThemeData),
-        docInfo = this.docInfo,
+    optionalSkinData = optionalSkinData || deepCopy(this.documentData.skin);
+
+    var docInfo = this.docInfo,
         docFactory = docInfo.factory,
-        docType = docInfo.type;
-    forEachProperty(theme.getThemeData(), function (s, name) {
-        var bindings = [];
-        if (s.basedOn) {
-            forEach(s.basedOn, function (sref) {
-                if (sref.factory === docFactory && sref.type === docType) {
-                    bindings.push({theme: theme, style: sref.style});
-                }
-            });
-        }
-        if (bindings.length > 0) {
-            s.bindings = bindings;
-            delete s.basedOn;
-        }
-    });
+        docType = docInfo.type,
+        skin,
+        theme;
+
+    // we create a fake skin. This is only a theme resolver, and it will
+    // resolve the theme of the currently edited thing, to the theme
+    // that we create here.
+    function EditedDocumendSkin() {
+        this.getTheme = function (factory, type) {
+            if (factory === docFactory && docType === type) {
+                return theme;
+            } else {
+                return skin.getTheme(factory, type);
+            }
+        };
+    }
+
+    skin = optionalSkinData ? new Skin(optionalSkinData) : defaultSkin;
+    theme = new Theme(optionalThemeData, new EditedDocumendSkin());
     return theme;
 };
 
@@ -770,7 +767,7 @@ Group.prototype.cmdSetStyleFeatures = function (name, features) {
             oldv[f] = (old === undefined) ? null : old;
 
             if (v !== null) {
-                jsData[f] = v;
+                jsData[f] = deepCopy(v);
             } else {
                 delete jsData[f];
             }
@@ -833,7 +830,7 @@ Group.prototype.cmdUnsetStyleBase = function (name, factory, type, style) {
         { model: this, name: name, styleChanged: true }
     );
 };
-Group.prototype.cmdSetRemoteStyleSkinFeatures = function (name, factory, type, features) {
+Group.prototype.cmdSetRemoteStyleSkinFeatures = function (factory, type, style, features) {
     var that = this,
         oldState,
         oldJSData;
@@ -843,6 +840,7 @@ Group.prototype.cmdSetRemoteStyleSkinFeatures = function (name, factory, type, f
                 skin = documentData.skin,
                 skinf,
                 skint,
+                skins,
                 jsData;
             // make sure there is a skin
             if (!skin) {
@@ -856,17 +854,22 @@ Group.prototype.cmdSetRemoteStyleSkinFeatures = function (name, factory, type, f
             }
             skint = skinf[type];
             if (!skint) {
-                skint = skinf[type] = { jsData: {} };
+                skint = skinf[type] = {};
                 oldState = oldState ? oldState : 'type';
             }
-            jsData = skint.jsData;
+            skins = skint[style];
+            if (!skins) {
+                skins = skint[style] = { jsData: {} };
+                oldState = oldState ? oldState : 'style';
+            }
+            jsData = skins.jsData;
             oldJSData = oldState ? null : deepCopy(jsData);
 
             forEachProperty(features, function (f, fname) {
                 if (f === null) {
                     delete jsData[fname];
                 } else {
-                    jsData[fname] = f;
+                    jsData[fname] = deepCopy(f);
                 }
             });
 
@@ -884,8 +887,11 @@ Group.prototype.cmdSetRemoteStyleSkinFeatures = function (name, factory, type, f
             case 'type':
                 delete documentData.skin[factory][type];
                 break;
+            case 'style':
+                delete documentData.skin[factory][type][style];
+                break;
             default:
-                documentData.skin[factory][type].jsData = oldJSData;
+                documentData.skin[factory][type][style].jsData = oldJSData;
                 break;
             }
             that.normalizeDocumentSkin();

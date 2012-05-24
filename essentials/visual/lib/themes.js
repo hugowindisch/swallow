@@ -117,6 +117,8 @@ function applyTheme(toTheme, fromTheme, all) {
             // note: we deepcopy the prop because bindings may change
             // for the same property in two different skins
             toTheme[propname] = deepCopy(prop);
+            // we cannot copy the bindings if any
+            delete toTheme[propname].bindings;
         }
     });
 }
@@ -188,6 +190,9 @@ Theme.prototype.getStyleData = function (name) {
 Theme.prototype.getThemeData = function () {
     return this.themeData;
 };
+Theme.prototype.getSkin = function () {
+    return this.skin;
+};
 
 /*
     A skin defines remote types (overrides themes from many different
@@ -243,6 +248,9 @@ Skin.prototype.getTheme = function (factory, type) {
         return fact[type];
     }
     return this.makeTheme(factory, type);
+};
+Skin.prototype.getSkinData = function () {
+    return this.skinData;
 };
 
 exports.Theme = Theme;

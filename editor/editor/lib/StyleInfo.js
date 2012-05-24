@@ -51,11 +51,12 @@ StyleInfo.prototype.getEditedStyle = function () {
 StyleInfo.prototype.highlight = function (selected) {
     this.children.selectionBox.setVisible(selected);
 };
-StyleInfo.prototype.previewStyleChange = function (skin) {
+StyleInfo.prototype.previewStyleChange = function (localTheme) {
     var children = this.children,
         preview = children.preview,
         innerPreview = preview.children.preview;
-    innerPreview.setLocalTheme(skin);
+    innerPreview.setLocalTheme(localTheme);
+    innerPreview.setSkin(localTheme.getSkin(), true);
     this.showOrHideText();
 };
 StyleInfo.prototype.showOrHideText = function () {

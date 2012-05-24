@@ -192,7 +192,6 @@ function Styling(config) {
         var styleEdit = that.getChild('styleEdit'),
             f = styleFeatures[featureName],
             attributes = f.attributes;
-        that.makeLocalStyle();
         if (styleEdit) {
             that.removeChild(styleEdit);
         }
@@ -200,7 +199,7 @@ function Styling(config) {
             styleEdit = new (f.FeatureEditor)(f.config);
             styleEdit.setStyleData(styleAttributesToEditorAttributes(
                 attributes,
-                that.localStyle.jsData || {}
+                that.editedStyleData.jsData || {}
             ));
             that.addChild(styleEdit, 'styleEdit', 2);
             styleEdit.setHtmlFlowing(flowing, true);
@@ -306,23 +305,31 @@ Styling.prototype.deleteLocalStyle = function () {
         docInfo = editor.getDocInfo(),
         group = editor.getViewer().getGroup();
     this.preventUpdates = true;
-    group.doCommand(group.cmdRemoveStyleAndReferences(docInfo.factory, docInfo.type, this.editedStyle));
+    if (this.editedStyleIsLocal) {
+        group.doCommand(group.cmdRemoveStyleAndReferences(docInfo.factory, docInfo.type, this.editedStyle));
+    } else {
+        group.doCommand(group.cmdRemoveRemoteStyleSkin(this.editedStyle.factory,  this.editedStyle.type, this.editedStyle.style));
+    }
     delete this.preventUpdates;
     this.setData(null);
 };
 
 Styling.prototype.setLocalStyleFeature = function (features) {
-    if (!this.localStyle) {
+    if (!this.editedStyleData) {
         throw new Error('local style expected');
     }
     var viewer = this.editor.getViewer(),
         group = viewer.getGroup(),
-        localStyleData = this.localStyle.jsData,
+        localStyleData = this.editedStyleData.jsData,
         stylingHeading = this.getChild('stylingHeading'),
-        skin,
+        previewTheme,
         stylePreview = stylingHeading.getChild('stylePreview');
     this.preventUpdates = true;
-    group.doCommand(group.cmdSetStyleFeatures(this.editedStyle, features));
+    if (this.editedStyleIsLocal) {
+        group.doCommand(group.cmdSetStyleFeatures(this.editedStyle, features));
+    } else {
+        group.doCommand(group.cmdSetRemoteStyleSkinFeatures(this.editedStyle.factory,  this.editedStyle.type, this.editedStyle.style, features));
+    }
     delete this.preventUpdates;
     // update the local style
     forEachProperty(features, function (v, f) {
@@ -332,25 +339,51 @@ Styling.prototype.setLocalStyleFeature = function (features) {
             localStyleData[f] = v;
         }
     });
-    skin = viewer.getPreviewTheme();
-    stylePreview.previewStyleChange(skin);
-    this.getChild('localStylePicker').previewStyleChange(skin);
+    previewTheme = viewer.getPreviewTheme();
+    stylePreview.previewStyleChange(previewTheme);
+    if (this.editedStyleIsLocal) {
+        this.getChild('localStylePicker').previewStyleChange(previewTheme);
+    } else {
+        this.getChild('stylePicker').previewStyleChange(previewTheme);
+        this.getChild('localStylePicker').previewStyleChange(previewTheme);
+    }
     this.updateFeatureSelector();
 };
 
 Styling.prototype.previewLocalStyleFeature = function (features) {
     var editor = this.editor,
         group = editor.getViewer().getGroup(),
-        skin = deepCopy(group.documentData.theme),
+        localTheme = deepCopy(group.documentData.theme),
+        localSkin = deepCopy(group.documentData.skin),
         stylingHeading = this.getChild('stylingHeading'),
+        es = this.editedStyle,
         ss,
         stylePreview = stylingHeading.getChild('stylePreview');
 
-    if (!this.localStyle) {
+    if (!this.editedStyleData) {
         throw new Error('local style expected');
     }
-    ss = skin[this.editedStyle] = deepCopy(this.localStyle);
-    ss = ss.jsData;
+
+    if (this.editedStyleIsLocal) {
+        ss = localTheme[this.editedStyle] = deepCopy(this.editedStyleData);
+        ss = ss.jsData;
+    } else {
+        localSkin = localSkin || {};
+        ss = localSkin[es.factory];
+        if (!ss) {
+            ss = localSkin[es.factory] = {};
+        }
+        ss = ss[es.type];
+        if (!ss) {
+            ss = localSkin[es.factory][es.type] = {};
+        }
+        ss = ss[es.style];
+        if (!ss) {
+            ss = localSkin[es.factory][es.type][es.style] = { jsData: {}};
+        }
+        ss = ss.jsData;
+    }
+
     // update the local style
     forEachProperty(features, function (v, f) {
         if (v === null) {
@@ -359,11 +392,12 @@ Styling.prototype.previewLocalStyleFeature = function (features) {
             ss[f] = v;
         }
     });
-    skin = group.createBoundThemeFromData(skin);
-    this.editor.getViewer().previewStyleChange(skin);
-    stylePreview.previewStyleChange(skin);
-    stylePreview.setStyle(this.editedStyle);
-    this.getChild('localStylePicker').previewStyleChange(skin);
+    localTheme = group.createBoundThemeFromData(localTheme, localSkin);
+    this.editor.getViewer().previewStyleChange(localTheme);
+    stylePreview.previewStyleChange(localTheme);
+    this.getChild('localStylePicker').previewStyleChange(localTheme);
+    this.getChild('stylePicker').previewStyleChange(localTheme);
+
 };
 
 Styling.prototype.computeNonLocalStyleList = function () {
@@ -441,24 +475,14 @@ Styling.prototype.setEditor = function (editor) {
     commandChain.on('command', detectStyleChanges);
 
 };
-Styling.prototype.makeLocalStyle = function () {
-    var group = this.editor.getViewer().getGroup(),
-        editedStyle,
-        newStyle;
-    // if the currently edited style is not a local style
-    if (!isLocalStyle(this.editedStyle)) {
-        this.makeExtendedStyle(this.editedStyle);
-    }
-};
 
 Styling.prototype.updateFeatureSelector = function () {
     var activeFeatures = {},
         localStyleJsData = {},
         stylingHeading = this.getChild('stylingHeading'),
         styleFeature = stylingHeading.getChild('styleFeature');
-    if (this.localStyle) {
-        localStyleJsData = this.localStyle.jsData || localStyleJsData;
-    }
+
+    localStyleJsData = this.editedStyleData.jsData || localStyleJsData;
     forEachProperty(styleFeatures, function (data, feature) {
         forEachProperty(data.attributes, function (attr, attrName) {
             if (localStyleJsData[attr] !== undefined) {
@@ -480,7 +504,7 @@ Styling.prototype.updateStylePreview = function (optionalFeature, optionalValue)
 
 Styling.prototype.handleStyleChange = function () {
     if (!this.preventUpdates) {
-        // reset the whole shebang... not perfect but better than
+        // reset the whole shebang... not perfect, but better than...
         this.setData(this.editedStyle);
     }
 };
@@ -488,7 +512,7 @@ Styling.prototype.handleStyleChange = function () {
 Styling.prototype.updateStyleName = function () {
     var group = this.editor.getViewer().getGroup(),
         es = this.editedStyle,
-        localStyle = this.localStyle,
+        editedStyleData = this.editedStyleData,
         styleName = this.getChild('styleName'),
         styleNameName = styleName.getChild('styleName'),
         styleNameExtendBtn = styleName.getChild('extendBtn'),
@@ -497,7 +521,7 @@ Styling.prototype.updateStyleName = function () {
         basedOn = styleName.getChild('basedOn'),
         bo,
         basedOnName;
-    if (localStyle) {
+    if (this.editedStyleIsLocal) {
         styleNameName.enable(true);
         styleNameExtendBtn.setVisible(true);
         styleNameDeleteBtn.setVisible(true);
@@ -505,8 +529,8 @@ Styling.prototype.updateStyleName = function () {
         basedOnLabel.setVisible(true);
         basedOn.setVisible(true);
         basedOnName = '';
-        if (localStyle.basedOn && localStyle.basedOn.length > 0) {
-            bo = localStyle.basedOn[0];
+        if (editedStyleData.basedOn && editedStyleData.basedOn.length > 0) {
+            bo = editedStyleData.basedOn[0];
             if (isString(bo)) {
                 basedOnName = bo;
             } else {
@@ -525,10 +549,26 @@ Styling.prototype.updateStyleName = function () {
 };
 
 Styling.prototype.updateStylePickers = function () {
-    var children = this.children;
+    var children = this.children,
+        theme = this.editor.getViewer().getPreviewTheme();
     children.stylePicker.highlight(this.editedStyle);
+    children.stylePicker.previewStyleChange(theme);
     children.localStylePicker.highlight(this.editedStyle);
-    children.localStylePicker.previewStyleChange(this.editor.getViewer().getPreviewTheme());
+    children.localStylePicker.previewStyleChange(theme);
+};
+
+Styling.prototype.getSkinData = function (factory, type, style) {
+    var documentData = this.editor.getViewer().getGroup().documentData,
+        skin = documentData.skin,
+        st;
+    st = skin[factory];
+    if (st) {
+        st = st[type];
+        if (st) {
+            st = st[style];
+        }
+    }
+    return st ? deepCopy(st) : { jsData: {} };
 };
 
 Styling.prototype.setData = function (st) {
@@ -538,9 +578,11 @@ Styling.prototype.setData = function (st) {
     this.editedStyle = st;
     // if the style is a local style
     if (isLocalStyle(this.editedStyle)) {
-        this.localStyle = deepCopy(group.documentData.theme[this.editedStyle]);
+        this.editedStyleData = deepCopy(group.documentData.theme[this.editedStyle]);
+        this.editedStyleIsLocal = true;
     } else {
-        delete this.localStyle;
+        this.editedStyleData = this.getSkinData(this.editedStyle.factory, this.editedStyle.type, this.editedStyle.style);
+        this.editedStyleIsLocal = false;
     }
 
     // remove the local style editor
