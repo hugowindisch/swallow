@@ -204,13 +204,13 @@ function Skin(skinData) {
     var that = this;
     this.skinData = {};
     forEachProperty(skinData, function (types, factory) {
-        var f = this.skinData[factory] = {},
+        var f = that.skinData[factory] = {},
             fact = require(factory);
         forEachProperty(types, function (styleData, Type) {
             // if we inherit from the base theme, we may have some bindings
             // that rely on stuff that we redefine. So we don't want these
             // bindings, so, basically we don't want to inherit anything
-            var th = fact[Type].theme,
+            var th = fact[Type].prototype.theme,
                 sd = apply(apply({}, th ? th.themeData : {}), styleData),
                 t = f[Type] = new Theme(sd, that);
         });

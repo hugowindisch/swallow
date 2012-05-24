@@ -12,6 +12,7 @@ var utils = require('utils'),
     position = require('./position'),
     themes = require('./themes'),
     Theme = themes.Theme,
+    Skin = themes.Skin,
     isString = utils.isString,
     isObject = utils.isObject,
     applyLayout = position.applyLayout,
@@ -703,7 +704,7 @@ Visual.prototype.createChildren = function (groupData) {
     Creates the content of this visual element from editor data.
 */
 Visual.prototype.createGroup = function (groupData) {
-    var overflowX, overflowY;
+    var overflowX, overflowY, skin;
     // set position
     this.setDimensions(groupData.dimensions);
     // set layout
@@ -715,6 +716,11 @@ Visual.prototype.createGroup = function (groupData) {
     overflowY = groupData.overflowY || 'visible';
     if (overflowX !== 'visible' || overflowY !== 'visible') {
         this.setChildrenClipping([overflowX, overflowY]);
+    }
+    // set our skin
+    skin = this.getPreferredSkin();
+    if (skin !== null) {
+        this.setSkin(skin, true);
     }
     return this;
 };
@@ -787,7 +793,6 @@ Visual.prototype.setLocalTheme = function (theme) {
 
 /**
     The default version does not support skinning.
-
 */
 Visual.prototype.getActiveTheme = function () {
     if (this.hasOwnProperty('theme')) {
@@ -811,6 +816,32 @@ Visual.prototype.setStyle = function (style) {
         setDirty(this, 'style');
     }
     return this;
+};
+
+/**
+    Sets the skin of the current component.
+    deep can take 3 values:
+        true,
+        false
+        'very' (very deep)
+*/
+Visual.prototype.setSkin = function (skin, deep) {
+    this.skin = skin;
+    setDirty(this, 'style');
+    if (deep) {
+        forEachProperty(this.children, function (c) {
+            if (deep === 'very' || !c.getPreferredSkin()) {
+                c.setSkin(skin, deep);
+            }
+        });
+    }
+};
+
+/**
+    Returns the preferred skin (which is the authoring skin for edited documents).
+*/
+Visual.prototype.getPreferredSkin = function () {
+    return null;
 };
 
 /**
@@ -862,8 +893,16 @@ function loadPackage(p, callback) {
 /**
 */
 function inheritVisual(Base, groupData, factoryName, typeName) {
-    var proto = new Base();
-    proto.theme = new Theme(groupData.theme);
+    var proto = new Base(),
+        skin;
+    if (groupData.skin) {
+        skin = new Skin(groupData.skin);
+        skin.debugName = factoryName + ':' + typeName;
+        proto.getPreferredSkin =     function () {
+            return skin;
+        };
+    }
+    proto.theme = new Theme(groupData.theme, skin);
     proto.privateTheme = groupData.privateTheme;
     proto.getDescription = function () {
         return groupData.description;
@@ -872,14 +911,12 @@ function inheritVisual(Base, groupData, factoryName, typeName) {
     // in this case, skinning will not work
     if (factoryName && typeName) {
         proto.getActiveTheme = function () {
-            var skin = this.skin; // || defaultskin
+            var skin = this.skin;
             if (this.hasOwnProperty('theme')) {
                 return this.theme;
             } else if (skin) {
                 return skin.getTheme(factoryName, typeName);
             }
-            // FIXME: this is probably not needed we should go through the default
-            // skin if we do not have a skin
             return this.theme || null;
         };
     }

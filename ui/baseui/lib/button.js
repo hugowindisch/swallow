@@ -66,6 +66,15 @@ Button.prototype = new (domvisual.DOMElement)();
 Button.prototype.getDescription = function () {
     return "A Button";
 };
+Button.prototype.getActiveTheme = function () {
+    var skin = this.skin;
+    if (this.hasOwnProperty('theme')) {
+        return this.theme;
+    } else if (skin) {
+        return skin.getTheme('baseui', 'Button');
+    }
+    return this.theme || null;
+};
 Button.prototype.theme = new (visual.Theme)({
     background: {
         basedOn: [
