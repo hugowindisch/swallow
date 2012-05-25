@@ -304,14 +304,18 @@ Styling.prototype.deleteLocalStyle = function () {
     var editor = this.editor,
         docInfo = editor.getDocInfo(),
         group = editor.getViewer().getGroup();
-    this.preventUpdates = true;
     if (this.editedStyleIsLocal) {
+        this.preventUpdates = true;
         group.doCommand(group.cmdRemoveStyleAndReferences(docInfo.factory, docInfo.type, this.editedStyle));
+        delete this.preventUpdates;
+        this.setData(null);
     } else {
+        this.preventUpdates = true;
         group.doCommand(group.cmdRemoveRemoteStyleSkin(this.editedStyle.factory,  this.editedStyle.type, this.editedStyle.style));
+        delete this.preventUpdates;
+        this.updateStylePickers();
+        this.updateStylePreview();
     }
-    delete this.preventUpdates;
-    this.setData(null);
 };
 
 Styling.prototype.setLocalStyleFeature = function (features) {
@@ -525,6 +529,7 @@ Styling.prototype.updateStyleName = function () {
         styleNameName.enable(true);
         styleNameExtendBtn.setVisible(true);
         styleNameDeleteBtn.setVisible(true);
+        styleNameDeleteBtn.setText('Delete');
         styleNameName.setText(this.editedStyle);
         basedOnLabel.setVisible(true);
         basedOn.setVisible(true);
@@ -540,8 +545,9 @@ Styling.prototype.updateStyleName = function () {
         basedOn.setText(basedOnName);
     } else {
         styleNameName.enable(false);
-        styleNameExtendBtn.setVisible(false);
-        styleNameDeleteBtn.setVisible(false);
+        styleNameExtendBtn.setVisible(true);
+        styleNameDeleteBtn.setVisible(true);
+        styleNameDeleteBtn.setText('Unskin');
         styleNameName.setText(this.editedStyle ? this.editedStyle.style : '');
         basedOnLabel.setVisible(false);
         basedOn.setVisible(false);
@@ -561,11 +567,13 @@ Styling.prototype.getSkinData = function (factory, type, style) {
     var documentData = this.editor.getViewer().getGroup().documentData,
         skin = documentData.skin,
         st;
-    st = skin[factory];
-    if (st) {
-        st = st[type];
+    if (skin) {
+        st = skin[factory];
         if (st) {
-            st = st[style];
+            st = st[type];
+            if (st) {
+                st = st[style];
+            }
         }
     }
     return st ? deepCopy(st) : { jsData: {} };

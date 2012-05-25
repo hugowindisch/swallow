@@ -13,6 +13,8 @@ var glmatrix = require('glmatrix'),
     deepCopy = utils.deepCopy,
     isString = utils.isString,
     prune = utils.prune,
+    ensure = utils.ensure,
+    ensured = utils.ensured,
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     edit = require('./edit'),
@@ -832,38 +834,22 @@ Group.prototype.cmdUnsetStyleBase = function (name, factory, type, style) {
 };
 Group.prototype.cmdSetRemoteStyleSkinFeatures = function (factory, type, style, features) {
     var that = this,
-        oldState,
         oldJSData;
     return new Command(
         function () {
             var documentData = that.documentData,
-                skin = documentData.skin,
-                skinf,
-                skint,
-                skins,
+                skinS,
                 jsData;
             // make sure there is a skin
-            if (!skin) {
-                skin = documentData.skin = {};
-                oldState = oldState ? oldState : 'skin';
+            skinS = ensure(documentData, 'skin', factory, type, style);
+            oldJSData = skinS.jsData;
+            if (!oldJSData) {
+                oldJSData = null;
+                skinS.jsData = {};
+            } else {
+                oldJSData = deepCopy(oldJSData);
             }
-            skinf = skin[factory];
-            if (!skinf) {
-                skinf = skin[factory] = {};
-                oldState = oldState ? oldState : 'factory';
-            }
-            skint = skinf[type];
-            if (!skint) {
-                skint = skinf[type] = {};
-                oldState = oldState ? oldState : 'type';
-            }
-            skins = skint[style];
-            if (!skins) {
-                skins = skint[style] = { jsData: {} };
-                oldState = oldState ? oldState : 'style';
-            }
-            jsData = skins.jsData;
-            oldJSData = oldState ? null : deepCopy(jsData);
+            jsData = skinS.jsData;
 
             forEachProperty(features, function (f, fname) {
                 if (f === null) {
@@ -872,49 +858,39 @@ Group.prototype.cmdSetRemoteStyleSkinFeatures = function (factory, type, style, 
                     jsData[fname] = deepCopy(f);
                 }
             });
-
-            that.normalizeDocumentSkin();
         },
         function () {
             var documentData = that.documentData;
-            switch (oldState) {
-            case 'skin':
-                delete documentData.skin;
-                break;
-            case 'factory':
-                delete documentData.skin[factory];
-                break;
-            case 'type':
-                delete documentData.skin[factory][type];
-                break;
-            case 'style':
-                delete documentData.skin[factory][type][style];
-                break;
-            default:
+            if (oldJSData) {
                 documentData.skin[factory][type][style].jsData = oldJSData;
-                break;
+            } else {
+                delete documentData.skin[factory][type][style];
+                that.normalizeDocumentSkin();
             }
-            that.normalizeDocumentSkin();
         },
         'cmdSetRemoteStyleSkinFeatures',
         'Skin remote style features',
         { model: this, styleChanged: true }
     );
 };
-Group.prototype.cmdRemoveRemoteStyleSkin = function (name, factory, type) {
+Group.prototype.cmdRemoveRemoteStyleSkin = function (factory, type, style) {
     var that = this,
         old;
     return new Command(
         function () {
             var documentData = that.documentData;
-            old = documentData.skin[factory][type];
-            delete documentData.skin[factory][type];
-            that.normalizeDocumentSkin();
+            old = ensured(documentData, 'skin', factory, type, style);
+            if (old) {
+                delete documentData.skin[factory][type][style];
+                that.normalizeDocumentSkin();
+            }
         },
         function () {
             var documentData = that.documentData;
-            documentData.skin[factory][type] = old;
-            that.normalizeDocumentSkin();
+            if (old) {
+                ensure(documentData, 'skin', factory, type);
+                documentData.skin[factory][type][style] = old;
+            }
         },
         'cmdRemoveRemoteStyleSkin',
         'Remove remote style skin',

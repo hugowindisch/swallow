@@ -124,6 +124,32 @@ function prune(o) {
     });
     return n;
 }
+// ensure(o, 'a', 'b', 'c') will make sure o.a.b.c exists and return it
+function ensure(o) {
+    var l = arguments.length, i, n, nextO;
+    for (i = 1; i < l; i += 1) {
+        n = String(arguments[i]);
+        if (!o.hasOwnProperty(n)) {
+            o = o[n] = {};
+        } else {
+            o = o[n];
+        }
+    }
+    return o;
+}
+// checks if something is ensured and returns it (or null if it is not)
+function ensured(o) {
+    var l = arguments.length, i, n, nextO;
+    for (i = 1; i < l; i += 1) {
+        n = String(arguments[i]);
+        if (!o.hasOwnProperty(n)) {
+            return null;
+        } else {
+            o = o[n];
+        }
+    }
+    return o;
+}
 function limitRange(n, minN, maxN, ifNaN) {
     n = Number(n);
     if (isNaN(n)) {
@@ -146,6 +172,8 @@ exports.isObject = isObject;
 exports.isFunction = isFunction;
 exports.deepCopy = deepCopy;
 exports.limitRange = limitRange;
+exports.applyDeep = applyDeep;
 exports.apply = apply;
 exports.prune = prune;
-exports.applyDeep = applyDeep;
+exports.ensure = ensure;
+exports.ensured = ensured;
