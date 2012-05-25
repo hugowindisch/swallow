@@ -319,11 +319,16 @@ exports.definition = {
                 },
                 library: {
                     order: 1,
-                    matrix: [ 280, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 10, 0, 1 ],
+                    matrix: [ 240, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 10, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                unsetContent: {
+                    order: 2,
+                    matrix: [ 24, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   330, 10, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 choices: {
-                    order: 2,
+                    order: 3,
                     matrix: [ 380, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   0, 50, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
@@ -343,6 +348,14 @@ exports.definition = {
                     config: {
                         "options": [ "fake" ],
                         position: "library"
+                    }
+                },
+                unsetContent: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        url: 'editor/img/plugin/unsetcontent.png',
+                        position: 'unsetContent'
                     }
                 },
                 choices: {

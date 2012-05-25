@@ -5,6 +5,8 @@
 /*globals define */
 var visual = require('visual'),
     domvisual = require('domvisual'),
+    utils = require('utils'),
+    deepCopy = utils.deepCopy,
     groups = require('./definition').definition.groups,
     ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet;
 
@@ -57,8 +59,7 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
     loadPreview();
 };
 VisualInfo.prototype.getTypeInfo = function () {
-    var ti = this.ti;
-    return { factory: ti.factory, type: ti.type };
+    return this.ti;
 };
 VisualInfo.prototype.getConfigurationSheet = function () {
     return { typeInfo: {} };
@@ -113,7 +114,7 @@ VisualInfo.prototype.showDetails = function () {
             var editingDefaultAttributes = viewer.getSelectionLength() === 0,
                 editedData = editingDefaultAttributes ? {} : viewer.getSelectionConfig();
             configurationSheet.setEditedVisual(
-                that.getTypeInfo(),
+                deepCopy(that.getTypeInfo()),
                 editedData,
                 updateDataFromConfigurationSheet,
                 editor

@@ -239,7 +239,7 @@ function setupToolMenu(editor) {
         },
         null,
         null,
-        'editor/lib/plugin/select.png',
+        'editor/img/plugin/select.png',
         true,
         function () {
             return selectedTool === this;
@@ -285,7 +285,7 @@ function setupToolMenu(editor) {
         },
         null,
         null,
-        'editor/lib/plugin/draw.png',
+        'editor/img/plugin/draw.png',
         true,
         function () {
             return selectedTool === this;
@@ -310,7 +310,7 @@ function setupToolMenu(editor) {
         },
         null,
         null,
-        'editor/lib/plugin/zoomin.png',
+        'editor/img/plugin/zoomin.png',
         true,
         function () {
             return selectedTool === this;
@@ -324,7 +324,7 @@ function setupToolMenu(editor) {
         },
         null,
         null,
-        'editor/lib/plugin/zoomout.png',
+        'editor/img/plugin/zoomout.png',
         true
     );
 
@@ -999,7 +999,7 @@ function setupObjectMenu(editor) {
         },
         null,
         new Accelerator('VK_U', true),
-        'editor/lib/plugin/unsetcontent.png'
+        'editor/img/plugin/unsetcontent.png'
     );
 
     clearTransformationTool = new MenuItem(
@@ -1064,7 +1064,7 @@ function setupViewMenu(editor) {
         },
         null,
         null,
-        'editor/lib/plugin/showgrid.png',
+        'editor/img/plugin/showgrid.png',
         true,
         function () {
             return viewer.getShowGrid();
@@ -1077,7 +1077,7 @@ function setupViewMenu(editor) {
         },
         null,
         null,
-        'editor/lib/plugin/showanchors.png',
+        'editor/img/plugin/showanchors.png',
         true,
         function () {
             return viewer.getShowAnchors();

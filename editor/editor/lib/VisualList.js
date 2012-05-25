@@ -13,11 +13,14 @@ var visual = require('visual'),
 function VisualList(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.VisualList);
-    var that = this,
-        library = this.children.library;
-    library.on('change', function (evt) {
+    var that = this;
+    this.getChild('library').on('change', function (evt) {
         that.filterFactories();
     });
+    this.getChild('unsetContent').on('click', function (evt) {
+        that.select(null, true);
+    });
+
 }
 VisualList.prototype = new (domvisual.DOMElement)();
 VisualList.prototype.filterFactories = function () {
