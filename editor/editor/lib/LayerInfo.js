@@ -17,7 +17,11 @@ function LayerInfo(config) {
     this.on('click', function (evt) {
         var viewer = that.viewer,
             name = that.contentName;
-        viewer.addToSelection(name, true);
+        if (viewer.positionIsSelected(name)) {
+            viewer.removeFromSelection(name);
+        } else {
+            viewer.addToSelection(name, !evt.ctrlKey);
+        }
         viewer.updateSelectionControlBox();
     });
     this.children.enableSelection.on('click', function (evt) {
@@ -69,13 +73,13 @@ LayerInfo.prototype.updateAll = function () {
     this.setStyle(selection[name] ? 'selectedBackground' : 'background');
     this.children.enableSelection.setUrl(
         position.enableSelect !== false ?
-            'editor/lib/enableSelect.png' :
-            'editor/lib/disableSelect.png'
+            'editor/img/enableSelect.png' :
+            'editor/img/disableSelect.png'
     );
     this.children.enableView.setUrl(
         position.enableDisplay !== false ?
-            'editor/lib/enableView.png' :
-            'editor/lib/disableView.png'
+            'editor/img/enableView.png' :
+            'editor/img/disableView.png'
     );
 };
 exports.LayerInfo = LayerInfo;

@@ -91,7 +91,13 @@ Layering.prototype.updateList = function () {
         that.orderAfter(name, prevName);
         prevName = name;
     });
-    this.requestDimensions([groups.Layering.dimensions[0], it.length * 30 + 10, 1]);
+    this.requestDimensions([
+        groups.Layering.dimensions[0],
+        // FIXME
+        // quite a hack. We compensate for the borders because
+        // the style is css based and has a 1 pixel border... quite ugly!
+        it.length * (groups.LayerInfo.dimensions[1] + 2) + 10, 1
+    ]);
 };
 
 exports.Layering = Layering;
