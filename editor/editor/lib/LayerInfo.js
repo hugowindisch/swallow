@@ -18,7 +18,7 @@ function LayerInfo(config) {
         var viewer = that.viewer,
             name = that.contentName;
         if (viewer.positionIsSelected(name)) {
-            viewer.removeFromSelection(name);
+            viewer.removeFromSelection(name, !evt.ctrlKey);
         } else {
             viewer.addToSelection(name, !evt.ctrlKey);
         }

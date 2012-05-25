@@ -635,11 +635,20 @@ GroupViewer.prototype.addToSelection = function (name, clearSelection, skipNotif
         this.emit('selectionChanged');
     }
 };
-GroupViewer.prototype.removeFromSelection = function (name) {
+GroupViewer.prototype.removeFromSelection = function (name, clearSelection, skipNotify) {
+    var changed = false;
+    if (clearSelection) {
+        this.selection = {};
+        changed = true;
+    }
     if (this.selection[name]) {
         delete this.selection[name];
+        changed = true;
+    }
+    if (changed && !skipNotify) {
         this.emit('selectionChanged');
     }
+
 };
 GroupViewer.prototype.clearSelection = function (name, skipNotify) {
     this.selection = {};
