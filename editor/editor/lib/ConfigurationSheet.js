@@ -27,32 +27,39 @@ ConfigurationSheet.prototype.getConfigurationSheet = function () {
     return { };
 };
 /**
-    The configuration sheet
+    Sets the edited visual. This will load the proper controls in the sheet.
+    The sheet may be already loading, and in this case the load will
+    be aborted (this is a bit stupid because I don't think we will ever
+    reload a different kind of typeInfo in the same ConfigurationSheet,
+    so maybe we should simply NOT initiate a new load and exit... )
 */
-ConfigurationSheet.prototype.setEditedVisual = function (editor, typeInfo, cbWhenReady) {
-    var viewer = editor.getViewer(),
-        group = viewer.getGroup(),
-        editedData,
-        sheet,
+ConfigurationSheet.prototype.setEditedVisual = function (typeInfo, editedData, saveData, editor) {
+    var sheet,
         toLoad = [],
-        error = null,
         i,
         l,
         loading,
-        editingDefaultAttributes = viewer.getSelectionLength() === 0,
+        aborted = false,
         that = this;
 
     // prevent entering this function recursively
     if (this.settingConfig) {
         return;
     }
-    // get the edited data
-    editedData = editingDefaultAttributes ? {} : viewer.getSelectionConfig();
+
+    // abort any pending load
+    if (this.abortPending) {
+        this.abortPending();
+    }
+    this.abortPending = function () {
+        aborted = true;
+    };
+    // remove the children
+    this.removeAllChildren();
 
     // get the configuration sheet of the edited type
     sheet = require(typeInfo.factory)[typeInfo.type].prototype.getConfigurationSheet.call(null);
 
-    this.removeAllChildren();
     // computes the list of all input controls to load
     forEachProperty(sheet, function (it, name) {
         if (it) {
@@ -60,8 +67,8 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, typeInfo, cbWhe
         }
     });
 
-    // updates the edited stuff with the sheet's content.
-    function updateContent() {
+    // updates the data
+    function updateData() {
         var newConfig = {};
         forEachProperty(sheet, function (it, name) {
             var c;
@@ -72,15 +79,7 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, typeInfo, cbWhe
         });
         // apply this to the model (and prevent updating the sheet while this happens)
         that.settingConfig = true;
-        if (editingDefaultAttributes) {
-            viewer.setDefaultVisual({
-                factory: typeInfo.factory,
-                type: typeInfo.type,
-                config: newConfig
-            });
-        } else {
-            viewer.setSelectionConfig(newConfig);
-        }
+        saveData(newConfig);
         delete that.settingConfig;
     }
 
@@ -95,7 +94,7 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, typeInfo, cbWhe
             if (data) {
                 c.setData(data);
             }
-            c.on('change', updateContent);
+            c.on('change', updateData);
             that.addChild(c, toLoad[i].name);
         }
     }
@@ -107,14 +106,9 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, typeInfo, cbWhe
                 l = toLoad.length,
                 c;
             toLoad[n].ctrl = ctrl;
-            if (err) {
-                error = err;
-            }
             loading -= 1;
-            if (loading === 0) {
+            if (loading === 0 && !aborted) {
                 initControls();
-                // append all our children
-                cbWhenReady(err, that.getComputedDimensions());
             }
         };
     }
@@ -125,7 +119,6 @@ ConfigurationSheet.prototype.setEditedVisual = function (editor, typeInfo, cbWhe
     for (i = 0; i < l; i += 1) {
         toLoad[i].fcn(editor, getOnLoad(i));
     }
-
 };
 
 exports.ConfigurationSheet = ConfigurationSheet;

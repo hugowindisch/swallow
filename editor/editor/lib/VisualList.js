@@ -135,6 +135,20 @@ VisualList.prototype.applySelectedPosition = function () {
             });
             group.doCommand(cmdGroup);
         }
+    } else {
+        // if our selection is not empty
+        if (sel) {
+            selTypeInfo = sel.getTypeInfo();
+            // change the default visual in the groupviewer to match that
+            viewer.setDefaultVisual({
+                factory: selTypeInfo.factory,
+                type: selTypeInfo.type,
+                config: {}
+            });
+        } else {
+            // otherwise, clear the default visual
+            viewer.setDefaultVisual(null);
+        }
     }
 };
 VisualList.prototype.updateVisualList = function () {
@@ -205,7 +219,15 @@ VisualList.prototype.init = function (editor) {
     });
     // a new box has been selected
     function newBoxSelected() {
-        that.selectByTypeInfo(viewer.getSelectionTypeInfo());
+        var typeInfo;
+        // select what's in the selection
+        if (viewer.getSelectionLength() > 0) {
+            typeInfo = viewer.getSelectionTypeInfo();
+
+        } else {
+            typeInfo = viewer.getDefaultVisual();
+        }
+        that.selectByTypeInfo(typeInfo);
     }
 
     viewer.on('selectionChanged', newBoxSelected);

@@ -67,45 +67,61 @@ VisualInfo.prototype.init = function (editor) {
     this.editor = editor;
 };
 VisualInfo.prototype.select = function (selected) {
-    this.children.selectionBox.setVisible(selected);
-    if (selected) {
-        this.showDetails();
-    } else {
-        this.hideDetails();
+    if (selected !== this.selected) {
+        this.selected = selected;
+        this.children.selectionBox.setVisible(selected);
+        if (selected) {
+            this.showDetails();
+        } else {
+            this.hideDetails();
+        }
     }
-
 };
 VisualInfo.prototype.showDetails = function () {
     var children = this.children,
-        viewer = this.editor.getViewer(),
+        editor = this.editor,
+        viewer = editor.getViewer(),
         group = viewer.getGroup(),
         commandChain = group.getCommandChain(),
         configurationSheet,
         hooked = true,
+        typeInfo = this.ti,
         that = this;
+
     configurationSheet = new ConfigurationSheet({});
     this.addChild(configurationSheet, 'configurationSheet');
-
     configurationSheet.setPosition('configurationSheet');
 
-    // set the default visual if the selection is empty
-    if (viewer.getSelectionLength() === 0) {
-        viewer.setDefaultVisual({
-            factory: this.ti.factory,
-            type: this.ti.type,
-            config: {}
-        });
+    // updates the edited stuff with the sheet's content.
+    function updateDataFromConfigurationSheet(newConfig) {
+        var editingDefaultAttributes = viewer.getSelectionLength() === 0,
+            editedData = editingDefaultAttributes ? {} : viewer.getSelectionConfig();
+        if (editingDefaultAttributes) {
+            viewer.setDefaultVisual({
+                factory: typeInfo.factory,
+                type: typeInfo.type,
+                config: newConfig
+            });
+        } else {
+            viewer.setSelectionConfig(newConfig);
+        }
     }
 
+    // updates the configuration sheet with the data
     function setConfigurationSheetContent() {
         if (hooked) {
+            var editingDefaultAttributes = viewer.getSelectionLength() === 0,
+                editedData = editingDefaultAttributes ? {} : viewer.getSelectionConfig();
             configurationSheet.setEditedVisual(
-                that.editor,
                 that.getTypeInfo(),
-                function (error, dim) {}
+                editedData,
+                updateDataFromConfigurationSheet,
+                editor
             );
         }
     }
+
+    // hooks the configuration sheet
     function checkConfigChange(command, name, message, hint, forEachSubCommand) {
         var configChange = false;
         function test(name, message, hint) {
@@ -118,34 +134,34 @@ VisualInfo.prototype.showDetails = function () {
                 forEachSubCommand(test);
             }
             test(name, message, hint);
+            // if one of the commands changed the config
             if (configChange) {
-                configurationSheet.setEditedVisual(
-                    that.editor,
-                    that.getTypeInfo(),
-                    function (error, dim) {}
-                );
+                setConfigurationSheetContent();
             }
         }
     }
-    this.unhookConfigurationSheet = function () {
+    // add a function to unkook the handlers
+    this.unhookConfigurationChangeHandlers = function () {
         hooked = false;
         viewer.removeListener('selectionChanged', setConfigurationSheetContent);
         commandChain.removeListener('command', checkConfigChange);
+        delete that.unhookConfigurationChangeHandlers;
     };
+    // add the handlers to detect configuration changes and update the sheet
+    // accordingly
     viewer.on('selectionChanged', setConfigurationSheetContent);
     commandChain.on('command', checkConfigChange);
     setConfigurationSheetContent();
 };
+
 VisualInfo.prototype.hideDetails = function () {
     var children = this.children,
         configurationSheet = children.configurationSheet;
     if (configurationSheet) {
-        this.editor.getViewer().setDefaultVisual(null);
         this.removeChild(configurationSheet);
-        if (this.unhookConfigurationSheet) {
-            this.unhookConfigurationSheet();
-            delete this.unhookConfigurationSheet;
-        }
+    }
+    if (this.unhookConfigurationChangeHandlers) {
+        this.unhookConfigurationChangeHandlers();
     }
     this.setDimensions(groups.VisualInfo.dimensions);
 };
