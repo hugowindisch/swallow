@@ -88,6 +88,15 @@ VisualInfo.prototype.showDetails = function () {
 
     configurationSheet.setPosition('configurationSheet');
 
+    // set the default visual if the selection is empty
+    if (viewer.getSelectionLength() === 0) {
+        viewer.setDefaultVisual({
+            factory: this.ti.factory,
+            type: this.ti.type,
+            config: {}
+        });
+    }
+
     function setConfigurationSheetContent() {
         if (hooked) {
             configurationSheet.setEditedVisual(
