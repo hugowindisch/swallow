@@ -29,6 +29,7 @@ function VerticalMenu(config) {
     });
 }
 VerticalMenu.prototype = new (domvisual.DOMElement)();
+VerticalMenu.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'VerticalMenu');
 VerticalMenu.prototype.getDescription = function () {
     return "A vertical menu";
 };

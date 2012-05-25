@@ -18,6 +18,7 @@ Label.createPreview = function () {
     return new (domvisual.DOMImg)({url: 'baseui/img/labelpreview.png'});
 };
 Label.prototype = new (domvisual.DOMElement)();
+Label.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Label');
 Label.prototype.getDescription = function () {
     return "A label";
 };

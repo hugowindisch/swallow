@@ -73,7 +73,7 @@ function Slider(config) {
 }
 
 Slider.prototype = new (domvisual.DOMElement)();
-
+Slider.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Slider');
 Slider.prototype.getDescription = function () {
     return "An horizontal Slider";
 };
@@ -87,10 +87,8 @@ Slider.prototype.theme = new (visual.Theme)({
         ]
     },
     knob: {
-        data: [
-            'baseui_theme_outlineRounded',
-            'baseui_theme_outlineColor',
-            'baseui_theme_controlFillNormal'
+        basedOn : [
+            { factory: 'baseui', type: 'Theme', style: 'buttonBackground' }
         ]
     }
 });

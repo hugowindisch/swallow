@@ -75,6 +75,7 @@ function LabelValueSlider(config) {
     });
 }
 LabelValueSlider.prototype = new (domvisual.DOMElement)();
+LabelValueSlider.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'LabelValueSlider');
 LabelValueSlider.prototype.getDescription = function () {
     return "A label, input and slider interconnected";
 };

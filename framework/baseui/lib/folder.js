@@ -21,6 +21,8 @@ function Folder(config) {
 }
 Folder.prototype = new (domvisual.DOMElement)();
 
+Folder.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Folder');
+
 Folder.prototype.getDescription = function () {
     return "An expandable item in a list";
 };

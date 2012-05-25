@@ -137,6 +137,7 @@ function ColorPicker(config) {
 }
 
 ColorPicker.prototype = new (domvisual.DOMElement)();
+ColorPicker.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'ColorPicker');
 ColorPicker.prototype.getDescription = function () {
     return "A color picker";
 };

@@ -891,6 +891,18 @@ function loadPackage(p, callback) {
     });
 }
 
+function getGetActiveTheme(factoryName, typeName) {
+    return function () {
+        var skin = this.skin;
+        if (this.hasOwnProperty('theme')) {
+            return this.theme;
+        } else if (skin) {
+            return skin.getTheme(factoryName, typeName);
+        }
+        return this.theme || null;
+    };
+}
+
 /**
 */
 function inheritVisual(Base, groupData, factoryName, typeName) {
@@ -911,15 +923,7 @@ function inheritVisual(Base, groupData, factoryName, typeName) {
     // for legacy reasons, we support not providing the typenames
     // in this case, skinning will not work
     if (factoryName && typeName) {
-        proto.getActiveTheme = function () {
-            var skin = this.skin;
-            if (this.hasOwnProperty('theme')) {
-                return this.theme;
-            } else if (skin) {
-                return skin.getTheme(factoryName, typeName);
-            }
-            return this.theme || null;
-        };
+        proto.getActiveTheme = getGetActiveTheme(factoryName, typeName);
     }
     return proto;
 }
@@ -947,3 +951,4 @@ exports.rectToMatrix = position.rectToMatrix;
 exports.loadPackage = loadPackage;
 exports.vec3IsEqual = vec3IsEqual;
 exports.inheritVisual = inheritVisual;
+exports.getGetActiveTheme = getGetActiveTheme;

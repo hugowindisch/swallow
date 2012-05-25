@@ -46,6 +46,7 @@ function HorizontalMenu(config) {
     });
 }
 HorizontalMenu.prototype = new (domvisual.DOMElement)();
+HorizontalMenu.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'HorizontalMenu');
 HorizontalMenu.prototype.getDescription = function () {
     return "A menu bar";
 };

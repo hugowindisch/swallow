@@ -16,6 +16,7 @@ function ImagePicker(config) {
 }
 
 ImagePicker.prototype = new (domvisual.DOMElement)();
+ImagePicker.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'ImagePicker');
 ImagePicker.prototype.getDescription = function () {
     return "An image selection box";
 };

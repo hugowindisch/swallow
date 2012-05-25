@@ -66,6 +66,7 @@ function CheckBox(config) {
     });
 }
 CheckBox.prototype = new (domvisual.DOMElement)();
+CheckBox.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'CheckBox');
 CheckBox.prototype.getDescription = function () {
     return "A CheckBox";
 };

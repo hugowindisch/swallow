@@ -34,6 +34,7 @@ function ImageViewer(config) {
     });
 }
 ImageViewer.prototype = new (domvisual.DOMElement)();
+ImageViewer.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'ImageViewer');
 ImageViewer.prototype.getDescription = function () {
     return "An ImageViewer that keeps its aspect ratio";
 };
