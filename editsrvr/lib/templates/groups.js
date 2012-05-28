@@ -15,7 +15,7 @@ exports.exportConstructors = function (to) {
 /**
     Runs a given visual full screen.
 */
-exports.run = function(mainModule) {
+exports.run = function (mainModule) {
     if (require.main === mainModule) {
         var url = require('url'),
             domvisual = require('domvisual'),
@@ -24,4 +24,4 @@ exports.run = function(mainModule) {
             vis = new (constructors[visual])({});
         domvisual.createFullScreenApplication(vis);
     }
-}
+};

@@ -1,0 +1,429 @@
+{
+    "description": "",
+    "private": true,
+    "privateTheme": true,
+    "dimensions": [
+        1000,
+        700,
+        1
+    ],
+    "gridSize": 8,
+    "children": {
+        "pos7": {
+            "factory": "baseui",
+            "type": "Label",
+            "config": {
+                "position": "pos7",
+                "text": "Packages:"
+            }
+        },
+        "pos8": {
+            "factory": "baseui",
+            "type": "Label",
+            "config": {
+                "position": "pos8",
+                "text": "Visual Modules:"
+            }
+        },
+        "packageList": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "packageList"
+            }
+        },
+        "moduleList": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "moduleList"
+            }
+        },
+        "packageAdd": {
+            "factory": "baseui",
+            "type": "Button",
+            "config": {
+                "position": "packageAdd",
+                "text": "Add"
+            }
+        },
+        "packageAddName": {
+            "factory": "baseui",
+            "type": "Input",
+            "config": {
+                "position": "packageAddName"
+            }
+        },
+        "moduleAddName": {
+            "factory": "baseui",
+            "type": "Input",
+            "config": {
+                "position": "moduleAddName"
+            }
+        },
+        "moduleAdd": {
+            "factory": "baseui",
+            "type": "Button",
+            "config": {
+                "position": "moduleAdd",
+                "text": "Add"
+            }
+        }
+    },
+    "positions": {
+        "pos": {
+            "matrix": {
+                "0": 296,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 584,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 24,
+                "13": 56,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 0,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "pos0": {
+            "matrix": {
+                "0": 648,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 584,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 336,
+                "13": 56,
+                "14": 1,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 1,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "pos7": {
+            "matrix": {
+                "0": 264,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 40,
+                "13": 64,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 8,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "pos8": {
+            "matrix": {
+                "0": 264,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 352,
+                "13": 64,
+                "14": 0.5333333611488342,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 9,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "packageList": {
+            "matrix": {
+                "0": 264,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 480,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 40,
+                "13": 96,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 2,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "moduleList": {
+            "matrix": {
+                "0": 616,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 480,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 352,
+                "13": 96,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 3,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "packageAdd": {
+            "matrix": {
+                "0": 48,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 40,
+                "13": 592,
+                "14": 0.29629629850387573,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 5,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "packageAddName": {
+            "matrix": {
+                "0": 208,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 96,
+                "13": 592,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 4,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "moduleAddName": {
+            "matrix": {
+                "0": 208,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 416,
+                "13": 592,
+                "14": 1,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 6,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "moduleAdd": {
+            "matrix": {
+                "0": 48,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 360,
+                "13": 592,
+                "14": 1.2962963581085205,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 7,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        }
+    },
+    "theme": {},
+    "overflowX": "visible",
+    "overflowY": "visible",
+    "privateStyles": true
+}
