@@ -196,6 +196,10 @@ function Styling(config) {
             that.removeChild(styleEdit);
         }
         if (f) {
+            // create a new local style if needed
+            if (that.editedStyle === null) {
+                that.makeExtendedStyle(null);
+            }
             styleEdit = new (f.FeatureEditor)(f.config);
             styleEdit.setStyleData(styleAttributesToEditorAttributes(
                 attributes,
@@ -486,14 +490,16 @@ Styling.prototype.updateFeatureSelector = function () {
         stylingHeading = this.getChild('stylingHeading'),
         styleFeature = stylingHeading.getChild('styleFeature');
 
-    localStyleJsData = this.editedStyleData.jsData || localStyleJsData;
-    forEachProperty(styleFeatures, function (data, feature) {
-        forEachProperty(data.attributes, function (attr, attrName) {
-            if (localStyleJsData[attr] !== undefined) {
-                activeFeatures[feature] = true;
-            }
+    if (this.editedStyle) {
+        localStyleJsData = this.editedStyleData.jsData || localStyleJsData;
+        forEachProperty(styleFeatures, function (data, feature) {
+            forEachProperty(data.attributes, function (attr, attrName) {
+                if (localStyleJsData[attr] !== undefined) {
+                    activeFeatures[feature] = true;
+                }
+            });
         });
-    });
+    }
     styleFeature.setStyleFeatures(activeFeatures);
 };
 
@@ -588,8 +594,11 @@ Styling.prototype.setData = function (st) {
     if (isLocalStyle(this.editedStyle)) {
         this.editedStyleData = deepCopy(group.documentData.theme[this.editedStyle]);
         this.editedStyleIsLocal = true;
-    } else {
+    } else if (this.editedStyle !== null) {
         this.editedStyleData = this.getSkinData(this.editedStyle.factory, this.editedStyle.type, this.editedStyle.style);
+        this.editedStyleIsLocal = false;
+    } else {
+        this.editedStyleData = null;
         this.editedStyleIsLocal = false;
     }
 
