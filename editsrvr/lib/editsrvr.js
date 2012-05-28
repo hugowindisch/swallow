@@ -460,9 +460,13 @@ function serveImageList(req, res, match, options) {
     }
 }
 
-// FIXME: ugly/absurd url mapping
 function getUrls(options) {
     var urls = meatgrinder.getUrls(options);
+    urls.push({
+        filter: /^\/package$/,
+        handler: function (req, res, match) {
+        }
+    });
     urls.push({
         filter: /^\/visual$/,
         handler: function (req, res, match) {
@@ -470,13 +474,13 @@ function getUrls(options) {
         }
     });
     urls.push({
-        filter: /^\/visual\/([^\/]*)\/([^\/]*)$/,
+        filter: /^\/package\/([^\/]*)\/visual\/([^\/]*)$/,
         handler: function (req, res, match) {
             serveVisual(req, res, match, options);
         }
     });
     urls.push({
-        filter: /^\/image\/([^\/]*)$/,
+        filter: /^\/package\/([^\/]*)\/image$/,
         handler: function (req, res, match) {
             serveImageList(req, res, match, options);
         }

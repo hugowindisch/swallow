@@ -21,6 +21,10 @@ var visual = require('visual'),
     ];
 
 
+function modulePath(factory, type) {
+    return '/package/' + factory + '/visual/' + type;
+}
+
 function Editor(config) {
     // create the dependency manager
     this.dependencyManager = new DependencyManager();
@@ -71,7 +75,7 @@ Editor.prototype.getDocInfo = function () {
 Editor.prototype.loadGroup = function (factory, type) {
     var data = '',
         that = this;
-    http.get({ path: '/visual/' + factory + '/' + type}, function (res) {
+    http.get({ path: modulePath(factory, type)}, function (res) {
         res.on('data', function (d) {
             data += d;
         });
@@ -91,7 +95,7 @@ Editor.prototype.saveGroup = function (factory, type, doc, cb) {
     var req = http.request(
             {
                 method: 'POST',
-                path: '/visual/' + factory + '/' + type
+                path: modulePath(factory, type)
             },
             function (res) {
                 res.on('error', function (e) {
@@ -238,7 +242,7 @@ if (require.main === module) {
             factory = p.query.factory,
             type = p.query.type,
             data = '';
-        http.get({ path: '/visual/' + factory + '/' + type}, function (res) {
+        http.get({ path: modulePath(factory, type) }, function (res) {
             res.on('data', function (d) {
                 data += d;
             });

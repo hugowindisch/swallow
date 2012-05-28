@@ -207,7 +207,7 @@ function imageUrlConfig(label) {
             editorInfo = editor.getDocInfo(),
             data = '';
 
-        http.get({ path: '/image/' + editorInfo.factory}, function (res) {
+        http.get({ path: '/package/' + editorInfo.factory + '/image'}, function (res) {
             res.on('data', function (d) {
                 data += d;
             });
