@@ -15,10 +15,10 @@ function StyleSettingBorder(config) {
     var children = this.children,
         that = this;
     this.borderStyle = new ImageOption({
-        'solid':  [ 'editor/lib/bssolid_s.png', 'editor/lib/bssolid.png', children.styleSolid ],
-        'dashed': [ 'editor/lib/bsdashed_s.png', 'editor/lib/bsdashed.png', children.styleDashed ],
-        'dotted': [ 'editor/lib/bsdotted_s.png', 'editor/lib/bsdotted.png', children.styleDotted ],
-        'none': [ 'editor/lib/bsnone_s.png', 'editor/lib/bsnone.png', children.styleNone ]
+        'solid':  [ 'editor/img/bssolid_s.png', 'editor/img/bssolid.png', children.styleSolid ],
+        'dashed': [ 'editor/img/bsdashed_s.png', 'editor/img/bsdashed.png', children.styleDashed ],
+        'dotted': [ 'editor/img/bsdotted_s.png', 'editor/img/bsdotted.png', children.styleDotted ],
+        'none': [ 'editor/img/bsnone_s.png', 'editor/img/bsnone.png', children.styleNone ]
     }, children.styleCheck);
 
     this.borderStyle.on('change', function (v) {
