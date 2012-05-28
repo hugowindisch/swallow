@@ -63,7 +63,7 @@ DependencyManager.prototype.getStyleList = function () {
         if (l) {
             type = v.type;
             Constr = l[type];
-            if (Constr && Constr.prototype.privateTheme === false) {
+            if (Constr && Constr.prototype.privateStyles === false) {
                 theme = Constr.prototype.theme;
                 if (theme) {
                     forEachProperty(theme.getThemeData(), function (s, name) {

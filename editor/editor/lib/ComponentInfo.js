@@ -8,18 +8,6 @@ var visual = require('visual'),
     utils = require('utils'),
     limitRange = utils.limitRange,
     ImageOption = require('./ImageOption').ImageOption;
-/*
-function StyleSettingText(config) {
-    // call the baseclass
-    domvisual.DOMElement.call(this, config, groups.StyleSettingText);
-    var children = this.children,
-        that = this;
-
-    this.fontWeight = new ImageOption({
-        'normal':  [ 'editor/lib/fsnormal_s.png', 'editor/lib/fsnormal.png', children.fontWeightNormal ],
-        'bold': [ 'editor/lib/fsbold_s.png', 'editor/lib/fsbold.png', children.fontWeightBold ]
-    }, children.fontWeightCheck);
-*/
 
 function ComponentInfo(config) {
     // call the baseclass
@@ -70,7 +58,7 @@ ComponentInfo.prototype.init = function (editor) {
         children.h.setText(documentData.dimensions[1]);
         children.description.setText(documentData.description);
         children.privateCheck.setChecked(documentData.private === true);
-        children.privateStylesCheck.setChecked(documentData.privateTheme === true);
+        children.privateStylesCheck.setChecked(documentData.privateStyles === true);
         children.grid.setValue(documentData.gridSize);
         that.overflowX.setSelectedValue(documentData.overflowX);
         that.overflowY.setSelectedValue(documentData.overflowY);

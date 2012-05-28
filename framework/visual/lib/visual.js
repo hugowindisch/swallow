@@ -916,7 +916,7 @@ function inheritVisual(Base, groupData, factoryName, typeName) {
         };
     }
     proto.theme = new Theme(groupData.theme, skin);
-    proto.privateTheme = groupData.privateTheme;
+    proto.privateStyles = groupData.privateStyles;
     proto.getDescription = function () {
         return groupData.description;
     };
