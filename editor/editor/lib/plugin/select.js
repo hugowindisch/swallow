@@ -459,20 +459,19 @@ function setupEditMenu(editor) {
                 }
             });
             forEachProperty(clipboard.positions, function (p, n) {
-                var uniqueName = group.getUniquePositionName(n, check), cp;
+                var uniqueName = group.getUniquePositionName(n, check),
+                    cp = deepCopy(p),
+                    c = clipboard.children[n],
+                    newc;
                 posmap[n] = uniqueName;
                 usedmap[uniqueName] = true;
-                cp = deepCopy(p);
                 cp.order = order + p.order - minorder;
                 cmdGroup.add(group.cmdAddPosition(uniqueName, cp));
-            });
-            usedmap = {};
-            forEachProperty(clipboard.children, function (c, n) {
-                var uniqueName = group.getUniqueVisualName(n, check),
+                if (c) {
                     newc = deepCopy(c);
-                newc.config.position = posmap[newc.config.position];
-                usedmap[uniqueName] = true;
-                cmdGroup.add(group.cmdAddVisual(uniqueName, newc));
+                    newc.config.position = uniqueName;
+                    cmdGroup.add(group.cmdAddVisual(uniqueName, newc));
+                }
             });
             group.doCommand(cmdGroup);
         },
