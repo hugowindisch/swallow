@@ -5,6 +5,7 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     http = require('http'),
     utils = require('utils'),
+    DependencyManager = require('depmanager').DependencyManager,
     forEachProperty = utils.forEachProperty,
     forEachSortedProperty = utils.forEachSortedProperty,
     forEach = utils.forEach,
@@ -16,27 +17,16 @@ function Launcher(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, group);
     // load the stuff that we need
-    this.loadVisualList();
+    var that = this;
+    this.dependencyManager = new DependencyManager();
+    this.dependencyManager.on('change', function (l) {
+        that.setVisualList(l);
+    });
+    this.dependencyManager.loadVisualList();
 }
 Launcher.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'launcher', 'Launcher');
 Launcher.prototype.getConfigurationSheet = function () {
     return {  };
-};
-Launcher.prototype.loadVisualList = function () {
-    var data = '',
-        that = this;
-    http.get({ path: '/visual'}, function (res) {
-        res.on('data', function (d) {
-            data += d;
-        });
-        res.on('end', function () {
-            var jsonData = JSON.parse(data);
-            that.setVisualList(jsonData);
-        });
-        res.on('error', function (e) {
-            alert('Error loading');
-        });
-    });
 };
 Launcher.prototype.setVisualList = function (list) {
     // we re organize the list hierachically
@@ -90,12 +80,33 @@ Launcher.prototype.updateModuleList = function () {
     delete this.selectedModule;
     if (this.selected) {
         forEach(this.packages[this.selected], function (p) {
-            var mv = new VisualModule({ info: p });
-            mv.setHtmlFlowing({ position: 'relative'}, true);
-            moduleList.addChild(mv, p.type);
-            mv.on('select', function (isSelected) {
-                that.selectModule(p);
-            });
+            var factory, Type, mv, success;
+            try {
+                factory = require(p.factory);
+                Type = factory[p.type];
+                if (Type && Type.prototype && Type.prototype.getDescription) {
+                    mv = new VisualModule({
+                        name: p.type,
+                        description: Type.prototype.getDescription(),
+                        preview: Type,
+                        typeInfo: p
+                    });
+                    mv.setHtmlFlowing({ position: 'relative' }, true);
+                    moduleList.addChild(mv, p.type);
+                    mv.on('select', function (isSelected) {
+                        that.selectModule(p);
+                    });
+                    success = true;
+                } else {
+                    success = false;
+                }
+            } catch (e) {
+                console.log(e);
+                success = false;
+            }
+            if (!success) {
+                console.log("Cannot show " + p.factory + " " + p.type);
+            }
         });
     }
 };

@@ -23,10 +23,16 @@ VisualModule.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'laun
 VisualModule.prototype.getConfigurationSheet = function () {
     return {  };
 };
-VisualModule.prototype.setInfo = function (info) {
-    this.info = info;
-    this.getChild('name').setText(info.type);
-    this.getChild('description').setText(info.description);
+VisualModule.prototype.setName = function (name) {
+    this.getChild('name').setText(name);
+};
+VisualModule.prototype.setDescription = function (description) {
+    this.getChild('description').setText(description);
+};
+VisualModule.prototype.setPreview = function (preview) {
+};
+VisualModule.prototype.setTypeInfo = function (typeInfo) {
+    this.typeInfo = typeInfo;
 };
 
 VisualModule.prototype.setSelected = function (s) {
