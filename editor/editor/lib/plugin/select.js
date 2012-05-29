@@ -103,7 +103,7 @@ function setupFileMenu(editor) {
             // create
             editor.newGroup(factory, type, function (err) {
                 if (!err) {
-                    window.open('/static/editor.html?factory=' + factory + '&type=' + type, '_blank');
+                    window.open('editor.editor.html?factory=' + factory + '&type=' + type, '_blank');
                 }
             });
         }
@@ -1098,7 +1098,7 @@ function setupRunMenu(editor) {
         'Run',
         function () {
             var docInfo = editor.getDocInfo();
-            window.open("/static/" + docInfo.factory + '.html?visual=' + docInfo.type, '_blank');
+            window.open(docInfo.factory + '.' + docInfo.type + '.html', '_blank');
         }
     );
 

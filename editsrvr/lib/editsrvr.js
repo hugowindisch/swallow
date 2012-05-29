@@ -509,30 +509,32 @@ function generateVisualCompoentHtml(
     });
 }
 
-function serveVisualComponent(options, factory, type) {
+function serveVisualComponent(options) {
     return function (req, res, match) {
-        var extendedOptions = apply(
-            {
-                extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
-                    if (factory === details.name) {
-                        var htmlBuf = generateVisualCompoentHtml(
-                            opt,
-                            details,
-                            packageMap,
-                            deps,
-                            cssFileMap,
-                            type
-                        );
-                        // now we are ready to return this
-                        res.writeHead(200);
-                        res.write(htmlBuf);
-                        res.end();
+        var factory = match[1],
+            type = match[2],
+            extendedOptions = apply(
+                {
+                    extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
+                        if (factory === details.name) {
+                            var htmlBuf = generateVisualCompoentHtml(
+                                opt,
+                                details,
+                                packageMap,
+                                deps,
+                                cssFileMap,
+                                type
+                            );
+                            // now we are ready to return this
+                            res.writeHead(200);
+                            res.write(htmlBuf);
+                            res.end();
+                        }
+                        cb(null);
                     }
-                    cb(null);
-                }
-            },
-            options
-        );
+                },
+                options
+            );
         meatgrinder.makePackage(
             extendedOptions,
             factory,
@@ -552,14 +554,14 @@ function getUrls(options) {
         filter: /^\/$/,
         handler: function (req, res, match) {
             // response comes from the http server
-            res.setHeader("Location", "/static/launcher");
+            res.setHeader("Location", "/make/launcher.Launcher.html");
             res.writeHead(302);
             res.end();
         }
     });
     urls.unshift({
-        filter: /^\/static\/launcher$/,
-        handler: serveVisualComponent(options, 'launcher', 'Launcher')
+        filter: /^\/make\/([^.\/]*)\.([^.\/]*).html$/,
+        handler: serveVisualComponent(options)
     });
     urls.push({
         filter: /^\/visual$/,

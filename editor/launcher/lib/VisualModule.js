@@ -8,6 +8,7 @@ var visual = require('visual'),
 function VisualModule(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, group);
+    var that = this;
 
     this.setCursor('pointer');
     this.on('click', function (evt) {
@@ -18,6 +19,14 @@ function VisualModule(config) {
     if (this.selected === undefined) {
         this.setSelected(false);
     }
+    this.getChild('run').on('click', function () {
+        var ti = that.typeInfo;
+        window.open(ti.factory + '.' + ti.type + '.html', '_blank');
+    });
+    this.getChild('edit').on('click', function () {
+        var ti = that.typeInfo;
+        window.open('editor.editor.html?factory=' + ti.factory + '&type=' + ti.type, '_blank');
+    });
 }
 VisualModule.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'launcher', 'VisualModule');
 VisualModule.prototype.getConfigurationSheet = function () {
