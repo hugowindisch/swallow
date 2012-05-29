@@ -463,11 +463,6 @@ function serveImageList(req, res, match, options) {
 function getUrls(options) {
     var urls = meatgrinder.getUrls(options);
     urls.push({
-        filter: /^\/package$/,
-        handler: function (req, res, match) {
-        }
-    });
-    urls.push({
         filter: /^\/visual$/,
         handler: function (req, res, match) {
             serveVisualList(req, res, match, options);
