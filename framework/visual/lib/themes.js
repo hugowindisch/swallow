@@ -105,8 +105,7 @@ function bindStyle(style, skin) {
                 t = skin.getTheme(dep.factory, dep.type);
                 bindings.push({theme: t, style: dep.style});
             } catch (e) {
-                console.log('unresolved theme ' + dep.factory + ' ' + dep.type);
-                //throw new Error('unresolved theme ' + dep.factory + ' ' + dep.type);
+                throw new Error('unresolved theme ' + dep.factory + ' ' + dep.type);
             }
         }
     }

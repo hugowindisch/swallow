@@ -80,6 +80,7 @@ function GroupViewer(config) {
     ];
     this.selectionControlBox = this.selectionControlBoxModes[0];
     this.selectionRotationUI.setVisible(false);
+    this.selectionControlBox.setVisible(false);
 
     // layout anchors
     this.layoutAnchors = new (LayoutAnchors)({});
@@ -450,7 +451,7 @@ GroupViewer.prototype.pushZoom = function (matrix) {
 /**
     Adjust the zoom to the current grid.
 */
-GroupViewer.prototype.adjustZoomToGridSize = function () {
+GroupViewer.prototype.adjustZoomToGridSize = GroupViewer.prototype.fullRedraw = function () {
     var gridSize = this.group.documentData.gridSize,
         zoomStack = this.zoomStack,
         zoom = zoomStack[zoomStack.length - 1],
@@ -996,8 +997,6 @@ GroupViewer.prototype.setGroup = function (group) {
         mat4.scale(mat4.identity(), [0.25, 0.25, 1], mat4.create()),
         mat4.translate(mat4.identity(), [borderPix - 20, borderPix - 20, 0], mat4.create())
     ];
-    // regenerate everything
-    this.adjustZoomToGridSize();
 };
 
 /**

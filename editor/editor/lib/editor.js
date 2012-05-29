@@ -36,9 +36,13 @@ function Editor(config) {
     this.setChildrenClipping('hidden');
     // a bit ugly. but the viewer does not know the editor and must
     // be notifed of this.
-    var viewer = this.getChild('viewer');
+    var viewer = this.getChild('viewer'),
+        that = this;
     this.dependencyManager.on('change', function () {
-        viewer.updateAll();
+        that.dependencyManagerLoaded = true;
+        if (that.docInfo) {
+            viewer.fullRedraw();
+        }
     });
 }
 Editor.prototype = new (domvisual.DOMElement)();
@@ -58,17 +62,6 @@ Editor.prototype.theme = new (visual.Theme)({
 
 // Editor interface
 ////////////////////
-Editor.prototype.setGroupData = function (factory, type, groupData) {
-    this.docInfo = {
-        factory: factory,
-        type: type
-    };
-    this.children.viewer.setGroup(
-        new (require('./model').Group)(groupData, this.docInfo)
-    );
-    this.children.panel.init(this);
-    this.addPlugins(defaultPlugins);
-};
 Editor.prototype.getDocInfo = function () {
     return this.docInfo;
 };
@@ -132,6 +125,22 @@ Editor.prototype.newGroup = function (factory, type, cb) {
     );
 };
 
+
+Editor.prototype.setGroupData = function (factory, type, groupData) {
+    var viewer = this.getChild('viewer');
+    this.docInfo = {
+        factory: factory,
+        type: type
+    };
+    viewer.setGroup(
+        new (require('./model').Group)(groupData, this.docInfo)
+    );
+    this.getChild('panel').init(this);
+    this.addPlugins(defaultPlugins);
+    if (this.dependencyManagerLoaded) {
+        viewer.fullRedraw();
+    }
+};
 
 /**
     Adds some plugins
@@ -241,17 +250,8 @@ if (require.main === module) {
         var p = url.parse(document.URL, true),
             factory = p.query.factory,
             type = p.query.type,
-            data = '';
-        http.get({ path: modulePath(factory, type) }, function (res) {
-            res.on('data', function (d) {
-                data += d;
-            });
-            res.on('end', function () {
-                var jsonData = JSON.parse(data),
-                    edit = new Editor();
-                edit.setGroupData(factory, type, jsonData);
-                domvisual.createFullScreenApplication(edit);
-            });
-        });
+            edit = new Editor();
+        edit.loadGroup(factory, type);
+        domvisual.createFullScreenApplication(edit);
     }());
 }
