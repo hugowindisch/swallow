@@ -14,7 +14,7 @@
 */
 function Theme() {
 }
-Theme.prototype.privateTheme = false;
+Theme.prototype.privateStyles = false;
 Theme.prototype.theme = new (require('visual').Theme)({
     // borders
     sectionBorder: {
