@@ -4,13 +4,342 @@
     "privateTheme": true,
     "dimensions": [
         600,
-        400,
-        0
+        112,
+        1
     ],
     "gridSize": 8,
-    "children": {},
-    "positions": {},
-    "theme": {},
+    "children": {
+        "background": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "background",
+                "innerText": "",
+                "style": "normal"
+            }
+        },
+        "edit": {
+            "factory": "baseui",
+            "type": "Button",
+            "config": {
+                "position": "edit",
+                "text": "Edit"
+            }
+        },
+        "run": {
+            "factory": "baseui",
+            "type": "Button",
+            "config": {
+                "position": "run",
+                "text": "Run"
+            }
+        },
+        "delete": {
+            "factory": "baseui",
+            "type": "Button",
+            "config": {
+                "position": "delete",
+                "text": "Delete"
+            }
+        },
+        "name": {
+            "factory": "baseui",
+            "type": "Label",
+            "config": {
+                "position": "name",
+                "text": "Name",
+                "bold": true
+            }
+        },
+        "description": {
+            "factory": "baseui",
+            "type": "Label",
+            "config": {
+                "position": "description",
+                "text": "Description"
+            }
+        }
+    },
+    "positions": {
+        "background": {
+            "matrix": {
+                "0": 600,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 112,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 0,
+                "13": -0.0000019073486328125,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 0,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "preview": {
+            "matrix": {
+                "0": 96,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 80,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 16,
+                "13": 16,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 1,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "edit": {
+            "matrix": {
+                "0": 64,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 128,
+                "13": 72,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 4,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "run": {
+            "matrix": {
+                "0": 64,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 200,
+                "13": 72,
+                "14": 0.5714285969734192,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 5,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "delete": {
+            "matrix": {
+                "0": 64,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 520,
+                "13": 72,
+                "14": 0.5714285969734192,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 6,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "name": {
+            "matrix": {
+                "0": 456,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 128,
+                "13": 16,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 2,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "description": {
+            "matrix": {
+                "0": 456,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 128,
+                "13": 40,
+                "14": 0.5714285969734192,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 3,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        }
+    },
+    "theme": {
+        "select": {
+            "jsData": {},
+            "basedOn": [
+                {
+                    "factory": "launcher",
+                    "type": "Package",
+                    "style": "select"
+                }
+            ]
+        },
+        "normal": {
+            "jsData": {},
+            "basedOn": [
+                {
+                    "factory": "launcher",
+                    "type": "Package",
+                    "style": "normal"
+                }
+            ]
+        },
+        "highlight": {
+            "jsData": {},
+            "basedOn": [
+                {
+                    "factory": "launcher",
+                    "type": "Package",
+                    "style": "highlight"
+                }
+            ]
+        }
+    },
     "overflowX": "visible",
-    "overflowY": "visible"
+    "overflowY": "visible",
+    "privateStyles": true
 }

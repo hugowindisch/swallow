@@ -1,11 +1,11 @@
 exports.groups = {
     "Launcher": {
-        "description": "",
+        "description": "The project management screen.",
         "private": true,
         "privateTheme": true,
         "dimensions": [
             1000,
-            700,
+            640,
             1
         ],
         "gridSize": 8,
@@ -15,7 +15,8 @@ exports.groups = {
                 "type": "Label",
                 "config": {
                     "position": "pos7",
-                    "text": "Packages:"
+                    "text": "Packages:",
+                    "bold": true
                 }
             },
             "pos8": {
@@ -23,21 +24,26 @@ exports.groups = {
                 "type": "Label",
                 "config": {
                     "position": "pos8",
-                    "text": "Visual Modules:"
+                    "text": "Visual Modules:",
+                    "bold": true
                 }
             },
             "packageList": {
                 "factory": "domvisual",
                 "type": "DOMElement",
                 "config": {
-                    "position": "packageList"
+                    "position": "packageList",
+                    "innerText": "",
+                    "style": "style0"
                 }
             },
             "moduleList": {
                 "factory": "domvisual",
                 "type": "DOMElement",
                 "config": {
-                    "position": "moduleList"
+                    "position": "moduleList",
+                    "innerText": "",
+                    "style": "style0"
                 }
             },
             "packageAdd": {
@@ -69,61 +75,52 @@ exports.groups = {
                     "position": "moduleAdd",
                     "text": "Add"
                 }
+            },
+            "pos": {
+                "factory": "domvisual",
+                "type": "DOMElement",
+                "config": {
+                    "position": "pos",
+                    "innerText": "",
+                    "style": "style"
+                }
+            },
+            "pos0": {
+                "factory": "domvisual",
+                "type": "DOMElement",
+                "config": {
+                    "position": "pos0",
+                    "innerText": "",
+                    "style": "style1"
+                }
+            },
+            "pos1": {
+                "factory": "domvisual",
+                "type": "DOMImg",
+                "config": {
+                    "position": "pos1",
+                    "url": "launcher/img/swallow.png"
+                }
             }
         },
         "positions": {
             "pos": {
                 "matrix": {
-                    "0": 296,
+                    "0": 984,
                     "1": 0,
                     "2": 0,
                     "3": 0,
                     "4": 0,
-                    "5": 584,
+                    "5": 624,
                     "6": 0,
                     "7": 0,
                     "8": 0,
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 24,
-                    "13": 56,
-                    "14": 0,
-                    "15": 1,
-                    "byteLength": 64,
-                    "byteOffset": 0,
-                    "buffer": {
-                        "byteLength": 64
-                    },
-                    "length": 16
-                },
-                "order": 0,
-                "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
-                    "top": "px",
-                    "bottom": "auto",
-                    "height": "px"
-                }
-            },
-            "pos0": {
-                "matrix": {
-                    "0": 648,
-                    "1": 0,
-                    "2": 0,
-                    "3": 0,
-                    "4": 0,
-                    "5": 584,
-                    "6": 0,
-                    "7": 0,
-                    "8": 0,
-                    "9": 0,
-                    "10": 1,
-                    "11": 0,
-                    "12": 336,
-                    "13": 56,
-                    "14": 1,
+                    "12": 8,
+                    "13": 8,
+                    "14": 2,
                     "15": 1,
                     "byteLength": 64,
                     "byteOffset": 0,
@@ -134,12 +131,12 @@ exports.groups = {
                 },
                 "order": 1,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
                     "top": "px",
-                    "bottom": "auto",
-                    "height": "px"
+                    "bottom": "px",
+                    "height": "auto"
                 }
             },
             "pos7": {
@@ -157,7 +154,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 40,
-                    "13": 64,
+                    "13": 112,
                     "14": 0,
                     "15": 1,
                     "byteLength": 64,
@@ -169,9 +166,9 @@ exports.groups = {
                 },
                 "order": 8,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
                     "top": "px",
                     "bottom": "auto",
                     "height": "px"
@@ -192,7 +189,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 352,
-                    "13": 64,
+                    "13": 112,
                     "14": 0.5333333611488342,
                     "15": 1,
                     "byteLength": 64,
@@ -204,9 +201,9 @@ exports.groups = {
                 },
                 "order": 9,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
                     "top": "px",
                     "bottom": "auto",
                     "height": "px"
@@ -219,7 +216,7 @@ exports.groups = {
                     "2": 0,
                     "3": 0,
                     "4": 0,
-                    "5": 480,
+                    "5": 384,
                     "6": 0,
                     "7": 0,
                     "8": 0,
@@ -227,7 +224,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 40,
-                    "13": 96,
+                    "13": 144,
                     "14": 0,
                     "15": 1,
                     "byteLength": 64,
@@ -239,12 +236,12 @@ exports.groups = {
                 },
                 "order": 2,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
                     "top": "px",
-                    "bottom": "auto",
-                    "height": "px"
+                    "bottom": "px",
+                    "height": "auto"
                 }
             },
             "moduleList": {
@@ -254,7 +251,7 @@ exports.groups = {
                     "2": 0,
                     "3": 0,
                     "4": 0,
-                    "5": 480,
+                    "5": 384,
                     "6": 0,
                     "7": 0,
                     "8": 0,
@@ -262,7 +259,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 352,
-                    "13": 96,
+                    "13": 144,
                     "14": 0,
                     "15": 1,
                     "byteLength": 64,
@@ -274,12 +271,12 @@ exports.groups = {
                 },
                 "order": 3,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
                     "top": "px",
-                    "bottom": "auto",
-                    "height": "px"
+                    "bottom": "px",
+                    "height": "auto"
                 }
             },
             "packageAdd": {
@@ -297,7 +294,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 40,
-                    "13": 592,
+                    "13": 552,
                     "14": 0.29629629850387573,
                     "15": 1,
                     "byteLength": 64,
@@ -309,11 +306,11 @@ exports.groups = {
                 },
                 "order": 5,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
-                    "top": "px",
-                    "bottom": "auto",
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "auto",
+                    "bottom": "px",
                     "height": "px"
                 }
             },
@@ -332,7 +329,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 96,
-                    "13": 592,
+                    "13": 552,
                     "14": 0,
                     "15": 1,
                     "byteLength": 64,
@@ -344,11 +341,11 @@ exports.groups = {
                 },
                 "order": 4,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
-                    "top": "px",
-                    "bottom": "auto",
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "auto",
+                    "bottom": "px",
                     "height": "px"
                 }
             },
@@ -367,7 +364,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 416,
-                    "13": 592,
+                    "13": 552,
                     "14": 1,
                     "15": 1,
                     "byteLength": 64,
@@ -379,11 +376,11 @@ exports.groups = {
                 },
                 "order": 6,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
-                    "top": "px",
-                    "bottom": "auto",
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "auto",
+                    "bottom": "px",
                     "height": "px"
                 }
             },
@@ -402,7 +399,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 360,
-                    "13": 592,
+                    "13": 552,
                     "14": 1.2962963581085205,
                     "15": 1,
                     "byteLength": 64,
@@ -414,66 +411,22 @@ exports.groups = {
                 },
                 "order": 7,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
-                    "top": "px",
-                    "bottom": "auto",
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "auto",
+                    "bottom": "px",
                     "height": "px"
                 }
-            }
-        },
-        "theme": {},
-        "overflowX": "visible",
-        "overflowY": "visible",
-        "privateStyles": true
-    },
-    "Package": {
-        "description": "",
-        "private": true,
-        "privateTheme": true,
-        "dimensions": [
-            264,
-            40,
-            1
-        ],
-        "gridSize": 8,
-        "children": {
-            "pos": {
-                "factory": "domvisual",
-                "type": "DOMElement",
-                "config": {
-                    "position": "pos",
-                    "innerText": "",
-                    "style": "style"
-                }
             },
-            "name": {
-                "factory": "baseui",
-                "type": "Label",
-                "config": {
-                    "position": "name",
-                    "text": "PackageName"
-                }
-            },
-            "delete": {
-                "factory": "baseui",
-                "type": "Button",
-                "config": {
-                    "position": "delete",
-                    "text": "Delete"
-                }
-            }
-        },
-        "positions": {
-            "pos": {
+            "pos0": {
                 "matrix": {
-                    "0": 264,
+                    "0": 1000,
                     "1": 0,
                     "2": 0,
                     "3": 0,
                     "4": 0,
-                    "5": 40,
+                    "5": 640,
                     "6": 0,
                     "7": 0,
                     "8": 0,
@@ -494,13 +447,137 @@ exports.groups = {
                 "order": 0,
                 "snapping": {
                     "left": "px",
-                    "right": "auto",
-                    "width": "px",
+                    "right": "px",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "px",
+                    "height": "auto"
+                }
+            },
+            "pos1": {
+                "matrix": {
+                    "0": 200,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 54,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 0,
+                    "11": 0,
+                    "12": 776,
+                    "13": 24,
+                    "14": 42,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 10,
+                "snapping": {
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
                     "top": "px",
                     "bottom": "auto",
                     "height": "px"
                 }
+            }
+        },
+        "theme": {
+            "style": {
+                "jsData": {
+                    "backgroundColor": {
+                        "r": 240,
+                        "g": 240,
+                        "b": 240,
+                        "a": 1
+                    },
+                    "boxShadow": {
+                        "offsetX": 0,
+                        "offsetY": 0,
+                        "blurRadius": 22.77777777777778,
+                        "spreadRadius": 0,
+                        "color": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0,
+                            "a": 1
+                        }
+                    },
+                    "borderTopLeftRadius": 20,
+                    "borderTopRightRadius": 20,
+                    "borderBottomLeftRadius": 20,
+                    "borderBottomRightRadius": 20
+                }
             },
+            "style0": {
+                "jsData": {
+                    "borderTopStyle": "solid",
+                    "borderTopWidth": 2,
+                    "borderBottomWidth": 2,
+                    "borderBottomStyle": "solid"
+                }
+            },
+            "style1": {
+                "jsData": {
+                    "backgroundColor": {
+                        "r": 100,
+                        "g": 100,
+                        "b": 100,
+                        "a": 1
+                    }
+                }
+            }
+        },
+        "overflowX": "visible",
+        "overflowY": "visible",
+        "privateStyles": true
+    },
+    "Package": {
+        "description": "",
+        "private": true,
+        "privateTheme": true,
+        "dimensions": [
+            264,
+            40,
+            1
+        ],
+        "gridSize": 8,
+        "children": {
+            "name": {
+                "factory": "baseui",
+                "type": "Label",
+                "config": {
+                    "position": "name",
+                    "text": "PackageName"
+                }
+            },
+            "delete": {
+                "factory": "baseui",
+                "type": "Button",
+                "config": {
+                    "position": "delete",
+                    "text": "Delete"
+                }
+            },
+            "background": {
+                "factory": "domvisual",
+                "type": "DOMElement",
+                "config": {
+                    "position": "background",
+                    "innerText": "",
+                    "style": "select"
+                }
+            }
+        },
+        "positions": {
             "name": {
                 "matrix": {
                     "0": 168,
@@ -570,19 +647,62 @@ exports.groups = {
                     "bottom": "auto",
                     "height": "px"
                 }
+            },
+            "background": {
+                "matrix": {
+                    "0": 264,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 40,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 0,
+                    "13": 0,
+                    "14": 0,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 0,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
             }
         },
         "theme": {
-            "style": {
+            "normal": {
                 "jsData": {
-                    "borderLeftStyle": "none",
-                    "borderRightStyle": "none",
-                    "borderBottomStyle": "none",
-                    "borderTopStyle": "none",
+                    "borderBottomWidth": 1,
+                    "borderBottomStyle": "solid",
+                    "borderBottomColor": {
+                        "r": 200,
+                        "g": 200,
+                        "b": 200,
+                        "a": 1
+                    }
+                }
+            },
+            "highlight": {
+                "jsData": {
                     "boxShadow": {
                         "offsetX": 0,
                         "offsetY": 0,
-                        "blurRadius": 7.777777777777778,
+                        "blurRadius": 13.333333333333334,
                         "spreadRadius": 0,
                         "color": {
                             "r": 0,
@@ -594,16 +714,33 @@ exports.groups = {
                 },
                 "basedOn": [
                     {
-                        "factory": "baseui",
-                        "type": "Theme",
-                        "style": "windowDarkerForeground"
+                        "factory": "launcher",
+                        "type": "Package",
+                        "style": "normal"
+                    }
+                ]
+            },
+            "select": {
+                "jsData": {
+                    "backgroundColor": {
+                        "r": 250,
+                        "g": 250,
+                        "b": 250,
+                        "a": 1
+                    }
+                },
+                "basedOn": [
+                    {
+                        "factory": "launcher",
+                        "type": "Package",
+                        "style": "normal"
                     }
                 ]
             }
         },
         "overflowX": "visible",
         "overflowY": "visible",
-        "privateStyles": true
+        "privateStyles": false
     },
     "VisualModule": {
         "description": "",
@@ -611,15 +748,344 @@ exports.groups = {
         "privateTheme": true,
         "dimensions": [
             600,
-            400,
-            0
+            112,
+            1
         ],
         "gridSize": 8,
-        "children": {},
-        "positions": {},
-        "theme": {},
+        "children": {
+            "background": {
+                "factory": "domvisual",
+                "type": "DOMElement",
+                "config": {
+                    "position": "background",
+                    "innerText": "",
+                    "style": "normal"
+                }
+            },
+            "edit": {
+                "factory": "baseui",
+                "type": "Button",
+                "config": {
+                    "position": "edit",
+                    "text": "Edit"
+                }
+            },
+            "run": {
+                "factory": "baseui",
+                "type": "Button",
+                "config": {
+                    "position": "run",
+                    "text": "Run"
+                }
+            },
+            "delete": {
+                "factory": "baseui",
+                "type": "Button",
+                "config": {
+                    "position": "delete",
+                    "text": "Delete"
+                }
+            },
+            "name": {
+                "factory": "baseui",
+                "type": "Label",
+                "config": {
+                    "position": "name",
+                    "text": "Name",
+                    "bold": true
+                }
+            },
+            "description": {
+                "factory": "baseui",
+                "type": "Label",
+                "config": {
+                    "position": "description",
+                    "text": "Description"
+                }
+            }
+        },
+        "positions": {
+            "background": {
+                "matrix": {
+                    "0": 600,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 112,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 0,
+                    "13": -0.0000019073486328125,
+                    "14": 0,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 0,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "preview": {
+                "matrix": {
+                    "0": 96,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 80,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 16,
+                    "13": 16,
+                    "14": 0,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 1,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "edit": {
+                "matrix": {
+                    "0": 64,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 24,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 128,
+                    "13": 72,
+                    "14": 0,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 4,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "run": {
+                "matrix": {
+                    "0": 64,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 24,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 200,
+                    "13": 72,
+                    "14": 0.5714285969734192,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 5,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "delete": {
+                "matrix": {
+                    "0": 64,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 24,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 520,
+                    "13": 72,
+                    "14": 0.5714285969734192,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 6,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "name": {
+                "matrix": {
+                    "0": 456,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 24,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 128,
+                    "13": 16,
+                    "14": 0,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 2,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "description": {
+                "matrix": {
+                    "0": 456,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 24,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 128,
+                    "13": 40,
+                    "14": 0.5714285969734192,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 3,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            }
+        },
+        "theme": {
+            "select": {
+                "jsData": {},
+                "basedOn": [
+                    {
+                        "factory": "launcher",
+                        "type": "Package",
+                        "style": "select"
+                    }
+                ]
+            },
+            "normal": {
+                "jsData": {},
+                "basedOn": [
+                    {
+                        "factory": "launcher",
+                        "type": "Package",
+                        "style": "normal"
+                    }
+                ]
+            },
+            "highlight": {
+                "jsData": {},
+                "basedOn": [
+                    {
+                        "factory": "launcher",
+                        "type": "Package",
+                        "style": "highlight"
+                    }
+                ]
+            }
+        },
         "overflowX": "visible",
-        "overflowY": "visible"
+        "overflowY": "visible",
+        "privateStyles": true
     }
 };
 

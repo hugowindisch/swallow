@@ -9,15 +9,6 @@
     ],
     "gridSize": 8,
     "children": {
-        "pos": {
-            "factory": "domvisual",
-            "type": "DOMElement",
-            "config": {
-                "position": "pos",
-                "innerText": "",
-                "style": "style"
-            }
-        },
         "name": {
             "factory": "baseui",
             "type": "Label",
@@ -33,44 +24,18 @@
                 "position": "delete",
                 "text": "Delete"
             }
+        },
+        "background": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "background",
+                "innerText": "",
+                "style": "select"
+            }
         }
     },
     "positions": {
-        "pos": {
-            "matrix": {
-                "0": 264,
-                "1": 0,
-                "2": 0,
-                "3": 0,
-                "4": 0,
-                "5": 40,
-                "6": 0,
-                "7": 0,
-                "8": 0,
-                "9": 0,
-                "10": 1,
-                "11": 0,
-                "12": 0,
-                "13": 0,
-                "14": 0,
-                "15": 1,
-                "byteLength": 64,
-                "byteOffset": 0,
-                "buffer": {
-                    "byteLength": 64
-                },
-                "length": 16
-            },
-            "order": 0,
-            "snapping": {
-                "left": "px",
-                "right": "auto",
-                "width": "px",
-                "top": "px",
-                "bottom": "auto",
-                "height": "px"
-            }
-        },
         "name": {
             "matrix": {
                 "0": 168,
@@ -140,19 +105,62 @@
                 "bottom": "auto",
                 "height": "px"
             }
+        },
+        "background": {
+            "matrix": {
+                "0": 264,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 40,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 0,
+                "13": 0,
+                "14": 0,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 0,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
         }
     },
     "theme": {
-        "style": {
+        "normal": {
             "jsData": {
-                "borderLeftStyle": "none",
-                "borderRightStyle": "none",
-                "borderBottomStyle": "none",
-                "borderTopStyle": "none",
+                "borderBottomWidth": 1,
+                "borderBottomStyle": "solid",
+                "borderBottomColor": {
+                    "r": 200,
+                    "g": 200,
+                    "b": 200,
+                    "a": 1
+                }
+            }
+        },
+        "highlight": {
+            "jsData": {
                 "boxShadow": {
                     "offsetX": 0,
                     "offsetY": 0,
-                    "blurRadius": 7.777777777777778,
+                    "blurRadius": 13.333333333333334,
                     "spreadRadius": 0,
                     "color": {
                         "r": 0,
@@ -164,14 +172,31 @@
             },
             "basedOn": [
                 {
-                    "factory": "baseui",
-                    "type": "Theme",
-                    "style": "windowDarkerForeground"
+                    "factory": "launcher",
+                    "type": "Package",
+                    "style": "normal"
+                }
+            ]
+        },
+        "select": {
+            "jsData": {
+                "backgroundColor": {
+                    "r": 250,
+                    "g": 250,
+                    "b": 250,
+                    "a": 1
+                }
+            },
+            "basedOn": [
+                {
+                    "factory": "launcher",
+                    "type": "Package",
+                    "style": "normal"
                 }
             ]
         }
     },
     "overflowX": "visible",
     "overflowY": "visible",
-    "privateStyles": true
+    "privateStyles": false
 }
