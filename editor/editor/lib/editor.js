@@ -15,7 +15,7 @@ var visual = require('visual'),
     forEach = utils.forEach,
     groups = require('./definition').definition.groups,
     MenuItem = baseui.MenuItem,
-    DependencyManager = require('./DependencyManager').DependencyManager,
+    DependencyManager = require('depmanager').DependencyManager,
     defaultPlugins = [
         require('./plugin/select').setup
     ];
