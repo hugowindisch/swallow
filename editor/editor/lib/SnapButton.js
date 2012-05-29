@@ -10,11 +10,11 @@ var visual = require('visual'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     snappingUrl = {
-        'px': 'editor/lib/snappx.png',
-        '%': 'editor/lib/snappercent.png',
-        'cpx': 'editor/lib/snapcpx.png',
-        'auto': 'editor/lib/snapnone.png',
-        'unknown': 'editor/lib/snapunknown.png'
+        'px': 'editor/img/snappx.png',
+        '%': 'editor/img/snappercent.png',
+        'cpx': 'editor/img/snapcpx.png',
+        'auto': 'editor/img/snapnone.png',
+        'unknown': 'editor/img/snapunknown.png'
     },
     snappingToggle = {
         'px': '%',
