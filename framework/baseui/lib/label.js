@@ -44,7 +44,11 @@ Label.prototype.getText = function () {
 };
 
 Label.prototype.getConfigurationSheet = function () {
-    return { text: require('config').inputConfig('Text'), textAlign: null, bold: null };
+    return {
+        text: require('config').inputConfig('Text'),
+        textAlign: null,
+        bold: require('config').booleanConfig('Bold') 
+    };
 };
 
 Label.prototype.setTextAlign = function (align) {

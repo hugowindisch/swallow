@@ -156,6 +156,39 @@ function inputConfig(label) {
     };
 }
 
+function booleanConfig(label) {
+    return function (editor, cb) {
+        leftRightConfig(
+            label,
+            'baseui',
+            'CheckBox',
+            {},
+            25,
+            145,
+            100,
+            function (err, ctrl) {
+                if (err) {
+                    return cb(err);
+                }
+                // we should setup the editor that we got,
+                // to add set data and get data and notification
+                ctrl.children.data.setValue(false);
+                ctrl.setData = function (v) {
+                    ctrl.children.data.setValue(v);
+                };
+                ctrl.getData = function () {
+                    return ctrl.children.data.getValue();
+                };
+                ctrl.children.data.on('change', function (v) {
+                    ctrl.emit('change', v);
+                });
+                cb(err, ctrl);
+            }
+        );
+    };
+}
+
+
 function styleConfig(labelTxt) {
     function sc(mainEditor, cb) {
         // intentionally here
@@ -252,6 +285,7 @@ function imageUrlConfig(label) {
 
 exports.leftRightConfig = leftRightConfig;
 exports.inputConfig = inputConfig;
+exports.booleanConfig = booleanConfig;
 exports.inputConfigFullLine = inputConfigFullLine;
 exports.imageUrlConfig = imageUrlConfig;
 exports.styleConfig = styleConfig;
