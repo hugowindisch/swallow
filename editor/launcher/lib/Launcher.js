@@ -18,15 +18,25 @@ function Launcher(config) {
     domvisual.DOMElement.call(this, config, group);
     // load the stuff that we need
     var that = this;
-    this.dependencyManager = new DependencyManager();
-    this.dependencyManager.on('change', function (l) {
-        that.setVisualList(l);
-    });
-    this.dependencyManager.loadVisualList();
+    // avoid infinite preview
+    if (!this.forPreview) {
+        this.dependencyManager = new DependencyManager();
+        this.dependencyManager.on('change', function (l) {
+            that.setVisualList(l);
+        });
+        this.dependencyManager.loadVisualList();
+    }
 }
+Launcher.createPreview = function () {
+    var ret = new Launcher({forPreview: true});
+    ret.setChildrenClipping('hidden');
+    ret.enableScaling(true);
+    return ret;
+};
+
 Launcher.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'launcher', 'Launcher');
-Launcher.prototype.getConfigurationSheet = function () {
-    return {  };
+Launcher.prototype.setForPreview = function () {
+    this.forPreview = true;
 };
 Launcher.prototype.setVisualList = function (list) {
     // we re organize the list hierachically

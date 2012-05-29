@@ -29,7 +29,20 @@ VisualModule.prototype.setName = function (name) {
 VisualModule.prototype.setDescription = function (description) {
     this.getChild('description').setText(description);
 };
-VisualModule.prototype.setPreview = function (preview) {
+VisualModule.prototype.setPreview = function (Preview) {
+    var preview;
+    if (Preview.createPreview) {
+        // specific preview
+        preview = Preview.createPreview();
+    } else {
+        // generic preview
+        preview = new Preview({});
+        preview.setChildrenClipping('hidden');
+        preview.enableScaling(true);
+    }
+    preview.setPosition('preview');
+    preview.enableInteractions(false);
+    this.addChild(preview, 'preview');
 };
 VisualModule.prototype.setTypeInfo = function (typeInfo) {
     this.typeInfo = typeInfo;
