@@ -20,8 +20,12 @@ exports.run = function (mainModule) {
         var url = require('url'),
             domvisual = require('domvisual'),
             p = url.parse(document.URL, true),
-            visual = p.query.visual,
+            visual,
+            vis;
+        if (p.query && p.query.visual) {
+            visual = p.query.visual;
             vis = new (constructors[visual])({});
-        domvisual.createFullScreenApplication(vis);
+            domvisual.createFullScreenApplication(vis);
+        }
     }
 };

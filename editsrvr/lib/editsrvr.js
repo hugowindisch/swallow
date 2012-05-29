@@ -73,6 +73,21 @@ jqtpl.template(
     ).toString()
 );
 
+jqtpl.template(
+    'visualComponent',
+    fs.readFileSync(
+        path.join(__dirname, 'templates/visualComponent.html')
+    ).toString()
+);
+
+function apply(to, from) {
+    Object.keys(from).forEach(function (k) {
+        to[k] = from[k];
+    });
+    return to;
+}
+
+
 // finds a given visual in the specified package
 function findVisualInPackage(pack, visual) {
     var re = /([^\/\.]*)\.vis$/,
@@ -460,8 +475,92 @@ function serveImageList(req, res, match, options) {
     }
 }
 
+/**
+    Publishes the html that allows to run the package in a browser
+    using a standalone statically loaded html.
+*/
+function generateVisualCompoentHtml(
+    options,
+    details,
+    packageMap,
+    deps,
+    cssFileMap,
+    type
+) {
+    // we need to load all components
+    var dependencies = [ ],
+        cssFiles = [];
+    if (deps) {
+        Object.keys(deps).forEach(function (d) {
+            dependencies.push(path.join(d, d + '.js'));
+        });
+        Object.keys(cssFileMap).forEach(function (k) {
+            var details = cssFileMap[k].details;
+            cssFiles.push(details.name + k.slice(details.dirname.length));
+        });
+    }
+    // return the generated buffer
+    return jqtpl.tmpl('visualComponent', {
+        dependencies: dependencies,
+        css: cssFiles,
+        factory: details.name,
+        type: type,
+        jquery: options.jquery ? path.basename(options.jquery) : null
+    });
+}
+
+function serveVisualComponent(options, factory, type) {
+    return function (req, res, match) {
+        var extendedOptions = apply(
+            {
+                extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
+                    if (factory === details.name) {
+                        var htmlBuf = generateVisualCompoentHtml(
+                            opt,
+                            details,
+                            packageMap,
+                            deps,
+                            cssFileMap,
+                            type
+                        );
+                        // now we are ready to return this
+                        res.writeHead(200);
+                        res.write(htmlBuf);
+                        res.end();
+                    }
+                    cb(null);
+                }
+            },
+            options
+        );
+        meatgrinder.makePackage(
+            extendedOptions,
+            factory,
+            function (err) {
+                if (err) {
+                    res.writeHead(404);
+                    console.log(err);
+                }
+            }
+        );
+    };
+}
+
 function getUrls(options) {
     var urls = meatgrinder.getUrls(options);
+    urls.unshift({
+        filter: /^\/$/,
+        handler: function (req, res, match) {
+            // response comes from the http server
+            res.setHeader("Location", "/static/launcher");
+            res.writeHead(302);
+            res.end();
+        }
+    });
+    urls.unshift({
+        filter: /^\/static\/launcher$/,
+        handler: serveVisualComponent(options, 'launcher', 'Launcher')
+    });
     urls.push({
         filter: /^\/visual$/,
         handler: function (req, res, match) {

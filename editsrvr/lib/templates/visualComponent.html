@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>${type}</title>
+{{each css}}    <link rel="stylesheet" type="text/css" href="${$value}">
+{{/each}}
+    <script src = "meat.js"></script>
+{{each dependencies}}    <script src = "${$value}"></script>
+{{/each}}
+    <script>
+        window.onload = function () {
+            var domain = {},
+                require = define.meat.makeRequire(domain, '');
+{{if jquery}}
+            // add support for jQuery, and allow jQuery code
+            // to use our modules
+            define.meat.supportJQuery(require);
+{{/if}}
+            new (require('${factory}').${type})().runFullScreen();
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

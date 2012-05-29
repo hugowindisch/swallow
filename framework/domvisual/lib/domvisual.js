@@ -642,6 +642,9 @@ DOMVisual.prototype.setStyleAttributes = function (attr) {
     return this;
 };
 
+DOMVisual.prototype.runFullScreen = function () {
+    exports.createFullScreenApplication(this);
+};
 
 /////////////////
 // a general container
