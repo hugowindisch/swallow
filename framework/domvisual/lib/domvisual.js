@@ -230,7 +230,8 @@ DOMVisual.prototype.notifyDOMChanged = function () {
 
     can be an array to set x and y clipping differently
 */
-DOMVisual.prototype.setChildrenClipping = function (mode) {
+// FIXME: keep only setOverflow
+DOMVisual.prototype.setChildrenClipping = DOMVisual.prototype.setOverflow = function (mode) {
     this.childrenClipping = mode;
     setDirty(this, 'style');
     return this;
