@@ -103,7 +103,7 @@ function setupFileMenu(editor) {
             // create
             editor.newGroup(factory, type, function (err) {
                 if (!err) {
-                    window.open('editor.editor.html?factory=' + factory + '&type=' + type, '_blank');
+                    window.open(factory + '.' + type + '.edit', '_blank');
                 }
             });
         }

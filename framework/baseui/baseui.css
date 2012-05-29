@@ -122,12 +122,12 @@
     opacity:0.5;
 }
 .baseui_theme_bgImgExpandedFolder {
-    background-image: url("lib/folderexpanded.png");
+    background-image: url("img/folderexpanded.png");
     background-repeat: no-repeat;
     padding-left: 20px;
 }
 .baseui_theme_bgImgContractedFolder {
-    background-image: url("lib/folder.png");
+    background-image: url("img/folder.png");
     background-repeat: no-repeat;
     padding-left: 20px;
 }

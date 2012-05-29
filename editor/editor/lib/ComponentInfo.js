@@ -23,17 +23,17 @@ ComponentInfo.prototype.init = function (editor) {
         children = this.children;
 
     this.overflowX = new ImageOption({
-        'visible':  [ 'editor/lib/ofxvisible_s.png', 'editor/lib/ofxvisible.png', children.overflowXVisible ],
-        'hidden':  [ 'editor/lib/ofxhidden_s.png', 'editor/lib/ofxhidden.png', children.overflowXHidden ],
-        'auto':  [ 'editor/lib/ofxauto_s.png', 'editor/lib/ofxauto.png', children.overflowXAuto ],
-        'scroll':  [ 'editor/lib/ofxscroll_s.png', 'editor/lib/ofxscroll.png', children.overflowXScroll ]
+        'visible':  [ 'editor/img/ofxvisible_s.png', 'editor/img/ofxvisible.png', children.overflowXVisible ],
+        'hidden':  [ 'editor/img/ofxhidden_s.png', 'editor/img/ofxhidden.png', children.overflowXHidden ],
+        'auto':  [ 'editor/img/ofxauto_s.png', 'editor/img/ofxauto.png', children.overflowXAuto ],
+        'scroll':  [ 'editor/img/ofxscroll_s.png', 'editor/img/ofxscroll.png', children.overflowXScroll ]
     });
 
     this.overflowY = new ImageOption({
-        'visible':  [ 'editor/lib/ofyvisible_s.png', 'editor/lib/ofyvisible.png', children.overflowYVisible ],
-        'hidden':  [ 'editor/lib/ofyhidden_s.png', 'editor/lib/ofyhidden.png', children.overflowYHidden ],
-        'auto':  [ 'editor/lib/ofyauto_s.png', 'editor/lib/ofyauto.png', children.overflowYAuto ],
-        'scroll':  [ 'editor/lib/ofyscroll_s.png', 'editor/lib/ofyscroll.png', children.overflowYScroll ]
+        'visible':  [ 'editor/img/ofyvisible_s.png', 'editor/img/ofyvisible.png', children.overflowYVisible ],
+        'hidden':  [ 'editor/img/ofyhidden_s.png', 'editor/img/ofyhidden.png', children.overflowYHidden ],
+        'auto':  [ 'editor/img/ofyauto_s.png', 'editor/img/ofyauto.png', children.overflowYAuto ],
+        'scroll':  [ 'editor/img/ofyscroll_s.png', 'editor/img/ofyscroll.png', children.overflowYScroll ]
     });
 
     function updateDoc() {

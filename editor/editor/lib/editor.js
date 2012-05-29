@@ -80,6 +80,7 @@ Editor.prototype.loadGroup = function (factory, type) {
             alert('Error loading');
         });
     });
+    return this;
 };
 Editor.prototype.saveGroup = function (factory, type, doc, cb) {
     factory = factory || this.docInfo.factory;
@@ -242,16 +243,3 @@ exports.StyleSettingShadow = require('./StyleSettingShadow').StyleSettingShadow;
 exports.StyleFeatureSelector = require('./StyleFeatureSelector').StyleFeatureSelector;
 exports.LabelValueSliderCheck = require('./LabelValueSliderCheck').LabelValueSliderCheck;
 exports.Panel = require('./Panel').Panel;
-
-// note: this should be last
-// we want this to be able to run as a standalone application
-if (require.main === module) {
-    (function () {
-        var p = url.parse(document.URL, true),
-            factory = p.query.factory,
-            type = p.query.type,
-            edit = new Editor();
-        edit.loadGroup(factory, type);
-        domvisual.createFullScreenApplication(edit);
-    }());
-}

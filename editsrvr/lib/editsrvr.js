@@ -485,7 +485,9 @@ function generateVisualCompoentHtml(
     packageMap,
     deps,
     cssFileMap,
-    type
+    type,
+    editFactory,
+    editType
 ) {
     // we need to load all components
     var dependencies = [ ],
@@ -505,14 +507,16 @@ function generateVisualCompoentHtml(
         css: cssFiles,
         factory: details.name,
         type: type,
+        editFactory: editFactory,
+        editType: editType,
         jquery: options.jquery ? path.basename(options.jquery) : null
     });
 }
 
-function serveVisualComponent(options) {
+function serveVisualComponent(options, forEdit) {
     return function (req, res, match) {
-        var factory = match[1],
-            type = match[2],
+        var factory = forEdit ? 'editor' : match[1],
+            type = forEdit ? 'Editor' : match[2],
             extendedOptions = apply(
                 {
                     extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
@@ -523,7 +527,9 @@ function serveVisualComponent(options) {
                                 packageMap,
                                 deps,
                                 cssFileMap,
-                                type
+                                type,
+                                forEdit ? match[1] : null,
+                                forEdit ? match[2] : null
                             );
                             // now we are ready to return this
                             res.writeHead(200);
@@ -561,7 +567,11 @@ function getUrls(options) {
     });
     urls.unshift({
         filter: /^\/make\/([^.\/]*)\.([^.\/]*).html$/,
-        handler: serveVisualComponent(options)
+        handler: serveVisualComponent(options, false)
+    });
+    urls.unshift({
+        filter: /^\/make\/([^.\/]*)\.([^.\/]*).edit$/,
+        handler: serveVisualComponent(options, true)
     });
     urls.push({
         filter: /^\/visual$/,

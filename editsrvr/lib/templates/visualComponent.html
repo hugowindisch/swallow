@@ -15,7 +15,11 @@
             // to use our modules
             define.meat.supportJQuery(require);
 {{/if}}
+{{if editFactory}}
+            new (require('${factory}').${type})().loadGroup('${editFactory}', '${editType}').runFullScreen();
+{{else}}
             new (require('${factory}').${type})().runFullScreen();
+{{/if}}
         }
     </script>
 </head>

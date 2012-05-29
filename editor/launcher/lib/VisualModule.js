@@ -25,7 +25,7 @@ function VisualModule(config) {
     });
     this.getChild('edit').on('click', function () {
         var ti = that.typeInfo;
-        window.open('editor.editor.html?factory=' + ti.factory + '&type=' + ti.type, '_blank');
+        window.open(ti.factory + '.' + ti.type + '.edit', '_blank');
     });
 }
 VisualModule.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'launcher', 'VisualModule');
