@@ -217,7 +217,7 @@ VerticalMenu.prototype.createSeparator = function () {
             'tr',
             '',
             { style: 'menuItem' },
-            name
+            null
         ),
         line = c.addHtmlChild('td', '', { style: 'menuItemSeparator' });
     line.setElementAttributes({colspan: 4});

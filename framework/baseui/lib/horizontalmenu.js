@@ -256,11 +256,11 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
             { style: 'normal' },
             name
         ),
-        height = this.dimensions[1] + 'px';
+        height = (this.dimensions[1] - 4) + 'px';
     // keep a reference to the item
     c.item = item;
 
-    c.setHtmlFlowing({ height: height, display: 'inline-block' });
+    c.setHtmlFlowing({ /*height: height,*/ display: 'inline-block' });
     c.setCursor('pointer');
     // to this child we want to add a handler
     c.on('mousedown', function () {
