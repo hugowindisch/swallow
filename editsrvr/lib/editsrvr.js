@@ -807,6 +807,12 @@ function getUrls(options) {
             servePackage(req, res, match, options);
         }
     });
+    urls.push({
+        filter: /^\/package\/([a-z][a-zA-Z0-9]+)\/image$/,
+        handler: function (req, res, match) {
+            serveImageList(req, res, match, options);
+        }
+    });
     return urls;
 }
 
