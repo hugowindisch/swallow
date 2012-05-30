@@ -13,7 +13,7 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3;
 
 function featureUrl(feature, selected) {
-    return 'editor/lib/sp_' + feature + (selected ? '_s.png' : '.png');
+    return 'editor/img/sp_' + feature + (selected ? '_s.png' : '.png');
 }
 function StyleFeatureSelector(config) {
     var that = this,
