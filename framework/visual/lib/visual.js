@@ -523,6 +523,9 @@ Visual.prototype.getSibling = function (name) {
     }
     return ret;
 };
+Visual.prototype.getParent = function () {
+    return this.parent;
+};
 Visual.prototype.swapOrder = function (d1, d2) {
     var o1 = utils.isNumber(d1) ? this.getChildAtOrder(d1) : this.children[d1],
         o2 = utils.isNumber(d2) ? this.getChildAtOrder(d2) : this.children[d2],

@@ -28,7 +28,8 @@ Package.prototype.setName = function (n) {
 };
 Package.prototype.setSelected = function (s) {
     this.selected = s;
-    this.getChild('delete').setVisible(s);
+    // we don't want to support this at this moment.
+    this.getChild('delete').setVisible(false); //s);
     this.getChild('background').setTransition(200).setStyle(s ? 'select' : 'normal');
 };
 

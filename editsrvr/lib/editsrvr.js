@@ -308,6 +308,70 @@ function saveVisual(options, packageName, constructorName, json, cb) {
         }
     });
 }
+// deletes a visual
+function deleteVisual(options, packageName, constructorName, cb) {
+    // save it
+    findPackages(options.srcFolder, function (err, packages) {
+        var pack,
+            visFile,
+            jsFile,
+            allVis,
+            ret;
+        // error
+        if (err) {
+            return cb(err);
+        }
+        // normal case
+        pack = packages[packageName];
+        if (pack) {
+            visFile = findVisualInPackage(pack, constructorName);
+            jsFile = findJSInPackage(pack, constructorName);
+            if (visFile && jsFile) {
+                async.series(
+                    [
+                        // delete the visual file
+                        function (cb) {
+                            fs.unlink(visFile, cb);
+                        },
+                        // delete the js file
+                        function (cb) {
+                            fs.unlink(jsFile, cb);
+                        },
+                        function (cb) {
+                            // reload packages
+                            findPackages(options.srcFolder, function (err, packages) {
+                                if (err) {
+                                    return cb(err);
+                                }
+                                pack = packages[packageName];
+                                cb(null);
+                            });
+                        },
+                        // load the visual files for this package
+                        function (cb) {
+                            loadVisFiles(pack, function (err, av) {
+                                if (err) {
+                                    return cb(err);
+                                }
+                                allVis = av;
+                                cb(null);
+                            });
+                        },
+                        // regenerate the group
+                        function (cb) {
+                            saveGroupsJS(pack, allVis, cb);
+                        }
+                    ],
+                    cb
+                );
+            } else {
+                cb(new Error('module not found ' + constructorName));
+            }
+        } else {
+            cb(new Error('package not found ' + packageName));
+        }
+    });
+}
 // reads a visual
 function loadVisual(options, packageName, constructorName, cb) {
     // get an updated view of all available packages
@@ -397,6 +461,14 @@ function serveVisual(req, res, match, options) {
         break;
     case 'DELETE':
         // not currently supported
+        deleteVisual(options, packageName, constructorName, function (err) {
+            if (err) {
+                ret404(err);
+            } else {
+                res.writeHead(200);
+                res.end();
+            }
+        });
         break;
     }
 }

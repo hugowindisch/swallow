@@ -3,6 +3,7 @@
 */
 var visual = require('visual'),
     domvisual = require('domvisual'),
+    http = require('http'),
     group = require('/launcher/lib/groups').groups.VisualModule;
 
 function VisualModule(config) {
@@ -26,6 +27,21 @@ function VisualModule(config) {
     this.getChild('edit').on('click', function () {
         var ti = that.typeInfo;
         window.open(ti.factory + '.' + ti.type + '.edit', '_blank');
+    });
+    this.getChild('delete').on('click', function () {
+        var ti = that.typeInfo,
+            req = http.request(
+                {
+                    method: 'DELETE',
+                    path: '/package/' + ti.factory + '/visual/' + ti.type,
+                },
+                function (res) {
+                    res.on('error', function (e) {
+                        alert('Error deleting');
+                    });
+                }
+            );
+        req.end();
     });
 }
 VisualModule.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'launcher', 'VisualModule');
