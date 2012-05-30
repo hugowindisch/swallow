@@ -28,12 +28,12 @@ function Launcher(config) {
         this.loadLists();
     }
     function getNewPackageName() {
-        var name = that.getChilld('packageAddName').getValue();
+        var name = that.getChild('packageAddName').getValue();
         // some validation
         return (/^[a-z][a-zA-Z0-9]+$/).test(name) ? name : null;
     }
     this.getChild('packageAdd').on('click', function () {
-        var name = that.getChild('packageAddName').getValue(),
+        var name = getNewPackageName(),
             // we should validate and strip unwanted stuff
             req;
         if (name) {
@@ -53,6 +53,35 @@ function Launcher(config) {
             req.end();
         } else {
             alert('invalid name ' + name);
+        }
+    });
+    function getNewModuleName() {
+        var name = that.getChild('moduleAddName').getValue();
+        // some validation
+        return (/^[A-Z][a-zA-Z0-9]+$/).test(name) ? name : null;
+    }
+    this.getChild('moduleAdd').on('click', function () {
+        var name = getNewModuleName(),
+            packageName = that.selected,
+            // we should validate and strip unwanted stuff
+            req;
+        if (name && packageName) {
+            req = http.request(
+                {
+                    method: 'PUT',
+                    path: '/package/' + packageName + '/visual/' + name,
+                },
+                function (res) {
+                    res.on('error', function (e) {
+                        alert('Error saving');
+                    });
+                    res.on('end', function () {
+                    });
+                }
+            );
+            req.end();
+        } else {
+            alert('error');
         }
     });
 }

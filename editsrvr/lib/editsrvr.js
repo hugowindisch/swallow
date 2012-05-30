@@ -101,6 +101,18 @@ function apply(to, from) {
     return to;
 }
 
+// creates a new / empty visual
+function createNewVisual() {
+    return {
+        description: '',
+        private: true,
+        privateTheme: true,
+        dimensions: [ 600, 400, 0],
+        gridSize: 8,
+        children: {},
+        positions: {}
+    };
+}
 
 // finds a given visual in the specified package
 function findVisualInPackage(pack, visual) {
@@ -270,6 +282,7 @@ function saveVisual(options, packageName, constructorName, json, cb) {
                 if (err) {
                     return cb(err);
                 } else {
+                    pack.other.push(visFile);
                     loadVisFiles(pack, function (err, allVis) {
                         if (err) {
                             return cb(err);
@@ -320,7 +333,6 @@ function loadVisual(options, packageName, constructorName, cb) {
         }
     });
 }
-
 function serveVisual(req, res, match, options) {
     var packageName = match[1],
         constructorName = match[2],
@@ -371,6 +383,16 @@ function serveVisual(req, res, match, options) {
                 }
             });
             res.end();
+        });
+        break;
+    case 'PUT':
+        saveVisual(options, packageName, constructorName, JSON.stringify(createNewVisual()), function (err) {
+            if (err) {
+                ret404(err);
+            } else {
+                res.writeHead(200);
+                res.end();
+            }
         });
         break;
     case 'DELETE':
@@ -480,7 +502,7 @@ function savePackage(options, packageName, cb) {
                     function (cb) {
                         // create lib/packagename.js
                         fs.writeFile(
-                            path.join(dstFolder, packageName, 'lib', packageName + '.json'),
+                            path.join(dstFolder, packageName, 'lib', packageName + '.js'),
                             jqtpl.tmpl('mainJs', { }),
                             cb
                         );
