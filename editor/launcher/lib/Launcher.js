@@ -18,14 +18,43 @@ function Launcher(config) {
     domvisual.DOMElement.call(this, config, group);
     // load the stuff that we need
     var that = this;
-    // avoid infinite preview
+    // setup the dependency manager
+    this.dependencyManager = new DependencyManager();
+    this.dependencyManager.on('change', function (l) {
+        that.updateVisualList(l);
+    });
+    // load, avoiding infinite recursion
     if (!this.forPreview) {
-        this.dependencyManager = new DependencyManager();
-        this.dependencyManager.on('change', function (l) {
-            that.setVisualList(l);
-        });
-        this.dependencyManager.loadVisualList();
+        this.loadLists();
     }
+    function getNewPackageName() {
+        var name = that.getChilld('packageAddName').getValue();
+        // some validation
+        return (/^[a-z][a-zA-Z0-9]+$/).test(name) ? name : null;
+    }
+    this.getChild('packageAdd').on('click', function () {
+        var name = that.getChild('packageAddName').getValue(),
+            // we should validate and strip unwanted stuff
+            req;
+        if (name) {
+            req = http.request(
+                {
+                    method: 'PUT',
+                    path: '/package/' + name,
+                },
+                function (res) {
+                    res.on('error', function (e) {
+                        alert('Error saving');
+                    });
+                    res.on('end', function () {
+                    });
+                }
+            );
+            req.end();
+        } else {
+            alert('invalid name ' + name);
+        }
+    });
 }
 Launcher.createPreview = function () {
     var ret = new Launcher({forPreview: true});
@@ -38,9 +67,37 @@ Launcher.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'launcher
 Launcher.prototype.setForPreview = function () {
     this.forPreview = true;
 };
-Launcher.prototype.setVisualList = function (list) {
+Launcher.prototype.loadLists = function () {
+    this.packages = {};
+    this.dependencyManager.loadVisualList();
+    // we also need to get the full package list because packages without
+    // visuals will not be listed by the dependency manager
+    var data = '',
+        that = this;
+    http.get({ path: '/package'}, function (res) {
+        res.on('data', function (d) {
+            data += d;
+        });
+        res.on('end', function () {
+            var jsonData = JSON.parse(data);
+            that.updateVisualListFromPackageList(jsonData);
+        });
+    });
+};
+Launcher.prototype.updateVisualListFromPackageList = function (list) {
+    var that = this;
+    forEachProperty(list, function (p, pname) {
+        var deps = p.dependencies;
+        // somwhat bad & implicit way of determining visual packages
+        if (deps && deps.visual && deps.domvisual && deps.glmatrix && deps.events) {
+            that.packages[pname] = [];
+        }
+    });
+    this.updatePackageList();
+};
+Launcher.prototype.updateVisualList = function (list) {
+    var packages = this.packages;
     // we re organize the list hierachically
-    var packages = {};
     forEach(list, function (v) {
         var n = v.factory,
             pn = packages[n];

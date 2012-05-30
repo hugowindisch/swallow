@@ -80,6 +80,20 @@ jqtpl.template(
     ).toString()
 );
 
+jqtpl.template(
+    'packageJson',
+    fs.readFileSync(
+        path.join(__dirname, 'templates/packageJson')
+    ).toString()
+);
+
+jqtpl.template(
+    'mainJs',
+    fs.readFileSync(
+        path.join(__dirname, 'templates/main.js')
+    ).toString()
+);
+
 function apply(to, from) {
     Object.keys(from).forEach(function (k) {
         to[k] = from[k];
@@ -400,6 +414,7 @@ function serveVisualList(req, res, match, options) {
             // there are some details that we want to return too...
             // and for this... we need to load the vis files...
             // kinda sad...
+            // FIXME: remove this, no longer needed
             async.map(
                 ret,
                 function (r, cb) {
@@ -432,6 +447,106 @@ function serveVisualList(req, res, match, options) {
 
     } else {
         ret404();
+    }
+}
+
+
+function savePackage(options, packageName, cb) {
+    var dstFolder = options.newPackages || '.';
+    // get an updated view of all available packages
+    findPackages(options.srcFolder, function (err, packages) {
+        var pack = packages[packageName];
+        if (!pack) {
+            // create dir, create lib subdir, create
+            // package.json, create lib/packagename.js
+            async.series(
+                [
+                    function (cb) {
+                        // create folder
+                        fs.mkdir(path.join(dstFolder, packageName), cb);
+                    },
+                    function (cb) {
+                        // create subfolder
+                        fs.mkdir(path.join(dstFolder, packageName, 'lib'), cb);
+                    },
+                    function (cb) {
+                        // create package.json
+                        fs.writeFile(
+                            path.join(dstFolder, packageName, 'package.json'),
+                            jqtpl.tmpl('packageJson', { name: packageName}),
+                            cb
+                        );
+                    },
+                    function (cb) {
+                        // create lib/packagename.js
+                        fs.writeFile(
+                            path.join(dstFolder, packageName, 'lib', packageName + '.json'),
+                            jqtpl.tmpl('mainJs', { }),
+                            cb
+                        );
+                    }
+                ],
+                cb
+            );
+        } else {
+            cb(new Error('Package already exists'));
+        }
+    });
+}
+
+function servePackage(req, res, match, options) {
+    var packageName = match[1],
+        constructorName = match[2];
+
+    function ret404(err) {
+        res.writeHead(404);
+        if (err) {
+            res.write(String(err));
+        }
+        res.end();
+    }
+
+    switch (req.method) {
+    case 'GET':
+        break;
+    case 'PUT':
+        savePackage(options, packageName, function (err) {
+            if (err) {
+                ret404(err);
+            } else {
+                res.writeHead(200);
+                res.end();
+            }
+        });
+        break;
+    case 'DELETE':
+        // not currently supported
+        break;
+    }
+}
+
+function servePackageList(req, res, match, options) {
+    function ret404(err) {
+        res.writeHead(404);
+        if (err) {
+            res.write(String(err));
+        }
+        res.end();
+    }
+
+    if (req.method === 'GET') {
+        findPackages(options.srcFolder, function (err, packages) {
+            var ret = {};
+            if (err) {
+                return ret404(err);
+            }
+            Object.keys(packages).forEach(function (k) {
+                ret[k] = packages[k].json;
+            });
+            res.writeHead('200', {'Content-Type': mimeType.json});
+            res.write(JSON.stringify(ret, null, 4));
+            res.end();
+        });
     }
 }
 
@@ -565,12 +680,13 @@ function getUrls(options) {
             res.end();
         }
     });
+
     urls.unshift({
-        filter: /^\/make\/([^.\/]*)\.([^.\/]*).html$/,
+        filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.html$/,
         handler: serveVisualComponent(options, false)
     });
     urls.unshift({
-        filter: /^\/make\/([^.\/]*)\.([^.\/]*).edit$/,
+        filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.edit$/,
         handler: serveVisualComponent(options, true)
     });
     urls.push({
@@ -580,15 +696,21 @@ function getUrls(options) {
         }
     });
     urls.push({
-        filter: /^\/package\/([^\/]*)\/visual\/([^\/]*)$/,
+        filter: /^\/package$/,
+        handler: function (req, res, match) {
+            servePackageList(req, res, match, options);
+        }
+    });
+    urls.push({
+        filter: /^\/package\/([a-z][a-zA-Z0-9]+)\/visual\/([A-Z][a-zA-Z0-9]+)$/,
         handler: function (req, res, match) {
             serveVisual(req, res, match, options);
         }
     });
     urls.push({
-        filter: /^\/package\/([^\/]*)\/image$/,
+        filter: /^\/package\/([a-z][a-zA-Z0-9]+)$/,
         handler: function (req, res, match) {
-            serveImageList(req, res, match, options);
+            servePackage(req, res, match, options);
         }
     });
     return urls;
