@@ -101,6 +101,15 @@ exports.groups = {
                     "position": "pos1",
                     "url": "launcher/img/swallow.png"
                 }
+            },
+            "pos2": {
+                "factory": "domvisual",
+                "type": "DOMElement",
+                "config": {
+                    "position": "pos2",
+                    "innerText": "Launcher",
+                    "style": "style2"
+                }
             }
         },
         "positions": {
@@ -488,6 +497,41 @@ exports.groups = {
                     "bottom": "auto",
                     "height": "px"
                 }
+            },
+            "pos2": {
+                "matrix": {
+                    "0": 224,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 40,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 32,
+                    "13": 24,
+                    "14": 1,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 11,
+                "snapping": {
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
             }
         },
         "theme": {
@@ -533,6 +577,13 @@ exports.groups = {
                         "b": 100,
                         "a": 1
                     }
+                }
+            },
+            "style2": {
+                "jsData": {
+                    "fontSize": 31.711111111111112,
+                    "fontFamily": "arial",
+                    "fontWeight": "bold"
                 }
             }
         },
