@@ -478,77 +478,6 @@ function serveVisual(req, res, match, options) {
     }
 }
 
-function serveVisualList(req, res, match, options) {
-    function ret404(err) {
-        res.writeHead(404);
-        if (err) {
-            res.write(String(err));
-        }
-        res.end();
-    }
-
-    if (req.method === 'GET') {
-        findPackages(options.srcFolder, function (err, packages) {
-            if (err) {
-                return ret404(err);
-            }
-            var re = /([^\/\.]*)\.vis$/,
-                // find all the visuals in the package
-                ret = [];
-            Object.keys(packages).forEach(function (k) {
-                var pack = packages[k],
-                    found = {};
-                pack.other.forEach(function (p) {
-                    var m = re.exec(p),
-                        type;
-                    if (m) {
-                        type = m[1];
-                        if (!found[type]) {
-                            found[type] = true;
-                            ret.push({factory: k, type: m[1], path: p});
-                        }
-                    }
-                });
-            });
-            // there are some details that we want to return too...
-            // and for this... we need to load the vis files...
-            // kinda sad...
-            // FIXME: remove this, no longer needed
-            async.map(
-                ret,
-                function (r, cb) {
-                    fs.readFile(r.path, function (err, data) {
-                        if (err) {
-                            return cb(err);
-                        }
-                        var js = JSON.parse(data);
-                        cb(
-                            null,
-                            {
-                                factory: r.factory,
-                                type: r.type,
-                                description: js.description,
-                                private: js.private
-                            }
-                        );
-                    });
-                },
-                function (err, ret) {
-                    if (err) {
-                        return res.ret404(err);
-                    }
-                    res.writeHead('200', {'Content-Type': mimeType.json});
-                    res.write(JSON.stringify(ret, null, 4));
-                    res.end();
-                }
-            );
-        });
-
-    } else {
-        ret404();
-    }
-}
-
 function savePackage(options, packageName, cb) {
     var dstFolder = options.newPackages || '.';
     // get an updated view of all available packages
@@ -839,12 +768,6 @@ function getUrls(options) {
     urls.unshift({
         filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.edit$/,
         handler: serveVisualComponent(options, true)
-    });
-    urls.push({
-        filter: /^\/visual$/,
-        handler: function (req, res, match) {
-            serveVisualList(req, res, match, options);
-        }
     });
     urls.push({
         filter: /^\/package$/,
