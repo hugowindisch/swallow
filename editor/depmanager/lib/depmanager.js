@@ -26,7 +26,7 @@ can react to reloading or changing themselves when the dependencies change.
 */
 function DependencyManager() {
     this.factories = {};
-    this.visualList = [];
+    this.visualList = {};
 }
 DependencyManager.prototype = new (events.EventEmitter)();
 
@@ -54,24 +54,26 @@ DependencyManager.prototype.getVisualList = function () {
 */
 DependencyManager.prototype.getStyleList = function () {
     var res = [];
-    forEach(this.visualList, function (v) {
-        var factory = v.factory,
-            l = require(factory),
-            type,
-            Constr,
-            theme;
-        if (l) {
-            type = v.type;
-            Constr = l[type];
-            if (Constr && Constr.prototype.privateStyles === false) {
-                theme = Constr.prototype.theme;
-                if (theme) {
-                    forEachProperty(theme.getThemeData(), function (s, name) {
-                        if (!s.private) {
-                            res.push({ factory: factory, type: type, style: name});
+    forEachProperty(this.visualList, function (v, factory) {
+        if (v.visuals) {
+            var l = require(factory),
+                type,
+                Constr,
+                theme;
+            if (l) {
+                forEach(v.visuals, function (type) {
+                    Constr = l[type];
+                    if (Constr && Constr.prototype.privateStyles === false) {
+                        theme = Constr.prototype.theme;
+                        if (theme) {
+                            forEachProperty(theme.getThemeData(), function (s, name) {
+                                if (!s.private) {
+                                    res.push({ factory: factory, type: type, style: name});
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                });
             }
         }
     });
@@ -83,7 +85,7 @@ DependencyManager.prototype.getStyleList = function () {
 DependencyManager.prototype.loadVisualList = function () {
     var data = '',
         that = this;
-    http.get({ path: '/visual'}, function (res) {
+    http.get({ path: '/package'}, function (res) {
         res.on('data', function (d) {
             data += d;
         });
@@ -100,15 +102,13 @@ DependencyManager.prototype.loadMissingFactories = function (visualList) {
     forEachProperty(this.factories, function (l, n) {
         factories[n] = l;
     });
-    forEach(visualList, function (item) {
-        var f = item.factory;
-        if (!factories[f] && !toLoad[f]) {
-            toLoad[f] = item;
+    forEachProperty(visualList, function (item, fname) {
+        if (!factories[fname] && !toLoad[fname] && item.visuals) {
+            toLoad[fname] = fname;
             loading += 1;
         }
     });
-    forEachProperty(toLoad, function (item) {
-        var factory = item.factory;
+    forEachProperty(toLoad, function (item, factory) {
         // factory not already loaded?
         visual.loadPackage(factory, function (err) {
             if (!err) {

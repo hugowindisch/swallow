@@ -338,7 +338,7 @@ exports.definition = {
                     factory: "baseui",
                     type: "Label",
                     config: {
-                        "text": "Library:",
+                        "text": "Package:",
                         position: "label"
                     }
                 },

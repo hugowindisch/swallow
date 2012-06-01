@@ -51,13 +51,17 @@ var meatgrinder = require('meatgrinder'),
     jqtpl = require('jqtpl'),
     fs = require('fs'),
     path = require('path'),
+    events = require('events'),
     findPackages = meatgrinder.findPackages,
     fs = require('fs'),
     path = require('path'),
     async = require('async'),
     mimeType = {
         json: 'application/json'
-    };
+    },
+    theMessageCount = 0,
+    theEmitter = new events.EventEmitter();
+
 
 jqtpl.template(
     'jsFile',
@@ -302,7 +306,6 @@ function saveVisual(options, packageName, constructorName, json, cb) {
                     });
                 }
             });
-            cb(null);
         } else {
             return cb(new Error('package not found ' + packageName));
         }
@@ -444,9 +447,9 @@ function serveVisual(req, res, match, options) {
                 } else {
                     res.writeHead(200);
                     res.end();
+                    theEmitter.emit('sse', 'savecomponent');
                 }
             });
-            res.end();
         });
         break;
     case 'PUT':
@@ -456,6 +459,7 @@ function serveVisual(req, res, match, options) {
             } else {
                 res.writeHead(200);
                 res.end();
+                theEmitter.emit('sse', 'newcomponent');
             }
         });
         break;
@@ -467,6 +471,7 @@ function serveVisual(req, res, match, options) {
             } else {
                 res.writeHead(200);
                 res.end();
+                theEmitter.emit('sse', 'deletecomponent');
             }
         });
         break;
@@ -544,7 +549,6 @@ function serveVisualList(req, res, match, options) {
     }
 }
 
-
 function savePackage(options, packageName, cb) {
     var dstFolder = options.newPackages || '.';
     // get an updated view of all available packages
@@ -610,6 +614,7 @@ function servePackage(req, res, match, options) {
             } else {
                 res.writeHead(200);
                 res.end();
+                theEmitter.emit('sse', 'newpackage');
             }
         });
         break;
@@ -618,6 +623,7 @@ function servePackage(req, res, match, options) {
         break;
     }
 }
+
 
 function servePackageList(req, res, match, options) {
     function ret404(err) {
@@ -630,17 +636,46 @@ function servePackageList(req, res, match, options) {
 
     if (req.method === 'GET') {
         findPackages(options.srcFolder, function (err, packages) {
-            var ret = {};
             if (err) {
                 return ret404(err);
             }
+            var re = /([^\/\.]*)\.vis$/,
+                // find all the visuals in the package
+                ret = {};
             Object.keys(packages).forEach(function (k) {
-                ret[k] = packages[k].json;
+                var pack = packages[k],
+                    json = pack.json,
+                    deps = json.dependencies,
+                    found = {},
+                    vis = [];
+
+                ret[k] = json;
+                // is it a visual package
+                pack.other.forEach(function (p) {
+                    var m = re.exec(p),
+                        type;
+                    if (m) {
+                        type = m[1];
+                        if (!found[type]) {
+                            found[type] = true;
+                            vis.push(m[1]);
+                        }
+                    }
+                });
+                // we must support 'still empty' packages and this is
+                // an ugly way to determine that
+                if (vis.length > 0 || (deps && deps.visual && deps.domvisual && deps.glmatrix)) {
+                    json.visuals = vis;
+                }
+
             });
             res.writeHead('200', {'Content-Type': mimeType.json});
             res.write(JSON.stringify(ret, null, 4));
             res.end();
         });
+
+    } else {
+        ret404();
     }
 }
 
@@ -762,6 +797,28 @@ function serveVisualComponent(options, forEdit) {
         );
     };
 }
+function serveEvents(req, res, match, options) {
+    // setup the response and socket
+    req.socket.setTimeout(1000000);
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive'
+    });
+    res.write('\n');
+    // create our event handler
+    function eventHandler(message) {
+        theMessageCount += 1; // Increment our message count
+        res.write('id: ' + theMessageCount + '\n');
+        res.write("data: " + message + '\n\n'); // Note the extra newline
+    }
+    // hook it to the emitter
+    theEmitter.on('sse', eventHandler);
+
+    req.on('close', function () {
+        theEmitter.removeListener('sse', eventHandler);
+    });
+}
 
 function getUrls(options) {
     var urls = meatgrinder.getUrls(options);
@@ -811,6 +868,12 @@ function getUrls(options) {
         filter: /^\/package\/([a-z][a-zA-Z0-9]+)\/image$/,
         handler: function (req, res, match) {
             serveImageList(req, res, match, options);
+        }
+    });
+    urls.push({
+        filter: /^\/events$/,
+        handler: function (req, res, match) {
+            serveEvents(req, res, match, options);
         }
     });
     return urls;

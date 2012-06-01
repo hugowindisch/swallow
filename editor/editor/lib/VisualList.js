@@ -158,8 +158,6 @@ VisualList.prototype.updateVisualList = function () {
     var editor = this.editor,
         packageManager = editor.getDependencyManager(),
         visualList = packageManager.getVisualList(),
-        l = visualList.length,
-        i,
         jsd,
         alwaysShow = this.alwaysShow,
         choices = this.children.choices,
@@ -170,25 +168,32 @@ VisualList.prototype.updateVisualList = function () {
     function onClick() {
         that.select(this, true);
     }
-    function add(jsd) {
-        var c;
-        if ((!jsd.private || jsd.factory === editedFactory) && !(jsd.factory === docInfo.factory && jsd.type === docInfo.type)) {
-            // keep a list of factories
-            c = new VisualInfo({ typeInfo: jsd});
-            c.init(that.editor);
-            // FIXME: this needs some thinking... I want to flow the thing,
-            // and doing so
-            c.setHtmlFlowing({position: 'relative'}, true);
-            choices.addChild(c);
-            c.on('click', onClick);
+    function add(factory, type) {
+        var c, f, T;
+        if (!(factory === docInfo.factory && type === docInfo.type)) {
+            f = require(factory);
+            if (f) {
+                T = f[type];
+                if (T && (T.prototype instanceof visual.Visual) && (!T.prototype.private || (factory === docInfo.factory))) {
+                    c = new VisualInfo({ typeInfo: {factory: factory, type: type}});
+                    c.init(that.editor);
+                    c.setHtmlFlowing({position: 'relative'}, true);
+                    choices.addChild(c);
+                    c.on('click', onClick);
+
+                }
+            }
         }
+
     }
     // remove all children
     choices.removeAllChildren();
     // create the always visible choices first
-    forEach(visualList, function (jsd) {
-        if (alwaysShow[jsd.factory]) {
-            add(jsd);
+    forEachProperty(visualList, function (json, factory) {
+        if (alwaysShow[factory] && json.visuals) {
+            forEach(json.visuals, function (type) {
+                add(factory, type);
+            });
         }
     });
     // add a separator
@@ -198,13 +203,16 @@ VisualList.prototype.updateVisualList = function () {
     );
 
     // then the other ones
-    forEach(visualList, function (jsd) {
-        if (!alwaysShow[jsd.factory]) {
-            add(jsd);
+    forEachProperty(visualList, function (json, factory) {
+        if (!alwaysShow[factory] && json.visuals) {
+            forEach(json.visuals, function (type) {
+                add(factory, type);
+            });
+
         }
     });
     // then setup the factory selector
-    that.setFactories(packageManager.getFactories());
+    that.setFactories(visualList);
     that.filterFactories();
 };
 
@@ -242,7 +250,7 @@ VisualList.prototype.setFactories = function (factories) {
         alwaysShow = this.alwaysShow || {};
     forEachProperty(factories, function (f, name) {
         // don't show the factories that are always present
-        if (!alwaysShow[name]) {
+        if (!alwaysShow[name] && f.visuals && f.visuals.length > 0) {
             factArray.push(name);
         }
     });

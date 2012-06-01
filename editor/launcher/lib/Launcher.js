@@ -5,6 +5,7 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     http = require('http'),
     utils = require('utils'),
+    sse = require('sse'),
     DependencyManager = require('depmanager').DependencyManager,
     forEachProperty = utils.forEachProperty,
     forEachSortedProperty = utils.forEachSortedProperty,
@@ -22,6 +23,11 @@ function Launcher(config) {
     this.dependencyManager = new DependencyManager();
     this.dependencyManager.on('change', function (l) {
         that.updateVisualList(l);
+        // FIXME: the dual list thing is quite ugly
+        if (that.selectAfterLoad) {
+            that.selectPackage(that.selectAfterLoad);
+        }
+
     });
     // load, avoiding infinite recursion
     if (!this.forPreview) {
@@ -84,6 +90,16 @@ function Launcher(config) {
             alert('error');
         }
     });
+
+    // sse handling
+    this.sse = new sse.EventSource('/events');
+
+    this.sse.on('message', function (evt) {
+        if (!that.forPreview) {
+            that.loadLists();
+        }
+    });
+
 }
 Launcher.createPreview = function () {
     var ret = new Launcher({forPreview: true});
@@ -99,41 +115,15 @@ Launcher.prototype.setForPreview = function () {
 Launcher.prototype.loadLists = function () {
     this.packages = {};
     this.dependencyManager.loadVisualList();
-    // we also need to get the full package list because packages without
-    // visuals will not be listed by the dependency manager
-    var data = '',
-        that = this;
-    http.get({ path: '/package'}, function (res) {
-        res.on('data', function (d) {
-            data += d;
-        });
-        res.on('end', function () {
-            var jsonData = JSON.parse(data);
-            that.updateVisualListFromPackageList(jsonData);
-        });
-    });
-};
-Launcher.prototype.updateVisualListFromPackageList = function (list) {
-    var that = this;
-    forEachProperty(list, function (p, pname) {
-        var deps = p.dependencies;
-        // somwhat bad & implicit way of determining visual packages
-        if (deps && deps.visual && deps.domvisual && deps.glmatrix && deps.events) {
-            that.packages[pname] = [];
-        }
-    });
-    this.updatePackageList();
+    // FIXME: we could use once instead of doing this:
+    this.selectAfterLoad = this.selected;
+
 };
 Launcher.prototype.updateVisualList = function (list) {
     var packages = this.packages;
-    // we re organize the list hierachically
-    forEach(list, function (v) {
-        var n = v.factory,
-            pn = packages[n];
-        if (pn) {
-            pn.push(v);
-        } else {
-            packages[n] = [v];
+    forEachProperty(list, function (item, name) {
+        if (item.visuals) {
+            packages[name] = item;
         }
     });
     this.packages = packages;
@@ -142,6 +132,7 @@ Launcher.prototype.updateVisualList = function (list) {
 Launcher.prototype.updatePackageList = function () {
     var packageList = this.getChild('packageList'),
         that = this;
+    delete this.selected;
     packageList.removeAllChildren();
     packageList.setOverflow(['visible', 'auto']);
     forEachSortedProperty(this.packages, function (p, pn) {
@@ -156,41 +147,48 @@ Launcher.prototype.updatePackageList = function () {
     });
 };
 Launcher.prototype.selectPackage = function (name) {
-    var packageList = this.getChild('packageList');
+    var packageList = this.getChild('packageList'),
+        s;
     if (name !== this.selected) {
         if (this.selected) {
-            packageList.getChild(this.selected).setSelected(false);
+            s = packageList.getChild(this.selected);
+            if (s) {
+                s.setSelected(false);
+            }
+            delete this.selected;
         }
-        this.selected = name;
-        if (this.selected) {
-            packageList.getChild(this.selected).setSelected(true);
+        s = packageList.getChild(name);
+        if (s) {
+            this.selected = name;
+            s.setSelected(true);
         }
         this.updateModuleList();
     }
 };
 Launcher.prototype.updateModuleList = function () {
     var moduleList = this.getChild('moduleList'),
-        that = this;
+        that = this,
+        factory;
     moduleList.removeAllChildren();
     moduleList.setOverflow(['visible', 'auto']);
     delete this.selectedModule;
     if (this.selected) {
-        forEach(this.packages[this.selected], function (p) {
-            var factory, Type, mv, success;
+        factory = require(this.selected);
+        forEach(this.packages[this.selected].visuals, function (type) {
+            var Type, mv, success;
             try {
-                factory = require(p.factory);
-                Type = factory[p.type];
+                Type = factory[type];
                 if (Type && Type.prototype && Type.prototype.getDescription) {
                     mv = new VisualModule({
-                        name: p.type,
+                        name: type,
                         description: Type.prototype.getDescription(),
                         preview: Type,
-                        typeInfo: p
+                        typeInfo: { factory: that.selected, type: type }
                     });
                     mv.setHtmlFlowing({ position: 'relative' }, true);
-                    moduleList.addChild(mv, p.type);
+                    moduleList.addChild(mv, type);
                     mv.on('select', function (isSelected) {
-                        that.selectModule(p);
+                        that.selectModule(type);
                     });
                     success = true;
                 } else {
@@ -201,20 +199,20 @@ Launcher.prototype.updateModuleList = function () {
                 success = false;
             }
             if (!success) {
-                console.log("Cannot show " + p.factory + " " + p.type);
+                console.log("Cannot show " + factory + " " + type);
             }
         });
     }
 };
-Launcher.prototype.selectModule = function (module) {
+Launcher.prototype.selectModule = function (type) {
     var moduleList = this.getChild('moduleList');
-    if (module !== this.selectedModule) {
+    if (type !== this.selectedModule) {
         if (this.selectedModule) {
-            moduleList.getChild(this.selectedModule.type).setSelected(false);
+            moduleList.getChild(this.selectedModule).setSelected(false);
         }
-        this.selectedModule = module;
+        this.selectedModule = type;
         if (this.selectedModule) {
-            moduleList.getChild(this.selectedModule.type).setSelected(true);
+            moduleList.getChild(this.selectedModule).setSelected(true);
         }
     }
 };

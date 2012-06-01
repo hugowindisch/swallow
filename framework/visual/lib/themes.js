@@ -113,12 +113,16 @@ function bindStyle(style, skin) {
 
 function applyTheme(toTheme, fromTheme, all) {
     forEachProperty(fromTheme, function (prop, propname) {
-        if (all || toTheme[propname]) {
+        var tt = toTheme[propname];
+        if (all || tt) {
+            tt = toTheme[propname] = {};
             // note: we deepcopy the prop because bindings may change
             // for the same property in two different skins
-            toTheme[propname] = deepCopy(prop);
-            // we cannot copy the bindings if any
-            delete toTheme[propname].bindings;
+            forEachProperty(prop, function (v, name) {
+                if (name !== 'bindings') {
+                    tt[name] = v;
+                }
+            });
         }
     });
 }
