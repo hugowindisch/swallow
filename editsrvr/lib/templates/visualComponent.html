@@ -8,12 +8,12 @@
 {{/each}}
     <script>
         window.onload = function () {
-            var domain = {},
-                require = define.meat.makeRequire(domain, '');
+            var meat = define.meat,
+                require = meat.makeRequire(meat.createApplicationDomain(), '');
 {{if jquery}}
             // add support for jQuery, and allow jQuery code
             // to use our modules
-            define.meat.supportJQuery(require);
+            meat.supportJQuery(require);
 {{/if}}
 {{if editFactory}}
             new (require('${factory}').${type})().loadGroup('${editFactory}', '${editType}').runFullScreen();
