@@ -22,10 +22,11 @@ function Launcher(config) {
     // setup the dependency manager
     this.dependencyManager = new DependencyManager();
     this.dependencyManager.on('change', function (l) {
+        var prevSelected = that.selected;
         that.updateVisualList(l);
         // FIXME: the dual list thing is quite ugly
-        if (that.selectAfterLoad) {
-            that.selectPackage(that.selectAfterLoad);
+        if (prevSelected) {
+            that.selectPackage(prevSelected);
         }
 
     });
@@ -90,16 +91,6 @@ function Launcher(config) {
             alert('error');
         }
     });
-
-    // sse handling
-    this.sse = new sse.EventSource('/events');
-
-    this.sse.on('message', function (evt) {
-        if (!that.forPreview) {
-            that.loadLists();
-        }
-    });
-
 }
 Launcher.createPreview = function () {
     var ret = new Launcher({forPreview: true});
@@ -115,9 +106,6 @@ Launcher.prototype.setForPreview = function () {
 Launcher.prototype.loadLists = function () {
     this.packages = {};
     this.dependencyManager.loadVisualList();
-    // FIXME: we could use once instead of doing this:
-    this.selectAfterLoad = this.selected;
-
 };
 Launcher.prototype.updateVisualList = function (list) {
     var packages = this.packages;

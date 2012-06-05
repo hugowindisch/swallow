@@ -885,8 +885,10 @@ Visual.prototype.getStyleData = function () {
 /**
     Loads a package in a way that is coordinated with dirt handling.
 */
-function loadPackage(p, callback) {
-    define.meat.loadPackage(p, function () {
+function loadPackage(p, applicationDomain, reload, callback) {
+    applicationDomain = applicationDomain || require.applicationDomain;
+    reload = reload || false;
+    define.meat.loadPackage(p, applicationDomain, reload, function () {
         if (callback) {
             callback.apply(this, arguments);
         }

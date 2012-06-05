@@ -5,6 +5,7 @@
 var visual = require('visual'),
     utils = require('utils'),
     events = require('events'),
+    sse = require('sse'),
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEach,
     http = require('http');
@@ -25,8 +26,25 @@ The dependency manager should be an event emitter so that interested components
 can react to reloading or changing themselves when the dependencies change.
 */
 function DependencyManager() {
+    var that = this;
     this.factories = {};
     this.visualList = {};
+    // sse handling
+    this.sse = new sse.EventSource('/events');
+
+    this.sse.on('savecomponent', function (evt) {
+        var typeInfo = JSON.parse(evt.data);
+        that.reloadModule(typeInfo.factory, typeInfo.type);
+    });
+    this.sse.on('newcomponent', function (evt) {
+        var typeInfo = JSON.parse(evt.data);
+        that.reloadModule(typeInfo.factory, typeInfo.type);
+    });
+    this.sse.on('deletecomponent', function (evt) {
+        var typeInfo = JSON.parse(evt.data);
+        that.unloadModule(typeInfo.factory, typeInfo.type);
+    });
+
 }
 DependencyManager.prototype = new (events.EventEmitter)();
 
@@ -110,7 +128,7 @@ DependencyManager.prototype.loadMissingFactories = function (visualList) {
     });
     forEachProperty(toLoad, function (item, factory) {
         // factory not already loaded?
-        visual.loadPackage(factory, function (err) {
+        visual.loadPackage(factory, null, false, function (err) {
             if (!err) {
                 factories[factory] = factory;
             }
@@ -125,6 +143,50 @@ DependencyManager.prototype.loadMissingFactories = function (visualList) {
     if (loading === 0) {
         this.visualList = visualList;
         this.emit('change', visualList, this.factories);
+    }
+};
+DependencyManager.prototype.reloadModule = function (factory, type) {
+    var that = this;
+    visual.loadPackage(factory, null, true, function (err) {
+        var vl, vis, found;
+        if (!err) {
+            that.factories[factory] = factory;
+            vl = that.visualList[factory];
+            if (!vl) {
+                vl = that.visualList[factory] = {
+                    name: factory
+                };
+            }
+            vis = vl.visuals;
+            if (!vis) {
+                vis = vl.visuals = [];
+            }
+            forEach(vis, function (v) {
+                if (v === type) {
+                    found = true;
+                }
+            });
+            if (!found) {
+                vis.push(type);
+            }
+            that.emit('change', that.visualList, that.factories);
+        }
+    });
+};
+// FIXME: we could purge empty packages.
+DependencyManager.prototype.unloadModule = function (factory, type) {
+    var vl = this.visualList[factory],
+        vis,
+        newvis = [];
+    if (vl) {
+        vis = vl.visuals;
+        forEach(vis, function (v) {
+            if (v !== type) {
+                newvis.push(v);
+            }
+        });
+        vl.visuals = newvis;
+        this.emit('change', this.visualList, this.factories);
     }
 };
 DependencyManager.prototype.update = function (visualList, factories) {

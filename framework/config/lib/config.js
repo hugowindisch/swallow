@@ -10,8 +10,9 @@ function loadConstructor(
     type,
     cb
 ) {
+    var visual = require('visual');
     // 1. load the factory
-    define.meat.loadPackage(factory, function (err) {
+    visual.loadPackage(factory, null, false, function (err) {
         var p, Constr;
         if (err) {
             return cb(err);

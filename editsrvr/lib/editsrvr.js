@@ -447,7 +447,7 @@ function serveVisual(req, res, match, options) {
                 } else {
                     res.writeHead(200);
                     res.end();
-                    theEmitter.emit('sse', 'savecomponent');
+                    theEmitter.emit('sse', 'savecomponent', { factory: packageName, type: constructorName });
                 }
             });
         });
@@ -459,7 +459,7 @@ function serveVisual(req, res, match, options) {
             } else {
                 res.writeHead(200);
                 res.end();
-                theEmitter.emit('sse', 'newcomponent');
+                theEmitter.emit('sse', 'newcomponent', { factory: packageName, type: constructorName });
             }
         });
         break;
@@ -471,7 +471,7 @@ function serveVisual(req, res, match, options) {
             } else {
                 res.writeHead(200);
                 res.end();
-                theEmitter.emit('sse', 'deletecomponent');
+                theEmitter.emit('sse', 'deletecomponent', { factory: packageName, type: constructorName });
             }
         });
         break;
@@ -543,7 +543,7 @@ function servePackage(req, res, match, options) {
             } else {
                 res.writeHead(200);
                 res.end();
-                theEmitter.emit('sse', 'newpackage');
+                theEmitter.emit('sse', 'newpackage', packageName);
             }
         });
         break;
@@ -736,10 +736,11 @@ function serveEvents(req, res, match, options) {
     });
     res.write('\n');
     // create our event handler
-    function eventHandler(message) {
+    function eventHandler(message, data) {
         theMessageCount += 1; // Increment our message count
         res.write('id: ' + theMessageCount + '\n');
-        res.write("data: " + message + '\n\n'); // Note the extra newline
+        res.write('event: ' + message + '\n');
+        res.write("data: " + JSON.stringify(data) + '\n\n'); // Note the extra newline
     }
     // hook it to the emitter
     theEmitter.on('sse', eventHandler);
