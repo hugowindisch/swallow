@@ -1091,9 +1091,10 @@ function setupViewMenu(editor) {
 
 function setupRunMenu(editor) {
     var runTool,
+        publishTool,
         menus = editor.menus;
 
-    // align left tool
+    // run tool
     runTool = new MenuItem(
         'Run',
         function () {
@@ -1101,9 +1102,18 @@ function setupRunMenu(editor) {
             window.open(docInfo.factory + '.' + docInfo.type + '.html', '_blank');
         }
     );
+    // publish tool
+    publishTool = new MenuItem(
+        'Publish To Zip...',
+        function () {
+            var docInfo = editor.getDocInfo();
+            window.open('/publish/' + docInfo.factory + '.' + docInfo.type, '_blank');
+        }
+    );
 
     menus.run.push(
-        runTool
+        runTool,
+        publishTool
     );
 }
 

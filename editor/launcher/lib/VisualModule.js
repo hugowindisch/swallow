@@ -24,6 +24,10 @@ function VisualModule(config) {
         var ti = that.typeInfo;
         window.open(ti.factory + '.' + ti.type + '.html', '_blank');
     });
+    this.getChild('publish').on('click', function () {
+        var ti = that.typeInfo;
+        window.open('/publish/' + ti.factory + '.' + ti.type, '_blank');
+    });
     this.getChild('edit').on('click', function () {
         var ti = that.typeInfo;
         window.open(ti.factory + '.' + ti.type + '.edit', '_blank');
@@ -77,6 +81,7 @@ VisualModule.prototype.setSelected = function (s) {
     this.selected = s;
     this.getChild('edit').setVisible(s);
     this.getChild('run').setVisible(s);
+    this.getChild('publish').setVisible(s);
     this.getChild('delete').setVisible(s);
 
 

@@ -853,6 +853,14 @@ exports.groups = {
                     "position": "description",
                     "text": "Description"
                 }
+            },
+            "publish": {
+                "factory": "baseui",
+                "type": "Button",
+                "config": {
+                    "position": "publish",
+                    "text": "Publish"
+                }
             }
         },
         "positions": {
@@ -1100,6 +1108,41 @@ exports.groups = {
                     "bottom": "auto",
                     "height": "px"
                 }
+            },
+            "publish": {
+                "matrix": {
+                    "0": 64,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 24,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 304,
+                    "13": 72,
+                    "14": 1.5714285373687744,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 7,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
             }
         },
         "theme": {
@@ -1149,6 +1192,8 @@ exports.exportConstructors = function (to) {
     constructors.Launcher = to.Launcher = require('/launcher/lib/Launcher').Launcher;
 
     constructors.Package = to.Package = require('/launcher/lib/Package').Package;
+
+    constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
     constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
