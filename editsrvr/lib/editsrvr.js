@@ -3,6 +3,7 @@
     editsrvr.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
+/*globals __dirname */
 
 var meatgrinder = require('meatgrinder'),
     jqtpl = require('jqtpl'),
@@ -71,6 +72,12 @@ function getUrls(options) {
     urls.unshift({
         filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.edit$/,
         handler: servevisualcomponent.serveVisualComponent(options, true)
+    });
+    urls.unshift({
+        filter: /^\/publish\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
+        handler: function (req, res, match) {
+            servevisualcomponent.publishVisualComponent(req, res, match, options);
+        }
     });
     urls.push({
         filter: /^\/package$/,

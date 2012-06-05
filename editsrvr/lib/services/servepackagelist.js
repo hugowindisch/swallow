@@ -2,7 +2,6 @@
     servepackagelist.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-/*globals __dirname */
 /*jslint regexp: false */
 
 var meatgrinder = require('meatgrinder'),

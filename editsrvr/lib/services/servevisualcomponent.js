@@ -9,6 +9,8 @@ var meatgrinder = require('meatgrinder'),
     fs = require('fs'),
     path = require('path'),
     async = require('async'),
+    AdmZip = require('adm-zip'),
+    wrench = require('wrench'),
     mimeType = {
         json: 'application/json'
     };
@@ -58,7 +60,7 @@ function generateVisualCompoentHtml(
     });
 }
 
-function serveVisualComponent(options, forEdit) {
+function serveVisualComponent(options, forEdit, optionalCb) {
     return function (req, res, match) {
         var factory = forEdit ? 'editor' : match[1],
             type = forEdit ? 'Editor' : match[2],
@@ -99,4 +101,80 @@ function serveVisualComponent(options, forEdit) {
     };
 }
 
+function publishVisualComponent(req, res, match, options) {
+    var factory = match[1],
+        type = match[2],
+        publishFolder = './tmp' + Math.random(),
+        cmpFolder = path.join(publishFolder, factory + '.' + type);
+
+    function ret404(err) {
+        res.writeHead(404);
+        if (err) {
+            res.write(String(err));
+        }
+        res.end();
+    }
+
+    async.series(
+        [
+            function (cb) {
+                // create directory
+                fs.mkdir(publishFolder, cb);
+            },
+            function (cb) {
+                // create directory
+                fs.mkdir(cmpFolder, cb);
+            },
+            function (cb) {
+                // publish
+                var extendedOptions = apply(
+                        {
+                            extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
+                                if (factory === details.name) {
+                                    var htmlBuf = generateVisualCompoentHtml(
+                                        opt,
+                                        details,
+                                        packageMap,
+                                        deps,
+                                        cssFileMap,
+                                        type
+                                    );
+                                    // now we are ready to write this file
+                                    fs.writeFile(path.join(publishFolder, factory + '.' + type + '.html'), htmlBuf, cb);
+                                } else {
+                                    cb(null);
+                                }
+                            }
+                        },
+                        options
+                    );
+                // override dest folder
+                extendedOptions.dstFolder = cmpFolder;
+                // make
+                meatgrinder.makePackage(
+                    extendedOptions,
+                    factory,
+                    cb
+                );
+            }
+        ],
+        // callback
+        function (err) {
+            if (err) {
+                return ret404(err);
+            }
+            var zip = new AdmZip(),
+                zipBuf;
+            // all this sucks from being synchronous...
+            zip.addLocalFolder(cmpFolder);
+            zipBuf = zip.toBuffer();
+            wrench.rmdirSyncRecursive(publishFolder, true);
+            res.writeHead(200, {'Content-Type': 'application/zip'});
+            res.write(zipBuf);
+            res.end();
+        }
+    );
+}
+
 exports.serveVisualComponent = serveVisualComponent;
+exports.publishVisualComponent = publishVisualComponent;
