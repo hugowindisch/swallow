@@ -8,12 +8,12 @@ var meatgrinder = require('meatgrinder'),
     jqtpl = require('jqtpl'),
     fs = require('fs'),
     path = require('path'),
-    servevisual = require('./servevisual'),
-    servepackage = require('./servepackage'),
-    servepackagelist = require('./servepackagelist'),
-    serveimagelist = require('./serveimagelist'),
-    servevisualcomponent = require('./servevisualcomponent'),
-    ssevents = require('./ssevents');
+    servevisual = require('./services/servevisual'),
+    servepackage = require('./services/servepackage'),
+    servepackagelist = require('./services/servepackagelist'),
+    serveimagelist = require('./services/serveimagelist'),
+    servevisualcomponent = require('./services/servevisualcomponent'),
+    ssevents = require('./services/ssevents');
 
 
 jqtpl.template(
