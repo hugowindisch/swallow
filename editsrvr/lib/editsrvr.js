@@ -51,7 +51,6 @@ var meatgrinder = require('meatgrinder'),
     jqtpl = require('jqtpl'),
     fs = require('fs'),
     path = require('path'),
-    events = require('events'),
     findPackages = meatgrinder.findPackages,
     fs = require('fs'),
     path = require('path'),
@@ -59,8 +58,7 @@ var meatgrinder = require('meatgrinder'),
     mimeType = {
         json: 'application/json'
     },
-    theMessageCount = 0,
-    theEmitter = new events.EventEmitter();
+    ssevents = require('./ssevents');
 
 
 jqtpl.template(
@@ -447,7 +445,7 @@ function serveVisual(req, res, match, options) {
                 } else {
                     res.writeHead(200);
                     res.end();
-                    theEmitter.emit('sse', 'savecomponent', { factory: packageName, type: constructorName });
+                    ssevents.emit('savecomponent', { factory: packageName, type: constructorName });
                 }
             });
         });
@@ -459,7 +457,7 @@ function serveVisual(req, res, match, options) {
             } else {
                 res.writeHead(200);
                 res.end();
-                theEmitter.emit('sse', 'newcomponent', { factory: packageName, type: constructorName });
+                ssevents.emit('newcomponent', { factory: packageName, type: constructorName });
             }
         });
         break;
@@ -471,7 +469,7 @@ function serveVisual(req, res, match, options) {
             } else {
                 res.writeHead(200);
                 res.end();
-                theEmitter.emit('sse', 'deletecomponent', { factory: packageName, type: constructorName });
+                ssevents.emit('deletecomponent', { factory: packageName, type: constructorName });
             }
         });
         break;
@@ -543,7 +541,7 @@ function servePackage(req, res, match, options) {
             } else {
                 res.writeHead(200);
                 res.end();
-                theEmitter.emit('sse', 'newpackage', packageName);
+                ssevents.emit('newpackage', packageName);
             }
         });
         break;
@@ -726,29 +724,6 @@ function serveVisualComponent(options, forEdit) {
         );
     };
 }
-function serveEvents(req, res, match, options) {
-    // setup the response and socket
-    req.socket.setTimeout(1000000);
-    res.writeHead(200, {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive'
-    });
-    res.write('\n');
-    // create our event handler
-    function eventHandler(message, data) {
-        theMessageCount += 1; // Increment our message count
-        res.write('id: ' + theMessageCount + '\n');
-        res.write('event: ' + message + '\n');
-        res.write("data: " + JSON.stringify(data) + '\n\n'); // Note the extra newline
-    }
-    // hook it to the emitter
-    theEmitter.on('sse', eventHandler);
-
-    req.on('close', function () {
-        theEmitter.removeListener('sse', eventHandler);
-    });
-}
 
 function getUrls(options) {
     var urls = meatgrinder.getUrls(options);
@@ -797,7 +772,7 @@ function getUrls(options) {
     urls.push({
         filter: /^\/events$/,
         handler: function (req, res, match) {
-            serveEvents(req, res, match, options);
+            ssevents.serveEvents(req, res, match, options);
         }
     });
     return urls;
