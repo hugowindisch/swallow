@@ -38,9 +38,10 @@ function Editor(config) {
     // be notifed of this.
     var viewer = this.getChild('viewer'),
         that = this;
-    this.dependencyManager.on('change', function () {
+    this.dependencyManager.on('change', function (visualList, packages, typeInfo) {
+        var di = that.docInfo;
         that.dependencyManagerLoaded = true;
-        if (that.docInfo) {
+        if (di && (!typeInfo || typeInfo.factory !== di.factory || typeInfo.type !== di.type)) {
             viewer.fullRedraw();
         }
     });

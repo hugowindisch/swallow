@@ -225,8 +225,10 @@ VisualList.prototype.init = function (editor) {
     this.alwaysShow = { domvisual: true };
 
     this.updateVisualList();
-    editor.getDependencyManager().on('change', function () {
-        that.updateVisualList();
+    editor.getDependencyManager().on('change', function (visualList, packages, typeInfo) {
+        if (!typeInfo || typeInfo.factory !== docInfo.factory || typeInfo.type !== docInfo.type) {
+            that.updateVisualList();
+        }
     });
     // a new box has been selected
     function newBoxSelected() {

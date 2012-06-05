@@ -142,7 +142,7 @@ DependencyManager.prototype.loadMissingFactories = function (visualList) {
     // if at this point, we have nothing to load:
     if (loading === 0) {
         this.visualList = visualList;
-        this.emit('change', visualList, this.factories);
+        this.emit('change', visualList, this.factories, null);
     }
 };
 DependencyManager.prototype.reloadModule = function (factory, type) {
@@ -169,7 +169,7 @@ DependencyManager.prototype.reloadModule = function (factory, type) {
             if (!found) {
                 vis.push(type);
             }
-            that.emit('change', that.visualList, that.factories);
+            that.emit('change', that.visualList, that.factories, { factory: factory, type: type });
         }
     });
 };
