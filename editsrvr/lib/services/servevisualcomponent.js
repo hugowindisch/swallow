@@ -144,7 +144,7 @@ function publishVisualComponent(req, res, match, options) {
                                         type
                                     );
                                     // now we are ready to write this file
-                                    fs.writeFile(path.join(cmpFolder, factory + '.' + type + '.html'), htmlBuf, cb);
+                                    fs.writeFile(path.join(cmpFolder, 'index.html'), htmlBuf, cb);
                                 } else {
                                     cb(null);
                                 }
