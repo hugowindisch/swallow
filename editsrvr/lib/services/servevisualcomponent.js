@@ -148,7 +148,9 @@ function publishVisualComponent(req, res, match, options) {
                                 } else {
                                     cb(null);
                                 }
-                            }
+                            },
+                            // force minification
+                            minify: true
                         },
                         options
                     );
