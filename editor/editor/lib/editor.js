@@ -83,6 +83,16 @@ Editor.prototype.loadGroup = function (factory, type) {
     });
     return this;
 };
+Editor.prototype.publishGroup = function (factory, type) {
+    var that = this;
+    http.get({ path: '/publish/' + this.docInfo.factory + '.' + this.docInfo.type}, function (res) {
+        res.on('error', function (e) {
+            alert('Error loading');
+        });
+    });
+    return this;
+};
+
 Editor.prototype.saveGroup = function (factory, type, doc, cb) {
     factory = factory || this.docInfo.factory;
     type = type || this.docInfo.type;

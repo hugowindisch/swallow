@@ -26,7 +26,12 @@ function VisualModule(config) {
     });
     this.getChild('publish').on('click', function () {
         var ti = that.typeInfo;
-        window.open('/publish/' + ti.factory + '.' + ti.type, '_blank');
+        http.get({ path: '/publish/' + ti.factory + '.' + ti.type}, function (res) {
+            res.on('error', function (e) {
+                alert('Error loading');
+            });
+        });
+
     });
     this.getChild('edit').on('click', function () {
         var ti = that.typeInfo;

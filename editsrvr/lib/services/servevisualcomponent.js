@@ -9,7 +9,6 @@ var meatgrinder = require('meatgrinder'),
     fs = require('fs'),
     path = require('path'),
     async = require('async'),
-    AdmZip = require('adm-zip'),
     wrench = require('wrench'),
     mimeType = {
         json: 'application/json'
@@ -104,7 +103,7 @@ function serveVisualComponent(options, forEdit, optionalCb) {
 function publishVisualComponent(req, res, match, options) {
     var factory = match[1],
         type = match[2],
-        publishFolder = './tmp' + Math.random(),
+        publishFolder = './publish',
         cmpFolder = path.join(publishFolder, factory + '.' + type);
 
     function ret404(err) {
@@ -119,9 +118,14 @@ function publishVisualComponent(req, res, match, options) {
         [
             function (cb) {
                 // create directory
-                fs.mkdir(publishFolder, cb);
+                fs.mkdir(publishFolder, function (err) {
+                    // FIXME we assume that any error is because the directory exits
+                    cb(null);
+                });
             },
             function (cb) {
+                // FIXME: savagely remove directory (synchronously, bad)
+                wrench.rmdirSyncRecursive(cmpFolder, true);
                 // create directory
                 fs.mkdir(cmpFolder, cb);
             },
@@ -140,7 +144,7 @@ function publishVisualComponent(req, res, match, options) {
                                         type
                                     );
                                     // now we are ready to write this file
-                                    fs.writeFile(path.join(publishFolder, factory + '.' + type + '.html'), htmlBuf, cb);
+                                    fs.writeFile(path.join(cmpFolder, factory + '.' + type + '.html'), htmlBuf, cb);
                                 } else {
                                     cb(null);
                                 }
@@ -163,14 +167,7 @@ function publishVisualComponent(req, res, match, options) {
             if (err) {
                 return ret404(err);
             }
-            var zip = new AdmZip(),
-                zipBuf;
-            // all this sucks from being synchronous...
-            zip.addLocalFolder(cmpFolder);
-            zipBuf = zip.toBuffer();
-            wrench.rmdirSyncRecursive(publishFolder, true);
-            res.writeHead(200, {'Content-Type': 'application/zip'});
-            res.write(zipBuf);
+            res.writeHead(200);
             res.end();
         }
     );

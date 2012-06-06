@@ -1104,10 +1104,9 @@ function setupRunMenu(editor) {
     );
     // publish tool
     publishTool = new MenuItem(
-        'Publish To Zip...',
+        'Publish (to publish folder)',
         function () {
-            var docInfo = editor.getDocInfo();
-            window.open('/publish/' + docInfo.factory + '.' + docInfo.type, '_blank');
+            editor.publishGroup();
         }
     );
 

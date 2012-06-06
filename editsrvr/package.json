@@ -4,7 +4,6 @@
     "dependencies": {
         "async": "0.1.18",
         "jqtpl": "1.1.0",
-        "adm-zip": "0.1.4",
         "wrench": "1.3.9"
     }
 }
