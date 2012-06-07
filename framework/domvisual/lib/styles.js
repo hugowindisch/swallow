@@ -31,6 +31,7 @@ Gradient
 
 BoxShadow
 ---------
+    inset
     offsetX
     offsetY
     blurRadius
@@ -265,7 +266,8 @@ function backgroundImageToCssString(img) {
 }
 
 function boxShadowToCSSString(v) {
-    return v.offsetX + 'px ' +
+    return (v.inset ?  'inset ' : '') +
+        v.offsetX + 'px ' +
         v.offsetY + 'px ' +
         v.blurRadius + 'px ' +
         v.spreadRadius + 'px ' +

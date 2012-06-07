@@ -1695,7 +1695,7 @@ exports.definition = {
             }
         },
         StyleSettingShadow: {
-            dimensions: [340, 330, 1],
+            dimensions: [340, 360, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1727,9 +1727,24 @@ exports.definition = {
                     matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
+                insetLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 150, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                insetOuter: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   65, 150, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                insetInner: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 150, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
                 color: {
                     order: 0,
-                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 150, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 180, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1801,6 +1816,30 @@ exports.definition = {
                         check: true,
                         checkVisible: false,
                         position: 'spreadRadius'
+                    }
+                },
+                insetLabel: {
+                    factory: 'baseui',
+                    type: 'Label',
+                    config: {
+                        text: 'Inset:',
+                        position: 'insetLabel'
+                    }
+                },
+                insetOuter: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        url: 'editor/img/ssouter.png',
+                        position: "insetOuter"
+                    }
+                },
+                insetInner: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        url: 'editor/img/ssinner.png',
+                        position: "insetInner"
                     }
                 },
                 color: {

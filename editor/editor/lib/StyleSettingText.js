@@ -15,8 +15,8 @@ function StyleSettingText(config) {
         that = this;
 
     this.fontWeight = new ImageOption({
-        'normal':  [ 'editor/lib/fsnormal_s.png', 'editor/lib/fsnormal.png', children.fontWeightNormal ],
-        'bold': [ 'editor/lib/fsbold_s.png', 'editor/lib/fsbold.png', children.fontWeightBold ]
+        'normal':  [ 'editor/img/fsnormal_s.png', 'editor/img/fsnormal.png', children.fontWeightNormal ],
+        'bold': [ 'editor/img/fsbold_s.png', 'editor/img/fsbold.png', children.fontWeightBold ]
     }, children.fontWeightCheck);
 
 
@@ -29,10 +29,10 @@ function StyleSettingText(config) {
         that.emit('change', that.styleData);
     });
     this.textAlign = new ImageOption({
-        'left':  [ 'editor/lib/faleft_s.png', 'editor/lib/faleft.png', children.textAlignLeft ],
-        'right':  [ 'editor/lib/faright_s.png', 'editor/lib/faright.png', children.textAlignRight ],
-        'center':  [ 'editor/lib/facenter_s.png', 'editor/lib/facenter.png', children.textAlignCenter ],
-        'justify':  [ 'editor/lib/fajustify_s.png', 'editor/lib/fajustify.png', children.textAlignJustify ],
+        'left':  [ 'editor/img/faleft_s.png', 'editor/img/faleft.png', children.textAlignLeft ],
+        'right':  [ 'editor/img/faright_s.png', 'editor/img/faright.png', children.textAlignRight ],
+        'center':  [ 'editor/img/facenter_s.png', 'editor/img/facenter.png', children.textAlignCenter ],
+        'justify':  [ 'editor/img/fajustify_s.png', 'editor/img/fajustify.png', children.textAlignJustify ],
     }, children.textAlignCheck);
 
     this.textAlign.on('change', function (v) {

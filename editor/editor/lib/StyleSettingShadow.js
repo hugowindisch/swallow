@@ -5,6 +5,7 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('./definition').definition.groups,
     utils = require('utils'),
+    ImageOption = require('./ImageOption').ImageOption,
     apply = utils.apply;
 
 function StyleSettingShadow(config) {
@@ -82,10 +83,26 @@ function StyleSettingShadow(config) {
         that.emit('preview', that.styleData);
     });
 
+    this.insetStyle = new ImageOption({
+        'outer':  [ 'editor/img/ssouter_s.png', 'editor/img/ssouter.png', children.insetOuter ],
+        'inner': [ 'editor/img/ssinner_s.png', 'editor/img/ssinner.png', children.insetInner ]
+    });
+    this.insetStyle.on('change', function (v) {
+        var shadow = makeShadow();
+        if (v === 'inner') {
+            shadow.inset = true;
+        } else {
+            delete shadow.inset;
+        }
+        that.emit('change', that.styleData);
+    });
+
+
     children.clear.on('click', function () {
         that.styleData = {};
         that.emit('reset', that.styleData);
     });
+
 
 }
 StyleSettingShadow.prototype = new (domvisual.DOMElement)();
@@ -107,6 +124,7 @@ StyleSettingShadow.prototype.setStyleData = function (st) {
     children.blurRadius.setValue(shadow.blurRadius);
     children.spreadRadius.setValue(shadow.spreadRadius);
     children.color.setValue(shadow.color || { r: 0, g: 0, b: 0, a: 1});
+    this.insetStyle.setSelectedValue(shadow.inset ? 'inner' : 'outer');
 };
 
 
