@@ -211,6 +211,36 @@ Group.prototype.createBoundThemeFromData = function (optionalThemeData, optional
 
     skin = optionalSkinData ? new Skin(optionalSkinData) : defaultSkin;
     theme = new Theme(optionalThemeData, new EditedDocumendSkin());
+    // add a function that will help us display decorations on styles
+    theme.getStyleDecoration = function (factory, type, style) {
+        var s,
+            sdf,
+            sdft,
+            sdfts,
+            bo;
+        if (factory === null && type === null) {
+            s = optionalThemeData[style];
+            if (s && s.basedOn && s.basedOn.length > 0) {
+                bo = s.basedOn[0];
+                if (bo.factory === docFactory && bo.type === docType) {
+                    return 'sublocal';
+                }
+                return 'subremote';
+            }
+        } else if (optionalSkinData) {
+            sdf = optionalSkinData[factory];
+            if (sdf) {
+                sdft = sdf[type];
+                if (sdft) {
+                    sdfts = sdft[style];
+                    if (sdfts) {
+                        return 'skin';
+                    }
+                }
+            }
+        }
+        return null;
+    };
     return theme;
 };
 

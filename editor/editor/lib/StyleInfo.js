@@ -54,10 +54,16 @@ StyleInfo.prototype.highlight = function (selected) {
 StyleInfo.prototype.previewStyleChange = function (localTheme) {
     var children = this.children,
         preview = children.preview,
-        innerPreview = preview.children.preview;
+        innerPreview = preview.children.preview,
+        st = this.editedStyle;
     innerPreview.setLocalTheme(localTheme);
     innerPreview.setSkin(localTheme.getSkin(), true);
     this.showOrHideText();
+    this.showStyleDecoration(localTheme.getStyleDecoration(
+        this.editedStyle.factory,
+        this.editedStyle.type,
+        this.editedStyle.style
+    ));
 };
 StyleInfo.prototype.showOrHideText = function () {
     var children = this.children,
@@ -77,5 +83,27 @@ StyleInfo.prototype.showOrHideText = function () {
         }
     }
 };
-
+StyleInfo.prototype.showStyleDecoration = function (decoration) {
+    if (decoration !== this.decoration) {
+        this.decoration = decoration;
+        var deco = this.getChild('decoration');
+        switch (decoration) {
+        case 'sublocal':
+            deco.setUrl('editor/img/sublocal.png');
+            deco.setVisible(true);
+            break;
+        case 'subremote':
+            deco.setUrl('editor/img/subremote.png');
+            deco.setVisible(true);
+            break;
+        case 'skin':
+            deco.setUrl('editor/img/skin.png');
+            deco.setVisible(true);
+            break;
+        default:
+            deco.setVisible(false);
+            break;
+        }
+    }
+};
 exports.StyleInfo = StyleInfo;

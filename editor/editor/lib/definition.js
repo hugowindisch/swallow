@@ -1796,7 +1796,7 @@ exports.definition = {
                     config: {
                         label: 'Spread:',
                         value: 0,
-                        minValue: 0,
+                        minValue: -100,
                         maxValue: 100,
                         check: true,
                         checkVisible: false,
@@ -1821,17 +1821,22 @@ exports.definition = {
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 background: {
-                    order: 0,
+                    order: 1,
                     matrix: [ 50, 0, 0, 0,   0, 50, 0, 0,    0, 0, 1, 0,   30, 10, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 preview: {
-                    order: 1,
+                    order: 2,
                     matrix: [ 40, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   35, 15, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
+                decoration: {
+                    order: 3,
+                    matrix: [ 22, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   22, 38, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
                 label: {
-                    order: 2,
+                    order: 4,
                     matrix: [ 90, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   10, 70, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
@@ -1858,6 +1863,13 @@ exports.definition = {
                     type: "DOMElement",
                     config: {
                         position: "preview"
+                    }
+                },
+                decoration: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        position: 'decoration'
                     }
                 },
                 label: {
