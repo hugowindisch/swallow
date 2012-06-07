@@ -1238,8 +1238,6 @@ exports.exportConstructors = function (to) {
 
     constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
-    constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
-
     return exports;
 };
 

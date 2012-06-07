@@ -14,7 +14,7 @@ var meatgrinder = require('meatgrinder'),
     mimeType = {
         json: 'application/json'
     },
-    monitored = { factory: 'launcher', type: 'Launcher' };
+    monitored = { factory: 'monitor', type: 'Monitor' };
 
 function apply(to, from) {
     Object.keys(from).forEach(function (k) {
