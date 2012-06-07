@@ -1092,6 +1092,7 @@ function setupViewMenu(editor) {
 function setupRunMenu(editor) {
     var runTool,
         publishTool,
+        monitorTool,
         menus = editor.menus;
 
     // run tool
@@ -1109,10 +1110,18 @@ function setupRunMenu(editor) {
             editor.publishGroup();
         }
     );
+    // monitor tool
+    monitorTool = new MenuItem(
+        'Monitor',
+        function () {
+            editor.monitorGroup();
+        }
+    );
 
     menus.run.push(
         runTool,
-        publishTool
+        publishTool,
+        monitorTool
     );
 }
 

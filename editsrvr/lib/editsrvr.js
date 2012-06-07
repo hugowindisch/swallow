@@ -67,17 +67,34 @@ function getUrls(options) {
 
     urls.unshift({
         filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.html$/,
-        handler: servevisualcomponent.serveVisualComponent(options, false)
+        handler: servevisualcomponent.serveVisualComponent(options, false, false)
+    });
+    urls.unshift({
+        filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.mon$/,
+        handler: servevisualcomponent.serveVisualComponent(options, false, true)
     });
     urls.unshift({
         filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.edit$/,
-        handler: servevisualcomponent.serveVisualComponent(options, true)
+        handler: servevisualcomponent.serveVisualComponent(options, true, false)
     });
     urls.unshift({
         filter: /^\/publish\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
         handler: function (req, res, match) {
             servevisualcomponent.publishVisualComponent(req, res, match, options);
         }
+    });
+    // sets the currently monitored application
+    urls.unshift({
+        filter: /^\/monitor\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
+        handler: servevisualcomponent.monitor
+    });
+    urls.unshift({
+        filter: /^\/monitor$/,
+        handler: servevisualcomponent.monitor
+    });
+    urls.unshift({
+        filter: /^\/m$/,
+        handler: servevisualcomponent.redirectToMonitored
     });
     urls.push({
         filter: /^\/package$/,

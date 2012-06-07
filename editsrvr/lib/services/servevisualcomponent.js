@@ -10,9 +10,11 @@ var meatgrinder = require('meatgrinder'),
     path = require('path'),
     async = require('async'),
     wrench = require('wrench'),
+    ssevents = require('./ssevents'),
     mimeType = {
         json: 'application/json'
-    };
+    },
+    monitored = { factory: 'launcher', type: 'Launcher' };
 
 function apply(to, from) {
     Object.keys(from).forEach(function (k) {
@@ -33,7 +35,8 @@ function generateVisualCompoentHtml(
     cssFileMap,
     type,
     editFactory,
-    editType
+    editType,
+    monitor
 ) {
     // we need to load all components
     var dependencies = [ ],
@@ -55,11 +58,12 @@ function generateVisualCompoentHtml(
         type: type,
         editFactory: editFactory,
         editType: editType,
-        jquery: options.jquery ? path.basename(options.jquery) : null
+        jquery: options.jquery ? path.basename(options.jquery) : null,
+        monitor: monitor
     });
 }
 
-function serveVisualComponent(options, forEdit, optionalCb) {
+function serveVisualComponent(options, forEdit, monitor) {
     return function (req, res, match) {
         var factory = forEdit ? 'editor' : match[1],
             type = forEdit ? 'Editor' : match[2],
@@ -75,7 +79,8 @@ function serveVisualComponent(options, forEdit, optionalCb) {
                                 cssFileMap,
                                 type,
                                 forEdit ? match[1] : null,
-                                forEdit ? match[2] : null
+                                forEdit ? match[2] : null,
+                                monitor
                             );
                             // now we are ready to return this
                             res.writeHead(200);
@@ -175,5 +180,41 @@ function publishVisualComponent(req, res, match, options) {
     );
 }
 
+function monitor(req, res, match, options) {
+    var factory = match[1],
+        type = match[2],
+        processed;
+    switch (req.method) {
+    case 'GET':
+        monitored = { factory: factory, type: type };
+        res.writeHead(200, {'Content-Type': mimeType.json});
+        res.write(JSON.stringify(monitored));
+        res.end();
+        break;
+    case 'POST':
+        if (factory && type) {
+            monitored = { factory: factory, type: type };
+            ssevents.emit('monitor', monitored);
+        }
+        res.writeHead(200);
+        res.end();
+        break;
+    default:
+        res.writeHead(404);
+        break;
+    }
+
+    res.end();
+}
+
+function redirectToMonitored(req, res, match, options) {
+    var m = monitored;
+    res.setHeader("Location", "/make/" + m.factory + '.' + m.type + '.mon');
+    res.writeHead(302);
+    res.end();
+}
+
 exports.serveVisualComponent = serveVisualComponent;
 exports.publishVisualComponent = publishVisualComponent;
+exports.monitor = monitor;
+exports.redirectToMonitored = redirectToMonitored;

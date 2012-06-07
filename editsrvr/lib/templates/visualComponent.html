@@ -10,6 +10,7 @@
         window.onload = function () {
             var meat = define.meat,
                 require = meat.makeRequire(meat.createApplicationDomain(), '');
+
 {{if jquery}}
             // add support for jQuery, and allow jQuery code
             // to use our modules
@@ -19,6 +20,23 @@
             new (require('${factory}').${type})().loadGroup('${editFactory}', '${editType}').runFullScreen();
 {{else}}
             new (require('${factory}').${type})().runFullScreen();
+{{/if}}
+
+{{if monitor}}
+            // monitoring will reload the app on any change
+            (function () {
+                var es = new window.EventSource('/events');
+                es.addEventListener('monitor', function (evt) {
+                    var ti = JSON.parse(evt.data);
+                    window.location = ti.factory + '.' + ti.type + '.mon';
+                });
+                es.addEventListener('savecomponent', function (evt) {
+                    var ti = JSON.parse(evt.data);
+                    if (ti.factory === '${factory}' && ti.type === '${type}') {
+                        window.location = ti.factory + '.' + ti.type + '.mon';
+                    }
+                });
+            }());
 {{/if}}
         }
     </script>

@@ -33,6 +33,18 @@ function VisualModule(config) {
         });
 
     });
+    this.getChild('monitor').on('click', function () {
+        var ti = that.typeInfo,
+            req = http.request(
+                { method: 'POST', path: '/monitor/' + ti.factory + '.' + ti.type},
+                function (res) {
+                    res.on('error', function (e) {
+                        alert('Error setting monitored application');
+                    });
+                }
+            );
+        req.end();
+    });
     this.getChild('edit').on('click', function () {
         var ti = that.typeInfo;
         window.open(ti.factory + '.' + ti.type + '.edit', '_blank');
@@ -87,7 +99,9 @@ VisualModule.prototype.setSelected = function (s) {
     this.getChild('edit').setVisible(s);
     this.getChild('run').setVisible(s);
     this.getChild('publish').setVisible(s);
+    this.getChild('monitor').setVisible(s);
     this.getChild('delete').setVisible(s);
+
 
 
     this.getChild('background').setTransition(500).setStyle(s ? 'select' : 'normal');
