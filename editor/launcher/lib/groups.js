@@ -637,7 +637,15 @@ exports.groups = {
                     "borderTopLeftRadius": 0,
                     "borderTopRightRadius": 0,
                     "borderBottomLeftRadius": 0,
-                    "borderBottomRightRadius": 0
+                    "borderBottomRightRadius": 0,
+                    "borderBottomStyle": "solid",
+                    "borderBottomWidth": 1,
+                    "borderBottomColor": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 1
+                    }
                 },
                 "basedOn": [
                     {
@@ -1300,7 +1308,7 @@ exports.exportConstructors = function (to) {
 
     constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
-    constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
+    constructors.Launcher = to.Launcher = require('/launcher/lib/Launcher').Launcher;
 
     return exports;
 };

@@ -636,7 +636,15 @@
                 "borderTopLeftRadius": 0,
                 "borderTopRightRadius": 0,
                 "borderBottomLeftRadius": 0,
-                "borderBottomRightRadius": 0
+                "borderBottomRightRadius": 0,
+                "borderBottomStyle": "solid",
+                "borderBottomWidth": 1,
+                "borderBottomColor": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 1
+                }
             },
             "basedOn": [
                 {
