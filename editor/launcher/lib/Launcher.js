@@ -12,7 +12,12 @@ var visual = require('visual'),
     forEach = utils.forEach,
     group = require('./groups').groups.Launcher,
     Package = require('./Package').Package,
-    VisualModule = require('./VisualModule').VisualModule;
+    VisualModule = require('./VisualModule').VisualModule,
+    excludePackages = {
+        domvisual: true,
+        editor: true,
+        baseui: true
+    };
 
 function Launcher(config) {
     // call the baseclass
@@ -110,7 +115,7 @@ Launcher.prototype.loadLists = function () {
 Launcher.prototype.updateVisualList = function (list) {
     var packages = this.packages;
     forEachProperty(list, function (item, name) {
-        if (item.visuals) {
+        if (item.visuals && !excludePackages[name]) {
             packages[name] = item;
         }
     });
