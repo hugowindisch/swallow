@@ -96,6 +96,18 @@ function Launcher(config) {
             alert('error');
         }
     });
+    this.getChild('monitor').on('click', function () {
+        window.open('/m', '_blank');
+    }).setCursor('pointer');
+
+    this.getChild('github').on('click', function () {
+        window.open('http://www.github.com', '_blank');
+    }).setCursor('pointer');
+
+    this.getChild('web').on('click', function () {
+        window.open('http://www.swallowapps.com', '_blank');
+    }).setCursor('pointer');
+
 }
 Launcher.createPreview = function () {
     var ret = new Launcher({forPreview: true});

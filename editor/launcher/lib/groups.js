@@ -119,6 +119,54 @@ exports.groups = {
                     "innerText": "",
                     "style": "style3"
                 }
+            },
+            "monitor": {
+                "factory": "domvisual",
+                "type": "DOMImg",
+                "config": {
+                    "position": "monitor",
+                    "url": "launcher/img/monitor.png"
+                }
+            },
+            "share": {
+                "factory": "domvisual",
+                "type": "DOMImg",
+                "config": {
+                    "position": "share",
+                    "url": "launcher/img/share.png"
+                }
+            },
+            "test": {
+                "factory": "domvisual",
+                "type": "DOMImg",
+                "config": {
+                    "position": "test",
+                    "url": "launcher/img/test.png"
+                }
+            },
+            "trace": {
+                "factory": "domvisual",
+                "type": "DOMImg",
+                "config": {
+                    "position": "trace",
+                    "url": "launcher/img/trace.png"
+                }
+            },
+            "github": {
+                "factory": "domvisual",
+                "type": "DOMImg",
+                "config": {
+                    "position": "github",
+                    "url": "launcher/img/github.png"
+                }
+            },
+            "web": {
+                "factory": "domvisual",
+                "type": "DOMImg",
+                "config": {
+                    "position": "web",
+                    "url": "launcher/img/web.png"
+                }
             }
         },
         "positions": {
@@ -486,9 +534,9 @@ exports.groups = {
                     "9": 0,
                     "10": 0,
                     "11": 0,
-                    "12": 936,
-                    "13": 7.999999046325684,
-                    "14": -7.724137783050537,
+                    "12": 17.20550537109375,
+                    "13": 8,
+                    "14": -6.724137783050537,
                     "15": 1,
                     "byteLength": 64,
                     "byteOffset": 0,
@@ -521,7 +569,7 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 16,
+                    "12": 80,
                     "13": 8,
                     "14": 4.333333492279053,
                     "15": 1,
@@ -576,6 +624,216 @@ exports.groups = {
                     "bottom": "auto",
                     "height": "px"
                 }
+            },
+            "monitor": {
+                "matrix": {
+                    "0": 32,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 32,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 792,
+                    "13": 16,
+                    "14": 4.44444465637207,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 13,
+                "snapping": {
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "share": {
+                "matrix": {
+                    "0": 32,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 32,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 824,
+                    "13": 16,
+                    "14": 6.333333492279053,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 14,
+                "snapping": {
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "test": {
+                "matrix": {
+                    "0": 32,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 32,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 856,
+                    "13": 16,
+                    "14": 6.777777671813965,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 15,
+                "snapping": {
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "trace": {
+                "matrix": {
+                    "0": 32,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 32,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 888,
+                    "13": 16,
+                    "14": 7.777777671813965,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 16,
+                "snapping": {
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "github": {
+                "matrix": {
+                    "0": 32,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 32,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 928,
+                    "13": 16,
+                    "14": 8.777777671813965,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 17,
+                "snapping": {
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "web": {
+                "matrix": {
+                    "0": 32,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 32,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 960,
+                    "13": 16,
+                    "14": 9.777777671813965,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 18,
+                "snapping": {
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
             }
         },
         "theme": {
@@ -599,10 +857,10 @@ exports.groups = {
                             "a": 1
                         }
                     },
-                    "borderTopLeftRadius": 20,
-                    "borderTopRightRadius": 20,
-                    "borderBottomLeftRadius": 20,
-                    "borderBottomRightRadius": 20
+                    "borderTopLeftRadius": 10,
+                    "borderTopRightRadius": 10,
+                    "borderBottomLeftRadius": 10,
+                    "borderBottomRightRadius": 10
                 }
             },
             "style0": {
