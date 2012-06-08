@@ -110,25 +110,34 @@ exports.groups = {
                     "innerText": "Launcher",
                     "style": "style2"
                 }
+            },
+            "pos3": {
+                "factory": "domvisual",
+                "type": "DOMElement",
+                "config": {
+                    "position": "pos3",
+                    "innerText": "",
+                    "style": "style3"
+                }
             }
         },
         "positions": {
             "pos": {
                 "matrix": {
-                    "0": 984,
+                    "0": 976,
                     "1": 0,
                     "2": 0,
                     "3": 0,
                     "4": 0,
-                    "5": 624,
+                    "5": 504,
                     "6": 0,
                     "7": 0,
                     "8": 0,
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 8,
-                    "13": 8,
+                    "12": 16,
+                    "13": 96,
                     "14": 2,
                     "15": 1,
                     "byteLength": 64,
@@ -138,7 +147,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 1,
+                "order": 2,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -173,7 +182,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 8,
+                "order": 9,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -197,7 +206,7 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 352,
+                    "12": 312,
                     "13": 112,
                     "14": 0.5333333611488342,
                     "15": 1,
@@ -208,7 +217,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 9,
+                "order": 10,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -243,7 +252,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 2,
+                "order": 3,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -255,7 +264,7 @@ exports.groups = {
             },
             "moduleList": {
                 "matrix": {
-                    "0": 616,
+                    "0": 656,
                     "1": 0,
                     "2": 0,
                     "3": 0,
@@ -267,7 +276,7 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 352,
+                    "12": 312,
                     "13": 144,
                     "14": 0,
                     "15": 1,
@@ -278,7 +287,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 3,
+                "order": 4,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -303,7 +312,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 40,
-                    "13": 552,
+                    "13": 544,
                     "14": 0.29629629850387573,
                     "15": 1,
                     "byteLength": 64,
@@ -313,7 +322,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 5,
+                "order": 6,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -338,7 +347,7 @@ exports.groups = {
                     "10": 1,
                     "11": 0,
                     "12": 96,
-                    "13": 552,
+                    "13": 544,
                     "14": 0,
                     "15": 1,
                     "byteLength": 64,
@@ -348,7 +357,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 4,
+                "order": 5,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -372,8 +381,8 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 416,
-                    "13": 552,
+                    "12": 368,
+                    "13": 544,
                     "14": 1,
                     "15": 1,
                     "byteLength": 64,
@@ -383,7 +392,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 6,
+                "order": 7,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -407,8 +416,8 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 360,
-                    "13": 552,
+                    "12": 312,
+                    "13": 544,
                     "14": 1.2962963581085205,
                     "15": 1,
                     "byteLength": 64,
@@ -418,7 +427,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 7,
+                "order": 8,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -465,21 +474,21 @@ exports.groups = {
             },
             "pos1": {
                 "matrix": {
-                    "0": 200,
+                    "0": 54.79449462890625,
                     "1": 0,
                     "2": 0,
                     "3": 0,
                     "4": 0,
-                    "5": 54,
+                    "5": 40,
                     "6": 0,
                     "7": 0,
                     "8": 0,
                     "9": 0,
                     "10": 0,
                     "11": 0,
-                    "12": 776,
-                    "13": 24,
-                    "14": 42,
+                    "12": 936,
+                    "13": 7.999999046325684,
+                    "14": -7.724137783050537,
                     "15": 1,
                     "byteLength": 64,
                     "byteOffset": 0,
@@ -488,7 +497,7 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 10,
+                "order": 11,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
@@ -512,9 +521,9 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 32,
-                    "13": 24,
-                    "14": 1,
+                    "12": 16,
+                    "13": 8,
+                    "14": 4.333333492279053,
                     "15": 1,
                     "byteLength": 64,
                     "byteOffset": 0,
@@ -523,10 +532,45 @@ exports.groups = {
                     },
                     "length": 16
                 },
-                "order": 11,
+                "order": 12,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "pos3": {
+                "matrix": {
+                    "0": 1000,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 56,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 0,
+                    "13": 0,
+                    "14": 0,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 1,
+                "snapping": {
+                    "left": "px",
+                    "right": "px",
                     "width": "auto",
                     "top": "px",
                     "bottom": "auto",
@@ -563,18 +607,20 @@ exports.groups = {
             },
             "style0": {
                 "jsData": {
-                    "borderTopStyle": "solid",
-                    "borderTopWidth": 2,
-                    "borderBottomWidth": 2,
-                    "borderBottomStyle": "solid"
+                    "backgroundColor": {
+                        "r": 1000,
+                        "g": 1000,
+                        "b": 230,
+                        "a": 1
+                    }
                 }
             },
             "style1": {
                 "jsData": {
                     "backgroundColor": {
-                        "r": 100,
-                        "g": 100,
-                        "b": 100,
+                        "r": 220,
+                        "g": 220,
+                        "b": 220,
                         "a": 1
                     }
                 }
@@ -585,6 +631,21 @@ exports.groups = {
                     "fontFamily": "arial",
                     "fontWeight": "bold"
                 }
+            },
+            "style3": {
+                "jsData": {
+                    "borderTopLeftRadius": 0,
+                    "borderTopRightRadius": 0,
+                    "borderBottomLeftRadius": 0,
+                    "borderBottomRightRadius": 0
+                },
+                "basedOn": [
+                    {
+                        "factory": "launcher",
+                        "type": "Launcher",
+                        "style": "style"
+                    }
+                ]
             }
         },
         "overflowX": "visible",
@@ -798,7 +859,7 @@ exports.groups = {
         "private": true,
         "privateTheme": true,
         "dimensions": [
-            600,
+            656,
             112,
             1
         ],
@@ -874,7 +935,7 @@ exports.groups = {
         "positions": {
             "background": {
                 "matrix": {
-                    "0": 600,
+                    "0": 656,
                     "1": 0,
                     "2": 0,
                     "3": 0,
@@ -900,12 +961,13 @@ exports.groups = {
                 "order": 0,
                 "snapping": {
                     "left": "px",
-                    "right": "auto",
-                    "width": "px",
+                    "right": "px",
+                    "width": "auto",
                     "top": "px",
                     "bottom": "auto",
                     "height": "px"
-                }
+                },
+                "enableDisplay": true
             },
             "preview": {
                 "matrix": {
@@ -1026,7 +1088,7 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 520,
+                    "12": 576,
                     "13": 72,
                     "14": 0.5714285969734192,
                     "15": 1,
@@ -1039,8 +1101,8 @@ exports.groups = {
                 },
                 "order": 6,
                 "snapping": {
-                    "left": "px",
-                    "right": "auto",
+                    "left": "auto",
+                    "right": "px",
                     "width": "px",
                     "top": "px",
                     "bottom": "auto",
@@ -1131,9 +1193,9 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 304,
+                    "12": 376,
                     "13": 72,
-                    "14": 1.5714285373687744,
+                    "14": 2.5714285373687744,
                     "15": 1,
                     "byteLength": 64,
                     "byteOffset": 0,
@@ -1166,7 +1228,7 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 376,
+                    "12": 304,
                     "13": 72,
                     "14": 2.5714285373687744,
                     "15": 1,
@@ -1235,6 +1297,8 @@ exports.exportConstructors = function (to) {
     constructors.Launcher = to.Launcher = require('/launcher/lib/Launcher').Launcher;
 
     constructors.Package = to.Package = require('/launcher/lib/Package').Package;
+
+    constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
     constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
