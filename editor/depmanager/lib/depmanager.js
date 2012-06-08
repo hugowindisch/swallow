@@ -44,6 +44,10 @@ function DependencyManager() {
         var typeInfo = JSON.parse(evt.data);
         that.unloadModule(typeInfo.factory, typeInfo.type);
     });
+    this.sse.on('newpackage', function (evt) {
+        var packageName = JSON.parse(evt.data);
+        that.addEmptyPackage(packageName);
+    });
 
 }
 DependencyManager.prototype = new (events.EventEmitter)();
@@ -186,6 +190,14 @@ DependencyManager.prototype.unloadModule = function (factory, type) {
             }
         });
         vl.visuals = newvis;
+        this.emit('change', this.visualList, this.factories);
+    }
+};
+DependencyManager.prototype.addEmptyPackage = function (packageName) {
+    // we add a new empty factoy. No real need to update the visual list
+    if (!this.factories[packageName]) {
+        this.factories[packageName] = packageName;
+        this.visualList[packageName] = { name: packageName, visuals: [] };
         this.emit('change', this.visualList, this.factories);
     }
 };
