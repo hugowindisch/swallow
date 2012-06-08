@@ -53,6 +53,15 @@ function DependencyManager() {
 DependencyManager.prototype = new (events.EventEmitter)();
 
 /**
+    Returns the sse connection.
+    This is not super nice but not that bad either.
+    (note: we don't want many sse connections per app...)
+*/
+DependencyManager.prototype.getSSE = function () {
+    return this.sse;
+};
+
+/**
     Returns all the factories currently loaded and avaiable.
 */
 DependencyManager.prototype.getFactories = function () {

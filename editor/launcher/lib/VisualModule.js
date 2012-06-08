@@ -107,5 +107,9 @@ VisualModule.prototype.setSelected = function (s) {
     this.getChild('background').setTransition(500).setStyle(s ? 'select' : 'normal');
 };
 
+VisualModule.prototype.setMonitored = function (m) {
+    this.getChild('monitored').setVisible(m);
+};
+
 
 exports.VisualModule = VisualModule;

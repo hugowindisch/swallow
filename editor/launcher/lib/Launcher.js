@@ -24,19 +24,28 @@ function Launcher(config) {
     domvisual.DOMElement.call(this, config, group);
     // load the stuff that we need
     var that = this;
-    // setup the dependency manager
-    this.dependencyManager = new DependencyManager();
-    this.dependencyManager.on('change', function (l) {
-        var prevSelected = that.selected;
-        that.updateVisualList(l);
-        // FIXME: the dual list thing is quite ugly
-        if (prevSelected) {
-            that.selectPackage(prevSelected);
-        }
 
-    });
-    // load, avoiding infinite recursion
+    // load, avoiding infinite recursion and using the SSE of the dependency
+    // manager which blocks some ip channels in preview mode.
     if (!this.forPreview) {
+        // setup the dependency manager
+        this.dependencyManager = new DependencyManager();
+        this.dependencyManager.on('change', function (l) {
+            var prevSelected = that.selected;
+            that.updateVisualList(l);
+            // FIXME: the dual list thing is quite ugly
+            if (prevSelected) {
+                that.selectPackage(prevSelected);
+            }
+
+        });
+        // not super nice... we add a handler of our own on its sse connection
+        // (note: these connections keep a socket open and we have a limited
+        // number)
+        this.dependencyManager.getSSE().on('monitor', function (evt) {
+            var monitored = JSON.parse(evt.data);
+            that.flagModuleAsMonitored(monitored);
+        });
         this.loadLists();
     }
     function getNewPackageName() {
@@ -173,13 +182,15 @@ Launcher.prototype.selectPackage = function (name) {
 Launcher.prototype.updateModuleList = function () {
     var moduleList = this.getChild('moduleList'),
         that = this,
+        mm = this.monitoredModule,
+        selPackageName = this.selected,
         factory;
     moduleList.removeAllChildren();
     moduleList.setOverflow(['visible', 'auto']);
     delete this.selectedModule;
     if (this.selected) {
-        factory = require(this.selected);
-        forEach(this.packages[this.selected].visuals, function (type) {
+        factory = require(selPackageName);
+        forEach(this.packages[selPackageName].visuals, function (type) {
             var Type, mv, success;
             try {
                 Type = factory[type];
@@ -188,7 +199,8 @@ Launcher.prototype.updateModuleList = function () {
                         name: type,
                         description: Type.prototype.getDescription(),
                         preview: Type,
-                        typeInfo: { factory: that.selected, type: type }
+                        typeInfo: { factory: that.selected, type: type },
+                        monitored: (mm && mm.factory === selPackageName && mm.type === type)
                     });
                     mv.setHtmlFlowing({ position: 'relative' }, true);
                     moduleList.addChild(mv, type);
@@ -221,5 +233,22 @@ Launcher.prototype.selectModule = function (type) {
         }
     }
 };
-
+Launcher.prototype.flagModuleAsMonitored = function (typeInfo) {
+    var mm = this.monitoredModule,
+        moduleList = this.getChild('moduleList'),
+        m;
+    if (mm && mm.factory === this.selected) {
+        m = moduleList.getChild(mm.type);
+        if (m) {
+            m.setMonitored(false);
+        }
+    }
+    mm = this.monitoredModule = typeInfo;
+    if (mm && mm.factory === this.selected) {
+        m = moduleList.getChild(mm.type);
+        if (m) {
+            m.setMonitored(true);
+        }
+    }
+};
 exports.Launcher = Launcher;

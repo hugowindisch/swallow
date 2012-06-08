@@ -1196,6 +1196,14 @@ exports.groups = {
                     "position": "monitor",
                     "text": "Monitor"
                 }
+            },
+            "monitored": {
+                "factory": "domvisual",
+                "type": "DOMImg",
+                "config": {
+                    "position": "monitored",
+                    "url": "launcher/img/monitor.png"
+                }
             }
         },
         "positions": {
@@ -1514,6 +1522,41 @@ exports.groups = {
                     "bottom": "auto",
                     "height": "px"
                 }
+            },
+            "monitored": {
+                "matrix": {
+                    "0": 32,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 32,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 608,
+                    "13": 8,
+                    "14": 0,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "buffer": {
+                        "byteLength": 64
+                    },
+                    "length": 16
+                },
+                "order": 9,
+                "snapping": {
+                    "left": "auto",
+                    "right": "px",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
             }
         },
         "theme": {
@@ -1566,7 +1609,7 @@ exports.exportConstructors = function (to) {
 
     constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
-    constructors.Launcher = to.Launcher = require('/launcher/lib/Launcher').Launcher;
+    constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
     return exports;
 };
