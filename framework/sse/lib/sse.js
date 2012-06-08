@@ -11,7 +11,13 @@ var events = require('events'),
 
 function EventSource(url, optionalInit) {
     var that = this;
-    this.evtSrc = new window.EventSource(url, optionalInit);
+    // weird problem with firefox (if I pass an invalid optionalInit)
+    if (arguments.length === 2) {
+        this.evtSrc = new window.EventSource(url, optionalInit);
+    } else {
+        this.evtSrc = new window.EventSource(url);
+    }
+
     this.hooks = {};
     this.on('addListener', function () {
         this.updateHooks();
