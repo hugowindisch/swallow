@@ -18,21 +18,27 @@ function typeOf(value) {
     }
     return s;
 }
+
 function isString(s) {
     return typeOf(s) === 'string';
 }
+
 function isNumber(n) {
     return typeOf(n) === 'number';
 }
+
 function isArray(a) {
     return typeOf(a) === 'array';
 }
+
 function isObject(o) {
     return typeOf(o) === 'object';
 }
+
 function isFunction(f) {
     return typeOf(f) === 'function';
 }
+
 function forEachProperty(object, f) {
     var p;
     if (object) {
@@ -43,6 +49,7 @@ function forEachProperty(object, f) {
         }
     }
 }
+
 function forEachSortedProperty(object, f, optionalSortFunction) {
     var a = [],
         l,
@@ -64,12 +71,14 @@ function forEachSortedProperty(object, f, optionalSortFunction) {
         }
     }
 }
+
 function forEach(array, f) {
     var l = array.length, i;
     for (i = 0; i < l; i += 1) {
         f(array[i], i, array);
     }
 }
+
 function deepCopy(o) {
     var res, i, l, v;
     switch (typeOf(o)) {
@@ -93,18 +102,21 @@ function deepCopy(o) {
         return o;
     }
 }
+
 function apply(to, from) {
     forEachProperty(from, function (v, n) {
         to[n] = v;
     });
     return to;
 }
+
 function applyDeep(to, from) {
     forEachProperty(from, function (v, n) {
         to[n] = deepCopy(v);
     });
     return to;
 }
+
 function prune(o) {
     var n = 0;
     forEachProperty(o, function (p, name) {
@@ -124,6 +136,7 @@ function prune(o) {
     });
     return n;
 }
+
 // ensure(o, 'a', 'b', 'c') will make sure o.a.b.c exists and return it
 function ensure(o) {
     var l = arguments.length, i, n, nextO;
@@ -137,6 +150,7 @@ function ensure(o) {
     }
     return o;
 }
+
 // checks if something is ensured and returns it (or null if it is not)
 function ensured(o) {
     var l = arguments.length, i, n, nextO;
@@ -150,6 +164,7 @@ function ensured(o) {
     }
     return o;
 }
+
 function limitRange(n, minN, maxN, ifNaN) {
     n = Number(n);
     if (isNaN(n)) {
@@ -161,6 +176,7 @@ function limitRange(n, minN, maxN, ifNaN) {
     }
     return n;
 }
+
 exports.forEachProperty = forEachProperty;
 exports.forEachSortedProperty = forEachSortedProperty;
 exports.forEach = forEach;

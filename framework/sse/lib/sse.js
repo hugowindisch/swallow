@@ -23,10 +23,13 @@ function EventSource(url, optionalInit) {
         this.updateHooks();
     });
 }
+
 EventSource.prototype = new events.EventEmitter();
+
 EventSource.prototype.close = function () {
     this.evtSrc.close();
 };
+
 EventSource.prototype.updateHooks = function () {
     var that = this,
         evtSrc = that.evtSrc,
@@ -53,4 +56,5 @@ EventSource.prototype.updateHooks = function () {
         }
     });
 };
+
 exports.EventSource = EventSource;

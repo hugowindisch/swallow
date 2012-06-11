@@ -1,6 +1,6 @@
 /**
     url.js
-    Copyright (c) Hugo Windisch 2012 All Rights Reserved    
+    Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 /*jslint regexp: false */
 
@@ -22,6 +22,7 @@ function parseQueryString(queryString) {
     });
     return ret;
 }
+
 function parse(urlStr, parseQS) {
     parseQS = parseQS || false;
     var re = /^((http:|https:|ftp:|file:)\/\/((([0-9a-zA-Z_\.])+)(:([0-9]+))?))?([^?;#]+)?(;[^?]*)?(\?[^#]*)?(#.*)?$/,
@@ -51,7 +52,7 @@ function parse(urlStr, parseQS) {
     if (search) {
         ret.search = search;
         ret.query = ret.search.slice(1);
-        if (parseQS) {        
+        if (parseQS) {
             ret.query = parseQueryString(ret.query);
         }
         href += search;

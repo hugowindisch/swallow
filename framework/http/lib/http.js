@@ -12,8 +12,10 @@
 Options
 host: A domain name or IP address of the server to issue the request to.
 port: Port of remote server.
-method: A string specifying the HTTP request method. Possible values: 'GET' (default), 'POST', 'PUT', and 'DELETE'.
-path: Request path. Should include query string and fragments if any. E.G. '/index.html?page=12'
+method: A string specifying the HTTP request method.
+    Possible values: 'GET' (default), 'POST', 'PUT', and 'DELETE'.
+path: Request path.
+    Should include query string and fragments if any. E.G. '/index.html?page=12'
 headers: An object containing request headers.
 
 unsupported:
@@ -21,7 +23,7 @@ unsupported:
 agent: Controls Agent behavior. Possible values:
     undefined (default): use default Agent for this host and port.
     Agent object: explicitly use the passed in Agent.
-    false: explicitly generate a new Agent for this host and port. Agent will not be re-used.
+    false: explicitly generate a new Agent for this host and port.
 */
 var utils = require('utils'),
     events = require('events'),
@@ -41,13 +43,17 @@ function ClientResponse(headers, statusCode) {
     this.httpVersion = null;
     this.trailers = null;
 }
+
 ClientResponse.prototype = new (events.EventEmitter)();
+
 ClientResponse.prototype.pause = function () {
     // not currently supported
 };
+
 ClientResponse.prototype.resume = function () {
     // not currently supported
 };
+
 ClientResponse.prototype.setEncoding = function () {
     // not currently supported
 };
@@ -120,7 +126,9 @@ function ClientRequest(options) {
         }
     };
 }
+
 ClientRequest.prototype = new (events.EventEmitter)();
+
 ClientRequest.prototype.write = function (chunk) {
     if (this.toSend === null) {
         this.toSend = chunk;
@@ -128,6 +136,7 @@ ClientRequest.prototype.write = function (chunk) {
         this.toSend += chunk;
     }
 };
+
 ClientRequest.prototype.end = function (data) {
     var that = this;
     if (data) {
@@ -138,6 +147,7 @@ ClientRequest.prototype.end = function (data) {
     });
     this.request.send(this.toSend);
 };
+
 ClientRequest.prototype.abort = function () {
     this.request.abort();
 };
