@@ -60,7 +60,9 @@ function leftRightConfig(
         label.setDimensions([labelWidth, lineHeight, 1]);
         label.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, 0, 0, 1]);
         editor.setDimensions([lineWidth - labelWidth - 20, lineHeight, 1]);
-        editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  labelWidth + 5, 0, 0, 1]);
+        editor.setMatrix(
+            [ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  labelWidth + 5, 0, 0, 1]
+        );
         cb(null, cnt);
         cnt.setDimensions([lineWidth, lineHeight + 10, 1]);
     });
@@ -95,7 +97,9 @@ function topBottomConfig(
         label.setDimensions([lineWidth - 10, labelHeight, 1]);
         label.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, 0, 0, 1]);
         editor.setDimensions([lineWidth - 10, lineHeight - labelHeight, 1]);
-        editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, labelHeight, 0, 1]);
+        editor.setMatrix(
+            [ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, labelHeight, 0, 1]
+        );
         cb(null, cnt);
         cnt.setDimensions([lineWidth, lineHeight, 1]);
     });
@@ -209,7 +213,9 @@ function styleConfig(labelTxt) {
                 var dim = editor.getComputedDimensions();
                 if (!cdim || cdim[0] !== dim[0] || cdim[1] !== dim[1]) {
                     cdim = dim;
-                    cnt.requestDimensions([lineWidth, labelHeight + cdim[1], 1]);
+                    cnt.requestDimensions(
+                        [lineWidth, labelHeight + cdim[1], 1]
+                    );
                 }
             });
             editor.setEditor(mainEditor);
@@ -223,17 +229,19 @@ function styleConfig(labelTxt) {
             cnt.getData = function () {
                 return editor.getData();
             };
-            editor.setMatrix([ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, labelHeight, 0, 1]);
+            editor.setMatrix(
+                [ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, labelHeight, 0, 1]
+            );
             cb(null, cnt);
         }
         create();
     }
     // hack for being able to find stuff that is a style config
-    // (some more thought will probably be needed at some point to clean this up)
+    // (some more thought will probably be needed at some point to clean
+    // this up)
     sc.isStyleConfig = true;
     return sc;
 }
-
 
 function imageUrlConfig(label) {
     return function (editor, cb) {
@@ -241,48 +249,50 @@ function imageUrlConfig(label) {
             editorInfo = editor.getDocInfo(),
             data = '';
 
-        http.get({ path: '/package/' + editorInfo.factory + '/image'}, function (res) {
-            res.on('data', function (d) {
-                data += d;
-            });
-            res.on('end', function () {
-                var jsonData = JSON.parse(data);
-                topBottomConfig(
-                    label,
-                    'baseui',
-                    'ImagePicker',
-                    { urls: jsonData },
-                    390,
-                    100,
-                    25,
-                    function (err, ctrl) {
-                        if (err) {
-                            return cb(err);
+        http.get(
+            { path: '/package/' + editorInfo.factory + '/image'},
+            function (res) {
+                res.on('data', function (d) {
+                    data += d;
+                });
+                res.on('end', function () {
+                    var jsonData = JSON.parse(data);
+                    topBottomConfig(
+                        label,
+                        'baseui',
+                        'ImagePicker',
+                        { urls: jsonData },
+                        390,
+                        100,
+                        25,
+                        function (err, ctrl) {
+                            if (err) {
+                                return cb(err);
+                            }
+                            // we should setup the editor that we got,
+                            // to add set data and get data and notification
+                            ctrl.setData = function (txt) {
+                                ctrl.children.data.setSelectedUrl(txt);
+                            };
+                            ctrl.getData = function () {
+                                return ctrl.children.data.getSelectedUrl();
+                            };
+                            ctrl.children.data.on('change', function (sel) {
+                                ctrl.emit('change', sel);
+                            });
+                            cb(err, ctrl);
                         }
-                        // we should setup the editor that we got,
-                        // to add set data and get data and notification
-                        ctrl.setData = function (txt) {
-                            ctrl.children.data.setSelectedUrl(txt);
-                        };
-                        ctrl.getData = function () {
-                            return ctrl.children.data.getSelectedUrl();
-                        };
-                        ctrl.children.data.on('change', function (sel) {
-                            ctrl.emit('change', sel);
-                        });
-                        cb(err, ctrl);
-                    }
-                );
+                    );
 
 
-            });
-            res.on('error', function (e) {
-                cb(e);
-            });
-        });
+                });
+                res.on('error', function (e) {
+                    cb(e);
+                });
+            }
+        );
     };
 }
-
 
 exports.leftRightConfig = leftRightConfig;
 exports.inputConfig = inputConfig;
