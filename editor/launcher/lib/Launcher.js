@@ -117,6 +117,10 @@ function Launcher(config) {
         window.open('http://www.swallowapps.com', '_blank');
     }).setCursor('pointer');
 
+    this.getChild('share').setOpacity(0.5);
+    this.getChild('test').setOpacity(0.5);
+    this.getChild('trace').setOpacity(0.5);
+
 }
 Launcher.createPreview = function () {
     var ret = new Launcher({forPreview: true});
