@@ -12,78 +12,6 @@ a theme)
 - A theme defines a series of named styles (potentially inheriting from other
 styles)
 */
-
-/*
-
-
-{
-    stylename: {
-        description: "description of the purpose of this style",
-        basedOn: [
-            // take the line styles from here
-            { factory: xxx, type:, style: stylename }
-
-        ],
-        data: [ "cssThing1", "cssThing2" ]
-    }
-};
-
-Themes should be settable through the config: this works if we set all
-themes at once (with a themesheet)
-
-We already have what is needed to:
-- Have a theme attached to a constructor
-- Have a customized theme in a component (a per instance customized theme)
-
-
-What we want is a way to customize all child components of a given component
-
-Skin (remote style override)
-{
-    factory : {
-        // Theme
-        type: {
-            style {
-            }
-        }
-    }
-}
-
-a) build the skin (remote style overrides)
-    => to do this, for each type, we inherit from the standard skin, and apply
-        specific styles
-b) build the theme (local styles)
-
-when creating children we pass them a 'skin'. If they do have a skin already
-the question becomes: should their own children use their skin 'below them'
-or not? (when is this decided?? when
-
-Algo for creating the skin:
-    for Each (factory,type) {
-        - get its ***UNBOUND*** type.Theme
-            ==> The binding operation cannot be destructive.
-        - create a theme for it
-        - apply the local stuff to the theme
-    }
-
-
-Algo for creating children:
-    - pass them the skin
-    - if they find themeselves in (skin[factory][type]) they use this as their local theme
-    - when they create children they can either pass them Constructor.skin or
-        this.
-
-=>
-
-
-THE TOPMOST PARENT ALWAYS WINS
-A STYLE IS UNIQUE WITHIN A TREE
-IT IS ALWAYS POSSIBLE TO NOT PROPAGATE A SKIN IN A BRANCH
-
-FOR THE EDITOR: the editor does not reskin
-
-
-*/
 var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEach,
@@ -92,9 +20,16 @@ var utils = require('utils'),
     deepCopy = utils.deepCopy,
     defaultSkin;
 
-
 function bindStyle(style, skin) {
-    var that = this, i, l, deps = style.basedOn, bindings, dep, module, Constr, t;
+    var that = this,
+        i,
+        l,
+        deps = style.basedOn,
+        bindings,
+        dep,
+        module,
+        Constr,
+        t;
     if (!style.bindings && deps) {
         l = deps.length;
         bindings = [];
@@ -105,7 +40,12 @@ function bindStyle(style, skin) {
                 t = skin.getTheme(dep.factory, dep.type);
                 bindings.push({theme: t, style: dep.style});
             } catch (e) {
-                throw new Error('unresolved theme ' + dep.factory + ' ' + dep.type);
+                throw new Error(
+                    'unresolved theme ' +
+                        dep.factory +
+                        ' ' +
+                        dep.type
+                );
             }
         }
     }
@@ -126,7 +66,6 @@ function applyTheme(toTheme, fromTheme, all) {
         }
     });
 }
-
 
 // this is the default skin, that resolves non skinned themes
 defaultSkin = {
@@ -184,16 +123,20 @@ function Theme(themeData, skin) {
     this.skin = skin;
     applyTheme(this.themeData, themeData, true);
 }
+
 Theme.prototype.getStyle = function (name) {
     return this.themeData[name];
 };
+
 Theme.prototype.getStyleData = function (name) {
     var style = this.getStyle(name);
     return getStyleData(style, this.skin);
 };
+
 Theme.prototype.getThemeData = function () {
     return this.themeData;
 };
+
 Theme.prototype.getSkin = function () {
     return this.skin;
 };
@@ -225,6 +168,7 @@ function Skin(skinData) {
         });
     });
 }
+
 Skin.prototype.makeTheme = function (factory, type) {
     var fact = require(factory),
         T = fact[type],
@@ -237,7 +181,8 @@ Skin.prototype.makeTheme = function (factory, type) {
     if (T.prototype.theme) {
         // we want our private version of this theme
         // FIXME: in practice we could find if the given theme has dependencies
-        // in this skin (and NEEDS to be defined... this is not necessarily the case).
+        // in this skin (and NEEDS to be defined... this is not necessarily
+        // the case).
         skinF[type] = new Theme(T.prototype.theme.themeData, this);
     } else {
         // we still want to nullify this theme so we don't redo this operation
@@ -246,6 +191,7 @@ Skin.prototype.makeTheme = function (factory, type) {
     }
     return skinF[type];
 };
+
 Skin.prototype.getTheme = function (factory, type) {
     var fact = this.skinData[factory];
     if (fact && fact.hasOwnProperty(type)) {
@@ -253,6 +199,7 @@ Skin.prototype.getTheme = function (factory, type) {
     }
     return this.makeTheme(factory, type);
 };
+
 Skin.prototype.getSkinData = function () {
     return this.skinData;
 };

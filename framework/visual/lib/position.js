@@ -46,7 +46,6 @@ function getEnclosingRect(m) {
     return [minpt, maxpt];
 }
 
-
 function rectToMatrix(r) {
     var m = mat4.identity(),
         rmin = r[0],
@@ -81,6 +80,7 @@ function Position(matrix, snapping, opacity) {
     var srcRect = this.srcRect = getEnclosingRect(matrix);
     this.srcExt = vec3.subtract(srcRect[1], srcRect[0], vec3.create());
 }
+
 /**
     Checks if this position is fully constrained.
 */
@@ -88,6 +88,7 @@ Position.prototype.isUnconstrained = function () {
     var snapping = this.snapping;
     return snapping.width === 'auto' || snapping.height === 'auto';
 };
+
 /**
     Computes the rects in the context of the specified container dimensions.
 */
@@ -105,21 +106,26 @@ Position.prototype.computeDstRect = function (
         dstRect[0][0] = srcRect[0][0];
         break;
     case '%':
-        dstRect[0][0] = containerDimensions[0] * srcRect[0][0] / layoutDimensions[0];
+        dstRect[0][0] = containerDimensions[0] *
+            srcRect[0][0] / layoutDimensions[0];
         break;
     case 'cpx':
-        dstRect[0][0] = (containerDimensions[0] / 2) - ((layoutDimensions[0] / 2) - srcRect[0][0]);
+        dstRect[0][0] = (containerDimensions[0] / 2) -
+            ((layoutDimensions[0] / 2) - srcRect[0][0]);
         break;
     }
     switch (snapping.right) {
     case 'px':
-        dstRect[1][0] = containerDimensions[0] - (layoutDimensions[0] - srcRect[1][0]);
+        dstRect[1][0] = containerDimensions[0] -
+            (layoutDimensions[0] - srcRect[1][0]);
         break;
     case '%':
-        dstRect[1][0] = containerDimensions[0] * srcRect[1][0] / layoutDimensions[0];
+        dstRect[1][0] = containerDimensions[0] *
+            srcRect[1][0] / layoutDimensions[0];
         break;
     case 'cpx':
-        dstRect[1][0] = (containerDimensions[0] / 2) - ((layoutDimensions[0] / 2) - srcRect[1][0]);
+        dstRect[1][0] = (containerDimensions[0] / 2) -
+            ((layoutDimensions[0] / 2) - srcRect[1][0]);
         break;
     }
     switch (snapping.top) {
@@ -127,21 +133,26 @@ Position.prototype.computeDstRect = function (
         dstRect[0][1] = srcRect[0][1];
         break;
     case '%':
-        dstRect[0][1] = containerDimensions[1] * srcRect[0][1] / layoutDimensions[1];
+        dstRect[0][1] = containerDimensions[1] *
+            srcRect[0][1] / layoutDimensions[1];
         break;
     case 'cpx':
-        dstRect[0][1] = (containerDimensions[1] / 2) - ((layoutDimensions[1] / 2) - srcRect[0][1]);
+        dstRect[0][1] = (containerDimensions[1] / 2) -
+            ((layoutDimensions[1] / 2) - srcRect[0][1]);
         break;
     }
     switch (snapping.bottom) {
     case 'px':
-        dstRect[1][1] = containerDimensions[1] - (layoutDimensions[1] - srcRect[1][1]);
+        dstRect[1][1] = containerDimensions[1] -
+            (layoutDimensions[1] - srcRect[1][1]);
         break;
     case '%':
-        dstRect[1][1] = containerDimensions[1] * srcRect[1][1] / layoutDimensions[1];
+        dstRect[1][1] = containerDimensions[1] *
+            srcRect[1][1] / layoutDimensions[1];
         break;
     case 'cpx':
-        dstRect[1][1] = (containerDimensions[1] / 2) - ((layoutDimensions[1] / 2) - srcRect[1][1]);
+        dstRect[1][1] = (containerDimensions[1] / 2) -
+            ((layoutDimensions[1] / 2) - srcRect[1][1]);
         break;
     }
     // deal with auto
@@ -150,10 +161,14 @@ Position.prototype.computeDstRect = function (
         if (snapping.right !== 'auto') {
             switch (snapping.width) {
             case 'px':
-                dstRect[0][0] = dstRect[1][0] - (srcRect[1][0] - srcRect[0][0]);
+                dstRect[0][0] = dstRect[1][0] -
+                    (srcRect[1][0] - srcRect[0][0]);
                 break;
             case '%':
-                dstRect[0][0] = dstRect[1][0] - containerDimensions[0] * (srcRect[1][0] - srcRect[0][0]) / layoutDimensions[0];
+                dstRect[0][0] = dstRect[1][0] -
+                    containerDimensions[0] *
+                    (srcRect[1][0] - srcRect[0][0]) /
+                    layoutDimensions[0];
                 break;
             case 'auto':
                 // 2 auto things let's not support this right now
@@ -170,7 +185,10 @@ Position.prototype.computeDstRect = function (
                 dstRect[1][0] = dstRect[0][0] + (srcRect[1][0] - srcRect[0][0]);
                 break;
             case '%':
-                dstRect[1][0] = dstRect[0][0] + containerDimensions[0] * (srcRect[1][0] - srcRect[0][0]) / layoutDimensions[0];
+                dstRect[1][0] = dstRect[0][0] +
+                    containerDimensions[0] *
+                    (srcRect[1][0] - srcRect[0][0]) /
+                    layoutDimensions[0];
                 break;
             case 'auto':
                 // 2 auto things let's not support this right now
@@ -189,7 +207,10 @@ Position.prototype.computeDstRect = function (
                 dstRect[0][1] = dstRect[1][1] - (srcRect[1][1] - srcRect[0][1]);
                 break;
             case '%':
-                dstRect[0][1] = dstRect[1][1] - containerDimensions[1] * (srcRect[1][1] - srcRect[0][1]) / layoutDimensions[1];
+                dstRect[0][1] = dstRect[1][1] -
+                    containerDimensions[1] *
+                    (srcRect[1][1] - srcRect[0][1]) /
+                    layoutDimensions[1];
                 break;
             case 'auto':
                 // 2 auto things let's not support this right now
@@ -206,7 +227,10 @@ Position.prototype.computeDstRect = function (
                 dstRect[1][1] = dstRect[0][1] + (srcRect[1][1] - srcRect[0][1]);
                 break;
             case '%':
-                dstRect[1][1] = dstRect[0][1] + containerDimensions[1] * (srcRect[1][1] - srcRect[0][1]) / layoutDimensions[1];
+                dstRect[1][1] = dstRect[0][1] +
+                    containerDimensions[1] *
+                    (srcRect[1][1] - srcRect[0][1]) /
+                    layoutDimensions[1];
                 break;
             case 'auto':
                 // 2 auto things let's not support this right now
@@ -265,14 +289,16 @@ function Layout(dimensions, positionData) {
 Layout.prototype.build = function (positionData) {
     var that = this;
     forEachProperty(positionData, function (pos, posname) {
-        that.setPosition(posname, new Position(pos.matrix, pos.snapping, pos.opacity));
+        that.setPosition(
+            posname,
+            new Position(pos.matrix, pos.snapping, pos.opacity)
+        );
     });
 };
 
 Layout.prototype.setPosition = function (name, position) {
     this.positions[name] = position;
 };
-
 
 function convertScaleToSize(matrix) {
     var v1 = [matrix[0], matrix[1], matrix[2]],
@@ -322,7 +348,10 @@ function applyLayout(containerDimensions, layout, v) {
                     v.setDimensions(res.dimensions);
                 } else {
                     // this is probably NOT best done here
-                    mat4.scale(matrix, [1 / v.dimensions[0], 1 / v.dimensions[1], 1]);
+                    mat4.scale(
+                        matrix,
+                        [1 / v.dimensions[0], 1 / v.dimensions[1], 1]
+                    );
                     v.setMatrix(matrix);
                 }
             }
@@ -368,74 +397,6 @@ function computeReverseDimensioning(containerDimensions, layout, v) {
     }
     return res;
 }
-
-/*
-Reverse dimensioning.
----------------------
-
-Event an absolute positioning system can be driven bottom up (i.e.
-the container adapts its size from its content size instead of adapting its
-content size to its own size).
-
-
-A container that is 'unconstrained' may resize itself to its content. A
-container is unscontrained if:
-    a) it is in an unconstrained container
-    AND
-    b) it has been marked as unconstrained (we want this behavior)
-        AND
-        we know how to adapt its container to its size (... more on this...)
-        this is easy if the width and height are set to 'auto'
-
-        But this means that 'unconstrainedW' is an option of autoW
-        AND
-        'unscontstrainedH' is an option of autoH
-
-
-+ We may be able to detect that a flowed element has been resized by hooking
-    on a DOM event.
-+ For a non flowed element, it is an explicit call (nothing is done automatically)
-
-The stuff we need
------------------
-Position.unconstrained[false, false, false]
-Containee.requestDimension(vec3)
-    -> keep the requestedDimension
-    -> if the dimension is the current dimension, return (why bother?)
-    -> if no container or no position inside the container or flowed and NOT submitted to container dimensioning
-        - redimension + return (or FAIL / DO NOTHING?) === > DO NOTHING AND RETURN
-    -> if in an unconstrained position of the container:
-        => compute size of container
-        => parent.requestDimension(vec3)
-
-Refreshing the size of a container... Compute the dimension from the content (by checking
-
-                all requested dimensions of children + curent dimension of container)
-    -> if no container or no position inside the container or flowed and NOT submitted to container dimensioning
-        - resize
-    -> call the internal requestDimension on the upper container
-
-
-USELESS RECOMPUTATIONS
-----------------------
-This should use the dirty mechanism. For example, if we are triggered by
-a html event (telling us that a subtree has changed), we only want to
-actually relayout ONCE
-
-==> NO, this will not work properly I think (because of events... events
-will be fired in different call stacks so this will be totally useless in
-the only case it would have been useful, the case of hooking an event
-on a dom change).
-
-NOTE
-----
-Eventually add a topmost container that is either constrained or not in x and y,
-this can be put in the
-
-This will allow incredibly easy blog page design.
-*/
-
-
 
 // library interface
 exports.Layout = Layout;
