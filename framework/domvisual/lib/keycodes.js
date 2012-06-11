@@ -2,10 +2,6 @@
     keycodes.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-// the translation of keycodes to strings has to do with i18n
-// a stringname
-
-
 var utils = require('utils'),
     isString = utils.isString,
     isNumber = utils.isNumber,
@@ -101,15 +97,15 @@ var utils = require('utils'),
         'VK_RIGHT': 'Right',
         'VK_DOWN': 'Down',
         'VK_SELECT': 'Select',
-        'VK_PRINT': 'Print',	 
+        'VK_PRINT': 'Print',
         'VK_EXECUTE': 'Exec',
         'VK_PRINTSCREEN': 'PrtScr',
         'VK_INSERT': 'Ins',
         'VK_DELETE': 'Del',
         'VK_0': '0',
-        'VK_1': '1', 
-        'VK_2': '2', 
-        'VK_3': '3',	 
+        'VK_1': '1',
+        'VK_2': '2',
+        'VK_3': '3',
         'VK_4': '4',
         'VK_5': '5',
         'VK_6': '6',
@@ -155,7 +151,7 @@ function addS(s, s2) {
 }
 
 function decorate(
-    s, 
+    s,
     ctrlk,
     altk,
     metak,
@@ -176,6 +172,7 @@ function decorate(
     }
     return addS(r, s);
 }
+
 function decorateVk(
     vkCode,
     ctrlk,
@@ -201,71 +198,3 @@ exports.decorateVk = decorateVk;
 exports.numToVk = function (num) {
     return numToVk[num];
 };
-/*
-VK_CONTEXT_MENU	93	 
-VK_NUMPAD0	96	0 on the numeric keypad.
-VK_NUMPAD1	97	1 on the numeric keypad.
-VK_NUMPAD2	98	2 on the numeric keypad.
-VK_NUMPAD3	99	3 on the numeric keypad.
-VK_NUMPAD4	100	4 on the numeric keypad.
-VK_NUMPAD5	101	5 on the numeric keypad.
-VK_NUMPAD6	102	6 on the numeric keypad.
-VK_NUMPAD7	103	7 on the numeric keypad.
-VK_NUMPAD8	104	8 on the numeric keypad.
-VK_NUMPAD9	105	9 on the numeric keypad.
-VK_MULTIPLY	106	* on the numeric keypad.
-VK_ADD	107	+ on the numeric keypad.
-VK_SEPARATOR	108	 
-VK_SUBTRACT	109	- on the numeric keypad.
-VK_DECIMAL	110	Decimal point on the numeric keypad.
-VK_DIVIDE	111	/ on the numeric keypad.
-VK_F1	112	F1 key.
-VK_F2	113	F2 key.
-VK_F3	114	F3 key.
-VK_F4	115	F4 key.
-VK_F5	116	F5 key.
-VK_F6	117	F6 key.
-VK_F7	118	F7 key.
-VK_F8	119	F8 key.
-VK_F9	120	F9 key.
-VK_F10	121	F10 key.
-VK_F11	122	F11 key.
-VK_F12	123	F12 key.
-VK_F13	124	F13 key.
-VK_F14	125	F14 key.
-VK_F15	126	F15 key.
-VK_F16	127	F16 key.
-VK_F17	128	F17 key.
-VK_F18	129	F18 key.
-VK_F19	130	F19 key.
-VK_F20	131	F20 key.
-VK_F21	132	F21 key.
-VK_F22	133	F22 key.
-VK_F23	134	F23 key.
-VK_F24	135	F24 key.
-VK_NUM_LOCK	144	Num Lock key.
-VK_SCROLL_LOCK	145	Scroll Lock key.
-VK_COMMA	188	Comma (",") key.
-VK_PERIOD	190	Period (".") key.
-VK_SLASH	191	Slash ("/") key.
-VK_BACK_QUOTE	192	Back tick ("`") key.
-VK_OPEN_BRACKET	219	Open square bracket ("[") key.
-VK_BACK_SLASH	Mac: 220; Windows: 222	Back slash ("\") key.
-VK_CLOSE_BRACKET	221	Close square bracket ("]") key.
-VK_QUOTE	Mac: 222; Windows: 192	Quote ('"') key.
-VK_META	224	Meta (Command on Mac) key.
-VK_KANA	21	Linux support for this keycode was added in Gecko 4.0.
-VK_HANGUL	21	Linux support for this keycode was added in Gecko 4.0.
-VK_JUNJA	23	Linux support for this keycode was added in Gecko 4.0.
-VK_FINAL	24	Linux support for this keycode was added in Gecko 4.0.
-VK_HANJA	25	Linux support for this keycode was added in Gecko 4.0.
-VK_KANJI	25	Linux support for this keycode was added in Gecko 4.0.
-VK_CONVERT	28	Linux support for this keycode was added in Gecko 4.0.
-VK_NONCONVERT	29	Linux support for this keycode was added in Gecko 4.0.
-VK_ACCEPT	30	Linux support for this keycode was added in Gecko 4.0.
-VK_MODECHANGE	31	Linux support for this keycode was added in Gecko 4.0.
-VK_SELECT	41	Linux support for this keycode was added in Gecko 4.0.
-VK_PRINT	42	Linux support for this keycode was added in Gecko 4.0.
-VK_EXECUTE	43	Linux support for this keycode was added in Gecko 4.0.
-VK_SLEEP	95	Linux support for this keycode was added in Gecko 4.0.
-*/

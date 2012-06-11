@@ -63,8 +63,11 @@ backgroundPosition:                         tbd
 backgroundRepeat:                           tbd
 
 
-boxShadow:                                  <offset-x> <offset-y> <blur-radius> spreadradius color
-
+boxShadow:                                  <offset-x>
+                                            <offset-y>
+                                            <blur-radius>
+                                            spreadradius
+                                            color
 */
 // oversimplistic browser detection
 function getBrowser() {
@@ -79,7 +82,6 @@ function getBrowser() {
     }
     return browser;
 }
-
 
 var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
@@ -108,7 +110,6 @@ function hasTextAttributes(jsData) {
     });
     return ret;
 }
-
 
 function hslaToRgba(hsla) {
     var h = hsla.h / 360,
@@ -208,10 +209,26 @@ function rgbaToHsla(rgba) {
 function colorToCSSString(c) {
     if (c.r !== undefined) {
         // rgba
-        return 'rgba(' + round(c.r) + ',' + round(c.g) + ',' + round(c.b) + ',' + c.a + ')';
+        return 'rgba(' +
+            round(c.r) +
+            ',' +
+            round(c.g) +
+            ',' +
+            round(c.b) +
+            ',' +
+            c.a +
+            ')';
     } else {
         // hsla
-        return 'hsla(' + round(c.h) + ',' + round(c.s) + '%,' + round(c.l) + '%,' + c.a + ')';
+        return 'hsla(' +
+            round(c.h) +
+            ',' +
+            round(c.s) +
+            '%,' +
+            round(c.l) +
+            '%,' +
+            c.a +
+            ')';
 
     }
 }
@@ -253,6 +270,7 @@ function gradientToCSSStringWebkit(gradient) {
     }
     return res;
 }
+
 gradientToCssString = ({
     'AppleWebKit': gradientToCSSStringWebkit,
     'Mozilla': gradientToCSSStringMozilla
@@ -277,6 +295,7 @@ function boxShadowToCSSString(v) {
 function passThroughCSSString(v) {
     return v;
 }
+
 function dimToCSSString(v) {
     return v + 'px';
 }
@@ -410,6 +429,7 @@ function clearStyle(style) {
         fcn(style, null);
     });
 }
+
 function styleToCss(style, jsData) {
     forEachProperty(attributeToCss, function (fcn, prop) {
         var dat = jsData[prop];

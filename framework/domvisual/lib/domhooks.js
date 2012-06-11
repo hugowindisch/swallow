@@ -163,7 +163,6 @@ hookMap = {
 
 };
 
-
 /**
     Creates a handler for a given event name.
 */
@@ -178,7 +177,6 @@ function createHandler(name, vis, filter) {
     };
 }
 
-
 /**
     Adds dom event hooks to v if necessary.
 */
@@ -189,7 +187,6 @@ function enforceDOMHooks(v) {
     }
     return ret;
 }
-
 
 /**
     Unhooks a dom handler.
@@ -215,7 +212,9 @@ function removeDOMHook(v, event, hook) {
 function addDOMHook(v, event, hook) {
     var hooks = enforceDOMHooks(v);
     if (!hooks[event]) {
-        hooks[event] = { handleEvent: createHandler(event, v, hook.filterEvent) };
+        hooks[event] = {
+            handleEvent: createHandler(event, v, hook.filterEvent)
+        };
         hook.getDOMElement(v).addEventListener(
             hook.domEvent ? hook.domEvent : event,
             hooks[event],
@@ -224,19 +223,18 @@ function addDOMHook(v, event, hook) {
     }
 }
 
-
 /**
     This will inspect the type of events that we have and update the
     dom event hooks accordingly (i.e. connect us to the keyboard and mouse
     or not).
 */
-
 updateDOMEventHooks = function (v) {
     var enabled = v.connectedToTheStage,
         interactiveEnabled = !v.disableInteractiveEventHooks;
     forEachProperty(hookMap, function (value, key) {
         var listeners = v.getListeners(key);
-        if ((!value.interactive || interactiveEnabled) && listeners.length > 0) {
+        if ((!value.interactive || interactiveEnabled) &&
+                listeners.length > 0) {
             addDOMHook(v, key, value);
         } else {
             removeDOMHook(v, key, value);

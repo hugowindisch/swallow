@@ -38,7 +38,9 @@ function DOMVisual(config, groupData, element) {
         updateDOMEventHooks(that);
     });
 }
+
 DOMVisual.prototype = new Visual();
+
 DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     var connectedToTheStage,
         disableInteractiveEventHooks,
@@ -56,8 +58,12 @@ DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     if (!this.dirty || !this.dirty.childrenOrder || orderDirty) {
         this.element.appendChild(child.element);
     } else {
-        // we need to find the element at optionalOrder+1 and put this thing before
-        this.element.insertBefore(child.element, this.getChildAtOrder(optionalOrder).element);
+        // we need to find the element at optionalOrder+1
+        // and put this thing before
+        this.element.insertBefore(
+            child.element,
+            this.getChildAtOrder(optionalOrder).element
+        );
         // and manually clear the dirt (ok, this is ugly)
         delete this.dirty.orderDirty;
     }
@@ -72,6 +78,7 @@ DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
         updateDOMEventHooks(c);
     });
 };
+
 DOMVisual.prototype.removeChild = function (child) {
     // it is easier to track element containement immediately instead
     // of waiting for the update function to be called.
@@ -79,7 +86,10 @@ DOMVisual.prototype.removeChild = function (child) {
     try {
         this.element.removeChild(child.element);
     } catch (e) {
-        throw new Error("Child " + child.name + " not in " + this.getFullName());
+        throw new Error("Child " +
+            child.name +
+            " not in " +
+            this.getFullName());
     }
     Visual.prototype.removeChild.call(this, child);
     var connectedToTheStage = this.connectedToTheStage,
@@ -90,6 +100,7 @@ DOMVisual.prototype.removeChild = function (child) {
         updateDOMEventHooks(c);
     });
 };
+
 DOMVisual.prototype.setDimensions = function (d) {
     if (d[0] !== this.dimensions[0] || d[1] !== this.dimensions[1]) {
         Visual.prototype.setDimensions.apply(this, arguments);
@@ -101,6 +112,7 @@ DOMVisual.prototype.setDimensions = function (d) {
     }
     return this;
 };
+
 DOMVisual.prototype.enableInteractions = function (enable) {
     var disable = !enable;
     visual.forVisualAndAllChildrenDeep(this, function (c) {
@@ -109,6 +121,7 @@ DOMVisual.prototype.enableInteractions = function (enable) {
         updateDOMEventHooks(c);
     });
 };
+
 // we do style through css when dealing with html content
 DOMVisual.prototype.setClass = function (cssClassName) {
     var i, l;
@@ -124,6 +137,7 @@ DOMVisual.prototype.setClass = function (cssClassName) {
     setDirty(this, 'style');
     return this;
 };
+
 DOMVisual.prototype.clearClass = function (cssClassName) {
     if (this.cssClasses[cssClassName]) {
         delete this.cssClasses[cssClassName];
@@ -180,7 +194,6 @@ DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
     return this;
 };
 
-
 /**
     As an explicit but quite ugly way to allow containers
     that have a layout to be notified of a change in underlying
@@ -222,7 +235,6 @@ DOMVisual.prototype.notifyDOMChanged = function () {
     return this;
 };
 
-
 /**
     Enables children clipping.
     available modes are
@@ -231,11 +243,13 @@ DOMVisual.prototype.notifyDOMChanged = function () {
     can be an array to set x and y clipping differently
 */
 // FIXME: keep only setOverflow
-DOMVisual.prototype.setChildrenClipping = DOMVisual.prototype.setOverflow = function (mode) {
-    this.childrenClipping = mode;
-    setDirty(this, 'style');
-    return this;
-};
+DOMVisual.prototype.setChildrenClipping =
+    DOMVisual.prototype.setOverflow =
+    function (mode) {
+        this.childrenClipping = mode;
+        setDirty(this, 'style');
+        return this;
+    };
 
 /**
     Sets scrolling.
@@ -256,6 +270,7 @@ DOMVisual.prototype.setVisible = function (visible) {
     }
     return this;
 };
+
 DOMVisual.prototype.getVisible = function () {
     return this.visible;
 };
@@ -287,6 +302,7 @@ DOMVisual.prototype.setTransition = function (
     setDirty(this, 'matrix');
     return this;
 };
+
 DOMVisual.prototype.clearTransition = function () {
     // force update
     dirty.update();
@@ -294,6 +310,7 @@ DOMVisual.prototype.clearTransition = function () {
     delete this.transition;
     setDirty(this, 'matrix');
 };
+
 DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
     repeat = repeat || 'repeat';
     var style = this.element.style;
@@ -322,6 +339,7 @@ DOMVisual.prototype.setStyleDimensionsAdjustment = function (v3) {
     }
     return this;
 };
+
 /**
     DOM update (we essentially treat the DOM as an output thing)
 */
@@ -361,26 +379,56 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
                 style.left = matrix[12] + 'px';
                 style.top = matrix[13] + 'px';
                 style.webkitBackfaceVisibility = null;
-                style.MozTransformOrigin = style.webkitTransformOrigin = style.transformOrigin = null;
-                style.MozTransform = style.webkitTransform = style.transform = null;
+                style.MozTransformOrigin =
+                    style.webkitTransformOrigin =
+                    style.transformOrigin =
+                    null;
+                style.MozTransform =
+                    style.webkitTransform =
+                    style.transform =
+                    null;
             } else {
                 // we need the whole css3 transform shebang
                 // 3d transform
                 style.left = '0px';
                 style.top = '0px';
-                transform = 'matrix(' + matrix[0] + ', ' + matrix[1] + ', ' + matrix[4] + ', ' + matrix[5] + ', ' + matrix[12] + ', ' + matrix[13] + ')';
-                style.MozTransformOrigin = style.webkitTransformOrigin = style.transformOrigin = '0 0 0';
-                style.MozTransform = style.webkitTransform = style.transform = transform;
+                transform = 'matrix(' +
+                    matrix[0] +
+                    ', ' +
+                    matrix[1] +
+                    ', ' +
+                    matrix[4] +
+                    ', ' +
+                    matrix[5] +
+                    ', ' +
+                    matrix[12] +
+                    ', ' +
+                    matrix[13] +
+                    ')';
+                style.MozTransformOrigin =
+                    style.webkitTransformOrigin =
+                    style.transformOrigin = '0 0 0';
+                style.MozTransform =
+                    style.webkitTransform =
+                    style.transform =
+                    transform;
             }
         } else {
-            style.left = null; //'auto';
-            style.top = null; //'auto';
+            style.left = null;
+            style.top = null;
             style.webkitBackfaceVisibility = null;
-            style.MozTransformOrigin = style.webkitTransformOrigin = style.transformOrigin = null;
-            style.MozTransform = style.webkitTransform = style.transform = null;
+            style.MozTransformOrigin =
+                style.webkitTransformOrigin =
+                style.transformOrigin =
+                null;
+            style.MozTransform =
+                style.webkitTransform =
+                style.transform =
+                null;
         }
     }
 };
+
 DOMVisual.prototype.updateDimensionsRepresentation = function () {
     function adjust(v, a) {
         if (a >= v) {
@@ -392,17 +440,26 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
         var style = this.element.style,
             htmlFlowing = this.htmlFlowing,
             dimensions = this.dimensions,
-            styleDimensionsAdjustement = this.styleDimensionsAdjustment || [0, 0];
+            styleDimensionsAdjustement = this.styleDimensionsAdjustment
+                || [0, 0];
         if (!htmlFlowing) {
-            style.width = adjust(dimensions[0], styleDimensionsAdjustement[0]) + 'px';
-            style.height = adjust(dimensions[1], styleDimensionsAdjustement[1]) + 'px';
+            style.width =
+                adjust(dimensions[0], styleDimensionsAdjustement[0]) +
+                'px';
+            style.height =
+                adjust(dimensions[1], styleDimensionsAdjustement[1]) +
+                'px';
             style.position = 'absolute';
             style.display = this.visible ? 'block' : 'none';
         } else {
             // clear our stuff
             if (this.htmlFlowingApplySizing) {
-                style.width = adjust(dimensions[0], styleDimensionsAdjustement[0]) + 'px';
-                style.height = adjust(dimensions[1], styleDimensionsAdjustement[1]) + 'px';
+                style.width =
+                    adjust(dimensions[0], styleDimensionsAdjustement[0]) +
+                    'px';
+                style.height =
+                    adjust(dimensions[1], styleDimensionsAdjustement[1]) +
+                    'px';
             } else {
                 style.width = null;
                 style.height = null;
@@ -420,6 +477,7 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
         }
     }
 };
+
 DOMVisual.prototype.updateChildrenOrderRepresentation = function () {
     if (this.element) {
         var children = this.children,
@@ -443,6 +501,7 @@ DOMVisual.prototype.updateChildrenOrderRepresentation = function () {
         }
     }
 };
+
 DOMVisual.prototype.updateStyleRepresentation = function () {
     var cssClass,
         element = this.element,
@@ -450,7 +509,8 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
         jsData,
         v,
         style;
-    // FIXME note: what if we have no style at all whatsoever? Why do this at all?
+    // FIXME note: what if we have no style at all whatsoever?
+    // Why do this at all?
     // (many groups will have no style of their own)
     if (element) {
         styleData = this.getStyleData();
@@ -472,6 +532,7 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
         this.setStyleDimensionsAdjustment(getStyleDimensionAdjustment(jsData));
     }
 };
+
 DOMVisual.prototype.updateOpacityRepresentation = function () {
     var element = this.element,
         style;
@@ -515,7 +576,6 @@ DOMVisual.prototype.updateDone = function () {
     }
 };
 
-
 DOMVisual.prototype.getConfigurationSheet = function () {
     return { "class": {}, "style": {} };
 };
@@ -536,7 +596,6 @@ DOMVisual.prototype.getComputedMatrix = function () {
     return ret;
 };
 
-
 /**
     Returns the computed dimension of this element
     (if the element uses html flowing)
@@ -556,7 +615,6 @@ DOMVisual.prototype.getComputedDimensions = function () {
     style.height = h;
     return ret;
 };
-
 
 /**
     For adding a child that is implemented as plain html.
@@ -651,12 +709,15 @@ DOMVisual.prototype.runFullScreen = function () {
 function DOMElement(config, groupData) {
     DOMVisual.call(this, config, groupData, document.createElement('div'));
 }
+
 DOMElement.prototype = new DOMVisual();
+
 DOMElement.prototype.getDescription = function () {
     return "A styled rectangle with optional text";
 };
+
 DOMElement.createPreview = function () {
-    return new (exports.DOMImg)({url: 'domvisual/lib/elementpreview.png'});
+    return new (exports.DOMImg)({url: 'domvisual/img/elementpreview.png'});
 };
 
 DOMElement.prototype.getConfigurationSheet = function () {
@@ -672,18 +733,22 @@ DOMElement.prototype.getConfigurationSheet = function () {
 function DOMImg(config) {
     DOMVisual.call(this, config, null, document.createElement('img'));
 }
+
 DOMImg.prototype = new DOMVisual();
+
 DOMImg.prototype.getDescription = function () {
     return "A png or jpeg image";
 };
+
 DOMImg.createPreview = function () {
-    return new (DOMImg)({url: 'domvisual/lib/imagepreview.png'});
+    return new (DOMImg)({url: 'domvisual/img/imagepreview.png'});
 };
 
 DOMImg.prototype.setUrl = function (url) {
     this.element.src = url;
     return this;
 };
+
 DOMImg.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
@@ -691,10 +756,12 @@ DOMImg.prototype.getConfigurationSheet = function () {
         "style": null //require('config').styleConfig('Style:')
     };
 };
+
 DOMImg.prototype.getImageDimensions = function () {
     var element = this.element;
     return [element.naturalWidth, element.naturalHeight, 0];
 };
+
 DOMImg.prototype.getNaturalDimensions = function () {
     return this.getImageDimensions();
 };
@@ -704,18 +771,22 @@ DOMImg.prototype.getNaturalDimensions = function () {
 function DOMVideo(config) {
     DOMVisual.call(this, config, null, document.createElement('video'));
 }
+
 DOMVideo.prototype = new DOMVisual();
+
 DOMVideo.prototype.getDescription = function () {
     return "A movie";
 };
+
 DOMVideo.createPreview = function () {
-    return new (DOMImg)({url: 'domvisual/lib/videopreview.png'});
+    return new (DOMImg)({url: 'domvisual/img/videopreview.png'});
 };
 
 DOMVideo.prototype.setUrl = function (url) {
     this.element.src = url;
     return this;
 };
+
 DOMVideo.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
@@ -724,20 +795,23 @@ DOMVideo.prototype.getConfigurationSheet = function () {
     };
 };
 
-
 /////////////////
 // An input tag
 function DOMInput(config) {
     DOMVisual.call(this, config, null, document.createElement('input'));
 }
+
 DOMInput.prototype = new DOMVisual();
+
 DOMInput.prototype.setType = function (type) {
     this.element.type = type;
     return this;
 };
+
 DOMInput.prototype.getType = function () {
     return this.element.type;
 };
+
 DOMInput.prototype.setText = function (text) {
     if (text === undefined || text === null) {
         text = '';
@@ -747,19 +821,25 @@ DOMInput.prototype.setText = function (text) {
     this.element.value = text;
     return this;
 };
+
 DOMInput.prototype.setValue = DOMInput.prototype.setText;
+
 DOMInput.prototype.getText = function () {
     return this.element.value;
 };
+
 DOMInput.prototype.getValue = DOMInput.prototype.getText;
+
 DOMInput.prototype.enable = function (enable) {
     this.element.disabled = !enable;
     return this;
 };
+
 DOMInput.prototype.setChecked = function (state) {
     this.element.checked = state;
     return this;
 };
+
 DOMInput.prototype.getChecked = function (state) {
     return this.element.checked === true;
 };
@@ -773,23 +853,31 @@ DOMInput.prototype.getConfigurationSheet = function () {
 // this is pretty bad... because of the difficulty of sizing it...
 function DOMTextArea(config) {
 }
+
 DOMTextArea.prototype = new DOMVisual();
+
 DOMTextArea.prototype.getConfigurationSheet = function () {
     return { "text": {}, "rows": {}, "cols": {} };
 };
+
 DOMTextArea.prototype.setText = function (txt) {
     this.element.value = txt;
     return this;
 };
+
 DOMTextArea.prototype.setValue = DOMTextArea.prototype.setText;
+
 DOMTextArea.prototype.getText = function (txt) {
     return this.element.value;
 };
+
 DOMTextArea.prototype.getValue = DOMTextArea.prototype.getText;
+
 DOMTextArea.prototype.setRows = function (r) {
     this.element.rows = r;
     return this;
 };
+
 DOMTextArea.prototype.setCols = function (c) {
     this.element.cols = c;
     return this;
@@ -800,7 +888,9 @@ DOMTextArea.prototype.setCols = function (c) {
 function DOMSelect(config) {
     DOMVisual.call(this, config, null, document.createElement('select'));
 }
+
 DOMSelect.prototype = new DOMVisual();
+
 DOMSelect.prototype.setOptions = function (options) {
 // FIXME: we could support object and array for options
     this.removeAllChildren();
@@ -812,13 +902,16 @@ DOMSelect.prototype.setOptions = function (options) {
     }
     return this;
 };
+
 DOMSelect.prototype.setSelectedIndex = function (n) {
     this.element.selectedIndex = n;
     return this;
 };
+
 DOMSelect.prototype.getSelectedIndex = function () {
     return this.element.selectedIndex;
 };
+
 DOMSelect.prototype.setSelectedOption = function (o) {
     var index = null;
     forEach(this.options, function (oo, n) {
@@ -829,6 +922,7 @@ DOMSelect.prototype.setSelectedOption = function (o) {
     this.setSelectedIndex(index);
     return this;
 };
+
 DOMSelect.prototype.getSelectedOption = function () {
     var index = this.getSelectedIndex(),
         ret = null;
@@ -841,6 +935,7 @@ DOMSelect.prototype.getSelectedOption = function () {
 DOMSelect.prototype.enable = function (enable) {
     this.element.disabled = !enable;
 };
+
 DOMSelect.prototype.getConfigurationSheet = function () {
     return { "options": {} };
 };
@@ -850,23 +945,28 @@ DOMSelect.prototype.getConfigurationSheet = function () {
 function DOMCanvas(config) {
     DOMVisual.call(this, config, null, document.createElement('canvas'));
 }
+
 DOMCanvas.prototype = new DOMVisual();
 
 DOMCanvas.prototype.setWidth = function (w) {
     this.element.setAttribute('width', w);
     return this;
 };
+
 DOMCanvas.prototype.setHeight = function (h) {
     this.element.setAttribute('height', h);
     return this;
 };
+
 DOMCanvas.prototype.getContext2D = function () {
     // return the 2d context
     return this.element.getContext('2d');
 };
+
 DOMCanvas.prototype.toDataURL = function () {
     return this.element.toDataURL.apply(this.element, arguments);
 };
+
 DOMCanvas.prototype.getConfigurationSheet = function () {
     return { "width": {}, "height": {} };
 };
@@ -887,8 +987,17 @@ exports.createFullScreenApplication = function (child) {
             dimensions: [100, 100, 0],
             positions: {
                 root: {
-                    matrix: [ 100, 0, 0, 0,   0, 100, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                    matrix: [
+                        100, 0, 0, 0, 0, 100, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+                    ],
+                    snapping: {
+                        left: 'px',
+                        right: 'px',
+                        width: 'auto',
+                        top: 'px',
+                        bottom: 'px',
+                        height: 'auto'
+                    }
                 }
             }
         }
@@ -904,7 +1013,9 @@ exports.createFullScreenApplication = function (child) {
     viz.element.style.bottom = '0px';
     viz.element.style.position = 'absolute';
     function updateTopLayout() {
-        viz.setDimensions([viz.element.offsetWidth, viz.element.offsetHeight, 0]);
+        viz.setDimensions(
+            [viz.element.offsetWidth, viz.element.offsetHeight, 0]
+        );
     }
     viz.on('resize', function () {
         updateTopLayout();
