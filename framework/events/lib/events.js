@@ -9,23 +9,28 @@ function ensureEvents(ee) {
     }
     return ee._events;
 }
+
 // I decided to adopt Node's event emitting API and implemented it here
 function EventEmitter() {
 }
-EventEmitter.prototype.addListener = EventEmitter.prototype.on = function (event, listener) {
-    var events = ensureEvents(this);
-    if (!events[event]) {
-        events[event] = listener;
-    } else if (events[event] instanceof Array) {
-        events[event].push(listener);
-    } else {
-        events[event] = [ this._events[event], listener ];
-    }
-    // we should check for max Events
-    // we should fire an event for addListener
-    this.emit('addListener', event, listener);
-    return this;
-};
+
+EventEmitter.prototype.addListener =
+    EventEmitter.prototype.on =
+    function (event, listener) {
+        var events = ensureEvents(this);
+        if (!events[event]) {
+            events[event] = listener;
+        } else if (events[event] instanceof Array) {
+            events[event].push(listener);
+        } else {
+            events[event] = [ this._events[event], listener ];
+        }
+        // we should check for max Events
+        // we should fire an event for addListener
+        this.emit('addListener', event, listener);
+        return this;
+    };
+
 EventEmitter.prototype.once = function (event, listener) {
     var that = this;
     function onetime() {
@@ -35,6 +40,7 @@ EventEmitter.prototype.once = function (event, listener) {
     this.on(event, onetime);
     return this;
 };
+
 EventEmitter.prototype.removeListener = function (event, listener) {
     var events, i, n, handlers;
     if (this._events) {
@@ -57,15 +63,18 @@ EventEmitter.prototype.removeListener = function (event, listener) {
     }
     return this;
 };
+
 EventEmitter.prototype.removeAllListeners = function (event) {
     if (this._events) {
         delete this._events[event];
     }
     return this;
 };
+
 EventEmitter.prototype.setMaxListeners = function (n) {
     // FIXME: NOT SUPPORTED YET (this behaves weirdly in node)
 };
+
 // this sucks badly (imo) because we get something and something potentially
 // gets created.
 EventEmitter.prototype.listeners = function (event) {
@@ -78,6 +87,7 @@ EventEmitter.prototype.listeners = function (event) {
     }
     return ret;
 };
+
 // same as above without altering the emitter
 EventEmitter.prototype.getListeners = function (event) {
     var ret;
@@ -92,6 +102,7 @@ EventEmitter.prototype.getListeners = function (event) {
     }
     return ret;
 };
+
 EventEmitter.prototype.emit = function (event) {
     var events = this._events,
         ret = false,
