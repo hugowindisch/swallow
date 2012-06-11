@@ -31,18 +31,23 @@
  */
 
 //"use strict";
+/*global Float32Array */
 
 var vec3 = exports.vec3 = {},
     mat3 = exports.mat3 = {},
     mat4 = exports.mat4 = {},
     quat4 = exports.quat4 = {},
-    glMatrixArrayType,
-    MatrixArray = glMatrixArrayType = exports.glMatrixArrayType = exports.matrixArray = (typeof Float32Array !== 'undefined') ? Float32Array : Array;
+    glMatrixArrayType = (typeof Float32Array !== 'undefined') ?
+        Float32Array : Array,
+    MatrixArray =
+        exports.glMatrixArrayType =
+        exports.matrixArray =
+        glMatrixArrayType;
 
 /*
  * vec3
  */
- 
+
 /**
  * Creates a new instance of a vec3 using the default array type
  * Any javascript array-like objects containing at least 3 numeric elements can serve as a vec3
@@ -333,8 +338,8 @@ vec3.dist = function (vec, vec2) {
     var x = vec2[0] - vec[0],
         y = vec2[1] - vec[1],
         z = vec2[2] - vec[2];
-        
-    return Math.sqrt(x*x + y*y + z*z);
+
+    return Math.sqrt(x * x + y * y + z * z);
 };
 
 /**
@@ -352,24 +357,28 @@ vec3.dist = function (vec, vec2) {
 vec3.unproject = function (vec, view, proj, viewport, dest) {
     if (!dest) { dest = vec; }
 
-    var m = mat4.create();
-    var v = new MatrixArray(4);
-    
+    var m = mat4.create(),
+        v = new MatrixArray(4);
+
     v[0] = (vec[0] - viewport[0]) * 2.0 / viewport[2] - 1.0;
     v[1] = (vec[1] - viewport[1]) * 2.0 / viewport[3] - 1.0;
     v[2] = 2.0 * vec[2] - 1.0;
     v[3] = 1.0;
-    
+
     mat4.multiply(proj, view, m);
-    if(!mat4.inverse(m)) { return null; }
-    
+    if (!mat4.inverse(m)) {
+        return null;
+    }
+
     mat4.multiplyVec4(m, v);
-    if(v[3] === 0.0) { return null; }
+    if (v[3] === 0.0) {
+        return null;
+    }
 
     dest[0] = v[0] / v[3];
     dest[1] = v[1] / v[3];
     dest[2] = v[2] / v[3];
-    
+
     return dest;
 };
 
@@ -736,9 +745,11 @@ mat4.inverse = function (mat, dest) {
         d = (b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06),
         invDet;
 
-        // Calculate the determinant
-        if (!d) { return null; }
-        invDet = 1 / d;
+    // Calculate the determinant
+    if (!d) {
+        return null;
+    }
+    invDet = 1 / d;
 
     dest[0] = (a11 * b11 - a12 * b10 + a13 * b09) * invDet;
     dest[1] = (-a01 * b11 + a02 * b10 - a03 * b09) * invDet;
@@ -1034,7 +1045,7 @@ mat4.scale = function (mat, vec, dest) {
  *
  * @param {mat4} mat mat4 to rotate
  * @param {number} angle Angle (in radians) to rotate
- * @param {vec3} axis vec3 representing the axis to rotate around 
+ * @param {vec3} axis vec3 representing the axis to rotate around
  * @param {mat4} [dest] mat4 receiving operation result. If not specified result is written to mat
  *
  * @returns {mat4} dest if specified, mat otherwise
@@ -1477,7 +1488,7 @@ mat4.fromRotationTranslation = function (quat, vec, dest) {
     dest[13] = vec[1];
     dest[14] = vec[2];
     dest[15] = 1;
-    
+
     return dest;
 };
 
@@ -1539,8 +1550,8 @@ quat4.set = function (quat, dest) {
 
 /**
  * Calculates the W component of a quat4 from the X, Y, and Z components.
- * Assumes that quaternion is 1 unit in length. 
- * Any existing W component will be ignored. 
+ * Assumes that quaternion is 1 unit in length.
+ * Any existing W component will be ignored.
  *
  * @param {quat4} quat quat4 to calculate W component of
  * @param {quat4} [dest] quat4 receiving calculated values. If not specified result is written to quat
@@ -1569,8 +1580,9 @@ quat4.calculateW = function (quat, dest) {
  *
  * @return {number} Dot product of quat and quat2
  */
-quat4.dot = function(quat, quat2){
-    return quat[0]*quat2[0] + quat[1]*quat2[1] + quat[2]*quat2[2] + quat[3]*quat2[3];
+quat4.dot = function (quat, quat2) {
+    return quat[0] * quat2[0] + quat[1] * quat2[1] +
+        quat[2] * quat2[2] + quat[3] * quat2[3];
 };
 
 /**
@@ -1581,24 +1593,24 @@ quat4.dot = function(quat, quat2){
  *
  * @returns {quat4} dest if specified, quat otherwise
  */
-quat4.inverse = function(quat, dest) {
+quat4.inverse = function (quat, dest) {
     var q0 = quat[0], q1 = quat[1], q2 = quat[2], q3 = quat[3],
-        dot = q0*q0 + q1*q1 + q2*q2 + q3*q3,
-        invDot = dot ? 1.0/dot : 0;
-    
+        dot = q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3,
+        invDot = dot ? 1.0 / dot : 0;
+
     // TODO: Would be faster to return [0,0,0,0] immediately if dot == 0
-    
-    if(!dest || quat === dest) {
+
+    if (!dest || quat === dest) {
         quat[0] *= -invDot;
         quat[1] *= -invDot;
         quat[2] *= -invDot;
         quat[3] *= invDot;
         return quat;
     }
-    dest[0] = -quat[0]*invDot;
-    dest[1] = -quat[1]*invDot;
-    dest[2] = -quat[2]*invDot;
-    dest[3] = quat[3]*invDot;
+    dest[0] = -quat[0] * invDot;
+    dest[1] = -quat[1] * invDot;
+    dest[2] = -quat[2] * invDot;
+    dest[3] = quat[3] * invDot;
     return dest;
 };
 
