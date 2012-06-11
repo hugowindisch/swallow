@@ -14,11 +14,15 @@ function Input(config) {
     domvisual.DOMInput.call(this, config);
     this.setStyle('text');
 }
+
 Input.prototype = new (domvisual.DOMInput)();
+
 Input.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Input');
+
 Input.prototype.getDescription = function () {
     return "A text input component";
 };
+
 Input.createPreview = function () {
     return new Input({text: 'input'});
 };

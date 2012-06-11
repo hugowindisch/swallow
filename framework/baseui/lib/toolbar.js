@@ -28,7 +28,10 @@ function Toolbar(config) {
     };
 }
 Toolbar.prototype = new (domvisual.DOMElement)();
-Toolbar.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Toolbar');
+Toolbar.prototype.getActiveTheme = visual.getGetActiveTheme(
+    'baseui',
+    'Toolbar'
+);
 Toolbar.prototype.getDescription = function () {
     return "A toolbar that will show menuitems";
 };

@@ -11,7 +11,6 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction;
 
-
 function VerticalMenu(config) {
     var that = this;
     domvisual.DOMElement.call(this, config);
@@ -28,11 +27,18 @@ function VerticalMenu(config) {
         }
     });
 }
+
 VerticalMenu.prototype = new (domvisual.DOMElement)();
-VerticalMenu.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'VerticalMenu');
+
+VerticalMenu.prototype.getActiveTheme = visual.getGetActiveTheme(
+    'baseui',
+    'VerticalMenu'
+);
+
 VerticalMenu.prototype.getDescription = function () {
     return "A vertical menu";
 };
+
 VerticalMenu.prototype.theme = new (visual.Theme)({
     menuBox: {
         basedOn: [
@@ -60,6 +66,7 @@ VerticalMenu.prototype.theme = new (visual.Theme)({
         ]
     }
 });
+
 /**
     Handles keys
 */
@@ -112,6 +119,7 @@ VerticalMenu.prototype.handleKey = function (evt) {
     }
     return this;
 };
+
 /**
     Performs the action.
 */
@@ -125,6 +133,7 @@ VerticalMenu.prototype.action = function () {
     }
     return this;
 };
+
 /**
     Hides the whole menu stack
 */
@@ -136,6 +145,7 @@ VerticalMenu.prototype.hideMenuStack = function () {
     }
     return this;
 };
+
 /**
     Highlights an item.
 */
@@ -178,6 +188,7 @@ VerticalMenu.prototype.highlightItem = function (itemName) {
     }
     return this;
 };
+
 /**
     It is way easier to create something like this in HTML (because the
     automatic layouting fits this thing so well).
@@ -211,6 +222,7 @@ VerticalMenu.prototype.updateChildren = function () {
     this.numItems = numEnabledItems;
     return this;
 };
+
 VerticalMenu.prototype.createSeparator = function () {
     var table = this.children.table,
         c = table.addHtmlChild(
@@ -224,7 +236,13 @@ VerticalMenu.prototype.createSeparator = function () {
     line.addHtmlChild('div', '');
     return this;
 };
-VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIndex) {
+
+VerticalMenu.prototype.createItemHtml = function (
+    item,
+    index,
+    numEnabled,
+    numIndex
+) {
     var that = this,
         enabled = item.getEnabled(),
         table = this.children.table,
@@ -233,7 +251,8 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
         icon,
         radio,
         checked,
-        checkimg = item.getCheckedMode() === 'radio' ? 'baseui/img/menuradio.png' : 'baseui/img/menucheck.png',
+        checkimg = item.getCheckedMode() === 'radio' ?
+            'baseui/img/menuradio.png' : 'baseui/img/menucheck.png',
         c = table.addHtmlChild(
             'tr',
             '',
@@ -292,6 +311,7 @@ VerticalMenu.prototype.createItemHtml = function (item, index, numEnabled, numIn
     }
     return numEnabled;
 };
+
 VerticalMenu.prototype.setItems = function (items) {
     if (isFunction(items)) {
         this.getItems = items;
@@ -301,10 +321,13 @@ VerticalMenu.prototype.setItems = function (items) {
     this.updateChildren();
     return this;
 };
+
 VerticalMenu.prototype.getItems = function () {
     return this.items;
 };
+
 VerticalMenu.prototype.getConfigurationSheet = function () {
     return { items: {} };
 };
+
 exports.VerticalMenu = VerticalMenu;

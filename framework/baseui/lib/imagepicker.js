@@ -16,7 +16,12 @@ function ImagePicker(config) {
 }
 
 ImagePicker.prototype = new (domvisual.DOMElement)();
-ImagePicker.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'ImagePicker');
+
+ImagePicker.prototype.getActiveTheme = visual.getGetActiveTheme(
+    'baseui',
+    'ImagePicker'
+);
+
 ImagePicker.prototype.getDescription = function () {
     return "An image selection box";
 };
@@ -30,7 +35,11 @@ ImagePicker.prototype.theme = new (visual.Theme)({
     imageSelected: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'imagePickerImageSelected' }
+            {
+                factory: 'baseui',
+                type: 'Theme',
+                style: 'imagePickerImageSelected'
+            }
         ]
     }
 });

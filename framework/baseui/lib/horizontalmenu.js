@@ -46,10 +46,16 @@ function HorizontalMenu(config) {
     });
 }
 HorizontalMenu.prototype = new (domvisual.DOMElement)();
-HorizontalMenu.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'HorizontalMenu');
+
+HorizontalMenu.prototype.getActiveTheme = visual.getGetActiveTheme(
+    'baseui',
+    'HorizontalMenu'
+);
+
 HorizontalMenu.prototype.getDescription = function () {
     return "A menu bar";
 };
+
 HorizontalMenu.createPreview = function () {
     return new (domvisual.DOMImg)({url: 'baseui/img/menupreview.png'});
 };
@@ -66,17 +72,30 @@ HorizontalMenu.prototype.theme = new (visual.Theme)({
     highlighted: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'highLightedMenuTitleBackground' },
-            { factory: 'baseui', type: 'Theme', style: 'highLightedMenuTitleText' }
+            {
+                factory: 'baseui',
+                type: 'Theme',
+                style: 'highLightedMenuTitleBackground'
+            },
+            {
+                factory: 'baseui',
+                type: 'Theme',
+                style: 'highLightedMenuTitleText'
+            }
         ]
     },
     menuBar: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'menuBar' }
+            {
+                factory: 'baseui',
+                type: 'Theme',
+                style: 'menuBar'
+            }
         ]
     }
 });
+
 /**
     Handles keys
 */
@@ -107,6 +126,7 @@ HorizontalMenu.prototype.handleKey = function (evt) {
         }
     }
 };
+
 /**
     Finds accelerators. This is not perfect. If a submenu gets changed,
     its accelerators will not be automatically recomputed.
@@ -145,6 +165,7 @@ HorizontalMenu.prototype.findAccelerators = function (evt) {
     find(this.getItems());
     this.accelerators = accelerators;
 };
+
 /**
     Highlights an item.
 */
@@ -213,6 +234,7 @@ HorizontalMenu.prototype.highlightItem = function (itemName) {
         }
     }
 };
+
 /**
     It is way easier to create something like this in HTML (because the
     automatic layouting fits this thing so well).
@@ -225,7 +247,13 @@ HorizontalMenu.prototype.updateChildren = function () {
         '',
         {'style': 'menuBar' },
         'bar'
-    ).setHtmlFlowing({position: 'absolute', left: '0px', top: '0px', right: '0px', bottom: 'auto' });
+    ).setHtmlFlowing({
+        position: 'absolute',
+        left: '0px',
+        top: '0px',
+        right: '0px',
+        bottom: 'auto'
+    });
 
 
     // we now want to iterate our items and create children for them
@@ -291,12 +319,15 @@ HorizontalMenu.prototype.setItems = function (items) {
     this.updateChildren();
     return this;
 };
+
 HorizontalMenu.prototype.getItems = function () {
     return this.items;
 };
+
 HorizontalMenu.prototype.getConfigurationSheet = function () {
     return { items: null };
 };
+
 HorizontalMenu.prototype.setDimensions = function (dimensions) {
     domvisual.DOMElement.prototype.setDimensions.call(this, dimensions);
     // mixing html flowing with absolute positioning is a war...
@@ -312,4 +343,5 @@ HorizontalMenu.prototype.setDimensions = function (dimensions) {
     }
     return this;
 };
+
 exports.HorizontalMenu = HorizontalMenu;

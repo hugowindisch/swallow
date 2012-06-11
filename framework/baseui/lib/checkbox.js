@@ -16,13 +16,27 @@ var visual = require('visual'),
         positions: {
             background: {
                 order: 0,
-                matrix: [ 24, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 24, 0, 0, 0, 0, 24, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'px',
+                    width: 'auto',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             },
             image: {
                 order: 1,
-                matrix: [ 16, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   4, 4, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 16, 0, 0, 0, 0, 16, 0, 0, 0, 0, 1, 0, 4, 4, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'px',
+                    width: 'auto',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             }
         },
         children: {
@@ -65,25 +79,41 @@ function CheckBox(config) {
         });
     });
 }
+
 CheckBox.prototype = new (domvisual.DOMElement)();
-CheckBox.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'CheckBox');
+
+CheckBox.prototype.getActiveTheme = visual.getGetActiveTheme(
+    'baseui',
+    'CheckBox'
+);
+
 CheckBox.prototype.getDescription = function () {
     return "A CheckBox";
 };
+
 CheckBox.prototype.theme = new (visual.Theme)({
     normal: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'buttonBackground' }
+            {
+                factory: 'baseui',
+                type: 'Theme',
+                style: 'buttonBackground'
+            }
         ]
     },
     pressed: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground' }
+            {
+                factory: 'baseui',
+                type: 'Theme',
+                style: 'pressedButtonBackground'
+            }
         ]
     }
 });
+
 CheckBox.createPreview = function () {
     return new CheckBox({value: true});
 };
@@ -93,11 +123,13 @@ CheckBox.prototype.getConfigurationSheet = function () {
         value: null
     };
 };
+
 CheckBox.prototype.setValue = function (value) {
     this.value = Boolean(value);
     this.children.image.setVisible(this.value);
     return this;
 };
+
 CheckBox.prototype.getValue = function () {
     return this.value;
 };

@@ -23,11 +23,25 @@ function Accelerator(
     this.ctrlk = Boolean(ctrlk);
     this.metak = Boolean(metak);
 }
+
 Accelerator.prototype.toKeyString = function () {
-    return makeKeyString(this.vkCode, this.ctrlk, this.altk, this.metak, this.shiftk);
+    return makeKeyString(
+        this.vkCode,
+        this.ctrlk,
+        this.altk,
+        this.metak,
+        this.shiftk
+    );
 };
+
 Accelerator.prototype.toDecoratedVk = function () {
-    return decorateVk(this.vkCode, this.ctrlk, this.altk, this.metak, this.shiftk);
+    return decorateVk(
+        this.vkCode,
+        this.ctrlk,
+        this.altk,
+        this.metak,
+        this.shiftk
+    );
 };
 
 // it is fundamentally here that internationalization will be implemented
@@ -38,7 +52,8 @@ function MenuItem(
     subMenu,        // null, array of items, function
     accelerator,
     icon,
-    enabled,        // null, array of items, function (note: defaults to true if undefined)
+    enabled,        // null, array of items, function
+                    // (note: defaults to true if undefined)
     checkedState,   // null, true, false, function
     checkedMode     // 'radio', 'check', function returning 'radio' or 'check'
 ) {
@@ -51,7 +66,9 @@ function MenuItem(
     this.setCheckedState(checkedState);
     this.setCheckedMode(checkedMode);
 }
+
 MenuItem.prototype = new (events.EventEmitter)();
+
 MenuItem.prototype.setText = function (text) {
     // text
     if (isFunction(text)) {
@@ -62,9 +79,11 @@ MenuItem.prototype.setText = function (text) {
     this.emit('change');
     return this;
 };
+
 MenuItem.prototype.getText = function () {
     return this.text;
 };
+
 MenuItem.prototype.setAction = function (action) {
     // action
     if (isFunction(action)) {
@@ -73,6 +92,7 @@ MenuItem.prototype.setAction = function (action) {
     this.emit('change');
     return this;
 };
+
 MenuItem.prototype.action = function () {
     // call the function
     if (this.actionFcn) {
@@ -81,6 +101,7 @@ MenuItem.prototype.action = function () {
     // emit an event (this is intentionally after)
     this.emit('action');
 };
+
 MenuItem.prototype.setAccelerator = function (accelerator) {
     // accelerator
     if (isFunction(accelerator)) {
@@ -91,9 +112,11 @@ MenuItem.prototype.setAccelerator = function (accelerator) {
     this.emit('change');
     return this;
 };
+
 MenuItem.prototype.getAccelerator = function () {
     return this.accelerator;
 };
+
 MenuItem.prototype.setIcon = function (icon) {
     // icon
     if (isFunction(icon)) {
@@ -104,9 +127,11 @@ MenuItem.prototype.setIcon = function (icon) {
     this.emit('change');
     return this;
 };
+
 MenuItem.prototype.getIcon = function () {
     return this.icon;
 };
+
 MenuItem.prototype.setEnabled = function (enabled) {
     // enabled
     if (isFunction(enabled)) {
@@ -117,9 +142,11 @@ MenuItem.prototype.setEnabled = function (enabled) {
     this.emit('change');
     return this;
 };
+
 MenuItem.prototype.getEnabled = function () {
     return this.enabled;
 };
+
 MenuItem.prototype.setSubMenu = function (subMenu) {
     // submenu
     if (isFunction(subMenu)) {
@@ -130,9 +157,11 @@ MenuItem.prototype.setSubMenu = function (subMenu) {
     this.emit('change');
     return this;
 };
+
 MenuItem.prototype.getSubMenu = function () {
     return this.subMenu;
 };
+
 MenuItem.prototype.setCheckedState = function (checkedState) {
     // checked state
     if (isFunction(checkedState)) {
@@ -143,9 +172,11 @@ MenuItem.prototype.setCheckedState = function (checkedState) {
     this.emit('change');
     return this;
 };
+
 MenuItem.prototype.getCheckedState = function () {
     return this.checkedState;
 };
+
 MenuItem.prototype.setCheckedMode = function (checkedMode) {
     // checked mode
     if (isFunction(checkedMode)) {
@@ -157,8 +188,10 @@ MenuItem.prototype.setCheckedMode = function (checkedMode) {
     this.emit('change');
     return this;
 };
+
 MenuItem.prototype.getCheckedMode = function () {
     return this.checkedMode;
 };
+
 exports.MenuItem = MenuItem;
 exports.Accelerator = Accelerator;

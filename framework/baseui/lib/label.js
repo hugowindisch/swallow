@@ -17,11 +17,15 @@ function Label(config) {
 Label.createPreview = function () {
     return new (domvisual.DOMImg)({url: 'baseui/img/labelpreview.png'});
 };
+
 Label.prototype = new (domvisual.DOMElement)();
+
 Label.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Label');
+
 Label.prototype.getDescription = function () {
     return "A label";
 };
+
 Label.prototype.theme = new (visual.Theme)({
     text: {
         basedOn: [
@@ -47,7 +51,7 @@ Label.prototype.getConfigurationSheet = function () {
     return {
         text: require('config').inputConfig('Text'),
         textAlign: null,
-        bold: require('config').booleanConfig('Bold') 
+        bold: require('config').booleanConfig('Bold')
     };
 };
 
@@ -60,6 +64,5 @@ Label.prototype.setBold = function (enable) {
     this.setStyleAttributes({ fontWeight: enable ? 'bold' : null});
     return this;
 };
-
 
 exports.Label = Label;

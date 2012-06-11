@@ -15,33 +15,75 @@ var visual = require('visual'),
         positions: {
             rgba: {
                 order: 0,
-                matrix: [ 40, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   250, 0, 0, 1 ],
-                snapping: { left: 'auto', right: 'px', width: 'px', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 40, 0, 0, 0, 0, 24, 0, 0, 0, 0, 1, 0, 250, 0, 0, 1 ],
+                snapping: {
+                    left: 'auto',
+                    right: 'px',
+                    width: 'px',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             },
             hsla: {
                 order: 0,
-                matrix: [ 40, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   300, 0, 0, 1 ],
-                snapping: { left: 'auto', right: 'px', width: 'px', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 40, 0, 0, 0, 0, 30, 0, 0, 0, 0, 1, 0, 300, 0, 0, 1 ],
+                snapping: {
+                    left: 'auto',
+                    right: 'px',
+                    width: 'px',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             },
             hr: {
                 order: 0,
-                matrix: [ 340, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   0, 30, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 340, 0, 0, 0, 0, 30, 0, 0, 0, 0, 1, 0, 0, 30, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'px',
+                    width: 'auto',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             },
             sg: {
                 order: 0,
-                matrix: [ 340, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   0, 60, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 340, 0, 0, 0, 0, 30, 0, 0, 0, 0, 1, 0, 0, 60, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'px',
+                    width: 'auto',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             },
             lb: {
                 order: 0,
-                matrix: [ 340, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   0, 90, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 340, 0, 0, 0, 0, 30, 0, 0, 0, 0, 1, 0, 0, 90, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'px',
+                    width: 'auto',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             },
             a: {
                 order: 0,
-                matrix: [ 340, 0, 0, 0,   0, 30, 0, 0,    0, 0, 1, 0,   0, 120, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 340, 0, 0, 0, 0, 30, 0, 0, 0, 0, 1, 0, 0, 120, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'px',
+                    width: 'auto',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             }
         },
         children: {
@@ -137,7 +179,12 @@ function ColorPicker(config) {
 }
 
 ColorPicker.prototype = new (domvisual.DOMElement)();
-ColorPicker.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'ColorPicker');
+
+ColorPicker.prototype.getActiveTheme = visual.getGetActiveTheme(
+    'baseui',
+    'ColorPicker'
+);
+
 ColorPicker.prototype.getDescription = function () {
     return "A color picker";
 };
@@ -164,7 +211,6 @@ ColorPicker.prototype.getConfigurationSheet = function () {
         value: null
     };
 };
-
 
 ColorPicker.prototype.setValue = function (v) {
     this.value = v;
@@ -195,28 +241,40 @@ ColorPicker.prototype.showRGBA = function () {
             a = value.a;
         children.hr.setSliderBarStyleAttributes({
             backgroundImage: {
-                colors: [{ r: 0, g: g, b: b, a: a}, { r: 255, g: g, b: b, a: a}],
+                colors: [
+                    { r: 0, g: g, b: b, a: a},
+                    { r: 255, g: g, b: b, a: a}
+                ],
                 stops: [ 0, 1],
                 type: 'horizontal'
             }
         });
         children.sg.setSliderBarStyleAttributes({
             backgroundImage: {
-                colors: [{ r: r, g: 0, b: b, a: a}, { r: r, g: 255, b: b, a: a}],
+                colors: [
+                    { r: r, g: 0, b: b, a: a},
+                    { r: r, g: 255, b: b, a: a}
+                ],
                 stops: [ 0, 1],
                 type: 'horizontal'
             }
         });
         children.lb.setSliderBarStyleAttributes({
             backgroundImage: {
-                colors: [{ r: r, g: g, b: 0, a: a}, { r: r, g: g, b: 255, a: a}],
+                colors: [
+                    { r: r, g: g, b: 0, a: a},
+                    { r: r, g: g, b: 255, a: a}
+                ],
                 stops: [ 0, 1],
                 type: 'horizontal'
             }
         });
         children.a.setSliderBarStyleAttributes({
             backgroundImage: {
-                colors: [{ r: r, g: g, b: b, a: 0}, { r: r, g: g, b: b, a: 1}],
+                colors: [
+                    { r: r, g: g, b: b, a: 0},
+                    { r: r, g: g, b: b, a: 1}
+                ],
                 stops: [ 0, 1],
                 type: 'horizontal'
             }
@@ -241,10 +299,9 @@ ColorPicker.prototype.showRGBA = function () {
         updateSliderBackground();
     };
     updateSliderBackground();
-
 };
+
 ColorPicker.prototype.showHSLA = function () {
 };
-
 
 exports.ColorPicker = ColorPicker;

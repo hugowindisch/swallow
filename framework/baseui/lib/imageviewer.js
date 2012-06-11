@@ -33,11 +33,18 @@ function ImageViewer(config) {
         that.emit('load', this.url);
     });
 }
+
 ImageViewer.prototype = new (domvisual.DOMElement)();
-ImageViewer.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'ImageViewer');
+
+ImageViewer.prototype.getActiveTheme = visual.getGetActiveTheme(
+    'baseui',
+    'ImageViewer'
+);
+
 ImageViewer.prototype.getDescription = function () {
     return "An ImageViewer that keeps its aspect ratio";
 };
+
 ImageViewer.createPreview = function () {
     return new domvisual.DOMImg({url: 'domvisual/lib/imagepreview.png'});
 };
@@ -48,6 +55,7 @@ ImageViewer.prototype.getConfigurationSheet = function () {
         scaling: null
     };
 };
+
 ImageViewer.prototype.setUrl = function (value) {
     if (value !== this.url) {
         var image = this.getChild('image');
@@ -56,17 +64,21 @@ ImageViewer.prototype.setUrl = function (value) {
         image.setVisible(false);
     }
 };
+
 ImageViewer.prototype.getUrl = function () {
     return this.url;
 };
+
 ImageViewer.prototype.setScaling = function (s) {
     this.scaling = s;
 };
+
 ImageViewer.prototype.setDimensions = function (dim) {
     domvisual.DOMElement.prototype.setDimensions.call(this, dim);
     this.updateImage();
     return this;
 };
+
 ImageViewer.prototype.updateImage = function () {
     var iDim,
         dim = this.dimensions,
@@ -89,7 +101,9 @@ ImageViewer.prototype.updateImage = function () {
                     nd = [iDim[0] * sx, iDim[1] * sx, 0];
                 }
                 image.setDimensions(nd);
-                image.setTranslationMatrix([(dim[0] - nd[0]) / 2, (dim[1] - nd[1]) / 2, 0]);
+                image.setTranslationMatrix(
+                    [(dim[0] - nd[0]) / 2, (dim[1] - nd[1]) / 2, 0]
+                );
                 break;
             case 'fitw':
             case 'fith':
@@ -103,4 +117,5 @@ ImageViewer.prototype.updateImage = function () {
         }
     }
 };
+
 exports.ImageViewer = ImageViewer;

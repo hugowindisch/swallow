@@ -19,6 +19,7 @@ function Folder(config) {
     this.indent = 10;
     this.updateChildren();
 }
+
 Folder.prototype = new (domvisual.DOMElement)();
 
 Folder.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Folder');

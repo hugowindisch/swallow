@@ -16,13 +16,27 @@ var visual = require('visual'),
         positions: {
             background: {
                 order: 0,
-                matrix: [ 400, 0, 0, 0,   0, 200, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 400, 0, 0, 0, 0, 200, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'px',
+                    width: 'auto',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             },
             text: {
                 order: 1,
-                matrix: [ 380, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   10, 92, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'cpx', bottom: 'cpx', height: 'auto' }
+                matrix: [ 380, 0, 0, 0, 0, 16, 0, 0, 0, 0, 1, 0, 10, 92, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'px',
+                    width: 'auto',
+                    top: 'cpx',
+                    bottom: 'cpx',
+                    height: 'auto'
+                }
             }
         },
         children: {
@@ -62,11 +76,15 @@ function Button(config) {
         });
     });
 }
+
 Button.prototype = new (domvisual.DOMElement)();
+
 Button.prototype.getDescription = function () {
     return "A Button";
 };
+
 Button.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Button');
+
 Button.prototype.theme = new (visual.Theme)({
     background: {
         basedOn: [
@@ -78,7 +96,11 @@ Button.prototype.theme = new (visual.Theme)({
     pressedBackground: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground' }
+            {
+                factory: 'baseui',
+                type: 'Theme',
+                style: 'pressedButtonBackground'
+            }
 
         ]
     },
@@ -97,6 +119,7 @@ Button.prototype.theme = new (visual.Theme)({
         ]
     }
 });
+
 Button.createPreview = function () {
     return new Button({text: 'Button'});
 };
@@ -106,6 +129,7 @@ Button.prototype.getConfigurationSheet = function () {
         text: config.inputConfig('Text')
     };
 };
+
 Button.prototype.setText = function (text) {
     this.children.text.removeAllChildren();
     this.children.text.addTextChild('div', text, null, 'text');

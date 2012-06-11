@@ -15,13 +15,27 @@ var visual = require('visual'),
         positions: {
             background: {
                 order: 0,
-                matrix: [ 100, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 100, 0, 0, 0, 0, 24, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'px',
+                    width: 'auto',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             },
             knob: {
                 order: 1,
-                matrix: [ 24, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'px', height: 'auto' }
+                matrix: [ 24, 0, 0, 0, 0, 24, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'auto',
+                    width: 'px',
+                    top: 'px',
+                    bottom: 'px',
+                    height: 'auto'
+                }
             }
         },
         children: {
@@ -43,7 +57,6 @@ var visual = require('visual'),
             }
         }
     };
-
 
 function Slider(config) {
     domvisual.DOMElement.call(this, config, group);
@@ -140,7 +153,6 @@ Slider.prototype.getConfigurationSheet = function () {
     };
 };
 
-
 Slider.prototype.applyLayout = function () {
     domvisual.DOMElement.prototype.applyLayout.call(this);
     if (this.children) {
@@ -148,7 +160,9 @@ Slider.prototype.applyLayout = function () {
             knob = children.knob,
             knobw = knob.dimensions[0],
             range = Math.max(this.dimensions[0] - knobw, 0),
-            pos = range * (this.getValue() - this.minValue) / (this.maxValue - this.minValue);
+            pos = range *
+                (this.getValue() - this.minValue) /
+                (this.maxValue - this.minValue);
         knob.setTranslationMatrix([pos, 0, 0]);
     }
     return this;
