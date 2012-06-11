@@ -5,9 +5,6 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3,
     isFunction = utils.isFunction;
 
 function Label(config) {

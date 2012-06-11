@@ -7,9 +7,6 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
     config = require('config'),
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3,
     group = {
         // authoring dimension
         dimensions: [ 24, 24, 0],
