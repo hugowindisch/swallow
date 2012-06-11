@@ -1,7 +1,8 @@
 /**
-    visual.js
-
-    Copyright (c) Hugo Windisch 2012 All Rights Reserved
+* visual.js
+*
+* @author Hugo Windisch
+* Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 /*global define*/
 var utils = require('utils'),
@@ -21,7 +22,6 @@ var utils = require('utils'),
     setChildrenDirty = dirty.setChildrenDirty,
     EventEmitter = events.EventEmitter,
     defaultNameIndex = 0;
-
 
 function forVisualAndAllChildrenDeep(v, fcn) {
     fcn(v);
@@ -67,7 +67,8 @@ function matrixIsTranslateOnly(matrix) {
 }
 
 function vec3IsEqual(v1, v2) {
-    return v1 === v2 || (v1 && v2 && v1[0] === v2[0] && v1[1] === v2[1] && v1[3] === v2[3]);
+    return v1 === v2 ||
+        (v1 && v2 && v1[0] === v2[0] && v1[1] === v2[1] && v1[3] === v2[3]);
 }
 
 function updateChildrenPositions(v) {
@@ -78,12 +79,15 @@ function updateChildrenPositions(v) {
     }
 }
 
-
 /**
-    A visual.
-    A visual can contain other visuals.
-    It has a position.
-    It can render itself in its container (DOM, canvas, webgl)
+* A visual element.
+* It can contain other visual elements.
+* It can render itself in its container (ex: the DOM).
+*
+* @constructor the constructor
+* @param {Object} config the configuration for this visual.
+* @param {Object} groupData the editor data for this visual.
+* @api visual
 */
 function Visual(config, groupData) {
     this.containmentDepth = 0;
@@ -97,15 +101,20 @@ function Visual(config, groupData) {
         this.setConfiguration(config);
     }
 }
+
 Visual.prototype = new EventEmitter();
+
+/**
+* Returns the description of this visual element.
+* @returns {String} The textual description of this visual element.
+*/
 Visual.prototype.getDescription = function () {
     return 'Visual Component';
 };
-Visual.prototype.getSize = function () {
-};
 
 /**
-    Returns a default (unique) name
+* Returns a default (unique) name
+* @private
 */
 Visual.prototype.getDefaultName = function () {
     var ret = 'visual' + defaultNameIndex;
@@ -114,7 +123,11 @@ Visual.prototype.getDefaultName = function () {
 };
 
 /**
-    Returns the full name from the current visual (useful for debugging)
+* Returns the full name of the current visual (useful for debugging). The
+* full name is a dot separated string containing the names of all parents,
+* ex: 'a.b.c', assuming that this visual component is named 'c', its parent
+* is named 'b' and the topmost visual element is named 'a'.
+* @returns {String} the full name of this visual component.
 */
 Visual.prototype.getFullName = function () {
     var n = this.name;
@@ -125,9 +138,12 @@ Visual.prototype.getFullName = function () {
 };
 
 /**
-    Allows scaling. When a visual is moved to a given position, it
-    is resized. The resizing part of the transformation can either be
-    interpreted as a scaling or as a resizing.
+* Allows scaling. When a visual is moved to a given position, it
+* is resized. The resizing part of the transformation can either be
+* interpreted as a scaling or as a resizing.
+* @param (Boolean) enable determines if scaling of sizing will be used when
+*               moving this visual component to a given position.
+* @returns {Visual} this
 */
 Visual.prototype.enableScaling = function (enable) {
     enable = (enable === true);
@@ -138,25 +154,28 @@ Visual.prototype.enableScaling = function (enable) {
             applyLayout(parent.dimensions, parent.layout, this);
         }
     }
+    return this;
 };
 
 /**
-    Allows (or disallows) user interactions (mouse, keyboard). Disallowing
-    interactions can be used to display a component as a passive preview.
-    By default, interactions are always enabled.
-
-    // this function is implemented by subclasses
+* Allows (or disallows) user interactions (mouse, keyboard). Disallowing
+* interactions can be used to display a component as a passive preview.
+* By default, interactions are always enabled. This can be used to set a
+* visual component to 'preview only' mode.
+* @param {Boolean} enable Enables or disables interactions
+* @returns {Visual} this
 */
 Visual.prototype.enableInteractions = function (enable) {
-    throw new Error('enableInteractions should be implemented by concrete subclasses.');
+    throw new Error(
+        'enableInteractions should be implemented by concrete subclasses.'
+    );
 };
 
 /**
-    Sets the dimension  of the visual
-    (the dimensions are defined as an Array ... compatible with glmatrix)
-
-    'auto' for any of this will make the dimension determined
-    by the content of the box.
+* Sets the dimension  of the visual
+* (the dimensions are defined as a 3d vector)
+* @param v3 {vec3} The dimensions of this visual element.
+* @returns {Visual} this
 */
 Visual.prototype.setDimensions = function (v3) {
     var dimensions = this.dimensions;
@@ -168,27 +187,32 @@ Visual.prototype.setDimensions = function (v3) {
     }
     return this;
 };
+
 /**
-    Checks that this visual is unsconstrained.
+* Checks that this visual is unsconstrained.
+* @private
 */
 Visual.prototype.isUnconstrained = function () {
     return this.position === undefined || this.htmlFlowingApplySizing;
 };
+
 /**
-    Sets a requested dimension. This allows a contained element to
-    resize its container to fit its size under certain circumstances.
-    If the container is unconstrained and that the element is at a
-    position that allows the container to resize (e.g. the position has
-    an auto height or an auto width), the position is unconstrained,
-    and the container is free to resize itself, the dedimensioning will
-    happen.
+* Sets a requested dimension. This allows a contained element to
+* resize its container to fit its size under certain circumstances.
+* If the container is unconstrained and that the element is at a
+* position that allows the container to resize (e.g. the position has
+* an auto height or an auto width), the position is unconstrained,
+* and the container is free to resize itself, the dedimensioning will
+* happen.
+* @private
 */
 Visual.prototype.requestDimensions = function (v3) {
     var parent;
     // note: we compare with the actual dimensions, if they don't match
     // we still do everything (i.e. potentially ask our outer container
     // to do something)...
-    // note: some more thought must be given to the 'reverse' resizing of things.
+    // note: some more thought must be given to the 'reverse' resizing of
+    // things.
     if (!vec3IsEqual(this.dimensions, v3)) {
         if (!v3) {
             delete this.requestedDimensions;
@@ -200,14 +224,18 @@ Visual.prototype.requestDimensions = function (v3) {
             } else {
                 parent = this.parent;
                 // ask my container
-                parent.requestDimensions(parent.getDimensionsAdjustedForContent());
+                parent.requestDimensions(
+                    parent.getDimensionsAdjustedForContent()
+                );
             }
         }
     }
     return this;
 };
+
 /**
-    This will compute the dimensions from the content if possible.
+* This will compute the dimensions from the content if possible.
+* @private
 */
 Visual.prototype.getDimensionsAdjustedForContent = function () {
     //-------------------
@@ -220,7 +248,11 @@ Visual.prototype.getDimensionsAdjustedForContent = function () {
             var pos = c.getPositionObject(),
                 newd;
             if (pos !== null && pos.isUnconstrained()) {
-                newd = position.computeReverseDimensioning(dimensions, that.layout, c);
+                newd = position.computeReverseDimensioning(
+                    dimensions,
+                    that.layout,
+                    c
+                );
                 if (ret === undefined || newd[0] < ret[0] || newd[1] < ret[1]) {
                     ret = newd;
                 }
@@ -230,42 +262,35 @@ Visual.prototype.getDimensionsAdjustedForContent = function () {
     // now, we no our requested dimensions
     return ret;
 };
+
 /**
-    Sets the matrix.
-    Note that setting the matrix directly can have no effect if this visual
-    has a 'position' (the position will regenerate the matrix).
+* Sets the matrix.
+* Note that setting the matrix directly can have no effect if this visual
+* has a 'position' (the position will regenerate the matrix).
+* @param m4 {mat4} the matrix.
+* @returns {Visual} this
 */
 Visual.prototype.setMatrix = function (m4) {
     this.matrix = m4;
     setDirty(this, 'matrix');
     return this;
 };
+
 /**
-    Sets a simple translation matrix.
+* Sets a simple translation matrix.
+* @param pos {vec3} The translation matrix for this visual component.
+* @returns {Visual} this
 */
 Visual.prototype.setTranslationMatrix = function (pos) {
-    this.setMatrix(glmatrix.mat4.create([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, pos[0], pos[1], pos[2], 1]));
+    this.setMatrix(glmatrix.mat4.create(
+        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, pos[0], pos[1], pos[2], 1]
+    ));
     return this;
 };
+
 /**
-    Sets the matrix with a matrix that is normalized to scale a unity
-    rect to the position and dimensions that we need. The matrix is transformed
-    by removing our scaling factor.
-    Note that setting the matrix directly can have no effect if this visual
-    has a 'position' (the position will regenerate the matrix).
-*/
-/*Visual.prototype.setNormalizedMatrix = function (m4) {
-    var dimensions = this.dimensions;
-    this.setMatrix(
-        glmatrix.mat4.scale(
-            m4,
-            [1 / dimensions[0], 1 / dimensions[1], 1],
-            glmatrix.mat4.create()
-        )
-    );
-};*/
-/**
-    Returns the matrix.
+* Returns the matrix.
+* @returns {mat4} The current transformation matrix of this visual component.
 */
 Visual.prototype.getMatrix = function () {
     var matrix = this.matrix || glmatrix.mat4.identity();
@@ -273,24 +298,28 @@ Visual.prototype.getMatrix = function () {
 };
 
 /**
-    Checks that only translation is needed on this visual.
+* Checks that only translation is needed on this visual.
+* @returns {Boolean} true if the transformation matrix only contains
+*           translations.
 */
 Visual.prototype.isOnlyTranslated = function () {
     matrixIsTranslateOnly(this.matrix);
 };
-/**
-    Returns the 'display' matrix. This can be overridden in subclasses
-    that do nothing with the real matrix but and display the element differently.
-    The only known case of this is when an element uses the normal html
-    flowing or scrolling: the real positionning is determined by the html engine.
 
-    This should be private (well...)
+/**
+* Returns the 'display' matrix. This can be overridden in subclasses
+* that do nothing with the real matrix but and display the element differently.
+* The only known case of this is when an element uses the normal html
+* flowing or scrolling: the real positionning is determined by the html engine.
+* @private
 */
 Visual.prototype.getDisplayMatrix = function () {
     return this.getMatrix();
 };
+
 /**
-    Returns the full display matrix (i.e. the combined matrix of all parents).
+* Returns the full display matrix (i.e. the combined matrix of all parents).
+* @returns {mat4} the full display matrix of this component.
 */
 Visual.prototype.getFullDisplayMatrix = function (inverse) {
     dirty.update();
@@ -304,8 +333,11 @@ Visual.prototype.getFullDisplayMatrix = function (inverse) {
     }
     return mat;
 };
+
 /**
-    Sets the opacity of the visual (1 = fully opaque, 0 = fully transparent).
+* Sets the opacity of the visual (1 = fully opaque, 0 = fully transparent).
+* @param {Number} opacity A number between 0 and 1 1 being fully opaque.
+* @returns {Visual} this
 */
 Visual.prototype.setOpacity = function (opacity) {
     opacity = Number(opacity);
@@ -324,7 +356,8 @@ Visual.prototype.setOpacity = function (opacity) {
 };
 
 /**
-    Returns the opacity of the visual.
+* Returns the opacity of the visual.
+* @returns {Number} The opacity of this visual component (1 being fully opaque).
 */
 Visual.prototype.getOpacity = function () {
     var opacity = this.opacity;
@@ -335,16 +368,11 @@ Visual.prototype.getOpacity = function () {
 };
 
 /**
-    Sets the position. The position is either a string
-    (referring to a position name in the parent layout) OR
-    a position object created with one of the following constructors:
-        position.FlowPosition
-        position.AbsolutePosition
-        position.TransformPosition
-    OR nothing
-
-    Note that a position is not necessarily a matrix. It is a way
-    to compute a matrix (or style) given the size of the parent container.
+* Sets the position. The position is a string that gives the name of the postion
+* to which this visual coponent is placed (in the current layout of this
+* visual component's container).
+* @param {String} position The name of the position to use.
+* @returns {Visual} this
 */
 Visual.prototype.setPosition = function (position) {
     if (this.position !== position) {
@@ -356,6 +384,11 @@ Visual.prototype.setPosition = function (position) {
     }
     return this;
 };
+
+/**
+* Returns the position.
+* @returns {String} The position of this visual component (in its container).
+*/
 Visual.prototype.getPosition = function () {
     return this.position;
 };
@@ -373,25 +406,36 @@ Visual.prototype.getPositionObject = function () {
     }
     return position || null;
 };
+
 /**
-    When a visual is a group it will use a layout object to move its
-    children when it is itself moved.
-    The layout can be manipulated programmatically. This allows to
-    implement stuff like separator bars that work in harmony with
-    everything else.
+* When a visual is a group it will use a layout object to move its
+* children when it is itself moved.
+* @param {Object} groupData The data generated by the editor for this visual
+*               element or a compatible alternate layout.
+* @returns {Visual} this
 */
 Visual.prototype.setLayout = function (groupData) {
-    this.layout = new (position.Layout)(groupData.dimensions, groupData.positions);
+    this.layout = new position.Layout(
+        groupData.dimensions,
+        groupData.positions
+    );
     this.applyLayout();
     return this;
 };
+
+/**
+* Returns the layout of this visual element.
+* @returns {Object} The current layout of this visual element (container).
+*/
 Visual.prototype.getLayout = function () {
     return this.layout;
 };
+
 /**
-    Returns the 'natural' dimensions of the element or default dimension.
-    This can be overriden but by default will return the layout dimensions.
-    It is ok to return null.
+* Returns the 'natural' dimensions of the element or default dimension.
+* This can be overriden but by default will return the layout dimensions.
+* It is ok to return null.
+* @returns {vec3} The natural dimensions of this visual element.
 */
 Visual.prototype.getNaturalDimensions = function () {
     if (this.layout) {
@@ -399,18 +443,27 @@ Visual.prototype.getNaturalDimensions = function () {
     }
     return null;
 };
-/**
-    This is called each time a container decides to reposition all its children
-    (mainly when its dimensions changes but also if its layout changes).
 
-    Note: this function can be overridden by subclasses that wish to control
-    the positioning of their children (relative to their dimensions) by
-    themselves.
+/**
+* This is called each time a container decides to reposition all its children
+* (mainly when its dimensions changes but also if its layout changes).
+*
+* Note: this function can be overridden by subclasses that wish to control
+* the positioning of their children (relative to their dimensions) by
+* themselves.
 */
 Visual.prototype.applyLayout = function () {
     updateChildrenPositions(this);
 };
 
+/**
+* Adds a child to this container. If no name is specified a name will be
+* automatically generated.
+* @param {Visual} child The child to add.
+* @param {String} name the (optional) name of the child.
+* @param (Number) atOptionalOrder The optional depth of the component.
+* @returns {Visual} this
+*/
 Visual.prototype.addChild = function (child, name, atOptionalOrder) {
     name = name || this.getDefaultName();
     if (this.children && this.children[name]) {
@@ -437,7 +490,12 @@ Visual.prototype.addChild = function (child, name, atOptionalOrder) {
         } else if (atOptionalOrder === this.numChildren) {
             child.order = atOptionalOrder;
         } else {
-            throw new Error('Invalid order ' + atOptionalOrder + 'must be between 0 and ' + this.numChildren);
+            throw new Error(
+                'Invalid order ' +
+                    atOptionalOrder +
+                    'must be between 0 and ' +
+                    this.numChildren
+            );
         }
     } else {
         child.order = this.numChildren;
@@ -449,6 +507,11 @@ Visual.prototype.addChild = function (child, name, atOptionalOrder) {
     applyLayout(this.dimensions, this.layout, child);
     return this;
 };
+
+/**
+* Resolves a child name.
+* @private
+*/
 Visual.prototype.resolveChild = function (child) {
     // allow the use of a name
     if (isString(child)) {
@@ -463,6 +526,12 @@ Visual.prototype.resolveChild = function (child) {
     }
     return child;
 };
+
+/**
+* Removes a child from this container (its parent).
+* child {String} The child to remove. Can optionally be the child itself.
+* @returns {Visual} this
+*/
 Visual.prototype.removeChild = function (child, unsafeBreakContainer) {
     var order;
     child = this.resolveChild(child);
@@ -489,6 +558,11 @@ Visual.prototype.removeChild = function (child, unsafeBreakContainer) {
     }
     return this;
 };
+
+/**
+* Removes all children from this component.
+* @returns {Visual} this
+*/
 Visual.prototype.removeAllChildren = function () {
     var that = this;
     forEachProperty(this.children, function (c) {
@@ -496,9 +570,20 @@ Visual.prototype.removeAllChildren = function () {
     });
     return this;
 };
+
+/**
+* Returns the (read only) array of children of this component.
+* @returns {Array} the array of children.
+*/
 Visual.prototype.getChildren = function () {
     return this.children || {};
 };
+
+/**
+* Returns a given child of this component.
+* @param {String} name The name of the child to return.
+* @returns {Visual} the child if it exists.
+*/
 Visual.prototype.getChild = function (name) {
     var ch;
     if (this.children) {
@@ -506,6 +591,12 @@ Visual.prototype.getChild = function (name) {
     }
     return ch;
 };
+
+/**
+* Returns a child at a given depth (order).
+* @param {Number} order the Depth of the child to return.
+* @returns {Visual} the child at the specified depth.
+*/
 Visual.prototype.getChildAtOrder = function (d) {
     var ch;
     forEachProperty(this.children, function (c) {
@@ -515,6 +606,11 @@ Visual.prototype.getChildAtOrder = function (d) {
     });
     return ch;
 };
+
+/**
+* Returns a sibling of the current component.
+* @param {String}
+*/
 Visual.prototype.getSibling = function (name) {
     var ret,
         parent = this.parent;
@@ -523,9 +619,19 @@ Visual.prototype.getSibling = function (name) {
     }
     return ret;
 };
+
+/**
+* Returns the parent of the current component.
+* @returns {Visual} the parent of this visual component.
+*/
 Visual.prototype.getParent = function () {
     return this.parent;
 };
+
+/**
+* Swaps the orders (depths) of two children of this component.
+* @returns {Visual} this
+*/
 Visual.prototype.swapOrder = function (d1, d2) {
     var o1 = utils.isNumber(d1) ? this.getChildAtOrder(d1) : this.children[d1],
         o2 = utils.isNumber(d2) ? this.getChildAtOrder(d2) : this.children[d2],
@@ -535,18 +641,49 @@ Visual.prototype.swapOrder = function (d1, d2) {
     setDirty(this, 'childrenOrder');
     return this;
 };
+
+/**
+* Not currently supported.
+* @returns {Visual} this
+* @private
+*/
 Visual.prototype.increaseOrder = function (d) {
     return this;
 };
+
+/**
+* Not currently supported.
+* @returns {Visual} this
+* @private
+*/
 Visual.prototype.decreaseOrder = function (d) {
     return this;
 };
+
+/**
+* Not currently supported.
+* @returns {Visual} this
+* @private
+*/
 Visual.prototype.toMaxOrder = function (d) {
     return this;
 };
+
+/**
+* Not currently supported.
+* @returns {Visual} this
+* @private
+*/
 Visual.prototype.toMinOrder = function (d) {
     return this;
 };
+
+/**
+* Move the toMove child before the ref child.
+* @param {String} toMove The name of the child to move.
+* @param {String} ref The name of the reference child.
+* @returns {Visual} this
+*/
 Visual.prototype.orderBefore = function (toMove, ref) {
     if (toMove === ref) {
         return;
@@ -572,6 +709,13 @@ Visual.prototype.orderBefore = function (toMove, ref) {
     }
     return this;
 };
+
+/**
+* Move the toMove child after the ref child.
+* @param {String} toMove The name of the child to move.
+* @param {String} ref The name of the reference child.
+* @returns {Visual} this
+*/
 Visual.prototype.orderAfter = function (toMove, ref) {
     if (toMove === ref) {
         return;
@@ -599,10 +743,11 @@ Visual.prototype.orderAfter = function (toMove, ref) {
 };
 
 /**
-    Called to update the visual part.
-    NOTE: this should not be overriden in components. This should only be
-    implemented in subclasses that port the Visual to a new rendering
-    system (ex: DOM, Canvas, WebGL)
+* Called to update the visual part.
+* NOTE: this should not be overriden in components. This should only be
+* implemented in subclasses that port the Visual to a new rendering
+* system (ex: DOM, Canvas, WebGL)
+* @private
 */
 Visual.prototype.update = function (why) {
     var container;
@@ -633,29 +778,50 @@ Visual.prototype.update = function (why) {
 };
 
 /**
-    Stub implementations.
+* @private
 */
 Visual.prototype.updateMatrixRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
+
+/**
+* @private
+*/
 Visual.prototype.updateDimensionsRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
+
+/**
+* @private
+*/
 Visual.prototype.updateChildrenOrderRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
+
+/**
+* @private
+*/
 Visual.prototype.updateStyleRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
+
+/**
+* @private
+*/
 Visual.prototype.updateOpacityRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
+
+/**
+* @private
+*/
 Visual.prototype.updateDone = function () {
     // do nothing, don't complain
 };
 
 /**
-    Creates multiple children from a description like:
+* Creates multiple children from a description like:
+* @private
 */
 Visual.prototype.createChildren = function (groupData) {
     var isFunction = utils.isFunction,
@@ -694,7 +860,12 @@ Visual.prototype.createChildren = function (groupData) {
         }
         Constr = fact[it.type];
         if (!Constr) {
-            throw new Error('unknown constructor ' + it.type + ' in factory ' + it.factory);
+            throw new Error(
+                'unknown constructor ' +
+                    it.type +
+                    ' in factory ' +
+                    it.factory
+            );
         }
 
         child = new Constr(it.config);
@@ -705,7 +876,8 @@ Visual.prototype.createChildren = function (groupData) {
 };
 
 /**
-    Creates the content of this visual element from editor data.
+* Creates the content of this visual element from editor data.
+* @private
 */
 Visual.prototype.createGroup = function (groupData) {
     var overflowX, overflowY, skin;
@@ -730,17 +902,16 @@ Visual.prototype.createGroup = function (groupData) {
 };
 
 /**
-    Sets the configuration of this visual.
-    The config is somthing like:
-
-    {
-        data1: somestuff,
-        data2: somestuff,
-        etc: somestuff
-    }
-
-    (calling the baseclass, if you need to do so, you can always have a data
-    that is baseclassdata: {} )
+* Sets the configuration of this visual.
+* The config is somthing like:
+* {
+*     data1: somestuff,
+*     data2: somestuff,
+*     etc: somestuff
+* }
+* (calling the baseclass, if you need to do so, you can always have a data
+* that is baseclassdata: {} )
+* @private
 */
 Visual.prototype.setConfiguration = function (config) {
     if (utils.isObject(config)) {
@@ -757,34 +928,33 @@ Visual.prototype.setConfiguration = function (config) {
     return this;
 };
 
+/**
+* @private
+*/
 Visual.prototype.getSetFunctionName = function (name) {
     return 'set' + name[0].toUpperCase() + name.slice(1);
 };
 
+/**
+* @private
+*/
 Visual.prototype.getGetFunctionName = function (name) {
     return 'get' + name[0].toUpperCase() + name.slice(1);
 };
 
 /**
-    Gets data sheet (this allows the editor to edit this visual element)
-    getConfigurationSheet
-
-
-    // should create a viwer that has a
-    Sheet: {
-        myData: {
-            fcnCreateDataViewer(data)
-            fcnGetData(dataViewer)
-        }
-    }
+* Returns the configuration sheet of this component. Override this function
+* to allow the editor to configure your component.
+* @returns {Object} An object that describes the editable properties of this
+*       visual component.
 */
-Visual.prototype.getConfigurationSheet = function (config) {
+Visual.prototype.getConfigurationSheet = function () {
 };
 
 /**
-    This sets a 'local theme'. It is used by the editor. I'm not sure
-    it should be used in other contexts. Maybe even the editor could use
-    the skinning thing instead... maybe not...
+* This sets a 'local theme'. It is used by the editor. I'm not sure
+* it should be used in other contexts.
+* @private
 */
 Visual.prototype.setLocalTheme = function (theme) {
     // this dirties at least our content
@@ -796,7 +966,8 @@ Visual.prototype.setLocalTheme = function (theme) {
 };
 
 /**
-    The default version does not support skinning.
+* The default version does not support skinning.
+* @private
 */
 Visual.prototype.getActiveTheme = function () {
     if (this.hasOwnProperty('theme')) {
@@ -823,11 +994,13 @@ Visual.prototype.setStyle = function (style) {
 };
 
 /**
-    Sets the skin of the current component.
-    deep can take 3 values:
-        true,
-        false
-        'very' (very deep)
+* Sets the skin of the current component.
+* @param {Object} the skin to apply.
+* @param {String} deep can take 3 values:
+*     true,
+*    false
+*    'very' (very deep)
+* @returns {Visual} this
 */
 Visual.prototype.setSkin = function (skin, deep) {
     this.skin = skin;
@@ -839,17 +1012,20 @@ Visual.prototype.setSkin = function (skin, deep) {
             }
         });
     }
+    return this;
 };
 
 /**
-    Returns the preferred skin (which is the authoring skin for edited documents).
+* Returns the preferred skin (which is the authoring skin for edited documents).
+* @private
 */
 Visual.prototype.getPreferredSkin = function () {
     return null;
 };
 
 /**
-    Returns the style data for this visual.
+* Returns the style data for this visual.
+* @private
 */
 Visual.prototype.getStyleData = function () {
     var style = this.style,
@@ -872,9 +1048,19 @@ Visual.prototype.getStyleData = function () {
         skin = this.skin || defaultSkin;
         // this is a precise theme (fully qualified)
         try {
-            return skin.getTheme(style.factory, style.type).getStyleData(style.style);
+            return skin.getTheme(
+                style.factory,
+                style.type
+            ).getStyleData(style.style);
         } catch (e) {
-            throw new Error('Cannot find style ' + style.factory + '.' + style.type + '.' + style.style);
+            throw new Error(
+                'Cannot find style ' +
+                    style.factory +
+                    '.' +
+                    style.type +
+                    '.' +
+                    style.style
+            );
         }
     }
     // FIXME: this would be better if it came from the themes thing
@@ -883,7 +1069,14 @@ Visual.prototype.getStyleData = function () {
 };
 
 /**
-    Loads a package in a way that is coordinated with dirt handling.
+* Loads a package in a way that is coordinated with dirt handling.
+* @param {String} p the name of the package to load.
+* @param {Object} applicationDomain The application domain in which the
+*   package should be loaded (will default to the same applicationDomain
+*   as this component if set to null)
+* @param {Boolean} reload true to force reloading of the package.
+* @param {Funtion} callback an optional function to call when the loading is
+*   complete.
 */
 function loadPackage(p, applicationDomain, reload, callback) {
     applicationDomain = applicationDomain || require.applicationDomain;
@@ -896,6 +1089,9 @@ function loadPackage(p, applicationDomain, reload, callback) {
     });
 }
 
+/**
+* @private
+*/
 function getGetActiveTheme(factoryName, typeName) {
     return function () {
         var skin = this.skin;
@@ -909,6 +1105,12 @@ function getGetActiveTheme(factoryName, typeName) {
 }
 
 /**
+* Creates a prototype for a subclass of a visual element.
+* @param {String} Base the baseclass
+* @param {Object} groupData the editor data for this component.
+* @param {factoryName} the name of the package to which this component belongs.
+* @param {typeName} the name of the constructor for this component.
+* @returns {Object} the prototype.
 */
 function inheritVisual(Base, groupData, factoryName, typeName) {
     var proto = new Base(),
