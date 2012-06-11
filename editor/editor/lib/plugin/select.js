@@ -6,9 +6,6 @@
 
 var baseui = require('baseui'),
     utils = require('utils'),
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3,
     forEachProperty = utils.forEachProperty,
     deepCopy = utils.deepCopy,
     Accelerator = baseui.Accelerator,
