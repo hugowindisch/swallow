@@ -3,10 +3,7 @@
 */
 var visual = require('visual'),
     domvisual = require('domvisual'),
-    groups = require('/editor/lib/definition').definition.groups,
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    groups = require('/editor/lib/definition').definition.groups;
 
 function StyleName(config) {
     // call the baseclass

@@ -5,14 +5,11 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('/editor/lib/definition').definition.groups,
-    glmatrix = require('glmatrix'),
     baseui = require('baseui'),
     VisualList = require('./content/VisualList').VisualList,
     SelectionInfo = require('./position/SelectionInfo').SelectionInfo,
     ComponentInfo = require('./component/ComponentInfo').ComponentInfo,
-    Layering = require('./layering/Layering').Layering,
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    Layering = require('./layering/Layering').Layering;
 
 function Panel(config) {
     // call the baseclass

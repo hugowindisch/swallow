@@ -6,11 +6,8 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('/editor/lib/definition').definition.groups,
-    glmatrix = require('glmatrix'),
     ConfigurationSheet = require('/editor/lib/panel/content/ConfigurationSheet').ConfigurationSheet,
     SnapButton = require('./SnapButton').SnapButton,
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3,
     anchorColor = {
         px: 'editor_layoutAnchorPx',
         cpx: 'editor_layoutAnchorCpx',

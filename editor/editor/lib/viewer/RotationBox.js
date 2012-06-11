@@ -37,7 +37,7 @@ function RotationBox(config) {
                 dimensions = vec3.create([matrix[0], matrix[5], matrix[10]]),
                 center = vec3.create([matrix[12] + dimensions[0] / 2, matrix[13] + dimensions[1] / 2, 0]),
                 mat = that.getFDM(),
-                startpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]),
+                startpos = mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]),
                 startAngle = computeAngle(startpos, center),
                 transform = mat4.identity(),
                 endpos,
@@ -51,7 +51,7 @@ function RotationBox(config) {
                 mat = that.getFDM();
                 evt.preventDefault();
                 evt.stopPropagation();
-                endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
+                endpos = mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
                 endAngle = computeAngle(endpos, center);
                 var delta = vec3.subtract(startpos, endpos, vec3.create()),
                     newmat,

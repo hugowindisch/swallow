@@ -31,7 +31,7 @@ function SelectionBox(config) {
                 rect = that.contentRect,
                 dimensions = vec3.create([matrix[0], matrix[5], matrix[10]]),
                 mat = that.getFDM(),
-                startpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]),
+                startpos = mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]),
                 transform = mat4.identity(),
                 endpos;
             // prevent crap from happening
@@ -41,7 +41,7 @@ function SelectionBox(config) {
                 mat = that.getFDM();
                 evt.preventDefault();
                 evt.stopPropagation();
-                endpos = glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
+                endpos = mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
                 var delta = vec3.subtract(endpos, startpos, vec3.create()),
                     newmat,
                     res;

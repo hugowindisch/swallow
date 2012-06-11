@@ -5,13 +5,10 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('/editor/lib/definition').definition.groups,
-    glmatrix = require('glmatrix'),
     utils = require('utils'),
     LayerInfo = require('./LayerInfo').LayerInfo,
     forEachProperty = utils.forEachProperty,
-    forEach = utils.forEach,
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    forEach = utils.forEach;
 
 function Layering(config) {
     // call the baseclass

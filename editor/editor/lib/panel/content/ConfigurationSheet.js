@@ -5,12 +5,9 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('/editor/lib/definition').definition.groups,
-    glmatrix = require('glmatrix'),
     baseui = require('baseui'),
     utils = require('utils'),
-    forEachProperty = utils.forEachProperty,
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    forEachProperty = utils.forEachProperty;
 /*globals define */
 function ConfigurationSheet(config) {
     // call the baseclass

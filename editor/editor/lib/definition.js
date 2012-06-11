@@ -1,3 +1,7 @@
+/**
+    definition.js
+    Copyright (c) Hugo Windisch 2012 All Rights Reserved
+*/
 // The edited definition of this component
 exports.definition = {
     groups: {

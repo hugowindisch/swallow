@@ -7,10 +7,7 @@ var visual = require('visual'),
     groups = require('/editor/lib/definition').definition.groups,
     utils = require('utils'),
     forEachProperty = utils.forEachProperty,
-    forEach = utils.forEach,
-    glmatrix = require('glmatrix'),
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    forEach = utils.forEach;
 
 function featureUrl(feature, selected) {
     return 'editor/img/sp_' + feature + (selected ? '_s.png' : '.png');

@@ -4,16 +4,13 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('/editor/lib/definition').definition.groups,
-    glmatrix = require('glmatrix'),
     baseui = require('baseui'),
     StyleInfo = require('./StyleInfo').StyleInfo,
     utils = require('utils'),
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty,
     forEachSortedProperty = utils.forEachSortedProperty,
-    isString = utils.isString,
-    mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    isString = utils.isString;
 
 
 /*
