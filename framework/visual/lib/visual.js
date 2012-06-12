@@ -1101,7 +1101,7 @@ Visual.prototype.getStyleData = function () {
 function loadPackage(p, applicationDomain, reload, callback) {
     applicationDomain = applicationDomain || require.applicationDomain;
     reload = reload || false;
-    define.meat.loadPackage(p, applicationDomain, reload, function () {
+    define.pillow.loadPackage(p, applicationDomain, reload, function () {
         if (callback) {
             callback.apply(this, arguments);
         }

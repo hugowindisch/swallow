@@ -5,10 +5,10 @@
 /*globals __dirname */
 /*jslint regexp: false */
 
-var meatgrinder = require('meatgrinder'),
+var pillow = require('pillow'),
     jqtpl = require('jqtpl'),
     path = require('path'),
-    findPackages = meatgrinder.findPackages,
+    findPackages = pillow.findPackages,
     fs = require('fs'),
     path = require('path'),
     async = require('async'),

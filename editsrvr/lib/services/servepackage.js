@@ -2,10 +2,10 @@
     servepackage.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-var meatgrinder = require('meatgrinder'),
+var pillow = require('pillow'),
     jqtpl = require('jqtpl'),
     path = require('path'),
-    findPackages = meatgrinder.findPackages,
+    findPackages = pillow.findPackages,
     fs = require('fs'),
     path = require('path'),
     async = require('async'),

@@ -2,7 +2,6 @@
     ssevents.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-
 var events = require('events'),
     theMessageCount = 0,
     emitter = new events.EventEmitter();

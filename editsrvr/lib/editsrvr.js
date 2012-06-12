@@ -1,11 +1,11 @@
-#!/usr/bin/node
+#! /usr/bin/env node
 /**
     editsrvr.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
 /*globals __dirname */
 
-var meatgrinder = require('meatgrinder'),
+var pillow = require('pillow'),
     jqtpl = require('jqtpl'),
     fs = require('fs'),
     path = require('path'),
@@ -14,7 +14,8 @@ var meatgrinder = require('meatgrinder'),
     servepackagelist = require('./services/servepackagelist'),
     serveimagelist = require('./services/serveimagelist'),
     servevisualcomponent = require('./services/servevisualcomponent'),
-    ssevents = require('./services/ssevents');
+    ssevents = require('./services/ssevents'),
+    options = pillow.processArgs(process.argv.slice(2));
 
 
 jqtpl.template(
@@ -54,7 +55,7 @@ jqtpl.template(
 
 
 function getUrls(options) {
-    var urls = meatgrinder.getUrls(options);
+    var urls = pillow.getUrls(options);
     urls.unshift({
         filter: /^\/$/,
         handler: function (req, res, match) {
@@ -129,8 +130,4 @@ function getUrls(options) {
     return urls;
 }
 
-meatgrinder.serve(
-    getUrls(
-        meatgrinder.processArgs(process.argv.slice(2))
-    )
-);
+pillow.serve(getUrls(options), options.port);

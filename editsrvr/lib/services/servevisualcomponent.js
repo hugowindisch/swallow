@@ -2,10 +2,10 @@
     servevisualcomponent.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-var meatgrinder = require('meatgrinder'),
+var pillow = require('pillow'),
     jqtpl = require('jqtpl'),
     path = require('path'),
-    findPackages = meatgrinder.findPackages,
+    findPackages = pillow.findPackages,
     fs = require('fs'),
     path = require('path'),
     async = require('async'),
@@ -92,7 +92,7 @@ function serveVisualComponent(options, forEdit, monitor) {
                 },
                 options
             );
-        meatgrinder.makePackage(
+        pillow.makePackage(
             extendedOptions,
             factory,
             function (err) {
@@ -162,7 +162,7 @@ function publishVisualComponent(req, res, match, options) {
                 // override dest folder
                 extendedOptions.dstFolder = cmpFolder;
                 // make
-                meatgrinder.makePackage(
+                pillow.makePackage(
                     extendedOptions,
                     factory,
                     cb
