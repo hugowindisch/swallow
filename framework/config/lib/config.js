@@ -5,6 +5,9 @@
 */
 /*globals define */
 
+/**
+* @private
+*/
 function loadConstructor(
     factory,
     type,
@@ -31,6 +34,9 @@ function loadConstructor(
     });
 }
 
+/**
+* @private
+*/
 function leftRightConfig(
     labelTxt,
     factory,
@@ -68,6 +74,9 @@ function leftRightConfig(
     });
 }
 
+/**
+* @private
+*/
 function topBottomConfig(
     labelTxt,
     factory,
@@ -105,6 +114,13 @@ function topBottomConfig(
     });
 }
 
+/**
+* Returns a input config element (that can be used in getConfigurationSheet to
+* edit a string)
+* @param {String} label The label that should be used.
+* @returns {Function} a function that will let the editor create the appropriate
+*   input element
+*/
 function inputConfigFullLine(label) {
     return function (editor, cb) {
         topBottomConfig(
@@ -133,6 +149,13 @@ function inputConfigFullLine(label) {
     };
 }
 
+/**
+* Returns a input config element (that can be used in getConfigurationSheet to
+* edit a string)
+* @param {String} label The label that should be used.
+* @returns {Function} a function that will let the editor create the appropriate
+*   input element
+*/
 function inputConfig(label) {
     return function (editor, cb) {
         leftRightConfig(
@@ -161,6 +184,13 @@ function inputConfig(label) {
     };
 }
 
+/**
+* Returns a boolean config element (that can be used in getConfigurationSheet to
+* edit a Boolean).
+* @param {String} label The label that should be used.
+* @returns {Function} a function that will let the editor create the appropriate
+*   boolean input element
+*/
 function booleanConfig(label) {
     return function (editor, cb) {
         leftRightConfig(
@@ -193,7 +223,13 @@ function booleanConfig(label) {
     };
 }
 
-
+/**
+* Returns a style config element (that can be used in getConfigurationSheet to
+* edit a style).
+* @param {String} label The label that should be used.
+* @returns {Function} a function that will let the editor create the appropriate
+*   style editing element
+*/
 function styleConfig(labelTxt) {
     function sc(mainEditor, cb) {
         // intentionally here
@@ -243,6 +279,13 @@ function styleConfig(labelTxt) {
     return sc;
 }
 
+/**
+* Returns an image config element (that can be used in getConfigurationSheet to
+* edit an image).
+* @param {String} label The label that should be used.
+* @returns {Function} a function that will let the editor create the appropriate
+*   image editing element
+*/
 function imageUrlConfig(label) {
     return function (editor, cb) {
         var http = require('http'),
