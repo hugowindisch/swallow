@@ -33,7 +33,7 @@ function Editor(config) {
     domvisual.DOMElement.call(this, config, groups.Editor);
     // create the menu bar and toolbar
     this.setStyle('background');
-    this.setChildrenClipping('hidden');
+    this.setOverflow('hidden');
     // a bit ugly. but the viewer does not know the editor and must
     // be notifed of this.
     var viewer = this.getChild('viewer'),

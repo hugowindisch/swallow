@@ -911,7 +911,7 @@ Visual.prototype.createGroup = function (groupData) {
     overflowX = groupData.overflowX || 'visible';
     overflowY = groupData.overflowY || 'visible';
     if (overflowX !== 'visible' || overflowY !== 'visible') {
-        this.setChildrenClipping([overflowX, overflowY]);
+        this.setOverflow([overflowX, overflowY]);
     }
     // set our skin
     skin = this.getPreferredSkin();
@@ -1159,11 +1159,6 @@ function inheritVisual(Base, groupData, factoryName, typeName) {
 
 // export all what we want to export for the module
 exports.Visual = Visual;
-// this should not be there: a Visual is abstract. It should not be exposed
-// to the editor
-exports.getVisualNames = function () {
-    return [ 'Visual' ];
-};
 exports.Layout = position.Layout;
 exports.applyLayout = position.applyLayout;
 exports.Position = position.Position;

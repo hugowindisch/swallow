@@ -83,7 +83,7 @@ VisualModule.prototype.setPreview = function (Preview) {
     } else {
         // generic preview
         preview = new Preview({});
-        preview.setChildrenClipping('hidden');
+        preview.setOverflow('hidden');
         preview.enableScaling(true);
     }
     preview.setPosition('preview');

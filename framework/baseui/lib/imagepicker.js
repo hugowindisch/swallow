@@ -9,7 +9,7 @@ var visual = require('visual'),
 
 function ImagePicker(config) {
     domvisual.DOMElement.call(this, config);
-    this.setChildrenClipping([ 'auto', 'hidden']);
+    this.setOverflow([ 'auto', 'hidden']);
 }
 
 ImagePicker.prototype = new (domvisual.DOMElement)();

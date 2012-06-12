@@ -59,7 +59,7 @@ function GroupViewer(config) {
     this.defaultVisual = null;
     // maybe this will be part of the config
     this.setStyle('background');
-    this.setChildrenClipping('scroll');
+    this.setOverflow('scroll');
     // border around the group in pixels (when not scaled)
     this.groupBorderPix = 1000;
     this.showGrid = true;

@@ -124,7 +124,7 @@ function Launcher(config) {
 }
 Launcher.createPreview = function () {
     var ret = new Launcher({forPreview: true});
-    ret.setChildrenClipping('hidden');
+    ret.setOverflow('hidden');
     ret.enableScaling(true);
     return ret;
 };

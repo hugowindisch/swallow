@@ -16,8 +16,8 @@ function StyleInfo(config) {
         innerPreview;
     this.setCursor('pointer');
     this.highlight(false);
-    children.label.setChildrenClipping('hidden');
-    preview.setChildrenClipping('hidden');
+    children.label.setOverflow('hidden');
+    preview.setOverflow('hidden');
     innerPreview = new (domvisual.DOMElement)();
     preview.addChild(innerPreview, 'preview');
     innerPreview.setDimensions(preview.dimensions.slice(0));

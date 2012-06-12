@@ -13,7 +13,7 @@ var visual = require('visual'),
 function StylePreview(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.StylePreview);
-    this.setChildrenClipping('hidden');
+    this.setOverflow('hidden');
 }
 StylePreview.prototype = new (domvisual.DOMElement)();
 StylePreview.prototype.getConfigurationSheet = function () {

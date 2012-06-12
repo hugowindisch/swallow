@@ -13,8 +13,9 @@ var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     hookMap;
 
-/**
-    Filters a key event to uniformize it.
+/*
+* Filters a key event to uniformize it.
+* @private
 */
 function FilterKeyEvent(evt) {
     var ret = {
@@ -46,8 +47,9 @@ function FilterKeyEvent(evt) {
     return ret;
 }
 
-/**
-    Returns the topmost element.
+/*
+* Returns the topmost element.
+* @private
 */
 function getTopmostElement(vis) {
     // should be done on the topmost node
@@ -58,8 +60,9 @@ function getTopmostElement(vis) {
     return el;
 }
 
-/**
-    Our event hooks
+/*
+* Our event hooks
+* @private
 */
 hookMap = {
     keydown: {
@@ -163,8 +166,9 @@ hookMap = {
 
 };
 
-/**
-    Creates a handler for a given event name.
+/*
+* Creates a handler for a given event name.
+* @private
 */
 function createHandler(name, vis, filter) {
     return function (evt) {
@@ -177,8 +181,9 @@ function createHandler(name, vis, filter) {
     };
 }
 
-/**
-    Adds dom event hooks to v if necessary.
+/*
+* Adds dom event hooks to v if necessary.
+* @private
 */
 function enforceDOMHooks(v) {
     var ret = v.domHooks;
@@ -188,8 +193,9 @@ function enforceDOMHooks(v) {
     return ret;
 }
 
-/**
-    Unhooks a dom handler.
+/*
+* Unhooks a dom handler.
+* @private
 */
 function removeDOMHook(v, event, hook) {
     var hooks = v.domHooks,
@@ -206,8 +212,9 @@ function removeDOMHook(v, event, hook) {
     }
 }
 
-/**
-    Hooks a dom handler.
+/*
+* Hooks a dom handler.
+* @private
 */
 function addDOMHook(v, event, hook) {
     var hooks = enforceDOMHooks(v);
@@ -224,9 +231,10 @@ function addDOMHook(v, event, hook) {
 }
 
 /**
-    This will inspect the type of events that we have and update the
-    dom event hooks accordingly (i.e. connect us to the keyboard and mouse
-    or not).
+* This will inspect the type of events that we have and update the
+* dom event hooks accordingly (i.e. connect us to the keyboard and mouse
+* or not).
+* @private
 */
 updateDOMEventHooks = function (v) {
     var enabled = v.connectedToTheStage,

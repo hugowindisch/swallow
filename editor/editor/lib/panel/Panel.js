@@ -46,7 +46,7 @@ Panel.prototype.init = function (editor) {
     si.init(editor);
     vl.init(editor);
 
-    this.setChildrenClipping([ 'hidden', 'auto']);
+    this.setOverflow([ 'hidden', 'auto']);
     function disableUglyMouseBehaviors(evt) {
         evt.preventDefault();
         evt.stopPropagation();

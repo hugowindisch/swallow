@@ -24,6 +24,10 @@ var visual = require('visual'),
     getStyleDimensionAdjustment = styles.getStyleDimensionAdjustment,
     setDirty = dirty.setDirty;
 
+/*
+* Constructs a DOMVisual
+* @private
+*/
 function DOMVisual(config, groupData, element) {
     var that = this;
     this.element = element;
@@ -41,6 +45,10 @@ function DOMVisual(config, groupData, element) {
 
 DOMVisual.prototype = new Visual();
 
+/*
+* Adds a child to a DOMVisual
+* @private
+*/
 DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     var connectedToTheStage,
         disableInteractiveEventHooks,
@@ -79,6 +87,10 @@ DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     });
 };
 
+/*
+* Removes a child to a DOMVisual
+* @private
+*/
 DOMVisual.prototype.removeChild = function (child) {
     // it is easier to track element containement immediately instead
     // of waiting for the update function to be called.
@@ -101,6 +113,10 @@ DOMVisual.prototype.removeChild = function (child) {
     });
 };
 
+/*
+* Sets the dimensions of a DOMVisual
+* @private
+*/
 DOMVisual.prototype.setDimensions = function (d) {
     if (d[0] !== this.dimensions[0] || d[1] !== this.dimensions[1]) {
         Visual.prototype.setDimensions.apply(this, arguments);
@@ -113,6 +129,10 @@ DOMVisual.prototype.setDimensions = function (d) {
     return this;
 };
 
+/*
+* Enables/Disables interactions in a DOMVisual
+* @private
+*/
 DOMVisual.prototype.enableInteractions = function (enable) {
     var disable = !enable;
     visual.forVisualAndAllChildrenDeep(this, function (c) {
@@ -122,7 +142,9 @@ DOMVisual.prototype.enableInteractions = function (enable) {
     });
 };
 
-// we do style through css when dealing with html content
+/*
+* @private +/- deprecated
+*/
 DOMVisual.prototype.setClass = function (cssClassName) {
     var i, l;
     if (isArray(cssClassName)) {
@@ -138,6 +160,9 @@ DOMVisual.prototype.setClass = function (cssClassName) {
     return this;
 };
 
+/*
+* @private +/- deprecated
+*/
 DOMVisual.prototype.clearClass = function (cssClassName) {
     if (this.cssClasses[cssClassName]) {
         delete this.cssClasses[cssClassName];
@@ -145,6 +170,9 @@ DOMVisual.prototype.clearClass = function (cssClassName) {
     }
 };
 
+/*
+* @private
+*/
 DOMVisual.prototype.getDisplayMatrix = function () {
     var scrollX = this.element.scrollLeft,
         scrollY = this.element.scrollTop,
@@ -168,18 +196,20 @@ DOMVisual.prototype.getDisplayMatrix = function () {
 };
 
 /**
-    Flow relegates the positionning to the html engine, flowing
-    the content.
-    Note that even if we are flowed by html, we still can apply our layout
-    rules to our children and ourselves be positioned by our parent
-    (i.e. the swagup layouting is independent of the html layouting)
-
-    {
-        inline: true|false, // inline vs block html flowing
-        autoWidth,      // don't use our dimensions
-        autoHeight,     // don't use our dimensions
-    }
-    use null or undefined to disable flow
+* Flow relegates the positionning to the html engine, flowing
+* the content.
+* Note that even if we are flowed by html, we still can apply our layout
+* rules to our children and ourselves be positioned by our parent
+* (i.e. the swagup layouting is independent of the html layouting)
+* {
+*     inline: true|false, // inline vs block html flowing
+*     autoWidth,      // don't use our dimensions
+*     autoHeight,     // don't use our dimensions
+* }
+* use null or undefined to disable flow
+* @param {Object} styles extra styles to apply while flowing
+* @param {Boolean} true to size this element normally
+* @returns {DOMVisual} this.
 */
 DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
     if (this.htmlFlowing !== styles) {
@@ -194,20 +224,21 @@ DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
     return this;
 };
 
-/**
-    As an explicit but quite ugly way to allow containers
-    that have a layout to be notified of a change in underlying
-    flowed content (not that these containers may be themselves flowed).
-    we have this method (that must be called manually) (by flowed content).
-
-    (this avoids the use of DOM mutation events)
-    (this pretty ugly/convoluted... but...)
-
-
-    NOTE: we could force a getDomAccces() and releaseDomAccess for
-    dealing with explicit 'html flowed' stuff and hook the event on the release.
-
-    This may be a very bad idea.
+/*
+* As an explicit but quite ugly way to allow containers
+* that have a layout to be notified of a change in underlying
+* flowed content (not that these containers may be themselves flowed).
+* we have this method (that must be called manually) (by flowed content).
+*
+* (this avoids the use of DOM mutation events)
+* (this pretty ugly/convoluted... but...)
+*
+*
+* NOTE: we could force a getDomAccces() and releaseDomAccess for
+* dealing with explicit 'html flowed' stuff and hook the event on the release.
+*
+* This may be a very bad idea.
+* @private (poorly documented, and to be changed if possible)
 */
 DOMVisual.prototype.notifyDOMChanged = function () {
     var that = this,
@@ -236,23 +267,22 @@ DOMVisual.prototype.notifyDOMChanged = function () {
 };
 
 /**
-    Enables children clipping.
-    available modes are
-        visible hidden scroll auto
-
-    can be an array to set x and y clipping differently
+* Enables children clipping. available modes are:
+*        visible hidden scroll auto
+*
+* @param {String} mode A string or array (to separate x and y clipping mode)
+* @returns {DOMVisual} this.
 */
-// FIXME: keep only setOverflow
-DOMVisual.prototype.setChildrenClipping =
-    DOMVisual.prototype.setOverflow =
-    function (mode) {
-        this.childrenClipping = mode;
-        setDirty(this, 'style');
-        return this;
-    };
+DOMVisual.prototype.setOverflow = function (mode) {
+    this.childrenClipping = mode;
+    setDirty(this, 'style');
+    return this;
+};
 
 /**
-    Sets scrolling.
+* Sets the scrolling value of this element.
+* @param {vec3} v3 The scrolling position.
+* @returns {DOMVisual} this.
 */
 DOMVisual.prototype.setScroll = function (v3) {
     this.scroll = v3;
@@ -261,7 +291,9 @@ DOMVisual.prototype.setScroll = function (v3) {
 };
 
 /**
-    Sets visibility.
+* Sets the visibility of this eleemnt.
+* @param {Boolean} visible The visibility
+* @returns {DOMVisual} this.
 */
 DOMVisual.prototype.setVisible = function (visible) {
     if (this.visible !== visible) {
@@ -271,12 +303,18 @@ DOMVisual.prototype.setVisible = function (visible) {
     return this;
 };
 
+/**
+* Returns the visibility of this eleemnt.
+* @returns {Boolean} the visibility of this element.
+*/
 DOMVisual.prototype.getVisible = function () {
     return this.visible;
 };
 
 /**
-    Sets the cursor.
+* Sets the cursor.
+* @param {String} the cursor (ex: 'pointer')
+* @returns {DOMVisual} this.
 */
 DOMVisual.prototype.setCursor = function (cursor) {
     this.element.style.cursor = cursor;
@@ -284,9 +322,11 @@ DOMVisual.prototype.setCursor = function (cursor) {
 };
 
 /**
-    Very rough...
-    (some more thoughts must be done on this)
-rethink this... maybe this should be a parameter of setPosition ???
+* Sets the transition (to apply to all properties)... Not sure this is what
+* we ultimately want (pretty sure it is not... but for now it is this way).
+* @param {Number} duration The duration in ms
+* @param {String} easingFunction The easing function (defaults to 'easein')
+* @returns {DOMVisual} this.
 */
 DOMVisual.prototype.setTransition = function (
     duration,
@@ -303,6 +343,10 @@ DOMVisual.prototype.setTransition = function (
     return this;
 };
 
+/**
+* Clears the transition.
+* @returns {DOMVisual} this.
+*/
 DOMVisual.prototype.clearTransition = function () {
     // force update
     dirty.update();
@@ -311,6 +355,10 @@ DOMVisual.prototype.clearTransition = function () {
     setDirty(this, 'matrix');
 };
 
+/**
+* Sets the background image. This will become deprecated when we support
+* the background image thing in styles.
+*/
 DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
     repeat = repeat || 'repeat';
     var style = this.element.style;
@@ -323,6 +371,110 @@ DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
     return this;
 };
 
+/**
+* Adds some html as a child of this element (can be used to create children
+* that use plain html. i.e. to create more software components that don't use
+* the editor.
+* @param {String} tag The tag to use (e.g. 'div')
+* @param {String} text The html to use
+* @param {Object} config (any config to pass to the DOMVisual)
+* @param {String} name The name of the child
+* @returns {DOMVisual} The created child.
+*/
+DOMVisual.prototype.addHtmlChild = function (tag, text, config, name) {
+    var element = document.createElement(tag),
+        child = new DOMVisual(config, null, element);
+    element.innerHTML = text;
+    child.setHtmlFlowing({});
+    this.addChild(child, name);
+    return child;
+};
+
+/**
+* Adds some text as a child of this element (can be used to create children
+* that use plain html. i.e. to create more software components that don't use
+* the editor.
+* @param {String} tag The tag to use (e.g. 'div')
+* @param {String} text The text to use
+* @param {Object} config (any config to pass to the DOMVisual)
+* @param {String} name The name of the child
+* @returns {DOMVisual} The created child.
+*/
+DOMVisual.prototype.addTextChild = function (tag, text, config, name) {
+    var element = document.createElement(tag),
+        child = new DOMVisual(config, null, element);
+    child.element.appendChild(document.createTextNode(text));
+    child.setHtmlFlowing({});
+    this.addChild(child, name);
+    return child;
+};
+
+/**
+* Sets the html of a DOMVisual. This removes all children.
+* (note: we could have an option to keep the children... since we can
+* easily remove them first, and re add them after).
+* @param {String} html The html to use.
+* @returns {DOMVisual} this.
+*/
+DOMVisual.prototype.setInnerHTML = function (html) {
+    this.removeAllChildren();
+    this.element.innerHTML = html;
+    setDirty(this, 'matrix', 'dimensions', 'style');
+    return this;
+};
+
+/**
+* Sets the text of a DOMVisual. This removes all children.
+* @param {String} text The text to use
+* @returns {DOMVisual} this.
+*/
+DOMVisual.prototype.setInnerText = function (text) {
+    this.removeAllChildren();
+    this.element.innerHTML = '';
+    // skip obvious cases of emptyness
+    if (text !== null && text !== undefined && text !== '') {
+        this.element.appendChild(document.createTextNode(text));
+    }
+    setDirty(this, 'matrix', 'dimensions', 'style');
+    return this;
+};
+
+/**
+* Sets html (tag) attributes. This should not be useful most of the time.
+* @param {Object} attr The attributes to use.
+* @returns {DOMVisual} this.
+*/
+DOMVisual.prototype.setElementAttributes = function (attr) {
+    var element = this.element;
+    forEachProperty(attr, function (v, n) {
+        element.setAttribute(String(n), String(v));
+    });
+    return this;
+};
+
+/**
+* Sets style attributes (see styles.js for what is supported).
+* Note:
+*     - some functions could be removed because they overlap on this one
+*     - Clearing : set with null or undefined (+ uniformize this with
+*         setElementAttributes).
+*     - These attributes OVERRRIDE what is defined in the styles
+*     - FIXME: there is a clash between the setHtmlFlowing thing and this.
+* @param {Object} attr The attributes to use.
+* @returns {DOMVisual} this.
+*/
+DOMVisual.prototype.setStyleAttributes = function (attr) {
+    if (!this.styleAttributes) {
+        this.styleAttributes = {};
+    }
+    apply(this.styleAttributes, attr);
+    setDirty(this, 'style');
+    return this;
+};
+
+/*
+* @private
+*/
 DOMVisual.prototype.setStyleDimensionsAdjustment = function (v3) {
     if (!vec3IsEqual(v3, this.styleDimensionsAdjustment)) {
         if (!v3) {
@@ -340,8 +492,9 @@ DOMVisual.prototype.setStyleDimensionsAdjustment = function (v3) {
     return this;
 };
 
-/**
-    DOM update (we essentially treat the DOM as an output thing)
+/*
+* DOM update (we essentially treat the DOM as an output thing)
+* @private
 */
 DOMVisual.prototype.updateMatrixRepresentation = function () {
     if (this.element && this.name !== 'stage') {
@@ -429,6 +582,9 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
     }
 };
 
+/*
+* @private
+*/
 DOMVisual.prototype.updateDimensionsRepresentation = function () {
     function adjust(v, a) {
         if (a >= v) {
@@ -478,6 +634,9 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
     }
 };
 
+/*
+* @private
+*/
 DOMVisual.prototype.updateChildrenOrderRepresentation = function () {
     if (this.element) {
         var children = this.children,
@@ -502,6 +661,9 @@ DOMVisual.prototype.updateChildrenOrderRepresentation = function () {
     }
 };
 
+/*
+* @private
+*/
 DOMVisual.prototype.updateStyleRepresentation = function () {
     var cssClass,
         element = this.element,
@@ -533,6 +695,9 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
     }
 };
 
+/*
+* @private
+*/
 DOMVisual.prototype.updateOpacityRepresentation = function () {
     var element = this.element,
         style;
@@ -552,6 +717,9 @@ DOMVisual.prototype.updateOpacityRepresentation = function () {
     }
 };
 
+/*
+* @private
+*/
 DOMVisual.prototype.updateDone = function () {
     var element = this.element,
         style,
@@ -576,14 +744,18 @@ DOMVisual.prototype.updateDone = function () {
     }
 };
 
+/*
+* @private
+*/
 DOMVisual.prototype.getConfigurationSheet = function () {
     return { "class": {}, "style": {} };
 };
 
-/**
-    Returns the computed matrix of this element
-    (if the element uses html flowing)
-    This can go wrong (the values may not be already good... apparently)
+/*
+* Returns the computed matrix of this element
+* (if the element uses html flowing)
+* This can go wrong (the values may not be already good... apparently)
+* @private
 */
 DOMVisual.prototype.getComputedMatrix = function () {
     // this retrieves stuff for the dom, so we must be clean
@@ -596,9 +768,10 @@ DOMVisual.prototype.getComputedMatrix = function () {
     return ret;
 };
 
-/**
-    Returns the computed dimension of this element
-    (if the element uses html flowing)
+/*
+* Returns the computed dimension of this element
+* (if the element uses html flowing)
+* @private
 */
 DOMVisual.prototype.getComputedDimensions = function () {
     // this retrieves stuff for the dom, so we must be clean
@@ -616,110 +789,46 @@ DOMVisual.prototype.getComputedDimensions = function () {
     return ret;
 };
 
-/**
-    For adding a child that is implemented as plain html.
+/*
+* Runs this element full screen.
+* @private
 */
-DOMVisual.prototype.addHtmlChild = function (tag, text, config, name) {
-    var element = document.createElement(tag),
-        child = new DOMVisual(config, null, element);
-    element.innerHTML = text;
-    child.setHtmlFlowing({});
-    this.addChild(child, name);
-    return child;
-};
-
-/**
-    For adding a child that is implemented as plain text.
-*/
-DOMVisual.prototype.addTextChild = function (tag, text, config, name) {
-    var element = document.createElement(tag),
-        child = new DOMVisual(config, null, element);
-    child.element.appendChild(document.createTextNode(text));
-    child.setHtmlFlowing({});
-    this.addChild(child, name);
-    return child;
-};
-
-/**
-    Sets the html of a DOMVisual. This removes all children.
-    (note: we could have an option to keep the children... since we can
-    easily remove them first, and re add them after).
-*/
-DOMVisual.prototype.setInnerHTML = function (html) {
-    this.removeAllChildren();
-    this.element.innerHTML = html;
-    setDirty(this, 'matrix', 'dimensions', 'style');
-    return this;
-};
-
-/**
-    Sets the text of a DOMVisual. This removes all children.
-*/
-DOMVisual.prototype.setInnerText = function (text) {
-    this.removeAllChildren();
-    this.element.innerHTML = '';
-    // skip obvious cases of emptyness
-    if (text !== null && text !== undefined && text !== '') {
-        this.element.appendChild(document.createTextNode(text));
-    }
-    setDirty(this, 'matrix', 'dimensions', 'style');
-    return this;
-};
-
-/**
-    Sets html attributes. This should not be useful most of the time...
-*/
-DOMVisual.prototype.setElementAttributes = function (attr) {
-    var element = this.element;
-    forEachProperty(attr, function (v, n) {
-        element.setAttribute(String(n), String(v));
-    });
-    return this;
-};
-
-/**
-    Sets style attributes (see styles.js for what is supported).
-
-    Note:
-        - some functions could be removed because they overlap on this one
-
-        - Clearing : set with null or undefined (+ uniformize this with
-            setElementAttributes).
-
-        - These attributes OVERRRIDE what is defined in the styles.
-
-
-        - FIXME: there is a clash between the setHtmlFlowing thing and this.
-*/
-DOMVisual.prototype.setStyleAttributes = function (attr) {
-    if (!this.styleAttributes) {
-        this.styleAttributes = {};
-    }
-    apply(this.styleAttributes, attr);
-    setDirty(this, 'style');
-    return this;
-};
-
 DOMVisual.prototype.runFullScreen = function () {
     exports.createFullScreenApplication(this);
 };
 
-/////////////////
-// a general container
+/**
+* @constructor Constructs a DOMElement to most general dom element available.
+* @param {Object} config The configuration if any.
+* @param {Object} groupData The data from the editor if any.
+*/
 function DOMElement(config, groupData) {
     DOMVisual.call(this, config, groupData, document.createElement('div'));
 }
 
 DOMElement.prototype = new DOMVisual();
 
+/**
+* Returns the description of this element (to be displayed in the editor).
+* @returns {String} The textual descripton of this element.
+*/
 DOMElement.prototype.getDescription = function () {
     return "A styled rectangle with optional text";
 };
 
+/**
+* Creates a preview for the editor
+* @returns {Visual} The visual to display as a preview.
+*/
 DOMElement.createPreview = function () {
     return new (exports.DOMImg)({url: 'domvisual/img/elementpreview.png'});
 };
 
+/**
+* Returns the configuration sheet of this element (allowing the editor to
+* configure it in the panel)
+* @returns {Object} The configuration sheet for this element.
+*/
 DOMElement.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
@@ -728,27 +837,63 @@ DOMElement.prototype.getConfigurationSheet = function () {
     };
 };
 
-/////////////////
-// an img element
+/**
+* @constructor Constructs an image element.
+*/
 function DOMImg(config) {
     DOMVisual.call(this, config, null, document.createElement('img'));
 }
 
 DOMImg.prototype = new DOMVisual();
 
+/**
+* Returns the description of this element (to be displayed in the editor).
+* @returns {String} The textual descripton of this element.
+*/
 DOMImg.prototype.getDescription = function () {
     return "A png or jpeg image";
 };
 
+/**
+* Creates a preview for the editor
+* @returns {Visual} The visual to display as a preview.
+*/
 DOMImg.createPreview = function () {
     return new (DOMImg)({url: 'domvisual/img/imagepreview.png'});
 };
 
+/**
+* Sets the url of the image to display.
+* @param {String} url The url of the image to display.
+* @returns {DOMImg} this.
+*/
 DOMImg.prototype.setUrl = function (url) {
     this.element.src = url;
     return this;
 };
 
+/**
+* Returns the dimensions of the inner image (real dimensions)
+* @returns {vec3} The dimensions of the image.
+*/
+DOMImg.prototype.getImageDimensions = function () {
+    var element = this.element;
+    return [element.naturalWidth, element.naturalHeight, 0];
+};
+
+/**
+* Returns the dimensions of the inner image (real dimensions)
+* @returns {vec3} The dimensions of the image.
+*/
+DOMImg.prototype.getNaturalDimensions = function () {
+    return this.getImageDimensions();
+};
+
+/**
+* Returns the configuration sheet of this element (allowing the editor to
+* configure it in the panel)
+* @returns {Object} The configuration sheet for this element.
+*/
 DOMImg.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
@@ -757,36 +902,46 @@ DOMImg.prototype.getConfigurationSheet = function () {
     };
 };
 
-DOMImg.prototype.getImageDimensions = function () {
-    var element = this.element;
-    return [element.naturalWidth, element.naturalHeight, 0];
-};
-
-DOMImg.prototype.getNaturalDimensions = function () {
-    return this.getImageDimensions();
-};
-
-/////////////////
-// A video tag
+/**
+* @constructor Constructs a video element.
+*/
 function DOMVideo(config) {
     DOMVisual.call(this, config, null, document.createElement('video'));
 }
 
 DOMVideo.prototype = new DOMVisual();
 
+/**
+* Returns the description of this element (to be displayed in the editor).
+* @returns {String} The textual descripton of this element.
+*/
 DOMVideo.prototype.getDescription = function () {
     return "A movie";
 };
 
+/**
+* Creates a preview for the editor
+* @returns {Visual} The visual to display as a preview.
+*/
 DOMVideo.createPreview = function () {
     return new (DOMImg)({url: 'domvisual/img/videopreview.png'});
 };
 
+/**
+* Sets the url of the video to display.
+* @param {String} url The url of the video to display.
+* @returns {DOMVideo} this.
+*/
 DOMVideo.prototype.setUrl = function (url) {
     this.element.src = url;
     return this;
 };
 
+/**
+* Returns the configuration sheet of this element (allowing the editor to
+* configure it in the panel)
+* @returns {Object} The configuration sheet for this element.
+*/
 DOMVideo.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
@@ -795,23 +950,38 @@ DOMVideo.prototype.getConfigurationSheet = function () {
     };
 };
 
-/////////////////
-// An input tag
+/**
+* @constructor Constructs an input element.
+*/
 function DOMInput(config) {
     DOMVisual.call(this, config, null, document.createElement('input'));
 }
 
 DOMInput.prototype = new DOMVisual();
 
+/**
+* Sets the type of this input element.
+* @param {String} type The type of element.
+* @returns {DOMInput} this.
+*/
 DOMInput.prototype.setType = function (type) {
     this.element.type = type;
     return this;
 };
 
+/**
+* Returns the type of this input element.
+* @returns {String} The type of element.
+*/
 DOMInput.prototype.getType = function () {
     return this.element.type;
 };
 
+/**
+* Sets the text (value) of this input element.
+* @param {String} text The text.
+* @returns {DOMInput} this.
+*/
 DOMInput.prototype.setText = function (text) {
     if (text === undefined || text === null) {
         text = '';
@@ -822,77 +992,149 @@ DOMInput.prototype.setText = function (text) {
     return this;
 };
 
+/**
+* Sets the text (value) of this input element.
+* @param {String} text The text.
+* @returns {DOMInput} this.
+*/
 DOMInput.prototype.setValue = DOMInput.prototype.setText;
 
+/**
+* Returns the text (value) of this input element.
+* @returns {String} The text (or value) of this element
+*/
 DOMInput.prototype.getText = function () {
     return this.element.value;
 };
 
+/**
+* Returns the text (value) of this input element.
+* @returns {String} The text (or value) of this element
+*/
 DOMInput.prototype.getValue = DOMInput.prototype.getText;
 
+/**
+* Enables or disables this element.
+* @param {Boolean} enable true to enable false to disable (gray).
+* @returns {DOMInput} this.
+*/
 DOMInput.prototype.enable = function (enable) {
     this.element.disabled = !enable;
     return this;
 };
 
+/**
+* Checks or unchecks this element.
+* @param {Boolean} state The check state.
+* @returns {DOMInput} this.
+*/
 DOMInput.prototype.setChecked = function (state) {
     this.element.checked = state;
     return this;
 };
 
+/**
+* Returns the check state of this element.
+* @returns {Boolean} state The check state.
+*/
 DOMInput.prototype.getChecked = function (state) {
     return this.element.checked === true;
 };
 
+/**
+* Returns the configuration sheet of this element (allowing the editor to
+* configure it in the panel)
+* @returns {Object} The configuration sheet for this element.
+*/
 DOMInput.prototype.getConfigurationSheet = function () {
     return { "class": {}, "style": {}, "text": {}, "type": {} };
 };
 
-///////////////
-// a text area tag
-// this is pretty bad... because of the difficulty of sizing it...
+/**
+* @constructor Constructs a text area.
+*/
 function DOMTextArea(config) {
 }
 
 DOMTextArea.prototype = new DOMVisual();
 
-DOMTextArea.prototype.getConfigurationSheet = function () {
-    return { "text": {}, "rows": {}, "cols": {} };
-};
-
+/**
+* Sets the text or value.
+* @param {String} txt The text to set.
+* @returns {DOMTextArea} this.
+*/
 DOMTextArea.prototype.setText = function (txt) {
     this.element.value = txt;
     return this;
 };
 
+/**
+* Sets the text or value.
+* @param {String} txt The text to set.
+* @returns {DOMTextArea} this.
+*/
 DOMTextArea.prototype.setValue = DOMTextArea.prototype.setText;
 
+/**
+* Returns the text (value) of this text area element.
+* @returns {String} The text (or value) of this element
+*/
 DOMTextArea.prototype.getText = function (txt) {
     return this.element.value;
 };
 
+/**
+* Returns the text (value) of this text area element.
+* @returns {String} The text (or value) of this element
+*/
 DOMTextArea.prototype.getValue = DOMTextArea.prototype.getText;
 
+/**
+* Sets the nubmer of rows.
+* @param {Number} r The number of rows.
+* @returns {DOMTextArea} this.
+*/
 DOMTextArea.prototype.setRows = function (r) {
     this.element.rows = r;
     return this;
 };
 
+/**
+* Sets the nubmer of columns.
+* @param {Number} c The number of columns.
+* @returns {DOMTextArea} this.
+*/
 DOMTextArea.prototype.setCols = function (c) {
     this.element.cols = c;
     return this;
 };
 
-///////////////
-// A combo box
+/**
+* Returns the configuration sheet of this element (allowing the editor to
+* configure it in the panel)
+* @returns {Object} The configuration sheet for this element.
+*/
+DOMTextArea.prototype.getConfigurationSheet = function () {
+    return { "text": {}, "rows": {}, "cols": {} };
+};
+
+
+/**
+* @constructor Constructs a combo box.
+*/
 function DOMSelect(config) {
     DOMVisual.call(this, config, null, document.createElement('select'));
 }
 
 DOMSelect.prototype = new DOMVisual();
 
+/**
+* Sets the choices of this combo box.
+* @param {Object} options The choices fro the combo box.
+* @returns {DOMSelect} this.
+*/
 DOMSelect.prototype.setOptions = function (options) {
-// FIXME: we could support object and array for options
+    // FIXME: we could support object and array for options
     this.removeAllChildren();
     this.options = options;
     var i, l = options.length, c;
@@ -903,15 +1145,29 @@ DOMSelect.prototype.setOptions = function (options) {
     return this;
 };
 
+/**
+* Sets the selection index of the combo box.
+* @param {Number} n The selection index.
+* @returns {DOMSelect} this.
+*/
 DOMSelect.prototype.setSelectedIndex = function (n) {
     this.element.selectedIndex = n;
     return this;
 };
 
+/**
+* Returns the selection index of the combo box.
+* @returns {Number} The selection index.
+*/
 DOMSelect.prototype.getSelectedIndex = function () {
     return this.element.selectedIndex;
 };
 
+/**
+* Sets the selected option of the combo box.
+* @param {String} o The selected option.
+* @returns {DOMSelect} this.
+*/
 DOMSelect.prototype.setSelectedOption = function (o) {
     var index = null;
     forEach(this.options, function (oo, n) {
@@ -923,6 +1179,10 @@ DOMSelect.prototype.setSelectedOption = function (o) {
     return this;
 };
 
+/**
+* Returns the selected option of the combo box.
+* @returns {String} The selected option.
+*/
 DOMSelect.prototype.getSelectedOption = function () {
     var index = this.getSelectedIndex(),
         ret = null;
@@ -932,48 +1192,83 @@ DOMSelect.prototype.getSelectedOption = function () {
     return ret;
 };
 
+/**
+* Enables or disables the combo box.
+* @param {Boolean} enable true to enable the combo box.
+* @returns {DOMSelect} this.
+*/
 DOMSelect.prototype.enable = function (enable) {
     this.element.disabled = !enable;
+    return this;
 };
 
+/**
+* Returns the configuration sheet of this element (allowing the editor to
+* configure it in the panel)
+* @returns {Object} The configuration sheet for this element.
+*/
 DOMSelect.prototype.getConfigurationSheet = function () {
     return { "options": {} };
 };
 
-///////////
-// Canvas
+/**
+* @constructor Constructs a canvas.
+*/
 function DOMCanvas(config) {
     DOMVisual.call(this, config, null, document.createElement('canvas'));
 }
 
 DOMCanvas.prototype = new DOMVisual();
 
+/**
+* Sets the width of the canvas.
+* @param {Number} w The width
+* @returns {DOMCanvas} this.
+*/
 DOMCanvas.prototype.setWidth = function (w) {
     this.element.setAttribute('width', w);
     return this;
 };
 
+/**
+* Sets the height of the canvas.
+* @param {Number} w The height
+* @returns {DOMCanvas} this.
+*/
 DOMCanvas.prototype.setHeight = function (h) {
     this.element.setAttribute('height', h);
     return this;
 };
 
+/**
+* Returns the 2d context of the canvas.
+* @returns {Object} The 2d context.
+*/
 DOMCanvas.prototype.getContext2D = function () {
     // return the 2d context
     return this.element.getContext('2d');
 };
 
+/**
+* Returns the data url of the canvas.
+* @returns {String} The data url.
+*/
 DOMCanvas.prototype.toDataURL = function () {
     return this.element.toDataURL.apply(this.element, arguments);
 };
 
+/**
+* Returns the configuration sheet of this element (allowing the editor to
+* configure it in the panel)
+* @returns {Object} The configuration sheet for this element.
+*/
 DOMCanvas.prototype.getConfigurationSheet = function () {
     return { "width": {}, "height": {} };
 };
 
 /*
-    We will have to do more than that but we need something to
-    setup the topmost container.
+* Creates a full screen appliation for the specified visual element.
+* @private
 */
 exports.createFullScreenApplication = function (child) {
     var bodyElement = document.getElementsByTagName('body')[0],
@@ -1026,9 +1321,6 @@ exports.createFullScreenApplication = function (child) {
     return child;
 };
 
-exports.getVisualNames = function () {
-    return [ 'DOMElement', 'DOMImg', 'DOMVideo' ];
-};
 exports.DOMElement = DOMElement;
 exports.DOMImg = DOMImg;
 exports.DOMVideo = DOMVideo;

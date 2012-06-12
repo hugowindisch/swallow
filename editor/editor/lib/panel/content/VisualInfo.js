@@ -39,7 +39,7 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
                 } else {
                     // generic preview
                     preview = new Constr({});
-                    preview.setChildrenClipping('hidden');
+                    preview.setOverflow('hidden');
                     preview.enableScaling(true);
                 }
                 preview.setPosition('preview');
