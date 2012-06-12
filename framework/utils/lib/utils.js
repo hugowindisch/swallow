@@ -5,6 +5,12 @@
 
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
+
+/**
+* Returns the type of a vlue, correctly distinguishing between object and array.
+* @param {any} value The value we want to inspect.
+* @returns {String} The type of the value.
+*/
 function typeOf(value) {
     var s = typeof value;
     if (s === 'object') {
@@ -19,26 +25,56 @@ function typeOf(value) {
     return s;
 }
 
+/**
+* Returns true if is is a string.
+* @param {any} s The value to inspect.
+* @returns {String} true if s is a string.
+*/
 function isString(s) {
     return typeOf(s) === 'string';
 }
 
+/**
+* Returns true if is is a number.
+* @param {any} n The value to inspect.
+* @returns {String} true if s is a number.
+*/
 function isNumber(n) {
     return typeOf(n) === 'number';
 }
 
+/**
+* Returns true if is is an array.
+* @param {any} a The value to inspect.
+* @returns {String} true if s is an array.
+*/
 function isArray(a) {
     return typeOf(a) === 'array';
 }
 
+/**
+* Returns true if is is an object.
+* @param {any} o The value to inspect.
+* @returns {String} true if s is an object.
+*/
 function isObject(o) {
     return typeOf(o) === 'object';
 }
 
+/**
+* Returns true if is is a function.
+* @param {any} f The value to inspect.
+* @returns {String} true if s is a function.
+*/
 function isFunction(f) {
     return typeOf(f) === 'function';
 }
 
+/**
+* Enumerates the object calling f for each (value, name) pair.
+* @param {Ojbect} object The object to iterate.
+* @param {Function} f The callback to call for each (value, name) pair.
+*/
 function forEachProperty(object, f) {
     var p;
     if (object) {
@@ -49,6 +85,14 @@ function forEachProperty(object, f) {
         }
     }
 }
+
+/**
+* Enumerates the object calling f for each (value, name) pair in sorted
+* order of name.
+* @param {Ojbect} object The object to iterate.
+* @param {Function} f The callback to call for each (value, name) pair.
+* @param {Function} optionalSortFunction An optional sorting function.
+*/
 
 function forEachSortedProperty(object, f, optionalSortFunction) {
     var a = [],
@@ -72,6 +116,11 @@ function forEachSortedProperty(object, f, optionalSortFunction) {
     }
 }
 
+/**
+* Enumerates the array calling f for each (value, index) pair.
+* @param {Ojbect} array The array to iterate.
+* @param {Function} f The callback to call for each (value, index) pair.
+*/
 function forEach(array, f) {
     var l = array.length, i;
     for (i = 0; i < l; i += 1) {
@@ -79,6 +128,11 @@ function forEach(array, f) {
     }
 }
 
+/**
+* Returns a deep copy of object o.
+* @param {any} o The object (or value) to copy.
+* @returns A copy of the value.
+*/
 function deepCopy(o) {
     var res, i, l, v;
     switch (typeOf(o)) {
@@ -103,6 +157,11 @@ function deepCopy(o) {
     }
 }
 
+/**
+* Copies all property of from to to
+* @param {Object} from The from object.
+* @param {Object} to The to object.
+*/
 function apply(to, from) {
     forEachProperty(from, function (v, n) {
         to[n] = v;
@@ -110,6 +169,11 @@ function apply(to, from) {
     return to;
 }
 
+/**
+* Copies all property of from to to by calling deepCopy on all copied values.
+* @param {Object} from The from object.
+* @param {Object} to The to object.
+*/
 function applyDeep(to, from) {
     forEachProperty(from, function (v, n) {
         to[n] = deepCopy(v);
@@ -117,6 +181,11 @@ function applyDeep(to, from) {
     return to;
 }
 
+/**
+* Recursively removes undefined an null properties from an object.
+* @param {Object} o The object to prune.
+* @returns {Number} The number of remaining properties in o
+*/
 function prune(o) {
     var n = 0;
     forEachProperty(o, function (p, name) {
@@ -137,7 +206,10 @@ function prune(o) {
     return n;
 }
 
-// ensure(o, 'a', 'b', 'c') will make sure o.a.b.c exists and return it
+/**
+* ensure(o, 'a', 'b', 'c') will make sure o.a.b.c exists and return it
+* @returns The modified object.
+*/
 function ensure(o) {
     var l = arguments.length, i, n, nextO;
     for (i = 1; i < l; i += 1) {
@@ -151,7 +223,10 @@ function ensure(o) {
     return o;
 }
 
-// checks if something is ensured and returns it (or null if it is not)
+/**
+* ensure(o, 'a', 'b', 'c') will make sure o.a.b.c exists and return it
+* @returns The found value or null
+*/
 function ensured(o) {
     var l = arguments.length, i, n, nextO;
     for (i = 1; i < l; i += 1) {
@@ -165,6 +240,14 @@ function ensured(o) {
     return o;
 }
 
+/**
+* Limits the range of a number.
+* @param {Number} n The number to modify
+* @param {Number} minN The minimum value of n.
+* @param {Number} maxN The maximum value of n.
+* @param {Number} ifNaN The value to use if isNaN(n).
+* @returns {Number} The limited number.
+*/
 function limitRange(n, minN, maxN, ifNaN) {
     n = Number(n);
     if (isNaN(n)) {

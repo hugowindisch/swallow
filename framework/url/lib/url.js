@@ -4,7 +4,9 @@
 */
 /*jslint regexp: false */
 
-// note: this is really not what it should be...
+/*
+* Parses the query string.
+*/
 function parseQueryString(queryString) {
     var q = queryString.split('&'),
         ret = {};
@@ -23,6 +25,14 @@ function parseQueryString(queryString) {
     return ret;
 }
 
+/**
+* Parses an url and returns an object with the following members: protocol,
+* host, port, hostname, search, query (if parseQS),  pathname, slashes and
+* href. The behavior is not guaranteed to be the same as Node.js in all
+* circumstances.
+* @param {String} urlStr The url to parse.
+* @param {Booelean} parseQS true to parse the query string.
+*/
 function parse(urlStr, parseQS) {
     parseQS = parseQS || false;
     var re = /^((http:|https:|ftp:|file:)\/\/((([0-9a-zA-Z_\.])+)(:([0-9]+))?))?([^?;#]+)?(;[^?]*)?(\?[^#]*)?(#.*)?$/,
@@ -68,11 +78,16 @@ function parse(urlStr, parseQS) {
     return ret;
 }
 
+/**
+* Not currently supported.
+*/
 function format(urlObj) {
     throw new Error('not currently supported');
-//    return urlObj.protocol + urlObj.host + urlObj
 }
 
+/**
+* Not currently supported.
+*/
 function resolve(from, to) {
     throw new Error('not currently supported');
 }
