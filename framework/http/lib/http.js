@@ -2,29 +2,6 @@
     http.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-/*
-    Do XMLHttpRequest in a node fashion. No we don't get the same as
-    what we have in Node, but yes, maybe, some of our code will work
-    in both worlds unmodified.
-*/
-
-/*
-Options
-host: A domain name or IP address of the server to issue the request to.
-port: Port of remote server.
-method: A string specifying the HTTP request method.
-    Possible values: 'GET' (default), 'POST', 'PUT', and 'DELETE'.
-path: Request path.
-    Should include query string and fragments if any. E.G. '/index.html?page=12'
-headers: An object containing request headers.
-
-unsupported:
--------------
-agent: Controls Agent behavior. Possible values:
-    undefined (default): use default Agent for this host and port.
-    Agent object: explicitly use the passed in Agent.
-    false: explicitly generate a new Agent for this host and port.
-*/
 var utils = require('utils'),
     events = require('events'),
     update = require('visual').update,
@@ -37,6 +14,11 @@ var utils = require('utils'),
         done: 4
     };
 
+/**
+* @constructor Constructs a client response.
+* @param {Object} headers The http headers.
+* @param {String} statusCode The status of the response.
+*/
 function ClientResponse(headers, statusCode) {
     this.headers = headers;
     this.statusCode = statusCode;
@@ -46,18 +28,38 @@ function ClientResponse(headers, statusCode) {
 
 ClientResponse.prototype = new (events.EventEmitter)();
 
+/**
+* Pauses the response (not currently supported).
+* @returns {ClientResponse} this.
+*/
 ClientResponse.prototype.pause = function () {
     // not currently supported
+    return this;
 };
 
+/**
+* Resumes the response (not currently supported).
+* @returns {ClientResponse} this.
+*/
 ClientResponse.prototype.resume = function () {
     // not currently supported
+    return this;
 };
 
+/**
+* Sets the encoding of the response (not currently supported).
+* @returns {ClientResponse} this.
+*/
 ClientResponse.prototype.setEncoding = function () {
     // not currently supported
+    return this;
 };
 
+/**
+* @constructor Constructs a client request.
+* @param {Object} options The options (host, port, method, path, headers)
+* @param {String} statusCode The status of the response.
+*/
 function ClientRequest(options) {
     var url = '',
         that = this,
@@ -129,29 +131,52 @@ function ClientRequest(options) {
 
 ClientRequest.prototype = new (events.EventEmitter)();
 
+/**
+* Writes to the request.
+* @param {String} chunk The data to write.
+* @returns {ClientRequest} this.
+*/
 ClientRequest.prototype.write = function (chunk) {
     if (this.toSend === null) {
         this.toSend = chunk;
     } else {
         this.toSend += chunk;
     }
+    return this;
 };
 
+/**
+* Ends the request.
+* @param {String} data Optional data to write.
+* @returns {ClientRequest} this.
+*/
 ClientRequest.prototype.end = function (data) {
     var that = this;
-    if (data) {
-        this.toSend += data;
+    if (data !== undefined) {
+        this.write(data);
     }
     forEachProperty(this.options.headers, function (h, hn) {
         that.request.setRequestHeader(hn, h);
     });
     this.request.send(this.toSend);
+    return this;
 };
 
+/**
+* Aborts the request.
+* @returns {ClientRequest} this.
+*/
 ClientRequest.prototype.abort = function () {
     this.request.abort();
+    return this;
 };
 
+/**
+* Initiates an http request.
+* @param {Object} options The options (host, port, method, path, headers)
+* @param {Function} callback The optional callback.
+* @returns {ClientRequest} this.
+*/
 function request(options, callback) {
     var ret = new ClientRequest(options);
     if (callback) {
@@ -160,6 +185,12 @@ function request(options, callback) {
     return ret;
 }
 
+/**
+* Initiates an http get.
+* @param {Object} options The options (host, port, method, path, headers)
+* @param {Function} callback The optional callback.
+* @returns {ClientRequest} this.
+*/
 function get(options, callback) {
     options.method = 'GET';
     var ret = request(options, callback);
