@@ -3,6 +3,10 @@
 
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
+
+/**
+* @private
+*/
 function ensureEvents(ee) {
     if (!ee.hasOwnProperty('_events')) {
         ee._events = {};
@@ -10,27 +14,47 @@ function ensureEvents(ee) {
     return ee._events;
 }
 
-// I decided to adopt Node's event emitting API and implemented it here
+/**
+* @constructor Constructs an event emitter.
+*/
 function EventEmitter() {
 }
 
-EventEmitter.prototype.addListener =
-    EventEmitter.prototype.on =
-    function (event, listener) {
-        var events = ensureEvents(this);
-        if (!events[event]) {
-            events[event] = listener;
-        } else if (events[event] instanceof Array) {
-            events[event].push(listener);
-        } else {
-            events[event] = [ this._events[event], listener ];
-        }
-        // we should check for max Events
-        // we should fire an event for addListener
-        this.emit('addListener', event, listener);
-        return this;
-    };
+/**
+* Adds a listener to the emitter.
+* @param {String} event The name of the event.
+* @param {Function} listener The listener to add.
+* @returns {EventEmitter} this.
+*/
+EventEmitter.prototype.addListener = function (event, listener) {
+    var events = ensureEvents(this);
+    if (!events[event]) {
+        events[event] = listener;
+    } else if (events[event] instanceof Array) {
+        events[event].push(listener);
+    } else {
+        events[event] = [ this._events[event], listener ];
+    }
+    // we should check for max Events
+    // we should fire an event for addListener
+    this.emit('addListener', event, listener);
+    return this;
+};
 
+/**
+* Adds a listener to the emitter.
+* @param {String} event The name of the event.
+* @param {Function} listener The listener to add.
+* @returns {EventEmitter} this.
+*/
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+/**
+* Adds a one-shot listener to the emitter.
+* @param {String} event The name of the event.
+* @param {Function} listener The listener to add.
+* @returns {EventEmitter} this.
+*/
 EventEmitter.prototype.once = function (event, listener) {
     var that = this;
     function onetime() {
@@ -41,6 +65,12 @@ EventEmitter.prototype.once = function (event, listener) {
     return this;
 };
 
+/**
+* Removes a listener from the emitter.
+* @param {String} event The name of the event.
+* @param {Function} listener The listener to add.
+* @returns {EventEmitter} this.
+*/
 EventEmitter.prototype.removeListener = function (event, listener) {
     var events, i, n, handlers;
     if (this._events) {
@@ -64,6 +94,11 @@ EventEmitter.prototype.removeListener = function (event, listener) {
     return this;
 };
 
+/**
+* Removes all listener for the specified event from the emitter.
+* @param {String} event The name of the event.
+* @returns {EventEmitter} this.
+*/
 EventEmitter.prototype.removeAllListeners = function (event) {
     if (this._events) {
         delete this._events[event];
@@ -71,12 +106,22 @@ EventEmitter.prototype.removeAllListeners = function (event) {
     return this;
 };
 
+/**
+* Sets the maximum number of listeners on this emitter
+* (not currently supported).
+* @param {Number} n The maximum number of listeners.
+* @returns {EventEmitter} this.
+*/
 EventEmitter.prototype.setMaxListeners = function (n) {
     // FIXME: NOT SUPPORTED YET (this behaves weirdly in node)
+    return this;
 };
 
-// this sucks badly (imo) because we get something and something potentially
-// gets created.
+/**
+* Returns an array of listeners for the specified event.
+* @param {String} event The event for which we want to retrieve listeners.
+* @returns {Array} the listeners.
+*/
 EventEmitter.prototype.listeners = function (event) {
     var events = ensureEvents(this),
         ret = events[event];
@@ -88,7 +133,14 @@ EventEmitter.prototype.listeners = function (event) {
     return ret;
 };
 
-// same as above without altering the emitter
+/**
+* Returns an array of listeners but unlike the listeners function has no
+* side effect on the _events member of the EventEmitter (listeners was coded
+* to be compatible with what node does, getListeners was coded to not inflate
+* _events when we query the listeners for events that have no listeners).
+* @param {String} event The event for which we want to retrieve listeners.
+* @returns {Array} the listeners.
+*/
 EventEmitter.prototype.getListeners = function (event) {
     var ret;
     if (this._events) {
@@ -103,6 +155,12 @@ EventEmitter.prototype.getListeners = function (event) {
     return ret;
 };
 
+/**
+* Emits an event. The first parameter is the name of the event. Other (optional)
+* parameters are the event data.
+* @param {String} event The name of the event.
+* @returns {EventEmittter} this.
+*/
 EventEmitter.prototype.emit = function (event) {
     var events = this._events,
         ret = false,
