@@ -9,6 +9,11 @@ var events = require('events'),
     update = require('visual').update,
     forEachProperty = utils.forEachProperty;
 
+/**
+* @constructor Constructs an event source.
+* @param {String} url is the url for receiving inits.
+* @param {Object} optionalInit is an optional init dictionary.
+*/
 function EventSource(url, optionalInit) {
     var that = this;
     // weird problem with firefox (if I pass an invalid optionalInit)
@@ -26,10 +31,18 @@ function EventSource(url, optionalInit) {
 
 EventSource.prototype = new events.EventEmitter();
 
+/**
+* Closes the vent source.
+* @returns {EventSource} this.
+*/
 EventSource.prototype.close = function () {
     this.evtSrc.close();
+    return this;
 };
 
+/**
+* @private
+*/
 EventSource.prototype.updateHooks = function () {
     var that = this,
         evtSrc = that.evtSrc,
