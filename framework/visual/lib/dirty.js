@@ -9,17 +9,17 @@ var utils = require('utils'),
     isArray = utils.isArray,
     inUpdate = false;
 
-/**
-    Practically we probably only need only one dirty list.
-    We keep the dirty list containment-depth-sorted to minimize
-    refreshes (a container while updating itself, has chances of
+/*
+* Constructs a dirty list
+* @private
 */
 function DirtyList() {
     this.dirty = [];
 }
 
-/**
-    Flags an element as dirty.
+/*
+* Flags an element as dirty.
+* @private
 */
 DirtyList.prototype.setDirty = function (o) {
     var i, l = arguments.length;
@@ -40,8 +40,9 @@ DirtyList.prototype.setDirty = function (o) {
     }
 };
 
-/**
-    Returns a depth sorted dirty list
+/*
+* Returns a depth sorted dirty list
+* @private
 */
 DirtyList.prototype.getDepthSortedList = function () {
     var dirty = [],
@@ -62,8 +63,9 @@ DirtyList.prototype.getDepthSortedList = function () {
     return dirty;
 };
 
-/**
-    Cleans all dirt.
+/*
+* Cleans all dirt.
+* @private
 */
 DirtyList.prototype.update = function () {
     var i,
@@ -105,12 +107,27 @@ DirtyList.prototype.update = function () {
 };
 
 var dirty = new DirtyList();
+
+/*
+* Sets a visual element as dirty.
+* @private
+*/
 exports.setDirty = function (o, why) {
     dirty.setDirty.apply(dirty, arguments);
 };
+
+/*
+* Updates a visual element.
+* @private
+*/
 exports.update = function () {
     dirty.update();
 };
+
+/*
+* Sets all children of a visual element as dirty.
+* @private
+*/
 exports.setChildrenDirty = function (o, why) {
     var i,
         l = arguments.length,

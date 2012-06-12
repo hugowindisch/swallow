@@ -20,6 +20,10 @@ var utils = require('utils'),
     deepCopy = utils.deepCopy,
     defaultSkin;
 
+/*
+* Makes a style directly point to its dependencies.
+* @private
+*/
 function bindStyle(style, skin) {
     var that = this,
         i,
@@ -51,6 +55,10 @@ function bindStyle(style, skin) {
     }
 }
 
+/*
+* Applies a theme.
+* @private
+*/
 function applyTheme(toTheme, fromTheme, all) {
     forEachProperty(fromTheme, function (prop, propname) {
         var tt = toTheme[propname];
@@ -75,6 +83,10 @@ defaultSkin = {
     }
 };
 
+/*
+* Returns the style data for a given style in the given skin.
+* @private
+*/
 function getStyleData(style, skin) {
     var results = { data: [], jsData: {} };
     skin = skin || defaultSkin;
@@ -109,9 +121,9 @@ function getStyleData(style, skin) {
     return results;
 }
 
-
 /*
-    A theme (a theme is a collection of styles)
+* A theme (a theme is a collection of styles)
+* @private
 */
 function Theme(themeData, skin) {
     // support null theme data by returning a null theme.
@@ -124,30 +136,46 @@ function Theme(themeData, skin) {
     applyTheme(this.themeData, themeData, true);
 }
 
+/*
+* Returns a style from this theme.
+* @private
+*/
 Theme.prototype.getStyle = function (name) {
     return this.themeData[name];
 };
 
+/*
+* Returns the style data for a style in this theme.
+* @private
+*/
 Theme.prototype.getStyleData = function (name) {
     var style = this.getStyle(name);
     return getStyleData(style, this.skin);
 };
 
+/*
+* Returns the theme data.
+* @private
+*/
 Theme.prototype.getThemeData = function () {
     return this.themeData;
 };
 
+/*
+* Returns the skin in this theme.
+* @private
+*/
 Theme.prototype.getSkin = function () {
     return this.skin;
 };
 
 /*
-    A skin defines remote types (overrides themes from many different
-    components)
-
-    Even if we don't explicitely override a component in a skin, it
-    must be present because it may use dependencies defined in the current
-    skin.
+* @constructor A skin defines remote styles (overrides themes from many
+* different components)
+* Even if we don't explicitely override a component in a skin, it
+* must be present because it may use dependencies defined in the current
+* skin.
+* @private
 */
 function Skin(skinData) {
     if (skinData === null) {
@@ -169,6 +197,10 @@ function Skin(skinData) {
     });
 }
 
+/*
+* Constructs the skin private version of a theme.
+* @private
+*/
 Skin.prototype.makeTheme = function (factory, type) {
     var fact = require(factory),
         T = fact[type],
@@ -192,6 +224,10 @@ Skin.prototype.makeTheme = function (factory, type) {
     return skinF[type];
 };
 
+/*
+* Returns a theme from this skin.
+* @private
+*/
 Skin.prototype.getTheme = function (factory, type) {
     var fact = this.skinData[factory];
     if (fact && fact.hasOwnProperty(type)) {
@@ -200,6 +236,10 @@ Skin.prototype.getTheme = function (factory, type) {
     return this.makeTheme(factory, type);
 };
 
+/*
+* Returns the skin data.
+* @private
+*/
 Skin.prototype.getSkinData = function () {
     return this.skinData;
 };

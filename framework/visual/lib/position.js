@@ -13,6 +13,13 @@ var utils = require('utils'),
     isObject = utils.isObject,
     forEachProperty = utils.forEachProperty;
 
+/**
+* Returns a rect that fully encloses the result of applying the provided
+* matrix to a (1x1) rectangle.
+* @param {mat4} m The matrix
+* @returns {array} An array of two vec3 that give the topleft and bottom right
+*               corners of the enclosing rect.
+*/
 function getEnclosingRect(m) {
     var tv1 = mat4.multiplyVec3(m, [1, 0, 0]),
         tv2 = mat4.multiplyVec3(m, [0, 1, 0]),
@@ -46,6 +53,11 @@ function getEnclosingRect(m) {
     return [minpt, maxpt];
 }
 
+/**
+* Converts a rect to a matrix that would transform a 1x1 element to the rect.
+* @param {array} r An array of two vec3 giving the topleft and bottomright
+*                   corners of the rect to transform.
+*/
 function rectToMatrix(r) {
     var m = mat4.identity(),
         rmin = r[0],
@@ -63,15 +75,16 @@ function rectToMatrix(r) {
 }
 
 /**
-    it has the following attributes:
-        matrix
-        left : % px auto
-        right: % px auto
-        width: % px auto
-
-        top: % px auto
-        bottom: % px auto
-        height: % px auto
+* @constructor Constructs a position.
+* @param {mat4} The matrix that positions a 1x1x1 element
+* @param {Object} snapping The snapping mode:
+*            left : % px auto cpx
+*            right: % px auto cpx
+*            width: % px auto
+*            top: % px auto cpx
+*            bottom: % px auto cpx
+*            height: % px auto
+* @param {Number} An opacity to apply on that position
 */
 function Position(matrix, snapping, opacity) {
     this.matrix = matrix;
@@ -82,7 +95,8 @@ function Position(matrix, snapping, opacity) {
 }
 
 /**
-    Checks if this position is fully constrained.
+* Checks if this position is fully constrained.
+* @private
 */
 Position.prototype.isUnconstrained = function () {
     var snapping = this.snapping;
@@ -90,7 +104,8 @@ Position.prototype.isUnconstrained = function () {
 };
 
 /**
-    Computes the rects in the context of the specified container dimensions.
+* Computes the rects in the context of the specified container dimensions.
+* @private
 */
 Position.prototype.computeDstRect = function (
     containerDimensions,
@@ -246,7 +261,8 @@ Position.prototype.computeDstRect = function (
 };
 
 /**
-    Computes the matrix in the context of the specified container dimensions.
+* Computes the matrix in the context of the specified container dimensions.
+* @private
 */
 Position.prototype.compute = function (
     containerDimensions,
@@ -277,8 +293,10 @@ Position.prototype.compute = function (
 };
 
 /**
-    This is a layout that essentially consists in a collection of named
-    positions.
+* @constructor Constructs a layout that essentially consists in a collection of
+*               named positions.
+* @param {vec3} dimensions  The dimensions of the layout
+* @param {Object} positionData The position map (name: Position).
 */
 function Layout(dimensions, positionData) {
     this.dimensions = dimensions;
@@ -286,6 +304,9 @@ function Layout(dimensions, positionData) {
     this.build(positionData);
 }
 
+/**
+* @private
+*/
 Layout.prototype.build = function (positionData) {
     var that = this;
     forEachProperty(positionData, function (pos, posname) {
@@ -296,10 +317,20 @@ Layout.prototype.build = function (positionData) {
     });
 };
 
+/**
+* @private
+*/
 Layout.prototype.setPosition = function (name, position) {
     this.positions[name] = position;
 };
 
+/**
+* Removes the scaling from a matrix (so that its directing vectors have a length
+* of 1).
+* @param {mat4} matrix The matrix to modify
+* @returns {Object} matrix will be the modified matrix and dimensions will be
+*                   the extracted dimensions.
+*/
 function convertScaleToSize(matrix) {
     var v1 = [matrix[0], matrix[1], matrix[2]],
         v2 = [matrix[4], matrix[5], matrix[6]],
@@ -314,17 +345,8 @@ function convertScaleToSize(matrix) {
 }
 
 /**
-    Applies the layout.
-    In the context of DOM this will transform 'positions' to actual styles.
-
-
-
-    flow position:
-        Nothing to do I think
-
-    absolute position:
-        This may change width/height (i.e. SIZE the content)
-
+* Applies the layout.
+* @private
 */
 function applyLayout(containerDimensions, layout, v) {
     if (layout) {
@@ -364,7 +386,8 @@ function applyLayout(containerDimensions, layout, v) {
 }
 
 /**
-    Computes the reverse dimensioning of a container.
+* Computes the reverse dimensioning of a container.
+* @private
 */
 function computeReverseDimensioning(containerDimensions, layout, v) {
     var positions = layout.positions,

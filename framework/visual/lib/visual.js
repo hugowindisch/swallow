@@ -23,6 +23,10 @@ var utils = require('utils'),
     EventEmitter = events.EventEmitter,
     defaultNameIndex = 0;
 
+/*
+* Enumerates the children of a visual in depth.
+* @private
+*/
 function forVisualAndAllChildrenDeep(v, fcn) {
     fcn(v);
     if (v.children) {
@@ -32,6 +36,10 @@ function forVisualAndAllChildrenDeep(v, fcn) {
     }
 }
 
+/*
+* Sets the containement depth of a visual (depth from the topmost parent)
+* @private
+*/
 function setContainmentDepth(v, depth) {
     v.containmentDepth = depth;
     if (v.children) {
@@ -42,6 +50,10 @@ function setContainmentDepth(v, depth) {
     }
 }
 
+/*
+* Checks that a matrix has only translations.
+* @private
+*/
 function matrixIsTranslateOnly(matrix) {
     if (!matrix) {
         throw new Error('Invalid matrix ' + matrix);
@@ -66,11 +78,19 @@ function matrixIsTranslateOnly(matrix) {
     );
 }
 
+/*
+* Checks the equality of two vectors (vec3).
+* @private
+*/
 function vec3IsEqual(v1, v2) {
     return v1 === v2 ||
         (v1 && v2 && v1[0] === v2[0] && v1[1] === v2[1] && v1[3] === v2[3]);
 }
 
+/*
+* Applies the layout to all children.
+* @private
+*/
 function updateChildrenPositions(v) {
     if (v.layout) {
         forEachProperty(v.children, function (c) {
