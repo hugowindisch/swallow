@@ -1,46 +1,36 @@
-Swagup is a collection of commonjs packages that implement a graphic model.
+Swallow is a graphic tool for creating applications and components
+that run in a browser. Any application created with swallow, can be
+used as a component for any other applications.
 
-The graphic model can be used for supporting DOM graphics, Canvas graphics,
-WebGL graphics or any other type of graphics.
-
-A graphic editor (written in swagup) allows to graphically create applications
-using swagup components. The editor itself is a swagup component.
+One or more application can be bundled in a standard CommonJS package.
 
 
---------------
-+ the visual model is web agnostic, defines position, events, dirt
-+ any component can expose one or more visual elements (through a standard
-component interface)
-
-+ stuff like theming can be defined inside a component (example, a UI component
-can support theming for all its visuals (listbox, menu, whatever))
-
-+ think about skinning (defining a skin for an existing component)
+Installation
+============
+npm install swallowapps -g
 
 
-+ THE XMLHTTPREQUEST SHOULD BE IMPLEMENTED USING A NODE INTERFACE (so stuff
-    that use node style loading will work)
+Execution
+=========
+In the console:
 
+swallowapps
+
+Then, open Chrome or Firefox at localhost:1337
+
+Getting Started
+===============
+
+
+API Documentation
+=================
+
+Roadmap
+=======
+
+The project is usable and feature rich but a few months away from a first
+official release. A first complete release is scheduled for the end of the
+summer (end of august 2012).
+
+On the WEB
 ==========
-TODO
-----
-
-- in a domvisual we should be able to throw an exception if a layout needing
-    css3 is needed when no css3 is available. For visual styling there is
-    no big problem (it should degrade gracefully) but for positionning things
-    can simply NOT work. Supporting CSS2 and CSS3 in an app may requiring
-    disabling some sections of the app that require transforms.
-    OR: some components (ex: a sliding menu) should define alternate versions
-    and choose the right one in any case.
-    
-- create a way for a component to know that it is the main one running (like some kind of args)
-- create the layouting code and a way to convert positions to styles
-
-DONE
-----
-
-- create a basic domvisual that uses stylesheets (maybe 2 classes one for the component, the other for the group)
-- create a domvisual that can be used as a topmost element so someone can create a topmost wrapper
-- manage the notion of "depth" or ordering in a correct way
-- create the eventing stuff and use the html thing to see how visuals, events, and the dirty list are interconnected
-
