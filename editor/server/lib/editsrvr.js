@@ -152,7 +152,8 @@ exports.run = function () {
             pillow.argFilters
         ),
         swallowroot = path.join(__dirname, '../../..'),
-        work = path.join(swallowroot, 'work');
+        work = path.join(swallowroot, 'work'),
+        packages;
     // choose appropriate defaults for all options
     options.css = true;
     options.cacheext = options.cacheext || [ 'png', 'jpg' ];
@@ -161,13 +162,50 @@ exports.run = function () {
     options.newPackages = path.join(work, 'packages');
     options.dstFolder = path.join(work, 'generated');
     options.publishFolder = path.join(work, 'publish');
+    packages = path.join(work, 'packages');
     options.srcFolder = options.srcFolder || [
         path.join(swallowroot, 'framework'),
         path.join(swallowroot, 'editor', 'ui'),
-        path.join(swallowroot, 'work', 'packages')
+        packages
     ];
+    // Make sure we have the directory structure that we need before
+    // we start.
+    // Note: no need for parallelism here (we are starting up). Let's
+    // check that the work folder
+    // exists and that the packages folder exists
+    // we will not create the work folder but we will create the
+    // packages folder if it is missing
+    try {
+        // do we have a work directory?
+        if (fs.statSync(work).isDirectory()) {
+            try {
+                // do we have a packages directory in our work directory?
+                if (!fs.statSync(packages).isDirectory()) {
+                    console.log(packages + ' is not a directory, exiting');
+                    return;
+                }
+            } catch (e) {
+                try {
+                    // can we actually create the packages directory
+                    fs.mkdirSync(packages);
+                } catch (err) {
+                    console.log(
+                        'Could not create ' + packages + ' because of ' + err
+                    );
+                    return;
+                }
+            }
+            // we are now ready to run
+            pillow.serve(getUrls(options), options.port);
 
-    pillow.serve(getUrls(options), options.port);
+        } else {
+            console.log(work + ' is not a directory, exiting');
+            return;
+        }
+    } catch (error) {
+        console.log('Cannot access work directory, error ' + error);
+        return;
+    }
 };
 
 // allow this file to be executed directly
