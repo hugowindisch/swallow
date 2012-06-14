@@ -1,5 +1,6 @@
 /**
-    Modified to export in exports not in global.
+    Modified by Hugo Windisch to export in exports not in global (+ some
+    formatting related changes).
 */
 /**
  * @fileOverview gl-matrix - High performance matrix and vector operations for WebGL
