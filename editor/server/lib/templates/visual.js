@@ -6,7 +6,6 @@ var visual = require('visual'),
     group = require('/${packageName}/lib/groups').groups.${clsname};
 
 function ${clsname}(config) {
-    // call the baseclass
     domvisual.DOMElement.call(this, config, group);
 }
 ${clsname}.prototype = visual.inheritVisual(domvisual.DOMElement, group, '${packageName}', '${clsname}');

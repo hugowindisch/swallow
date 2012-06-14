@@ -1,6 +1,17 @@
-#! /usr/bin/env node
-/**
-    server.js
+In this directory and its subdirectories you'll find the components
+of the SwallowApps Editor, an interactive application builder for creating
+html applications.
+
+CONTACT
+=======
+For more information, contact Hugo Windisch at:
+hugo dot windisch at gmail dot com
+or alternatively take a look at the website:
+www.swallowapps.com
+
+LICENSE
+=======
+
 
     The SwallowApps Editor, an interactive application builder for creating
     html applications.
@@ -19,6 +30,3 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
-*/
-var swallowapps = require('swallowapps');
-swallowapps.run();
