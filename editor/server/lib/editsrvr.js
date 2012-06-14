@@ -1,4 +1,3 @@
-#! /usr/bin/env node
 /**
     editsrvr.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
@@ -14,8 +13,7 @@ var pillow = require('pillow'),
     servepackagelist = require('./services/servepackagelist'),
     serveimagelist = require('./services/serveimagelist'),
     servevisualcomponent = require('./services/servevisualcomponent'),
-    ssevents = require('./services/ssevents'),
-    options = pillow.processArgs(process.argv.slice(2));
+    ssevents = require('./services/ssevents');
 
 
 jqtpl.template(
@@ -129,5 +127,19 @@ function getUrls(options) {
     });
     return urls;
 }
+exports.run = function () {
+    var options = pillow.processArgs(process.argv.slice(2)) || {},
+        swallowroot = path.join(__dirname, '../../..');
+    // choose appropriate defaults for all options
+    options.css = true;
+    options.cacheext = options.cacheext || [ 'png', 'jpg' ];
+    options.newPackages = options.newPackages || path.join(swallowroot, 'work', 'packages');
+    options.dstFolder = options.dstFolder || path.join(swallowroot, 'work', 'generated');
+    options.srcFolder = options.srcFolder || [
+        path.join(swallowroot, 'framework'),
+        path.join(swallowroot, 'editor', 'ui'),
+        path.join(swallowroot, 'work', 'packages')
+    ];
 
-pillow.serve(getUrls(options), options.port);
+    pillow.serve(getUrls(options), options.port);
+};

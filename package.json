@@ -1,10 +1,22 @@
 {
-    "name": "editsrvr",
+    "name": "swallowapps",
     "version": "0.0.1",
     "dependencies": {
-        "async": "0.1.18",
-        "jqtpl": "1.1.0",
-        "wrench": "1.3.9",
-        "pillow": "0.0.1"
+    },
+    "bin": {
+        "swallowapps": "./editor/server/bin/server.js"
+    },
+    "main": "./editor/server/lib/editsrvr.js",
+    "devDependencies": {},
+    "optionalDependencies": {},
+    "engines": {
+        "node": "*"
+    },
+    "author": "Hugo Windisch <hugo.windisch@gmail.com>",
+    "description": "An editor and a framework to create applications that run in the browser.",
+    "homepage": "http://www.swallowapps.com",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/hugowindisch/swallow.git"
     }
 }
