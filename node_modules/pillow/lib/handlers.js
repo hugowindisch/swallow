@@ -35,6 +35,7 @@ var async = require('async'),
         css: 'text/css',
         js: 'application/ecmascript'
     };
+
 /**
     Handler for making files on the fly and serving them.
 */

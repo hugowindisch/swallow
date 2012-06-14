@@ -1,8 +1,9 @@
+#! /usr/bin/env node
 /**
     editsrvr.js
     Copyright (c) Hugo Windisch 2012 All Rights Reserved
 */
-/*globals __dirname */
+/*globals __dirname, __filename */
 
 var pillow = require('pillow'),
     jqtpl = require('jqtpl'),
@@ -127,14 +128,22 @@ function getUrls(options) {
     });
     return urls;
 }
+
 exports.run = function () {
-    var options = pillow.processArgs(process.argv.slice(2)) || {},
-        swallowroot = path.join(__dirname, '../../..');
+    var options = pillow.processArgs(
+            process.argv.slice(2),
+            pillow.argFilters
+        ),
+        swallowroot = path.join(__dirname, '../../..'),
+        work = path.join(swallowroot, 'work');
     // choose appropriate defaults for all options
     options.css = true;
     options.cacheext = options.cacheext || [ 'png', 'jpg' ];
-    options.newPackages = options.newPackages || path.join(swallowroot, 'work', 'packages');
-    options.dstFolder = options.dstFolder || path.join(swallowroot, 'work', 'generated');
+    options.work = options.work || work;
+    work = options.work;
+    options.newPackages = path.join(work, 'packages');
+    options.dstFolder = path.join(work, 'generated');
+    options.publishFolder = path.join(work, 'publish');
     options.srcFolder = options.srcFolder || [
         path.join(swallowroot, 'framework'),
         path.join(swallowroot, 'editor', 'ui'),
@@ -143,3 +152,8 @@ exports.run = function () {
 
     pillow.serve(getUrls(options), options.port);
 };
+
+// allow this file to be executed directly
+if (process.argv[1] === __filename) {
+    exports.run();
+}

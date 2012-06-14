@@ -25,7 +25,6 @@
     IN THE SOFTWARE.
 */
 /*globals __dirname, __filename */
-/*jslint regexp: false */
 var fs = require('fs'),
     path = require('path'),
     async = require('async'),
@@ -39,129 +38,7 @@ var fs = require('fs'),
         'json': false,
         'css': true,
         'vis': false
-    },
-    argFilters = [
-        {
-            filter: /^--help$/,
-            name: '--help',
-            help: 'displays help information',
-            action: function (pat, filters) {
-                filters.forEach(function (f) {
-                    console.log(f.name + ': ' + f.help);
-                });
-            }
-        },
-        {
-            filter: /^-jquery=(.*)$/,
-            name: '-jquery=filepath',
-            help: 'includes and integrates jquery using the provided sources',
-            action: function (pat) {
-                return {
-                    jquery: pat[1]
-                };
-            }
-        },
-        {
-            filter: /^-only=(.*)$/,
-            name: '-only=pathRelativeToDstFolder',
-            help: 'only remakes the specified file',
-            action: function (pat) {
-                return {
-                    only: pat[1]
-                };
-            }
-        },
-        {
-            filter: /^-cache=(.*)$/,
-            name: '-cache=packageName,packageName2',
-            help: 'Use http caches for the specified package',
-            action: function (pat) {
-                return {
-                    cache: pat[1].split(',')
-                };
-            }
-        },
-        {
-            filter: /^-cacheext=(.*)$/,
-            name: '-cacheext=ext1,ext2,ext3',
-            help: 'Use http caches for the specified package',
-            action: function (pat) {
-                return {
-                    cacheext: pat[1].split(',')
-                };
-            }
-        },
-        {
-            filter: /^-nomake=(.*)$/,
-            name: '-nomake=package1,package2,package3',
-            help: 'Prevents some packages from being regenerated',
-            action: function (pat) {
-                return {
-                    nomake: pat[1].split(',')
-                };
-            }
-        },
-        {
-            filter: /^-css$/,
-            name: '-css',
-            help: 'Includes all dependent css files in the resulting html',
-            action: function (pat) {
-                return {
-                    css: true
-                };
-            }
-        },
-        {
-            filter: /^-html$/,
-            name: '-html',
-            help: 'Generate package.html',
-            action: function (pat) {
-                return {
-                    html: true
-                };
-            }
-        },
-        {
-            filter: /^-newPackages=(.*)$/,
-            name: '-newPackages=path',
-            help: 'Path where new packages should be created (defaults to .).',
-            action: function (pat) {
-                return {
-                    newPackages: pat[1]
-                };
-            }
-        },
-        {
-            filter: /^-minify$/,
-            name: '-minify',
-            help: 'Minifies js file while packaging them',
-            action: function (pat) {
-                return {
-                    minify: true
-                };
-            }
-        },
-        {
-            filter: /^-port=(.*)$/,
-            name: '-port=portnumber',
-            help: 'Uses the specified port in server mode',
-            action: function (pat) {
-                return {
-                    port: pat[1]
-                };
-            }
-        },
-        {
-            filter: /.*/,
-            name: 'srcFolder [srcFolder2...srcFolderN] dstFolder',
-            help: 'src folder',
-            action: function (pat) {
-                return {
-                    srcFolder: [pat[0]]
-                };
-            }
-        }
-    ];
+    };
 
 // synchronously load the templates that we need when this module is loaded
 jqtpl.template(
@@ -976,52 +853,6 @@ function makeFile(options, dstFolderRelativeFilePath, cb) {
     makePackage(options, assetFolderRoot, cb);
 }
 
-/**
-    Parses the command line for creating the options object.
-*/
-function processArgs(args, filters) {
-    var options = { srcFolder: []},
-        resopt;
-    filters = filters || argFilters;
-
-    function concatOptions(o) {
-        if (o) {
-            Object.keys(o).forEach(function (n) {
-                var p = o[n];
-                // concatenate arrays
-                if (p instanceof Array) {
-                    if (!(options[n] instanceof Array)) {
-                        options[n] = [];
-                    }
-                    options[n] = options[n].concat(p);
-
-                } else {
-                    options[n] = p;
-                }
-            });
-        }
-    }
-
-    // filter the args
-    args.forEach(function (a) {
-        filters.some(function (f) {
-            var m = f.filter.exec(a);
-            if (m) {
-                concatOptions(f.action(m, filters));
-                return true;
-            }
-            return false;
-        });
-    });
-    // fix the object for the dst Folder
-    if (options.srcFolder.length > 1) {
-        options.dstFolder = options.srcFolder.pop();
-    } else {
-        // failure
-        options = null;
-    }
-    return options;
-}
 
 /**
     Library support.
@@ -1029,6 +860,4 @@ function processArgs(args, filters) {
 exports.makeAll = makeAll;
 exports.makePackage = makePackage;
 exports.makeFile = makeFile;
-exports.processArgs = processArgs;
-exports.argFilters = argFilters;
 exports.findPackages = findPackages;

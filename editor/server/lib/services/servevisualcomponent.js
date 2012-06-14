@@ -108,7 +108,7 @@ function serveVisualComponent(options, forEdit, monitor) {
 function publishVisualComponent(req, res, match, options) {
     var factory = match[1],
         type = match[2],
-        publishFolder = './publish',
+        publishFolder = options.publishFolder,
         cmpFolder = path.join(publishFolder, factory + '.' + type);
 
     function ret404(err) {

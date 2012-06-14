@@ -19,9 +19,9 @@ Command line operation
 This assumes the package was installed globally. If not, pillowscan aliases
 to bin/pillowscan.js.
 
-**pillowscan [options] folder1 [folder2..foldern] outputfolder**
+**pillowscan [options] folder1 [folder2..foldern]**
 
-With the following options:
+Options:
 
 **--help**: displays help information
 
@@ -44,12 +44,14 @@ regenerated
 
 **-port=portnumber**: Uses the specified port in server mode (instead of 1337)
 
+**-work=path**: Working directory (defaults to the current directory).
+
 example
 -------
 
-pillowscan mypackages myoutput
+pillowscan mypackages
 
-Will scan mypackages and its subdirectories and generate or update myoutput
+Will scan mypackages and its subdirectories and generate or update ./generated
 that will contain properly packaged sources and assets.
 
 
@@ -58,7 +60,9 @@ Server operation
 This assumes the package was installed globally. If not, pillowserve aliases
 to bin/pillowserve.js.
 
-**pillowserve [options] folder1 [folder2..foldern] outputfolder**
+**pillowserve [options] folder1 [folder2..foldern]**
+
+(see pillowscan for options)
 
 will make all packages loadable at:
 
@@ -87,12 +91,14 @@ findPackages
 
 These will be documented later.
 
-Structure of the output folder
-==============================
+Structure of the generated folder
+=================================
 
-The output folder will have the following structure:
+The generated folder will have the following structure:
 
-    output/
+    generated/
+
+        pillow.js
 
         package1/
 

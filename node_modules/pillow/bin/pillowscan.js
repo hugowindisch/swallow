@@ -24,10 +24,17 @@
 */
 
 var pillow = require('pillow'),
-    options = pillow.processArgs(process.argv.slice(2));
+    options = pillow.fixOptions(
+        pillow.processArgs(
+            process.argv.slice(2),
+            pillow.argFilters
+        )
+    );
 
-if (options) {
-    if (options.only) {
+if (!options.help) {
+    if (options.srcFolder.length === 0) {
+        console.log('--help for options');
+    } else if (options.only) {
         pillow.makeFile(options, options.only, function (err) {
             if (err) {
                 console.log(err);

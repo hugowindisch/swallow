@@ -24,10 +24,18 @@
 */
 
 var pillow = require('pillow'),
-    options = pillow.processArgs(process.argv.slice(2));
+    options = pillow.fixOptions(
+        pillow.processArgs(
+            process.argv.slice(2),
+            pillow.argFilters
+        )
+    );
 
-if (options) {
-    pillow.serve(pillow.getUrls(options), options.port);
-} else {
-    console.log('--help for help');
+
+if (!options.help) {
+    if (options.srcFolder.length > 0) {
+        pillow.serve(pillow.getUrls(options), options.port);
+    } else {
+        console.log('--help for help');
+    }
 }
