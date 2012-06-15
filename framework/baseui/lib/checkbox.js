@@ -113,7 +113,7 @@ CheckBox.prototype.theme = new (visual.Theme)({
             {
                 factory: 'baseui',
                 type: 'Theme',
-                style: 'buttonBackground'
+                style: 'control'
             }
         ]
     },
@@ -123,7 +123,7 @@ CheckBox.prototype.theme = new (visual.Theme)({
             {
                 factory: 'baseui',
                 type: 'Theme',
-                style: 'pressedButtonBackground'
+                style: 'controlPressed'
             }
         ]
     }
