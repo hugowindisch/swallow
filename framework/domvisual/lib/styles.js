@@ -294,7 +294,7 @@ gradientToCssString = ({
 })[browser] || function () { return null; };
 
 function backgroundImageToCssString(img) {
-    if (img.colors && img.stops && img.type) {
+    if (img && img.colors && img.stops && img.type) {
         return gradientToCssString(img);
     }
     return null;

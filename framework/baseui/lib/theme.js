@@ -34,26 +34,118 @@ function Theme() {
 }
 Theme.prototype.privateStyles = false;
 Theme.prototype.theme = new (require('visual').Theme)({
-    // borders
-    sectionBorder: {
-        data: [ 'baseui_theme_outlineColor' ],
-        private: true
+    // font
+    controlText: {
+        jsData: {
+            "fontFamily": "sans-serif",
+            "fontSize": 14,
+            "color": { r: 0, g: 0, b: 0, a: 1 }
+        }
+    },
+    controlTextCentered: {
+        basedOn: [ { factory: 'baseui', type: 'Theme', style: 'controlText' } ],
+        jsData: {
+            "textAlign": "center"
+        }
     },
     // button
-    buttonBackground: {
-        data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineRounded', 'baseui_theme_controlFillNormal']
+    control: {
+        jsData: {
+            "borderTopLeftRadius": 8,
+            "borderTopRightRadius": 8,
+            "borderBottomLeftRadius": 8,
+            "borderBottomRightRadius": 8,
+            "backgroundColor": {
+                "r": 250,
+                "g": 250,
+                "b": 250,
+                "a": 1
+            },
+            "backgroundImage": {
+                "colors": [
+                    { r: 255, g: 255, b: 255, a: 1},
+                    { r: 246, g: 246, b: 246, a: 1},
+                    { r: 237, g: 237, b: 237, a: 1},
+                ],
+                "stops": [
+                    0,
+                    0.47,
+                    1
+                ],
+                "type": "vertical"
+            },
+            "borderTopWidth": 1,
+            "borderLeftStyle": "solid",
+            "borderLeftWidth": 1,
+            "borderRightStyle": "solid",
+            "borderRightWidth": 1,
+            "borderBottomStyle": "solid",
+            "borderBottomWidth": 1,
+            "borderTopStyle": "solid",
+            "borderLeftColor": {
+                "r": 206,
+                "g": 206,
+                "b": 206,
+                "a": 1
+            },
+            "borderRightColor": {
+                "r": 206,
+                "g": 206,
+                "b": 206,
+                "a": 1
+            },
+            "borderBottomColor": {
+                "r": 206,
+                "g": 206,
+                "b": 206,
+                "a": 1
+            },
+            "borderTopColor": {
+                "r": 206,
+                "g": 206,
+                "b": 206,
+                "a": 1
+            }
+        }
     },
-    pressedButtonBackground: {
-        data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineRounded', 'baseui_theme_controlFillPressed']
+    controlBackground: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'control' }
+        ],
+        jsData: {
+            "backgroundColor": {
+                "r": 240,
+                "g": 240,
+                "b": 240,
+                "a": 1
+            },
+            "backgroundImage": null
+        }
     },
-    buttonText: {
-        data: [ 'baseui_theme_centered', 'baseui_theme_middle', 'baseui_theme_controlFont', 'baseui_theme_textColor' ],
-        private: true
+    controlPressed: {
+        basedOn: [
+            { factory: 'baseui', type: 'Theme', style: 'controlBackground' }
+        ]
     },
-    pressedButtonText: {
-        data: [ 'baseui_theme_centered', 'baseui_theme_middle', 'baseui_theme_controlFont', 'baseui_theme_textColor' ],
-        private: true
+    // window background (the darker part of a window, for controls etc)
+    windowBackground: {
+        jsData: {
+            backgroundColor: { r: 224, g: 225, b: 224, a: 1 }
+        }
     },
+    // window foreground (the working area of a window)
+    windowForeground: {
+        jsData: {
+            backgroundColor: { r: 255, g: 255, b: 255, a: 1 }
+        }
+    },
+    windowDarkerForeground: {
+        jsData: {
+            backgroundColor: { r: 245, g: 245, b: 245, a: 1 }
+        }
+    },
+    //////////////////////////////////////
+    /// Weird stuff to be fixed from here
     // horizontal menu
     menuTitleBackground: {
         data: [ 'basui_theme_outlineTransparent' ],
@@ -117,16 +209,6 @@ Theme.prototype.theme = new (require('visual').Theme)({
         data: [ ],
         private: true
     },
-    // label text
-    labelText: {
-        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor' ],
-        private: true
-    },
-    // input text
-    inputText: {
-        data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor' ],
-        private: true
-    },
     // folder
     expandedFolder: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgExpandedFolder', 'baseui_theme_bold' ],
@@ -135,18 +217,6 @@ Theme.prototype.theme = new (require('visual').Theme)({
     contractedFolder: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgContractedFolder', 'baseui_theme_bold' ],
         private: true
-    },
-    // window background (the darker part of a window, for controls etc)
-    windowBackground: {
-        data: [ 'baseui_theme_windowBackground' ],
-        private: true
-    },
-    // window foreground (the working area of a window)
-    windowForeground: {
-        data: [ 'baseui_theme_windowForeground', 'baseui_theme_outlineColor' ]
-    },
-    windowDarkerForeground: {
-        data: [ 'baseui_theme_windowDarkerForeground', 'baseui_theme_outlineColor' ]
     },
     // image picker
     imagePickerImage: {

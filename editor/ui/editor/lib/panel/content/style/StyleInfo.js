@@ -44,7 +44,7 @@ StyleInfo.prototype = new (domvisual.DOMElement)();
 StyleInfo.prototype.theme = new (visual.Theme)({
     background: {
         basedOn: [
-            { factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground' }
+            { factory: 'baseui', type: 'Theme', style: 'controlBackground' }
         ]
     }
 });

@@ -150,8 +150,7 @@ GroupViewer.prototype = new (domvisual.DOMElement)();
 GroupViewer.prototype.theme = new (visual.Theme)({
     background: {
         basedOn: [
-            { factory: 'baseui', type: 'Theme', style: 'windowDarkerForeground' },
-            { factory: 'baseui', type: 'Theme', style: 'sectionBorder' }
+            { factory: 'baseui', type: 'Theme', style: 'windowDarkerForeground' }
         ]
     },
     page: {

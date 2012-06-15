@@ -75,8 +75,9 @@ require() is not all that fantastic.
 + Node.js is the defacto standard for developing on the server. When things
 can be done client side and server side (e.g. http, urls, events) they should.
 
-+ An app creation tool is an app, and should be created using itself. Doing so,
-developers who learn how to use the tool will be
++ An app creation tool is an app, and should be created using itself.
+
++ A good tool
 
 Here are the goals of the project
 ---------------------------------

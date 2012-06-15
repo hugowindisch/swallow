@@ -111,15 +111,13 @@ Slider.prototype.getDescription = function () {
 
 Slider.prototype.theme = new (visual.Theme)({
     background: {
-        data: [
-            'baseui_theme_outlineRounded',
-            'baseui_theme_outlineColor',
-            'baseui_theme_windowDarkerForeground'
+        basedOn : [
+            { factory: 'baseui', type: 'Theme', style: 'controlBackground' }
         ]
     },
     knob: {
         basedOn : [
-            { factory: 'baseui', type: 'Theme', style: 'buttonBackground' }
+            { factory: 'baseui', type: 'Theme', style: 'control' }
         ]
     }
 });

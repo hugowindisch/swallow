@@ -47,7 +47,7 @@ Input.prototype.theme = new (visual.Theme)({
     text: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'inputText' }
+            { factory: 'baseui', type: 'Theme', style: 'controlText' }
         ]
     }
 });

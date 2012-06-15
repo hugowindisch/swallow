@@ -46,7 +46,7 @@ Label.prototype.theme = new (visual.Theme)({
     text: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'labelText' }
+            { factory: 'baseui', type: 'Theme', style: 'controlText' }
         ]
     }
 });

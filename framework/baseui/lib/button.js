@@ -104,7 +104,7 @@ Button.prototype.theme = new (visual.Theme)({
     background: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'buttonBackground' }
+            { factory: 'baseui', type: 'Theme', style: 'control' }
 
         ]
     },
@@ -114,7 +114,7 @@ Button.prototype.theme = new (visual.Theme)({
             {
                 factory: 'baseui',
                 type: 'Theme',
-                style: 'pressedButtonBackground'
+                style: 'controlPressed'
             }
 
         ]
@@ -122,14 +122,14 @@ Button.prototype.theme = new (visual.Theme)({
     text: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'buttonText' }
+            { factory: 'baseui', type: 'Theme', style: 'controlTextCentered' }
 
         ]
     },
     pressedText: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'pressedButtonText' }
+            { factory: 'baseui', type: 'Theme', style: 'controlTextCentered' }
 
         ]
     }

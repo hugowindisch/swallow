@@ -36,7 +36,7 @@ VisualInfo.prototype = new (domvisual.DOMElement)();
 VisualInfo.prototype.theme = new (visual.Theme)({
     selected: {
         basedOn: [
-            { factory: 'baseui', type: 'Theme', style: 'buttonBackground' }
+            { factory: 'baseui', type: 'Theme', style: 'control' }
         ]
     }
 });
