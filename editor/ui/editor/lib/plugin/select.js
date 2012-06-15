@@ -28,7 +28,8 @@ var baseui = require('baseui'),
     forEachProperty = utils.forEachProperty,
     deepCopy = utils.deepCopy,
     Accelerator = baseui.Accelerator,
-    MenuItem = baseui.MenuItem;
+    MenuItem = baseui.MenuItem,
+    licenseText;
 
 function getCommandChain(viewer) {
     var group = viewer.getGroup(),
@@ -1142,6 +1143,24 @@ function setupRunMenu(editor) {
 }
 
 
+// license text
+licenseText = 'The SwallowApps Editor, an interactive application builder for creating html applications.\n\nCopyright (C) 2012  Hugo Windisch\n\n Licensed under the GPLv3';
+
+function setupHelpMenu(editor) {
+    var aboutTool,
+        menus = editor.menus;
+    // run tool
+    aboutTool = new MenuItem(
+        'About...',
+        function () {
+            alert(licenseText);
+        }
+    );
+    menus.help.push(
+        aboutTool
+    );
+}
+
 exports.setup = function (editor) {
     // update the menus
     setupFileMenu(editor);
@@ -1150,4 +1169,5 @@ exports.setup = function (editor) {
     setupObjectMenu(editor);
     setupViewMenu(editor);
     setupRunMenu(editor);
+    setupHelpMenu(editor);
 };
