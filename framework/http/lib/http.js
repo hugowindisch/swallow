@@ -33,7 +33,7 @@ var utils = require('utils'),
     };
 
 /**
-* @constructor Constructs a client response.
+* Constructs a client response.
 * @param {Object} headers The http headers.
 * @param {String} statusCode The status of the response.
 */

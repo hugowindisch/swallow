@@ -38,7 +38,10 @@ function jsonToHtml(json) {
         var ctx = item.ctx,
             descr = item.description,
             txt;
-        if (ctx && ctx.type === 'function' && !item.isPrivate && !item.ignore) {
+        if (ctx &&
+                (ctx.type === 'function' || ctx.type === 'method') &&
+                !item.isPrivate &&
+                !item.ignore) {
             html += '<h1>' + item.ctx.string + '</h1>';
             forEach(item.tags, function (t) {
                 if (t.type === 'param') {

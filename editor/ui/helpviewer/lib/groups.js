@@ -16,11 +16,7 @@ exports.groups = {
                 "config": {
                     "position": "help",
                     "innerText": "",
-                    "style": {
-                        "factory": "launcher",
-                        "type": "Launcher",
-                        "style": "list"
-                    }
+                    "style": "style"
                 }
             },
             "packages": {
@@ -29,11 +25,7 @@ exports.groups = {
                 "config": {
                     "position": "packages",
                     "innerText": "",
-                    "style": {
-                        "factory": "launcher",
-                        "type": "Launcher",
-                        "style": "list"
-                    }
+                    "style": "style"
                 }
             },
             "pos": {
@@ -108,7 +100,7 @@ exports.groups = {
         "positions": {
             "help": {
                 "matrix": {
-                    "0": 440,
+                    "0": 400,
                     "1": 0,
                     "2": 0,
                     "3": 0,
@@ -120,7 +112,7 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 152,
+                    "12": 192,
                     "13": 64,
                     "14": 0,
                     "15": 1,
@@ -143,7 +135,7 @@ exports.groups = {
             },
             "packages": {
                 "matrix": {
-                    "0": 136,
+                    "0": 176,
                     "1": 0,
                     "2": 0,
                     "3": 0,
@@ -387,7 +379,27 @@ exports.groups = {
                 }
             }
         },
-        "theme": {},
+        "theme": {
+            "style": {
+                "jsData": {
+                    "fontFamily": "sans-serif",
+                    "fontSize": 14,
+                    "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 1
+                    }
+                },
+                "basedOn": [
+                    {
+                        "factory": "baseui",
+                        "type": "Theme",
+                        "style": "windowForeground"
+                    }
+                ]
+            }
+        },
         "overflowX": "visible",
         "overflowY": "visible"
     }
