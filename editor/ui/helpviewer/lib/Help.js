@@ -33,7 +33,7 @@ function Help(config) {
     this.showPackages();
     this.getChild('make').on('click', function () {
         that.makeHelp();
-    });
+    }).setCursor('pointer');
 
 }
 Help.prototype = visual.inheritVisual(
@@ -74,7 +74,13 @@ Help.prototype.showPackages = function () {
                 var ch = packages.addTextChild('div', name);
                 ch.on('click', function () {
                     that.showHelp(name);
-                });
+                }).on('mouseover', function () {
+                    this.setStyleAttributes({
+                        color: { r: 150, g: 150, b: 150, a: 1}
+                    });
+                }).on('mouseout', function () {
+                    this.setStyleAttributes({ color: null});
+                }).setCursor('pointer');
             });
         });
         res.on('error', function (e) {

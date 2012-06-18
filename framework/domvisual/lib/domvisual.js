@@ -37,6 +37,7 @@ var visual = require('visual'),
     isArray = utils.isArray,
     isNumber = utils.isNumber,
     apply = utils.apply,
+    prune = utils.prune,
     vec3IsEqual = visual.vec3IsEqual,
     getStyleDimensionAdjustment = styles.getStyleDimensionAdjustment,
     setDirty = dirty.setDirty;
@@ -485,6 +486,9 @@ DOMVisual.prototype.setStyleAttributes = function (attr) {
         this.styleAttributes = {};
     }
     apply(this.styleAttributes, attr);
+    if (prune(this.styleAttributes) === 0) {
+        delete this.styleAttributes;
+    }
     setDirty(this, 'style');
     return this;
 };

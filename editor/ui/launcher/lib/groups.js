@@ -167,6 +167,14 @@ exports.groups = {
                     "position": "web",
                     "url": "launcher/img/web.png"
                 }
+            },
+            "help": {
+                "factory": "domvisual",
+                "type": "DOMImg",
+                "config": {
+                    "position": "help",
+                    "url": "launcher/img/help.png"
+                }
             }
         },
         "positions": {
@@ -639,16 +647,16 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 792,
+                    "12": 752,
                     "13": 16,
                     "14": 4.44444465637207,
                     "15": 1,
-                    "byteLength": 64,
                     "byteOffset": 0,
+                    "byteLength": 64,
+                    "length": 16,
                     "buffer": {
                         "byteLength": 64
-                    },
-                    "length": 16
+                    }
                 },
                 "order": 13,
                 "snapping": {
@@ -674,16 +682,16 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 824,
+                    "12": 784,
                     "13": 16,
                     "14": 6.333333492279053,
                     "15": 1,
-                    "byteLength": 64,
                     "byteOffset": 0,
+                    "byteLength": 64,
+                    "length": 16,
                     "buffer": {
                         "byteLength": 64
-                    },
-                    "length": 16
+                    }
                 },
                 "order": 14,
                 "snapping": {
@@ -709,16 +717,16 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 856,
+                    "12": 816,
                     "13": 16,
                     "14": 6.777777671813965,
                     "15": 1,
-                    "byteLength": 64,
                     "byteOffset": 0,
+                    "byteLength": 64,
+                    "length": 16,
                     "buffer": {
                         "byteLength": 64
-                    },
-                    "length": 16
+                    }
                 },
                 "order": 15,
                 "snapping": {
@@ -744,16 +752,16 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 888,
+                    "12": 848,
                     "13": 16,
                     "14": 7.777777671813965,
                     "15": 1,
-                    "byteLength": 64,
                     "byteOffset": 0,
+                    "byteLength": 64,
+                    "length": 16,
                     "buffer": {
                         "byteLength": 64
-                    },
-                    "length": 16
+                    }
                 },
                 "order": 16,
                 "snapping": {
@@ -826,6 +834,41 @@ exports.groups = {
                     "length": 16
                 },
                 "order": 18,
+                "snapping": {
+                    "left": "cpx",
+                    "right": "cpx",
+                    "width": "auto",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "help": {
+                "matrix": {
+                    "0": 32,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 32,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 880,
+                    "13": 16,
+                    "14": 0,
+                    "15": 1,
+                    "byteOffset": 0,
+                    "byteLength": 64,
+                    "length": 16,
+                    "buffer": {
+                        "byteLength": 64
+                    }
+                },
+                "order": 19,
                 "snapping": {
                     "left": "cpx",
                     "right": "cpx",

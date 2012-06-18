@@ -135,6 +135,10 @@ function Launcher(config) {
         window.open('http://www.swallowapps.com', '_blank');
     }).setCursor('pointer');
 
+    this.getChild('help').on('click', function () {
+        window.open('/make/helpviewer.Help.html', '_blank');
+    }).setCursor('pointer');
+
     this.getChild('share').setOpacity(0.5);
     this.getChild('test').setOpacity(0.5);
     this.getChild('trace').setOpacity(0.5);
