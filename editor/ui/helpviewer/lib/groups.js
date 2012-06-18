@@ -75,25 +75,21 @@ exports.groups = {
                     }
                 }
             },
-            "pos3": {
-                "factory": "domvisual",
-                "type": "DOMElement",
-                "config": {
-                    "position": "pos3",
-                    "innerText": "",
-                    "style": {
-                        "factory": "baseui",
-                        "type": "Theme",
-                        "style": "controlText"
-                    }
-                }
-            },
             "make": {
                 "factory": "domvisual",
                 "type": "DOMImg",
                 "config": {
                     "position": "make",
                     "url": "helpviewer/img/make.png"
+                }
+            },
+            "packageName": {
+                "factory": "baseui",
+                "type": "Label",
+                "config": {
+                    "position": "packageName",
+                    "text": "",
+                    "bold": true
                 }
             }
         },
@@ -308,41 +304,6 @@ exports.groups = {
                     "height": "px"
                 }
             },
-            "pos3": {
-                "matrix": {
-                    "0": 312,
-                    "1": 0,
-                    "2": 0,
-                    "3": 0,
-                    "4": 0,
-                    "5": 16,
-                    "6": 0,
-                    "7": 0,
-                    "8": 0,
-                    "9": 0,
-                    "10": 1,
-                    "11": 0,
-                    "12": 152,
-                    "13": 24,
-                    "14": 16.5,
-                    "15": 1,
-                    "byteOffset": 0,
-                    "byteLength": 64,
-                    "length": 16,
-                    "buffer": {
-                        "byteLength": 64
-                    }
-                },
-                "order": 6,
-                "snapping": {
-                    "left": "px",
-                    "right": "auto",
-                    "width": "px",
-                    "top": "px",
-                    "bottom": "auto",
-                    "height": "px"
-                }
-            },
             "make": {
                 "matrix": {
                     "0": 63.999969482421875,
@@ -372,6 +333,41 @@ exports.groups = {
                 "snapping": {
                     "left": "auto",
                     "right": "px",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            },
+            "packageName": {
+                "matrix": {
+                    "0": 296,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 24,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 192,
+                    "13": 24,
+                    "14": 17.5,
+                    "15": 1,
+                    "byteOffset": 0,
+                    "byteLength": 64,
+                    "length": 16,
+                    "buffer": {
+                        "byteLength": 64
+                    }
+                },
+                "order": 6,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
                     "width": "px",
                     "top": "px",
                     "bottom": "auto",

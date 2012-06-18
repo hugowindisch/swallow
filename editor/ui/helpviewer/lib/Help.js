@@ -92,6 +92,7 @@ Help.prototype.showHelp = function (packageName) {
     var data = '',
         that = this,
         help = this.getChild('help'),
+        pName = this.getChild('packageName'),
         helpPath = '/make/' + packageName + '/' + packageName + '.dox.json';
     help.setOverflow('auto');
     http.get({ path: helpPath}, function (res) {
@@ -100,7 +101,8 @@ Help.prototype.showHelp = function (packageName) {
         });
         res.on('end', function () {
             var jsonData = JSON.parse(data);
-            that.getChild('help').setInnerHTML(doxhtml.jsonToHtml(jsonData));
+            help.setInnerHTML(doxhtml.jsonToHtml(jsonData));
+            pName.setText(packageName);
         });
         res.on('error', function (e) {
             alert('Error loading');
