@@ -1147,8 +1147,16 @@ function setupRunMenu(editor) {
 licenseText = 'The SwallowApps Editor, an interactive application builder for creating html applications.\n\nCopyright (C) 2012  Hugo Windisch\n\n Licensed under the GPLv3';
 
 function setupHelpMenu(editor) {
-    var aboutTool,
+    var helpTool,
+        aboutTool,
         menus = editor.menus;
+    // run tool
+    helpTool = new MenuItem(
+        'Documentation...',
+        function () {
+            window.open('/make/helpviewer.Help.html', '_blank');
+        }
+    );
     // run tool
     aboutTool = new MenuItem(
         'About...',
@@ -1157,6 +1165,7 @@ function setupHelpMenu(editor) {
         }
     );
     menus.help.push(
+        helpTool,
         aboutTool
     );
 }

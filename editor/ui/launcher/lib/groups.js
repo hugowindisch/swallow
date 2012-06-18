@@ -34,7 +34,7 @@ exports.groups = {
                 "config": {
                     "position": "packageList",
                     "innerText": "",
-                    "style": "style0"
+                    "style": "list"
                 }
             },
             "moduleList": {
@@ -43,7 +43,7 @@ exports.groups = {
                 "config": {
                     "position": "moduleList",
                     "innerText": "",
-                    "style": "style0"
+                    "style": "list"
                 }
             },
             "packageAdd": {
@@ -82,7 +82,7 @@ exports.groups = {
                 "config": {
                     "position": "pos",
                     "innerText": "",
-                    "style": "style"
+                    "style": "dialog"
                 }
             },
             "pos0": {
@@ -91,7 +91,7 @@ exports.groups = {
                 "config": {
                     "position": "pos0",
                     "innerText": "",
-                    "style": "style1"
+                    "style": "background"
                 }
             },
             "pos1": {
@@ -108,7 +108,7 @@ exports.groups = {
                 "config": {
                     "position": "pos2",
                     "innerText": "Launcher",
-                    "style": "style2"
+                    "style": "maintitle"
                 }
             },
             "pos3": {
@@ -117,7 +117,7 @@ exports.groups = {
                 "config": {
                     "position": "pos3",
                     "innerText": "",
-                    "style": "style3"
+                    "style": "titleBar"
                 }
             },
             "monitor": {
@@ -837,7 +837,27 @@ exports.groups = {
             }
         },
         "theme": {
-            "style": {
+            "background": {
+                "jsData": {
+                    "backgroundColor": {
+                        "r": 220,
+                        "g": 220,
+                        "b": 220,
+                        "a": 1
+                    }
+                }
+            },
+            "list": {
+                "jsData": {
+                    "backgroundColor": {
+                        "r": 1000,
+                        "g": 1000,
+                        "b": 230,
+                        "a": 1
+                    }
+                }
+            },
+            "dialog": {
                 "jsData": {
                     "backgroundColor": {
                         "r": 240,
@@ -863,34 +883,14 @@ exports.groups = {
                     "borderBottomRightRadius": 10
                 }
             },
-            "style0": {
-                "jsData": {
-                    "backgroundColor": {
-                        "r": 1000,
-                        "g": 1000,
-                        "b": 230,
-                        "a": 1
-                    }
-                }
-            },
-            "style1": {
-                "jsData": {
-                    "backgroundColor": {
-                        "r": 220,
-                        "g": 220,
-                        "b": 220,
-                        "a": 1
-                    }
-                }
-            },
-            "style2": {
+            "maintitle": {
                 "jsData": {
                     "fontSize": 31.711111111111112,
                     "fontFamily": "arial",
                     "fontWeight": "bold"
                 }
             },
-            "style3": {
+            "titleBar": {
                 "jsData": {
                     "borderTopLeftRadius": 0,
                     "borderTopRightRadius": 0,
@@ -909,14 +909,15 @@ exports.groups = {
                     {
                         "factory": "launcher",
                         "type": "Launcher",
-                        "style": "style"
+                        "style": "dialog",
+                        "name": "dialog"
                     }
                 ]
             }
         },
         "overflowX": "visible",
         "overflowY": "visible",
-        "privateStyles": true
+        "privateStyles": false
     },
     "Package": {
         "description": "",
@@ -1609,7 +1610,7 @@ exports.exportConstructors = function (to) {
 
     constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
-    constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
+    constructors.Launcher = to.Launcher = require('/launcher/lib/Launcher').Launcher;
 
     return exports;
 };
