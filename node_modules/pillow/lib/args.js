@@ -132,6 +132,16 @@ exports.argFilters = [
         }
     },
     {
+        filter: /^-dox$/,
+        name: '-dox',
+        help: 'Generates documentation',
+        action: function (pat) {
+            return {
+                dox: true
+            };
+        }
+    },
+    {
         filter: /^-port=(.*)$/,
         name: '-port=portnumber',
         help: 'Uses the specified port in server mode',

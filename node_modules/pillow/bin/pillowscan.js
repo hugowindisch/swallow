@@ -23,7 +23,7 @@
     IN THE SOFTWARE.
 */
 
-var pillow = require('pillow'),
+var pillow = require('../'),
     options = pillow.fixOptions(
         pillow.processArgs(
             process.argv.slice(2),

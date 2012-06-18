@@ -31,6 +31,7 @@ var pillow = require('pillow'),
     servepackagelist = require('./services/servepackagelist'),
     serveimagelist = require('./services/serveimagelist'),
     servevisualcomponent = require('./services/servevisualcomponent'),
+    servehelp = require('./services/servehelp'),
     ssevents = require('./services/ssevents');
 
 
@@ -141,6 +142,12 @@ function getUrls(options) {
         filter: /^\/events$/,
         handler: function (req, res, match) {
             ssevents.serveEvents(req, res, match, options);
+        }
+    });
+    urls.push({
+        filter: /^\/makehelp$/,
+        handler: function (req, res, match) {
+            servehelp.serveRebuildHelp(req, res, match, options);
         }
     });
     return urls;
