@@ -36,15 +36,18 @@ function Help(config) {
     }).setCursor('pointer');
 
 }
+
 Help.prototype = visual.inheritVisual(
     domvisual.DOMElement,
     group,
     'helpviewer',
     'Help'
 );
+
 Help.prototype.getConfigurationSheet = function () {
     return {  };
 };
+
 Help.prototype.makeHelp = function () {
     var that = this,
         req = http.request(
@@ -58,6 +61,7 @@ Help.prototype.makeHelp = function () {
     req.end();
 
 };
+
 Help.prototype.showPackages = function () {
     var data = '',
         that = this,
@@ -80,7 +84,13 @@ Help.prototype.showPackages = function () {
                     });
                 }).on('mouseout', function () {
                     this.setStyleAttributes({ color: null});
-                }).setCursor('pointer');
+                }).setCursor(
+                    'pointer'
+                ).setHtmlFlowing({
+                    paddingLeft: '10px',
+                    paddingRight: '10px',
+                    paddingTop: '4px'
+                });
             });
         });
         res.on('error', function (e) {
@@ -88,6 +98,7 @@ Help.prototype.showPackages = function () {
         });
     });
 };
+
 Help.prototype.showHelp = function (packageName) {
     var data = '',
         that = this,
@@ -95,13 +106,21 @@ Help.prototype.showHelp = function (packageName) {
         pName = this.getChild('packageName'),
         helpPath = '/make/' + packageName + '/' + packageName + '.dox.json';
     help.setOverflow('auto');
+    help.removeAllChildren();
     http.get({ path: helpPath}, function (res) {
         res.on('data', function (d) {
             data += d;
         });
         res.on('end', function () {
             var jsonData = JSON.parse(data);
-            help.setInnerHTML(doxhtml.jsonToHtml(jsonData));
+            help.addTextChild(
+                'div'
+            ).setHtmlFlowing({
+                paddingLeft: '10px',
+                paddingRight: '10px'
+            }).setInnerHTML(
+                doxhtml.jsonToHtml(jsonData)
+            );
             pName.setText(packageName);
         });
         res.on('error', function (e) {
