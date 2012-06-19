@@ -98,8 +98,7 @@ exports.definition = {
                     order: 2,
                     matrix: [ 440, 0, 0, 0,   0, 480, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', height: 'auto', bottom: 'px' }
-                },
-
+                }
             },
             children: {
                 visuals: {
@@ -564,8 +563,7 @@ exports.definition = {
                         "value": 100,
                         position: "opacitySlider"
                     }
-                },
-
+                }
             }
         },
         ConfigurationSheet: {
@@ -912,7 +910,7 @@ exports.definition = {
                         url: 'editor/img/enableSelect.png',
                         position: "enableSelection"
                     }
-                },
+                }
             }
         },
         Layering: {
@@ -1408,8 +1406,7 @@ exports.definition = {
                     order: 0,
                     matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-
+                }
             },
             children: {
                 label: {
@@ -2053,7 +2050,7 @@ exports.definition = {
                     config: {
                         position: 'stylePreview'
                     }
-                },
+                }
             }
         },
         Styling: {
@@ -2083,7 +2080,7 @@ exports.definition = {
                     order: 4,
                     matrix: [ 340, 0, 0, 0,   0, 20, 0, 0,   0, 0, 1, 0,   10, 700, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
+                }
             },
             children: {
                 styleName: {

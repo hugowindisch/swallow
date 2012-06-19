@@ -38,7 +38,7 @@ var visual = require('visual'),
                     style: "normal",
                     position: null
                 }
-            },
+            }
         }
     };
 

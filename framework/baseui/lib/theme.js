@@ -65,7 +65,7 @@ Theme.prototype.theme = new (require('visual').Theme)({
                 "colors": [
                     { r: 255, g: 255, b: 255, a: 1},
                     { r: 246, g: 246, b: 246, a: 1},
-                    { r: 237, g: 237, b: 237, a: 1},
+                    { r: 237, g: 237, b: 237, a: 1}
                 ],
                 "stops": [
                     0,

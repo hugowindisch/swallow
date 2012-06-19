@@ -617,8 +617,8 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
         var style = this.element.style,
             htmlFlowing = this.htmlFlowing,
             dimensions = this.dimensions,
-            styleDimensionsAdjustement = this.styleDimensionsAdjustment
-                || [0, 0];
+            styleDimensionsAdjustement = this.styleDimensionsAdjustment ||
+                [0, 0];
         if (!htmlFlowing) {
             style.width =
                 adjust(dimensions[0], styleDimensionsAdjustement[0]) +

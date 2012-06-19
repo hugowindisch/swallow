@@ -53,7 +53,7 @@ function getTransform(viewer, xl, constrain, selectionRect) {
         min = Math.min,
         srt = [
             vec3.add(selectionRect[0], translate, vec3.create()),
-            vec3.add(selectionRect[1], translate, vec3.create()),
+            vec3.add(selectionRect[1], translate, vec3.create())
         ],
         srSnapped = [
             viewer.snapPositionToGrid(vec3.create(srt[0])),

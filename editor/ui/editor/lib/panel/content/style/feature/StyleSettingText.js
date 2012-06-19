@@ -32,7 +32,7 @@ function StyleSettingText(config) {
         'left':  [ 'editor/img/faleft_s.png', 'editor/img/faleft.png', children.textAlignLeft ],
         'right':  [ 'editor/img/faright_s.png', 'editor/img/faright.png', children.textAlignRight ],
         'center':  [ 'editor/img/facenter_s.png', 'editor/img/facenter.png', children.textAlignCenter ],
-        'justify':  [ 'editor/img/fajustify_s.png', 'editor/img/fajustify.png', children.textAlignJustify ],
+        'justify':  [ 'editor/img/fajustify_s.png', 'editor/img/fajustify.png', children.textAlignJustify ]
     }, children.textAlignCheck);
 
     this.textAlign.on('change', function (v) {

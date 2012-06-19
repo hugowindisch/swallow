@@ -79,7 +79,7 @@ function Launcher(config) {
             req = http.request(
                 {
                     method: 'PUT',
-                    path: '/package/' + name,
+                    path: '/package/' + name
                 },
                 function (res) {
                     res.on('error', function (e) {
@@ -108,7 +108,7 @@ function Launcher(config) {
             req = http.request(
                 {
                     method: 'PUT',
-                    path: '/package/' + packageName + '/visual/' + name,
+                    path: '/package/' + packageName + '/visual/' + name
                 },
                 function (res) {
                     res.on('error', function (e) {

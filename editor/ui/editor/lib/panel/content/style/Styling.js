@@ -96,7 +96,7 @@ var visual = require('visual'),
         },
         m: {
             attributes: {
-                color: 'backgroundColor',
+                color: 'backgroundColor'
             },
             FeatureEditor: require('./feature/StyleSettingBackground').StyleSettingBackground,
             config: { label: 'Background' }
