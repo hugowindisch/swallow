@@ -142,6 +142,16 @@ exports.argFilters = [
         }
     },
     {
+        filter: /^-lint$/,
+        name: '-lint',
+        help: 'Lints the sources',
+        action: function (pat) {
+            return {
+                lint: true
+            };
+        }
+    },
+    {
         filter: /^-port=(.*)$/,
         name: '-port=portnumber',
         help: 'Uses the specified port in server mode',

@@ -1,5 +1,5 @@
 /**
-    servehelp.js
+    servetests.js
 
     The SwallowApps Editor, an interactive application builder for creating
     html applications.
@@ -27,7 +27,7 @@ var pillow = require('pillow'),
     makeAll = pillow.makeAll;
 
 
-function serveRebuildHelp(req, res, match, options) {
+function serveRebuildLint(req, res, match, options) {
     function ret404(err) {
         res.writeHead(404);
         if (err) {
@@ -41,7 +41,7 @@ function serveRebuildHelp(req, res, match, options) {
         Object.keys(options).forEach(function (k) {
             extOptions[k] = options[k];
         });
-        extOptions.dox = true;
+        extOptions.lint = true;
         makeAll(extOptions, function (err) {
             if (err) {
                 return ret404(err);
@@ -56,4 +56,4 @@ function serveRebuildHelp(req, res, match, options) {
     }
 }
 
-exports.serveRebuildHelp = serveRebuildHelp;
+exports.serveRebuildLint = serveRebuildLint;

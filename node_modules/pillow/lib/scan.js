@@ -30,6 +30,7 @@ var fs = require('fs'),
     async = require('async'),
     jqtpl = require('jqtpl'),
     jsmin = require('jsmin'),
+    jslint = require('JSLint-commonJS'),
     dox = require('dox'),
     assetExt = {
         'jpg': true,
@@ -417,6 +418,47 @@ function publishJSFiles(
 }
 
 /**
+    Publishes the lint.
+*/
+function publishLint(
+    options,
+    details,
+    packageMap,
+    deps,
+    cb
+) {
+    var publishdir = path.join(options.dstFolder, details.name),
+        publishLintFilename = path.join(publishdir, details.name + '.lint.json'),
+        results = {};
+
+    // process all the js files
+    async.forEach(details.js, function (filename, cb) {
+        fs.readFile(filename, 'utf8', function (err, content) {
+            var res;
+            if (err) {
+                return cb(err);
+            }
+            res = jslint(content);
+            if (!res) {
+                res = jslint.errors;
+            }
+            results[filename] = res;
+            cb(null);
+
+        });
+    }, function (err) {
+        if (err) {
+            return cb(err);
+        }
+        fs.writeFile(
+            publishLintFilename,
+            JSON.stringify(results, null, 4),
+            cb
+        );
+    });
+}
+
+/**
     Publishes the html that allows to run the package in a browser
     using a standalone statically loaded html.
 */
@@ -485,17 +527,21 @@ function makePublishedPackage(
             mostRecentJSDate;
     // regenerate the DOX file
     function makeDOXFile(cb) {
-        checkOlderOrInvalid(
-            path.join(options.dstFolder, detName, detName + '.dox.json'),
-            mostRecentJSDate,
-            function (err, older) {
-                if (older) {
-                    publishDox(options, details, packageMap, deps, cb);
-                } else {
-                    cb(err);
+        if (options.dox) {
+            checkOlderOrInvalid(
+                path.join(options.dstFolder, detName, detName + '.dox.json'),
+                mostRecentJSDate,
+                function (err, older) {
+                    if (older) {
+                        publishDox(options, details, packageMap, deps, cb);
+                    } else {
+                        cb(err);
+                    }
                 }
-            }
-        );
+            );
+        } else {
+            cb(null);
+        }
     }
 
     // regenerate JSFiles
@@ -519,6 +565,25 @@ function makePublishedPackage(
             makeJSFiles,
             makeDOXFile
         ], cb);
+    }
+
+    // regenerate the lint
+    function makeLint(cb) {
+        if (options.lint) {
+            checkOlderOrInvalid(
+                path.join(options.dstFolder, detName, detName + '.lint.json'),
+                mostRecentJSDate,
+                function (err, older) {
+                    if (older) {
+                        publishLint(options, details, packageMap, deps, cb);
+                    } else {
+                        cb(err);
+                    }
+                }
+            );
+        } else {
+            cb(null);
+        }
     }
 
     // regenerate Assets (jpg, png, etc)
@@ -594,6 +659,7 @@ function makePublishedPackage(
 
     async.parallel([
         makeJSFilesThenDOXFile,
+        makeLint,
         makeAssets,
         makeHtml,
         makePillow,
