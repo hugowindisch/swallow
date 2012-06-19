@@ -159,7 +159,7 @@ Editor.prototype.newGroup = function (factory, type, cb) {
         type,
         {
             description: '',
-            private: true,
+            privateVisual: true,
             privateTheme: true,
             dimensions: [ 600, 400, 0],
             gridSize: 8,

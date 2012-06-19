@@ -26,15 +26,29 @@ function TestViewer(config) {
         paddingRight: '10px'
     });
     // lazy: we load and lint in cascade
-    this.loadPackages(function (err) {
-        if (!err) {
-            that.makeLint(function (err) {
-                that.showLint();
-            });
-        }
-    });
+    if (!this.forPreview) {
+        this.loadPackages(function (err) {
+            if (!err) {
+                that.makeLint(function (err) {
+                    that.showLint();
+                });
+            }
+        });
+    }
 }
+
+TestViewer.createPreview = function () {
+    var ret = new TestViewer({forPreview: true});
+    ret.setOverflow('hidden');
+    ret.enableScaling(true);
+    return ret;
+};
+
 TestViewer.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'testviewer', 'TestViewer');
+
+TestViewer.prototype.setForPreview = function (forPreview) {
+    this.forPreview = forPreview;
+};
 
 TestViewer.prototype.getConfigurationSheet = function () {
     return {  };

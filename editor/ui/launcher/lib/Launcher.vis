@@ -1,6 +1,6 @@
 {
     "description": "The project management screen.",
-    "private": true,
+    "privateVisual": true,
     "privateTheme": true,
     "dimensions": [
         1000,

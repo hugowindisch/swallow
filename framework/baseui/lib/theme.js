@@ -149,83 +149,83 @@ Theme.prototype.theme = new (require('visual').Theme)({
     // horizontal menu
     menuTitleBackground: {
         data: [ 'basui_theme_outlineTransparent' ],
-        private: true
+        privateStyle: true
     },
     highLightedMenuTitleBackground: {
         data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineTopRounded', 'baseui_theme_controlFillNormal' ],
-        private: true
+        privateStyle: true
     },
     menuTitleText: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_menuItemSpacing', 'baseui_theme_outlineTransparent' ],
-        private: true
+        privateStyle: true
     },
     highLightedMenuTitleText: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_menuItemSpacing', 'baseui_theme_outlineColor' ],
-        private: true
+        privateStyle: true
     },
     menuBar: {
         data: [ 'baseui_theme_menuBar' ],
-        private: true
+        privateStyle: true
     },
     // vertical menu
     menuBox: {
         data: [ 'baseui_theme_outlineSmallRounded', 'baseui_theme_menuBoxColor', 'baseui_theme_outlineColor', 'baseui_theme_outlineShadow' ],
-        private: true
+        privateStyle: true
     },
     menuItem: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_menuItem' ],
-        private: true
+        privateStyle: true
     },
     menuItemSelected: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_highlightColor', 'baseui_theme_textHighlightColor', 'baseui_theme_menuItem' ],
-        private: true
+        privateStyle: true
     },
     menuItemDisabled: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_menuBox_color', 'baseui_theme_textDisabledColor', 'baseui_theme_menuItem' ],
-        private: true
+        privateStyle: true
     },
     horizontalSeparator: {
         data: [ 'baseui_theme_borderBottom'],
-        private: true
+        privateStyle: true
     },
     // toolbox tool
     tool: {
         data: [ 'baseui_theme_outlineTransparent', 'baseui_theme_toolSize' ],
-        private: true
+        privateStyle: true
     },
     highlightedTool: {
         data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineRounded', 'baseui_theme_controlFillNormal', 'baseui_theme_toolSize'],
-        private: true
+        privateStyle: true
     },
     grayedTool: {
         data: [ 'baseui_theme_outlineTransparent', 'baseui_theme_transparency', 'baseui_theme_toolSize'],
-        private: true
+        privateStyle: true
     },
     pressedTool: {
         data: [ 'baseui_theme_outlineColor', 'baseui_theme_outlineRounded', 'baseui_theme_controlFillPressed', 'baseui_theme_toolSize'],
-        private: true
+        privateStyle: true
     },
     verticalSeparator: {
         data: [ ],
-        private: true
+        privateStyle: true
     },
     // folder
     expandedFolder: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgExpandedFolder', 'baseui_theme_bold' ],
-        private: true
+        privateStyle: true
     },
     contractedFolder: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgContractedFolder', 'baseui_theme_bold' ],
-        private: true
+        privateStyle: true
     },
     // image picker
     imagePickerImage: {
         data: [ 'baseui_theme_outlineTransparent' ],
-        private: true
+        privateStyle: true
     },
     imagePickerImageSelected: {
         data: [ 'baseui_theme_outlineColor' ],
-        private: true
+        privateStyle: true
     }
 });
 exports.Theme = Theme;

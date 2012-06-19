@@ -1,6 +1,6 @@
 {
     "description": "",
-    "private": true,
+    "privateVisual": true,
     "privateTheme": true,
     "dimensions": [
         400,

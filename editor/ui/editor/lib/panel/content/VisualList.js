@@ -191,7 +191,7 @@ VisualList.prototype.updateVisualList = function () {
             f = require(factory);
             if (f) {
                 T = f[type];
-                if (T && (T.prototype instanceof visual.Visual) && (!T.prototype.private || (factory === docInfo.factory))) {
+                if (T && (T.prototype instanceof visual.Visual) && (!T.prototype.privateVisual || (factory === docInfo.factory))) {
                     c = new VisualInfo({ typeInfo: {factory: factory, type: type}});
                     c.init(that.editor);
                     c.setHtmlFlowing({position: 'relative'}, true);
