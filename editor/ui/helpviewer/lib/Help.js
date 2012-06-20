@@ -25,7 +25,8 @@ var visual = require('visual'),
     http = require('http'),
     doxhtml = require('doxhtml'),
     utils = require('utils'),
-    forEachProperty = utils.forEachProperty;
+    forEachProperty = utils.forEachProperty,
+    forEachSortedProperty = utils.forEachSortedProperty;
 
 function Help(config) {
     var that = this;
@@ -74,7 +75,7 @@ Help.prototype.showPackages = function () {
         });
         res.on('end', function () {
             var jsonData = JSON.parse(data);
-            forEachProperty(jsonData, function (descr, name) {
+            forEachSortedProperty(jsonData, function (descr, name) {
                 var ch = packages.addTextChild('div', name);
                 ch.on('click', function () {
                     that.showHelp(name);

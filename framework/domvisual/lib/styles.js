@@ -291,7 +291,10 @@ function gradientToCSSStringWebkit(gradient) {
 gradientToCssString = ({
     'AppleWebKit': gradientToCSSStringWebkit,
     'Mozilla': gradientToCSSStringMozilla
-})[browser] || function () { return null; };
+})[browser] ||
+    function () {
+        return null;
+    };
 
 function backgroundImageToCssString(img) {
     if (img && img.colors && img.stops && img.type) {

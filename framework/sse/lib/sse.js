@@ -20,6 +20,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
+/*globals window */
 var events = require('events'),
     utils = require('utils'),
     isArray = utils.isArray,

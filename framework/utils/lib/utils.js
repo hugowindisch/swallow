@@ -115,7 +115,12 @@ function forEachSortedProperty(object, f, optionalSortFunction) {
         i,
         n;
     function cmp(n1, n2) {
-        return n1 > n2;
+        if (n1 > n2) {
+            return 1;
+        } else if (n1 < n2) {
+            return -1;
+        }
+        return 0;
     }
     optionalSortFunction = optionalSortFunction || cmp;
     forEachProperty(object, function (p, name) {

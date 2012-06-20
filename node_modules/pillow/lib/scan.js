@@ -40,6 +40,35 @@ var fs = require('fs'),
         'json': false,
         'css': true,
         'vis': false
+    },
+    lintOptions = {
+        bitwise: true,
+        browser: true,
+        cap: true,
+        css: true,
+        devel: true,
+        eqeqeq: true,
+        es5: true,
+        forin: true,
+        fragment: true,
+        immed: true,
+        newcap: true,
+        nomen: true,
+        on: true,
+        onevar: true,
+        plusplus: true,
+        regexp: true,
+        undef: true,
+        indent: 4,
+        white: true,
+        predef: [
+            'require',
+            'console',
+            'process',
+            'exports',
+            'emit',
+            'module'
+        ]
     };
 
 // synchronously load the templates that we need when this module is loaded
@@ -438,7 +467,7 @@ function publishLint(
             if (err) {
                 return cb(err);
             }
-            res = jslint(content);
+            res = jslint(content, lintOptions);
             if (!res) {
                 res = jslint.errors;
             }

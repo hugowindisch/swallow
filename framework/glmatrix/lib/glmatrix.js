@@ -33,6 +33,7 @@
 
 //"use strict";
 /*global Float32Array */
+/*jslint laxbreak: true, white: false */
 
 var vec3 = exports.vec3 = {},
     mat3 = exports.mat3 = {},

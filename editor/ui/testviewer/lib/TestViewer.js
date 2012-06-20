@@ -7,6 +7,7 @@ var visual = require('visual'),
     utils = require('utils'),
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty,
+    forEachSortedProperty = utils.forEachSortedProperty,
     group = require('/testviewer/lib/groups').groups.TestViewer;
 
 function TestViewer(config) {
@@ -97,10 +98,23 @@ TestViewer.prototype.makeLint = function (cb) {
 };
 
 TestViewer.prototype.showLint = function () {
-    var that = this;
+    var that = this,
+        lintRes = {},
+        toLoad = 1;
+
+    function loaded() {
+        toLoad -= 1;
+        if (toLoad === 0) {
+            forEachSortedProperty(lintRes, function (res, name) {
+                that.logLintRecord(name, res);
+            });
+        }
+    }
+
     forEachProperty(this.packages, function (p, name) {
         var data = '',
             path = '/make/' + name + '/' + name + '.lint.json';
+        toLoad += 1;
         http.get(
             { path: path},
             function (res) {
@@ -108,12 +122,16 @@ TestViewer.prototype.showLint = function () {
                     data += d;
                 });
                 res.on('end', function () {
-                    var jsonData = JSON.parse(data);
-                    that.logLintRecord(name, jsonData);
+                    lintRes[name] = JSON.parse(data);
+                    loaded();
+                });
+                res.on('error', function () {
+                    loaded();
                 });
             }
         );
     });
+    loaded();
 };
 
 TestViewer.prototype.logLintRecord = function (packageName, record) {
@@ -130,14 +148,18 @@ TestViewer.prototype.logLintRecord = function (packageName, record) {
 
     this.log('h2', packageName);
     forEachProperty(record, function (results, filename) {
-        var err = results !== true,
-            sattr = err ? { color: { r: 255, g: 0, b: 0, a: 1}} : null;
-        that.log('h3', filename + (err ? '' : ' ok'), sattr);
-        if (err) {
+        var erroneous = results !== true,
+            sattr = erroneous ? { color: { r: 255, g: 0, b: 0, a: 1}} : null;
+        that.log('h3', filename + (erroneous ? '' : ' ok'), sattr);
+        if (erroneous) {
             forEach(results, function (err) {
-                that.log('b', err.id + ': ' + err.reason + ' at line ' + err.line, sattr);
-                that.log('pre', err.evidence, sattr);
-                that.log('pre', caret(err.character), sattr);
+                if (err === null) {
+                    that.log('b', '(more)');
+                } else {
+                    that.log('b', err.id + ': ' + err.reason + ' at line ' + err.line, sattr);
+                    that.log('pre', err.evidence, sattr);
+                    that.log('pre', caret(err.character), sattr);
+                }
             });
         }
     });

@@ -20,6 +20,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
+/*globals window */
 var utils = require('utils'),
     dirty = require('/visual/lib/dirty'),
     keycodes = require('./keycodes'),
@@ -58,8 +59,12 @@ function FilterKeyEvent(evt) {
         evt.metaKey,
         evt.shiftKey
     );
-    ret.preventDefault = function () { evt.preventDefault(); };
-    ret.stopPropagation = function () { evt.stopPropagation(); };
+    ret.preventDefault = function () {
+        evt.preventDefault();
+    };
+    ret.stopPropagation = function () {
+        evt.stopPropagation();
+    };
     // prevent...
     return ret;
 }

@@ -131,24 +131,24 @@ Editor.prototype.saveGroup = function (factory, type, doc, cb) {
     type = type || this.docInfo.type;
     doc = doc || this.children.viewer.getGroup().documentData;
     var req = http.request(
-            {
-                method: 'POST',
-                path: modulePath(factory, type)
-            },
-            function (res) {
-                res.on('error', function (e) {
-                    alert('Error saving');
-                    if (cb) {
-                        cb(e);
-                    }
-                });
-                res.on('end', function () {
-                    if (cb) {
-                        cb(null);
-                    }
-                });
-            }
-        );
+        {
+            method: 'POST',
+            path: modulePath(factory, type)
+        },
+        function (res) {
+            res.on('error', function (e) {
+                alert('Error saving');
+                if (cb) {
+                    cb(e);
+                }
+            });
+            res.on('end', function () {
+                if (cb) {
+                    cb(null);
+                }
+            });
+        }
+    );
     req.write(JSON.stringify(doc));
     req.end();
 };
