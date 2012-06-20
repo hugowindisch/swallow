@@ -292,11 +292,18 @@ function publishJSFile(
     dependencies,
     jsstream,
     optMini,
+    test,
     cb
 ) {
     // we want to split the path
     //filename.split(
-    var pillowPath = modulename + filename.slice(modulerootfolder.length, -3);
+    var pillowPath = modulename + filename.slice(modulerootfolder.length, -3),
+        isTest = filename.indexOf(modulerootfolder + '/test/') === 0;
+
+    // if this is a test file, only include it in test mode.
+    if (isTest && !test) {
+        return cb(null);
+    }
 
     async.waterfall([
         function (cb) {
@@ -403,10 +410,14 @@ function publishJSFiles(
     details,
     packageMap,
     deps,
+    test,
     cb
 ) {
     var publishdir = path.join(options.dstFolder, details.name),
-        publishJsStream = path.join(publishdir, details.name + '.js'),
+        publishJsStream = path.join(
+            publishdir,
+            details.name + (test ? '.test.js' : '.js')
+        ),
         stream = fs.createWriteStream(publishJsStream),
         dependencies = [ ];
     if (deps) {
@@ -431,6 +442,7 @@ function publishJSFiles(
             dependencies,
             stream,
             options.minify,
+            test,
             cb
         );
     }, function (err) {
@@ -580,7 +592,7 @@ function makePublishedPackage(
             mostRecentJSDate,
             function (err, older) {
                 if (older) {
-                    publishJSFiles(options, details, packageMap, deps, cb);
+                    publishJSFiles(options, details, packageMap, deps, false, cb);
                 } else {
                     cb(err);
                 }
@@ -615,6 +627,23 @@ function makePublishedPackage(
         }
     }
 
+    // generates a test version of the JSFiles
+    function makeTestJSFiles(cb) {
+        if (options.test) {
+            checkOlderOrInvalid(
+                path.join(options.dstFolder, detName, detName + '.test.js'),
+                mostRecentJSDate,
+                function (err, older) {
+                    if (older) {
+                        publishJSFiles(options, details, packageMap, deps, true, cb);
+                    } else {
+                        cb(err);
+                    }
+                }
+            );
+        }
+    }
+
     // regenerate Assets (jpg, png, etc)
     function makeAssets(cb) {
         async.forEach(details.other, function (f, cb) {
@@ -627,7 +656,7 @@ function makePublishedPackage(
             );
         }, cb);
     }
-    // regenerate Html
+    // regenerate Html (note: we should add a .test.html ... one day)
     function makeHtml(cb) {
         if (options.html) {
             if (mostRecentJSDate.getTime() > cssMostRecentDate.getTime()) {
@@ -689,6 +718,7 @@ function makePublishedPackage(
     async.parallel([
         makeJSFilesThenDOXFile,
         makeLint,
+        makeTestJSFiles,
         makeAssets,
         makeHtml,
         makePillow,

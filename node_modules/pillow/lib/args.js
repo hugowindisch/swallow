@@ -152,6 +152,16 @@ exports.argFilters = [
         }
     },
     {
+        filter: /^-test$/,
+        name: '-test',
+        help: 'Generates a test version of the package (named .test.js)',
+        action: function (pat) {
+            return {
+                test: true
+            };
+        }
+    },
+    {
         filter: /^-port=(.*)$/,
         name: '-port=portnumber',
         help: 'Uses the specified port in server mode',

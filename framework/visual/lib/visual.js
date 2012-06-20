@@ -1111,18 +1111,25 @@ Visual.prototype.getStyleData = function () {
 *   package should be loaded (will default to the same applicationDomain
 *   as this component if set to null)
 * @param {Boolean} reload true to force reloading of the package.
+* @param {Boolean} forTesting true to get the testing version of the package.
 * @param {Funtion} callback an optional function to call when the loading is
 *   complete.
 */
-function loadPackage(p, applicationDomain, reload, callback) {
+function loadPackage(p, applicationDomain, reload, forTesting, callback) {
     applicationDomain = applicationDomain || require.applicationDomain;
     reload = reload || false;
-    define.pillow.loadPackage(p, applicationDomain, reload, function () {
-        if (callback) {
-            callback.apply(this, arguments);
+    define.pillow.loadPackage(
+        p,
+        applicationDomain,
+        reload,
+        forTesting,
+        function () {
+            if (callback) {
+                callback.apply(this, arguments);
+            }
+            dirty.update();
         }
-        dirty.update();
-    });
+    );
 }
 
 /**

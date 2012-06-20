@@ -159,7 +159,7 @@ DependencyManager.prototype.loadMissingFactories = function (visualList) {
     });
     forEachProperty(toLoad, function (item, factory) {
         // factory not already loaded?
-        visual.loadPackage(factory, null, false, function (err) {
+        visual.loadPackage(factory, null, false, false, function (err) {
             if (!err) {
                 factories[factory] = factory;
             }
@@ -178,7 +178,7 @@ DependencyManager.prototype.loadMissingFactories = function (visualList) {
 };
 DependencyManager.prototype.reloadModule = function (factory, type) {
     var that = this;
-    visual.loadPackage(factory, null, true, function (err) {
+    visual.loadPackage(factory, null, true, false, function (err) {
         var vl, vis, found;
         if (!err) {
             that.factories[factory] = factory;

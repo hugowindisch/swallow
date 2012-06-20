@@ -32,7 +32,7 @@ function loadConstructor(
 ) {
     var visual = require('visual');
     // 1. load the factory
-    visual.loadPackage(factory, null, false, function (err) {
+    visual.loadPackage(factory, null, false, false, function (err) {
         var p, Constr;
         if (err) {
             return cb(err);
