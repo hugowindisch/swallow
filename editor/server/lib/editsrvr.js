@@ -21,6 +21,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 /*globals __dirname, __filename */
+/*jslint regexp: false */
 
 var pillow = require('pillow'),
     jqtpl = require('jqtpl'),
@@ -161,6 +162,12 @@ function getUrls(options) {
         filter: /^\/maketest$/,
         handler: function (req, res, match) {
             servetests.serveRebuildTest(req, res, match, options);
+        }
+    });
+    urls.push({
+        filter: /^\/testhttp(.*)$/,
+        handler: function (req, res, match) {
+            servetests.serveTestHttp(req, res, match, options);
         }
     });
     return urls;

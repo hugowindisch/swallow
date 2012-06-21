@@ -119,7 +119,6 @@ function ClientRequest(options) {
         return res;
     }
     this.request.onreadystatechange = function () {
-        //console.log('!!!' + this.readyState + ' ' + this.responseText.length);
         switch (this.readyState) {
         case readyStates.unsent:
             break;

@@ -239,6 +239,8 @@ TestViewer.prototype.runTest = function () {
             that.log('done testing');
         }
         that.enableTests(true);
+        // because of the fucked up dual app domain
+        visual.update();
     }
     this.loadPackages(function (err) {
         if (err) {
@@ -374,12 +376,12 @@ TestViewer.prototype.runPackageTests = function (
         testsDone = false,
         that = this;
     // async testing stuff
-    function test() {
-        var f = arguments[0],
-            l = arguments.length,
+    function test(f) {
+        var l = arguments.length,
             i = 1,
             args = [],
             ret;
+        test.total += 1;
         while (i < l) {
             args.push(arguments[i]);
             i += 1;
@@ -388,12 +390,13 @@ TestViewer.prototype.runPackageTests = function (
             ret = f.apply(this, args);
         } catch (e) {
             if (!testsDone) {
-                that.log('ERROR: ' + e, 'b', true);
+                that.log('ERROR: ' + e, null, true);
                 errors += 1;
             }
         }
         return ret;
     }
+    test.total = -1;
     function done() {
         if (!testsDone) {
             testsDone = true;
@@ -404,7 +407,7 @@ TestViewer.prototype.runPackageTests = function (
                     true
                 );
             } else {
-                that.log('No error');
+                that.log('No error on ' + test.total + ' tests');
             }
             cb(null);
         }

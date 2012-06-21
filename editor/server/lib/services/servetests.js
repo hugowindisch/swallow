@@ -76,6 +76,38 @@ function serveRebuildTest(req, res, match, options) {
     }
 }
 
+function serveTestHttp(req, res, match, options) {
+    res.writeHead(200);
+    var ret = {
+            method: req.method,
+            url: req.url,
+            headers: req.headers,
+            trailers: req.trailers,
+            version: req.httpVersion
+        };
+    function done() {
+        res.write(JSON.stringify(ret, null, 4));
+        res.end();
+    }
+    if (req.method === 'POST' || req.method === 'PUT') {
+        req.on('data', function (data) {
+            if (!ret.postData) {
+                ret.postData = String(data);
+            } else {
+                ret.postData += String(data);
+            }
+        });
+        req.on('end', done);
+        req.on('error', function (err) {
+            ret.error = String(err);
+            done();
+        });
+
+    } else {
+        done();
+    }
+}
 
 exports.serveRebuildLint = serveRebuildLint;
 exports.serveRebuildTest = serveRebuildTest;
+exports.serveTestHttp = serveTestHttp;
