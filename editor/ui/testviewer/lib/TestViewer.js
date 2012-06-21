@@ -361,7 +361,7 @@ TestViewer.prototype.runPackageTests = function (
         this.log('ERROR: ' + err, 'b', true);
         cb(null);
     } else {
-        if (pack instanceof EventEmitter) {
+        if (typeof pack.on === 'function') {
             this.log('Starting asynchronous testing...');
             // FIXME: we would need some kind of heartbeat
             pack.on('log', function (msg, error) {
@@ -369,11 +369,15 @@ TestViewer.prototype.runPackageTests = function (
             });
             pack.on('done', function (e) {
                 if (err) {
-                    console.log('ERROR: ' + e, 'b', true);
+                    that.log('ERROR: ' + e, 'b', true);
                 } else {
-                    console.log('ok');
+                    that.log('ok');
                 }
+                cb(null);
             });
+            if (typeof pack.run === 'function') {
+                pack.run();
+            }
         } else {
             this.log('ok');
             cb(null);
