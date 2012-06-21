@@ -3,6 +3,8 @@
 */
 var visual = require('visual'),
     domvisual = require('domvisual'),
+    events = require('events'),
+    EventEmitter = events.EventEmitter,
     http = require('http'),
     utils = require('utils'),
     forEach = utils.forEach,
@@ -265,7 +267,10 @@ TestViewer.prototype.makeTest = function (cb) {
 
 TestViewer.prototype.showTest = function (cb) {
     var toRun = [],
-        that = this;
+        that = this,
+        willTest = '',
+        willNotTest = '';
+
 
     that.log('Testing...');
     forEachSortedProperty(this.packages, function (pack, name) {
@@ -273,15 +278,25 @@ TestViewer.prototype.showTest = function (cb) {
         if (scripts && scripts.test) {
             // we should run this test
             toRun.push(pack);
+            // update the string of what we will test
+            if (willTest !== '') {
+                willTest += ', ';
+            }
+            willTest += name;
         } else {
-            that.log('WARNING: No test for package ' + name);
+            // update the string of what we will not test
+            if (willNotTest !== '') {
+                willNotTest += ', ';
+            }
+            willNotTest += name;
         }
     });
 
-    that.log('Packages that will be tested:');
-    forEach(toRun, function (pack) {
-        that.log(pack.name);
-    });
+    that.log('WARNING: The following packages don\'t have a test script : ' +
+        willNotTest +
+        ' and will not be tested!', 'b', true);
+    that.log('Packages that will be tested: ' + willTest);
+
     that.separator();
 
     function runTest(runned, cb) {
@@ -333,9 +348,37 @@ TestViewer.prototype.runPackageTests = function (
     testscript.pop();
     testscript = testscript.join('.');
     var module = packName + '/' + testscript,
+        pack,
+        err,
+        that = this;
+    try {
         pack = testRequire(packName + '/' + testscript);
-    // synchronous testing for now
-    cb(null);
+    } catch (e) {
+        err = e;
+    }
+    // reporting
+    if (err) {
+        this.log('ERROR: ' + err, 'b', true);
+        cb(null);
+    } else {
+        if (pack instanceof EventEmitter) {
+            this.log('Starting asynchronous testing...');
+            // FIXME: we would need some kind of heartbeat
+            pack.on('log', function (msg, error) {
+                that.log(msg, null, error);
+            });
+            pack.on('done', function (e) {
+                if (err) {
+                    console.log('ERROR: ' + e, 'b', true);
+                } else {
+                    console.log('ok');
+                }
+            });
+        } else {
+            this.log('ok');
+            cb(null);
+        }
+    }
 };
 
 exports.TestViewer = TestViewer;
