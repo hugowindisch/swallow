@@ -1,9 +1,8 @@
-var assert = require('assert'),
-    events = require('events'),
-    tester = new events.EventEmitter();
+var assert = require('assert');
 
-tester.run = function () {
+exports.run = function (test, done) {
     // done with no errors
-    tester.emit('done', null);
+    test(assert, true);
+    test(assert, false);
+    done();
 };
-module.exports = tester;

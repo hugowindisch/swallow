@@ -101,13 +101,12 @@ function fail(actual, expected, message, operator) {
 */
 function ok(guard, msgOpt) {
     if (!guard) {
-        fail(false, true, msgOpt, '!=');
+        fail(false, true, msgOpt, '==');
     }
 }
 
 xp = ok;
 xp.ok = ok;
-
 
 xp.fail = fail;
 

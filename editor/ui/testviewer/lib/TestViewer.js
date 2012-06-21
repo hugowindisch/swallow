@@ -3,8 +3,6 @@
 */
 var visual = require('visual'),
     domvisual = require('domvisual'),
-    events = require('events'),
-    EventEmitter = events.EventEmitter,
     http = require('http'),
     utils = require('utils'),
     forEach = utils.forEach,
@@ -27,7 +25,12 @@ function TestViewer(config) {
     this.log('Choose Lint or Test to start testing');
 }
 
-TestViewer.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'testviewer', 'TestViewer');
+TestViewer.prototype = visual.inheritVisual(
+    domvisual.DOMElement,
+    group,
+    'testviewer',
+    'TestViewer'
+);
 
 TestViewer.prototype.setForPreview = function (forPreview) {
     this.forPreview = forPreview;
@@ -196,7 +199,12 @@ TestViewer.prototype.logLintRecord = function (packageName, record) {
                 if (err === null) {
                     that.log('(lint stopped, too many errors)', 'b');
                 } else {
-                    that.log(err.id + ': ' + err.reason + ' at line ' + err.line, 'b', true);
+                    that.log(err.id +
+                        ': ' +
+                        err.reason +
+                        ' at line ' +
+                        err.line, 'b', true
+                    );
                     that.log(err.evidence, 'pre', true);
                     that.log(caret(err.character), 'pre', true);
                 }
@@ -307,12 +315,21 @@ TestViewer.prototype.showTest = function (cb) {
                 if (err) {
                     that.log('Error loading ' + pack.name + ' skipping', 'b');
                 }
-                that.runPackageTests(testRequire, pack.name, pack.scripts.test, function (err) {
-                    if (err) {
-                        that.log('Error running test script for package ' + pack.name + ' skipping', 'b');
+                that.runPackageTests(
+                    testRequire,
+                    pack.name,
+                    pack.scripts.test,
+                    function (err) {
+                        if (err) {
+                            that.log(
+                                'Error running test script for package ' +
+                                pack.name +
+                                ' skipping', 'b'
+                            );
+                        }
+                        runTest(runned + 1, cb);
                     }
-                    runTest(runned + 1, cb);
-                });
+                );
             });
         } else {
             return cb(null);
@@ -325,7 +342,10 @@ TestViewer.prototype.showTest = function (cb) {
 };
 
 TestViewer.prototype.loadPackageForTesting = function (packageName, cb) {
-    this.log('Loading package ' + packageName + ' in its own app domain...', 'div');
+    this.log('Loading package ' +
+        packageName +
+        ' in its own app domain...', 'div'
+    );
     // We create an application domain
     var appDomain = define.pillow.createApplicationDomain();
     // We load the package 'for testing'
@@ -350,7 +370,46 @@ TestViewer.prototype.runPackageTests = function (
     var module = packName + '/' + testscript,
         pack,
         err,
+        errors = 0,
+        testsDone = false,
         that = this;
+    // async testing stuff
+    function test() {
+        var f = arguments[0],
+            l = arguments.length,
+            i = 1,
+            args = [],
+            ret;
+        while (i < l) {
+            args.push(arguments[i]);
+            i += 1;
+        }
+        try {
+            ret = f.apply(this, args);
+        } catch (e) {
+            if (!testsDone) {
+                that.log('ERROR: ' + e, 'b', true);
+                errors += 1;
+            }
+        }
+        return ret;
+    }
+    function done() {
+        if (!testsDone) {
+            testsDone = true;
+            if (errors) {
+                that.log(
+                    errors + ' error' + (errors === 1 ? '' : 's'),
+                    null,
+                    true
+                );
+            } else {
+                that.log('No error');
+            }
+            cb(null);
+        }
+    }
+    // start testing
     try {
         pack = testRequire(packName + '/' + testscript);
     } catch (e) {
@@ -358,27 +417,23 @@ TestViewer.prototype.runPackageTests = function (
     }
     // reporting
     if (err) {
-        this.log('ERROR: ' + err, 'b', true);
+        this.log('ERROR: ' + err, null, true);
         cb(null);
     } else {
-        if (typeof pack.on === 'function') {
-            this.log('Starting asynchronous testing...');
+        if (typeof pack.run === 'function') {
+            this.log('Starting asynchronous testing through run...');
             // FIXME: we would need some kind of heartbeat
-            pack.on('log', function (msg, error) {
-                that.log(msg, null, error);
+            // this call will return true if it wants async testing
+            test(function () {
+                return pack.run(test, done);
             });
-            pack.on('done', function (e) {
-                if (err) {
-                    that.log('ERROR: ' + e, 'b', true);
-                } else {
-                    that.log('ok');
-                }
-                cb(null);
-            });
-            if (typeof pack.run === 'function') {
-                pack.run();
+            // if we had errors just running run, it is unlikely that
+            // done will be called
+            if (errors) {
+                done();
             }
         } else {
+            this.log('no run function in test script... probably intentional');
             this.log('ok');
             cb(null);
         }
