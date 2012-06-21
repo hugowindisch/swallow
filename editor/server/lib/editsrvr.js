@@ -157,6 +157,12 @@ function getUrls(options) {
             servetests.serveRebuildLint(req, res, match, options);
         }
     });
+    urls.push({
+        filter: /^\/maketest$/,
+        handler: function (req, res, match) {
+            servetests.serveRebuildTest(req, res, match, options);
+        }
+    });
     return urls;
 }
 

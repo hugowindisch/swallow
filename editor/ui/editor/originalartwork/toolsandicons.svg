@@ -1112,6 +1112,94 @@
        y1="148.36218"
        x2="-224"
        y2="44.362183" />
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter4667-2-3-5"
+       x="-0.13603239"
+       width="1.2720648"
+       y="-0.13603239"
+       height="1.2720648">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="2.2672065"
+         id="feGaussianBlur4669-6-8-5" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3813-7-0-5-4-3-5-4-8"
+       id="linearGradient4681-6"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.53846155,0,0,0.53846155,-78.236306,656.00703)"
+       x1="-224"
+       y1="148.36218"
+       x2="-224"
+       y2="44.362183" />
+    <linearGradient
+       id="linearGradient3813-7-0-5-4-3-5-4-8">
+      <stop
+         style="stop-color:#e31313;stop-opacity:1;"
+         offset="0"
+         id="stop3815-7-4-6-1-2-78-2-1" />
+      <stop
+         style="stop-color:#f5c1bb;stop-opacity:1;"
+         offset="1"
+         id="stop3817-9-0-8-4-8-1-1-4" />
+    </linearGradient>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter4667-2-3-5-9"
+       x="-0.13603239"
+       width="1.2720648"
+       y="-0.13603239"
+       height="1.2720648">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="2.2672065"
+         id="feGaussianBlur4669-6-8-5-2" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3813-7-0-5-4-3-5-4-8-2"
+       id="linearGradient4681-6-2"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.53846155,0,0,0.53846155,-78.236306,656.00703)"
+       x1="-224"
+       y1="148.36218"
+       x2="-224"
+       y2="44.362183" />
+    <linearGradient
+       id="linearGradient3813-7-0-5-4-3-5-4-8-2">
+      <stop
+         style="stop-color:#e31313;stop-opacity:1;"
+         offset="0"
+         id="stop3815-7-4-6-1-2-78-2-1-5" />
+      <stop
+         style="stop-color:#f5c1bb;stop-opacity:1;"
+         offset="1"
+         id="stop3817-9-0-8-4-8-1-1-4-6" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3813-7-0-5-4-3-5-4-8"
+       id="linearGradient5498"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.53846155,0,0,0.53846155,-358.12701,742.45655)"
+       x1="-224"
+       y1="148.36218"
+       x2="-224"
+       y2="44.362183" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3813-7-0-5-4-3-5-4-8-2"
+       id="linearGradient5504"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.53846155,0,0,0.53846155,-158.12702,742.45655)"
+       x1="-224"
+       y1="148.36218"
+       x2="-224"
+       y2="44.362183" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1120,8 +1208,8 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.3358338"
-     inkscape:cx="-410.29032"
+     inkscape:zoom="0.82584196"
+     inkscape:cx="-554.38569"
      inkscape:cy="481.57108"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -2387,6 +2475,74 @@
            x="-348.00812"
            id="tspan4667"
            sodipodi:role="line">i</tspan></text>
+    </g>
+    <g
+       id="g5513"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/testviewer/img/lint.png"
+       inkscape:export-xdpi="102.79465"
+       inkscape:export-ydpi="102.79465">
+      <rect
+         transform="matrix(1.4,0,0,1.4,-220.67107,468.56901)"
+         ry="6.1538463"
+         y="212.36218"
+         x="-200"
+         height="43.525455"
+         width="111.98598"
+         id="rect3811-9-0-5-7-9-2-8-6"
+         style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter4667-2-3-5)" />
+      <rect
+         ry="8.6153851"
+         y="766.34387"
+         x="-500.28088"
+         height="60"
+         width="156"
+         id="rect3811-9-0-5-7-9-8-09-97-8"
+         style="fill:url(#linearGradient5498);fill-opacity:1;fill-rule:nonzero;stroke:#ca4216;stroke-width:1.07692313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4684-3"
+         y="812.36218"
+         x="-465.44803"
+         style="font-size:45.499897px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           y="812.36218"
+           x="-465.44803"
+           id="tspan4686-2"
+           sodipodi:role="line">Lint</tspan></text>
+    </g>
+    <g
+       id="g5507"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/testviewer/img/test.png"
+       inkscape:export-xdpi="102.79465"
+       inkscape:export-ydpi="102.79465">
+      <rect
+         transform="matrix(1.4,0,0,1.4,-20.671076,468.56901)"
+         ry="6.1538463"
+         y="212.36218"
+         x="-200"
+         height="43.525455"
+         width="111.98598"
+         id="rect3811-9-0-5-7-9-2-8-6-4"
+         style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter4667-2-3-5-9)" />
+      <rect
+         ry="8.6153851"
+         y="766.34387"
+         x="-300.28088"
+         height="60"
+         width="156"
+         id="rect3811-9-0-5-7-9-8-09-97-8-5"
+         style="fill:url(#linearGradient5504);fill-opacity:1;fill-rule:nonzero;stroke:#ca4216;stroke-width:1.07692313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4684-3-8"
+         y="812.36218"
+         x="-267.61417"
+         style="font-size:45.499897px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         xml:space="preserve"><tspan
+           y="812.36218"
+           x="-267.61417"
+           id="tspan4686-2-8"
+           sodipodi:role="line">Test</tspan></text>
     </g>
   </g>
 </svg>

@@ -2,5 +2,8 @@
     "name": "assert",
     "version": "0.0.1",
     "dependencies": {
+    },
+    "scripts": {
+        "test": "test/test.js"
     }
 }

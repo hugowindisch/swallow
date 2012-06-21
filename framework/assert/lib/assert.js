@@ -126,7 +126,8 @@ xp.equal = function (actual, expected, msgOpt) {
 xp.notEqual = function (actual, expected, msgOpt) {
     if ((actual != expected) === false) {
         fail(actual, expected, msgOpt, '!=');
-    }};
+    }
+};
 
 /**
 * Tests deep equality.

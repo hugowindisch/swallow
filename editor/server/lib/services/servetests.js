@@ -26,16 +26,15 @@
 var pillow = require('pillow'),
     makeAll = pillow.makeAll;
 
+function ret404(res, err) {
+    res.writeHead(404);
+    if (err) {
+        res.write(String(err));
+    }
+    res.end();
+}
 
 function serveRebuildLint(req, res, match, options) {
-    function ret404(err) {
-        res.writeHead(404);
-        if (err) {
-            res.write(String(err));
-        }
-        res.end();
-    }
-
     if (req.method === 'POST') {
         var extOptions = {};
         Object.keys(options).forEach(function (k) {
@@ -44,7 +43,7 @@ function serveRebuildLint(req, res, match, options) {
         extOptions.lint = true;
         makeAll(extOptions, function (err) {
             if (err) {
-                return ret404(err);
+                return ret404(res, err);
             } else {
                 res.writeHead(200);
                 res.end();
@@ -52,8 +51,31 @@ function serveRebuildLint(req, res, match, options) {
         });
 
     } else {
-        ret404();
+        ret404(res);
     }
 }
 
+function serveRebuildTest(req, res, match, options) {
+    if (req.method === 'POST') {
+        var extOptions = {};
+        Object.keys(options).forEach(function (k) {
+            extOptions[k] = options[k];
+        });
+        extOptions.test = true;
+        makeAll(extOptions, function (err) {
+            if (err) {
+                return ret404(res, err);
+            } else {
+                res.writeHead(200);
+                res.end();
+            }
+        });
+
+    } else {
+        ret404(res);
+    }
+}
+
+
 exports.serveRebuildLint = serveRebuildLint;
+exports.serveRebuildTest = serveRebuildTest;

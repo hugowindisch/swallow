@@ -9,12 +9,36 @@ var visual = require('visual'),
     forEachProperty = utils.forEachProperty,
     forEachSortedProperty = utils.forEachSortedProperty,
     group = require('/testviewer/lib/groups').groups.TestViewer;
+/*globals define */
 
 function TestViewer(config) {
     var that = this;
     domvisual.DOMElement.call(this, config, group);
+    this.getChild('lint').on('click', function () {
+        that.runLint();
+    });
+    this.getChild('test').on('click', function () {
+        that.runTest();
+    });
+    this.clear();
+    this.enableTests(true);
+    this.log('Choose Lint or Test to start testing');
+}
+
+TestViewer.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'testviewer', 'TestViewer');
+
+TestViewer.prototype.setForPreview = function (forPreview) {
+    this.forPreview = forPreview;
+};
+
+TestViewer.prototype.getConfigurationSheet = function () {
+    return {  };
+};
+
+TestViewer.prototype.clear = function () {
     this.getChild(
         'results'
+    ).removeAllChildren(
     ).setOverflow(
         'auto'
     ).addTextChild(
@@ -26,33 +50,19 @@ function TestViewer(config) {
         paddingLeft: '10px',
         paddingRight: '10px'
     });
-    // lazy: we load and lint in cascade
-    if (!this.forPreview) {
-        this.loadPackages(function (err) {
-            if (!err) {
-                that.makeLint(function (err) {
-                    that.showLint();
-                });
-            }
-        });
-    }
-}
 
-TestViewer.createPreview = function () {
-    var ret = new TestViewer({forPreview: true});
-    ret.setOverflow('hidden');
-    ret.enableScaling(true);
-    return ret;
 };
 
-TestViewer.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'testviewer', 'TestViewer');
-
-TestViewer.prototype.setForPreview = function (forPreview) {
-    this.forPreview = forPreview;
+TestViewer.prototype.log = function (str, tag, error) {
+    var sattr = error ? { color: { r: 255, g: 0, b: 0, a: 1}} : null,
+        results = this.getChild('results').getChild('log');
+    tag = tag || 'p';
+    results.addHtmlChild(tag, str).setStyleAttributes(sattr);
 };
 
-TestViewer.prototype.getConfigurationSheet = function () {
-    return {  };
+TestViewer.prototype.separator = function () {
+    var results = this.getChild('results').getChild('log');
+    results.addHtmlChild('hr', '');
 };
 
 TestViewer.prototype.loadPackages = function (cb) {
@@ -78,10 +88,38 @@ TestViewer.prototype.loadPackages = function (cb) {
     });
 };
 
+TestViewer.prototype.runLint = function () {
+    var that = this;
+    this.clear();
+    that.log('Loading packages...');
+    that.enableTests(false);
+    function whenDone(err) {
+        if (err) {
+            that.log('Error while linting: ' + err);
+        } else {
+            that.log('done linting');
+        }
+        that.enableTests(true);
+    }
+    this.loadPackages(function (err) {
+        if (err) {
+            return whenDone(err);
+        }
+        that.makeLint(function (err) {
+            if (err) {
+                return whenDone(err);
+            }
+            that.separator();
+            that.showLint(whenDone);
+        });
+    });
+};
+
 TestViewer.prototype.makeLint = function (cb) {
     var that = this,
         path = '/makelint',
         req;
+    that.log('Regenerating lint results...');
     req = http.request({ path: path, method: 'POST'}, function (res) {
         res.on('end', function () {
             if (cb) {
@@ -97,7 +135,7 @@ TestViewer.prototype.makeLint = function (cb) {
     req.end();
 };
 
-TestViewer.prototype.showLint = function () {
+TestViewer.prototype.showLint = function (cb) {
     var that = this,
         lintRes = {},
         toLoad = 1;
@@ -108,6 +146,7 @@ TestViewer.prototype.showLint = function () {
             forEachSortedProperty(lintRes, function (res, name) {
                 that.logLintRecord(name, res);
             });
+            cb(null);
         }
     }
 
@@ -146,19 +185,18 @@ TestViewer.prototype.logLintRecord = function (packageName, record) {
         return s;
     }
 
-    this.log('h2', packageName);
+    this.log(packageName, 'h2');
     forEachProperty(record, function (results, filename) {
-        var erroneous = results !== true,
-            sattr = erroneous ? { color: { r: 255, g: 0, b: 0, a: 1}} : null;
-        that.log('h3', filename + (erroneous ? '' : ' ok'), sattr);
+        var erroneous = results !== true;
+        that.log(filename + (erroneous ? '' : ' ok'), 'h3', erroneous);
         if (erroneous) {
             forEach(results, function (err) {
                 if (err === null) {
-                    that.log('b', '(more)');
+                    that.log('(lint stopped, too many errors)', 'b');
                 } else {
-                    that.log('b', err.id + ': ' + err.reason + ' at line ' + err.line, sattr);
-                    that.log('pre', err.evidence, sattr);
-                    that.log('pre', caret(err.character), sattr);
+                    that.log(err.id + ': ' + err.reason + ' at line ' + err.line, 'b', true);
+                    that.log(err.evidence, 'pre', true);
+                    that.log(caret(err.character), 'pre', true);
                 }
             });
         }
@@ -166,14 +204,138 @@ TestViewer.prototype.logLintRecord = function (packageName, record) {
     this.separator();
 };
 
-TestViewer.prototype.log = function (tag, str, sattr) {
-    var results = this.getChild('results').getChild('log');
-    results.addHtmlChild(tag, str).setStyleAttributes(sattr);
+TestViewer.prototype.enableTests = function (enable) {
+    this.testsEnabled = enable;
+    if (enable) {
+        this.getChild('lint').setOpacity(1).setCursor('pointer');
+        this.getChild('test').setOpacity(1).setCursor('pointer');
+    } else {
+        this.getChild('lint').setOpacity(0.5).setCursor(null);
+        this.getChild('test').setOpacity(0.5).setCursor(null);
+    }
+
 };
 
-TestViewer.prototype.separator = function () {
-    var results = this.getChild('results').getChild('log');
-    results.addHtmlChild('hr', '');
+TestViewer.prototype.runTest = function () {
+    var that = this;
+    this.clear();
+    that.log('Loading package list...');
+    this.enableTests(false);
+    function whenDone(err) {
+        that.separator();
+        if (err) {
+            that.log('Error while testing: ' + err);
+        } else {
+            that.log('done testing');
+        }
+        that.enableTests(true);
+    }
+    this.loadPackages(function (err) {
+        if (err) {
+            return whenDone(err);
+        }
+        that.makeTest(function (err) {
+            if (err) {
+                return whenDone(err);
+            }
+            that.showTest(whenDone);
+        });
+    });
+};
+
+TestViewer.prototype.makeTest = function (cb) {
+    var that = this,
+        path = '/maketest',
+        req;
+    that.log('Rebuilding test packages...');
+    req = http.request({ path: path, method: 'POST'}, function (res) {
+        res.on('end', function () {
+            if (cb) {
+                cb(null);
+            }
+        });
+        res.on('error', function (e) {
+            if (cb) {
+                cb(e);
+            }
+        });
+    });
+    req.end();
+};
+
+TestViewer.prototype.showTest = function (cb) {
+    var toRun = [],
+        that = this;
+
+    that.log('Testing...');
+    forEachSortedProperty(this.packages, function (pack, name) {
+        var scripts = pack.scripts;
+        if (scripts && scripts.test) {
+            // we should run this test
+            toRun.push(pack);
+        } else {
+            that.log('WARNING: No test for package ' + name);
+        }
+    });
+
+    that.log('Packages that will be tested:');
+    forEach(toRun, function (pack) {
+        that.log(pack.name);
+    });
+    that.separator();
+
+    function runTest(runned, cb) {
+        if (runned < toRun.length) {
+            var pack = toRun[runned];
+            that.log('Testing package ' + pack.name, 'h1');
+            that.loadPackageForTesting(pack.name, function (err, testRequire) {
+                if (err) {
+                    that.log('Error loading ' + pack.name + ' skipping', 'b');
+                }
+                that.runPackageTests(testRequire, pack.name, pack.scripts.test, function (err) {
+                    if (err) {
+                        that.log('Error running test script for package ' + pack.name + ' skipping', 'b');
+                    }
+                    runTest(runned + 1, cb);
+                });
+            });
+        } else {
+            return cb(null);
+        }
+    }
+
+    // we will run all tests sequencially
+    runTest(0, cb);
+
+};
+
+TestViewer.prototype.loadPackageForTesting = function (packageName, cb) {
+    this.log('Loading package ' + packageName + ' in its own app domain...', 'div');
+    // We create an application domain
+    var appDomain = define.pillow.createApplicationDomain();
+    // We load the package 'for testing'
+    visual.loadPackage(packageName, appDomain, true, true, function (err) {
+        if (err) {
+            return cb(err);
+        }
+        cb(null, define.pillow.makeRequire(appDomain, ''));
+    });
+};
+
+TestViewer.prototype.runPackageTests = function (
+    testRequire,
+    packName,
+    testscript,
+    cb
+) {
+    this.log('Running test script for package ' + packName + ' ...', 'div');
+    testscript = testscript.split('.');
+    testscript.pop();
+    testscript = testscript.join('.');
+    var module = packName + '/' + testscript,
+        pack = testRequire(packName + '/' + testscript);
+    // synchronous testing for now
+    cb(null);
 };
 
 exports.TestViewer = TestViewer;

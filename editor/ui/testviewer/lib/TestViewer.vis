@@ -68,6 +68,22 @@
                     "style": "list"
                 }
             }
+        },
+        "lint": {
+            "factory": "domvisual",
+            "type": "DOMImg",
+            "config": {
+                "position": "lint",
+                "url": "testviewer/img/lint.png"
+            }
+        },
+        "test": {
+            "factory": "domvisual",
+            "type": "DOMImg",
+            "config": {
+                "position": "test",
+                "url": "testviewer/img/test.png"
+            }
         }
     },
     "positions": {
@@ -244,6 +260,76 @@
                 "top": "px",
                 "bottom": "px",
                 "height": "auto"
+            }
+        },
+        "lint": {
+            "matrix": {
+                "0": 69.83908081054688,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 31,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 0,
+                "11": 0,
+                "12": 450.1609191894531,
+                "13": 9.000000953674316,
+                "14": 18.24242401123047,
+                "15": 1,
+                "byteOffset": 0,
+                "byteLength": 64,
+                "length": 16,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 5,
+            "snapping": {
+                "left": "auto",
+                "right": "px",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "test": {
+            "matrix": {
+                "0": 69.83908081054688,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 31,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 0,
+                "11": 0,
+                "12": 522.1609497070312,
+                "13": 9,
+                "14": 145.242431640625,
+                "15": 1,
+                "byteOffset": 0,
+                "byteLength": 64,
+                "length": 16,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 6,
+            "snapping": {
+                "left": "auto",
+                "right": "px",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
             }
         }
     },
