@@ -31,7 +31,7 @@ function equal(o1, o2) {
             return (o2 instanceof Date) && o2.getTime() == o1.getTime();
         } else {
             // both objects
-            if (typeof o2 !== Object) {
+            if (typeof o2 !== 'object') {
                 return false;
             }
             // same prototype
@@ -78,10 +78,25 @@ function AssertionError(o) {
 }
 AssertionError.prototype = new Error();
 AssertionError.prototype.toString = function () {
-    if (this.message) {
-        return this.message;
+    // emulate node (a bit wtf)
+    function toStr(a) {
+        if (a === undefined) {
+            return '"undefined"';
+        } else if (typeof a === 'string') {
+            return '"' + a + '"';
+        } else {
+            return String(a);
+        }
     }
-    return this.actual + ' ' + (this.operator || '') + ' ' + this.expected;
+    if (this.message) {
+        return 'AssertionError: ' + this.message;
+    }
+    return 'AssertionError: ' +
+        toStr(this.actual) +
+        ' ' +
+        (this.operator || '') +
+        ' ' +
+        toStr(this.expected);
 };
 
 /**
@@ -167,30 +182,57 @@ xp.notStrictEqual = function (actual, expected, msgOpt) {
 /**
 * Checks that the specified function throws something.
 */
-xp.throws = function (block, Error_opt, msgOpt) {
-    // WTF!?
-};
-
-// NODEJS SPECIFIC
-xp.ifError = function () {
-};
-
-xp.doesNotThrow = function () {
-};
-
-// 1.1 Spec
-function Assert() {
-    var a = this;
-    if (a instanceof Assert) {
-        a = new Assert();
+xp.throws = function (block, errorOpt, msgOpt) {
+    var err, to;
+    try {
+        block();
+    } catch (e) {
+        to = typeof errorOpt;
+        err = e;
+        if (to === 'function') {
+            if (errorOpt(e) !== true && !(e instanceof errorOpt)) {
+                throw e;
+            }
+        } else if (to === 'object' && (errorOpt instanceof RegExp)) {
+            if (!errorOpt.test(String(e))) {
+                throw e;
+            }
+        }
     }
-    return a;
-}
-
-Assert.prototype.pass = function (msgOpt) {
+    if (!err) {
+        fail("Missing expected exception." + (msgOpt ? (" " + msgOpt) : "."));
+    }
 };
 
-Assert.prototype.fail = function () {
+/**
+* Tests if value is not a false value.
+*/
+xp.ifError = function (v) {
+    if (v) {
+        return v;
+    }
+};
+
+/**
+* Checks that the specified function does not throw anything.
+*/
+xp.doesNotThrow = function (block, errorOpt, msgOpt) {
+    var to;
+    try {
+        block();
+    } catch (e) {
+        to = typeof errorOpt;
+        if (to === 'function') {
+            if (errorOpt(e) === true || (e instanceof errorOpt)) {
+                fail("Got unwanted exception." + (msgOpt ? (" " + msgOpt) : "."));
+            }
+        } else if (to === 'object' && (errorOpt instanceof RegExp)) {
+            if (errorOpt.test(String(e))) {
+                fail("Got unwanted exception." + (msgOpt ? (" " + msgOpt) : "."));
+            }
+        }
+        throw e;
+    }
 };
 
 /// exports
