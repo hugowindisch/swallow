@@ -21,8 +21,9 @@
     IN THE SOFTWARE.
 */
 /*jslint nomen: false */
-/**
-* @private
+
+/*
+* Creates or returns the _events member
 */
 function ensureEvents(ee) {
     if (!ee.hasOwnProperty('_events')) {
@@ -44,15 +45,24 @@ function EventEmitter() {
 * @returns {EventEmitter} this.
 */
 EventEmitter.prototype.addListener = function (event, listener) {
-    var events = ensureEvents(this);
-    if (!events[event]) {
+    var events = ensureEvents(this),
+        listeners = events[event],
+        maxListeners = (typeof (this._maxListeners) === 'number') ?
+            this._maxListeners :
+            10;
+    if (!listeners) {
         events[event] = listener;
-    } else if (events[event] instanceof Array) {
-        events[event].push(listener);
     } else {
-        events[event] = [ this._events[event], listener ];
+        if (listeners instanceof Array) {
+            listeners.push(listener);
+        } else {
+            listeners = events[event] = [ this._events[event], listener ];
+        }
+        // the max listeners thing
+        if (maxListeners > 0 && listeners.length > maxListeners) {
+            listeners.warned = true;
+        }
     }
-    // we should check for max Events
     // we should fire an event for addListener
     this.emit('addListener', event, listener);
     return this;
@@ -130,7 +140,7 @@ EventEmitter.prototype.removeAllListeners = function (event) {
 * @returns {EventEmitter} this.
 */
 EventEmitter.prototype.setMaxListeners = function (n) {
-    // FIXME: NOT SUPPORTED YET (this behaves weirdly in node)
+    this._maxListeners = n;
     return this;
 };
 
