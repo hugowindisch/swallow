@@ -1,7 +1,7 @@
 exports.groups = {
     "Launcher": {
         "description": "The project management screen.",
-        "private": true,
+        "privateVisual": true,
         "privateTheme": true,
         "dimensions": [
             1000,
@@ -964,7 +964,7 @@ exports.groups = {
     },
     "Package": {
         "description": "",
-        "private": true,
+        "privateVisual": true,
         "privateTheme": true,
         "dimensions": [
             264,
@@ -995,7 +995,7 @@ exports.groups = {
                 "config": {
                     "position": "background",
                     "innerText": "",
-                    "style": "select"
+                    "style": "normal"
                 }
             }
         },
@@ -1166,7 +1166,7 @@ exports.groups = {
     },
     "VisualModule": {
         "description": "",
-        "private": true,
+        "privateVisual": true,
         "privateTheme": true,
         "dimensions": [
             656,
@@ -1653,7 +1653,7 @@ exports.exportConstructors = function (to) {
 
     constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
-    constructors.Launcher = to.Launcher = require('/launcher/lib/Launcher').Launcher;
+    constructors.Package = to.Package = require('/launcher/lib/Package').Package;
 
     return exports;
 };

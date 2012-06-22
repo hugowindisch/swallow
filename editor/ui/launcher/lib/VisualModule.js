@@ -31,14 +31,11 @@ function VisualModule(config) {
     var that = this;
 
     this.setCursor('pointer');
-    this.on('click', function (evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        this.emit('select', this.selected);
-    });
-    if (this.selected === undefined) {
-        this.setSelected(false);
-    }
+    this.on('mouseover', function () {
+        that.setSelected(true);
+    }).on('mouseout', function () {
+        that.setSelected(false);
+    }).setSelected(false);
     this.getChild('run').on('click', function () {
         var ti = that.typeInfo;
         window.open(ti.factory + '.' + ti.type + '.html', '_blank');
@@ -112,14 +109,11 @@ VisualModule.prototype.setTypeInfo = function (typeInfo) {
 };
 
 VisualModule.prototype.setSelected = function (s) {
-    this.selected = s;
     this.getChild('edit').setVisible(s);
     this.getChild('run').setVisible(s);
     this.getChild('publish').setVisible(s);
     this.getChild('monitor').setVisible(s);
     this.getChild('delete').setVisible(s);
-
-
 
     this.getChild('background').setTransition(500).setStyle(s ? 'select' : 'normal');
 };

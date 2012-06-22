@@ -31,7 +31,7 @@
             "config": {
                 "position": "background",
                 "innerText": "",
-                "style": "select"
+                "style": "normal"
             }
         }
     },

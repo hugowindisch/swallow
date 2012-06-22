@@ -26,16 +26,23 @@ var visual = require('visual'),
 function Package(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, group);
-    var that = this;
+    var that = this,
+        background = this.getChild('background');
     this.setCursor('pointer');
+    this.getChild('delete').setVisible(false);
     this.on('click', function (evt) {
         evt.preventDefault();
         evt.stopPropagation();
         this.emit('select', that.selected);
+    }).on('mouseover', function (evt) {
+        background.setTransition(200).setStyle('select');
+    }).on('mouseout', function (evt) {
+        background.setTransition(200).setStyle('normal');
     });
     if (this.selelected === undefined) {
         this.setSelected(false);
     }
+
 }
 Package.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'launcher', 'Package');
 Package.prototype.getConfigurationSheet = function () {
@@ -46,9 +53,7 @@ Package.prototype.setName = function (n) {
 };
 Package.prototype.setSelected = function (s) {
     this.selected = s;
-    // we don't want to support this at this moment.
-    this.getChild('delete').setVisible(false); //s);
-    this.getChild('background').setTransition(200).setStyle(s ? 'select' : 'normal');
+    this.getChild('name').setBold(s);
 };
 
 exports.Package = Package;

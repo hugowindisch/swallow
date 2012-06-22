@@ -235,9 +235,6 @@ Launcher.prototype.updateModuleList = function () {
                     });
                     mv.setHtmlFlowing({ position: 'relative' }, true);
                     moduleList.addChild(mv, type);
-                    mv.on('select', function (isSelected) {
-                        that.selectModule(type);
-                    });
                     success = true;
                 } else {
                     success = false;
@@ -250,18 +247,6 @@ Launcher.prototype.updateModuleList = function () {
                 console.log("Cannot show " + factory + " " + type);
             }
         });
-    }
-};
-Launcher.prototype.selectModule = function (type) {
-    var moduleList = this.getChild('moduleList');
-    if (type !== this.selectedModule) {
-        if (this.selectedModule) {
-            moduleList.getChild(this.selectedModule).setSelected(false);
-        }
-        this.selectedModule = type;
-        if (this.selectedModule) {
-            moduleList.getChild(this.selectedModule).setSelected(true);
-        }
     }
 };
 Launcher.prototype.flagModuleAsMonitored = function (typeInfo) {
