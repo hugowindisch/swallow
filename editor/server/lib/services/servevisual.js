@@ -163,26 +163,61 @@ function saveGroupsJS(pack, allVis, cb) {
 //
 // regenerates the package.json
 function savePackageJSON(packages, pack, allVis, cb) {
-    var json = pack.json;
+    var json = pack.json,
+        unresolvedPackages = [];
     if (!json.dependencies) {
         json.dependencies = {};
     }
+    // adds a dependency to the package
+    function addDep(pName) {
+        var dp = packages[pName];
+        if (pName !== json.name) {
+            if (dp) {
+                json.dependencies[pName] = '>=' + dp.json.version;
+            } else {
+                unresolvedPackages.push(pName);
+            }
+        }
+    }
     allVis.forEach(function (v) {
-        var children = v.data.children;
+        var children = v.data.children,
+            theme = v.data.theme;
+        // search external dependencies in children
         Object.keys(children).forEach(function (k) {
             var vis = children[k],
                 pName = vis.factory,
-                dp = packages[pName];
-            // we cannot be dependent on ourself
-            if (pName !== json.name) {
-                if (dp) {
-                    json.dependencies[pName] = dp.json.version;
-                } else {
-                    return cb(new Error('Unresolved package ' + pName));
+                config = vis.config;
+            // add the dependency
+            addDep(pName);
+            // styles in the config
+            Object.keys(config).forEach(function (k) {
+                if (k === 'style') {
+                    var pName = config[k].factory;
+                    if (pName) {
+                        addDep(pName);
+                    }
                 }
+            });
+        });
+        // search external dependencies in themes
+        Object.keys(theme).forEach(function (k) {
+            var style = theme[k],
+                basedOn = style.basedOn;
+            if (basedOn) {
+                basedOn.forEach(function (b) {
+                    addDep(b.factory);
+                });
             }
         });
+        // should we also search in skins? I don't think so.
     });
+    // add an unresolved dependencies thing in the package if we found some
+    if (unresolvedPackages.length > 0) {
+        json.unresolvedDependencies = unresolvedPackages;
+    } else {
+        delete json.unresolvedDependencies;
+    }
+    // save the thing!
     fs.writeFile(pack.filename, JSON.stringify(json, null, 4), cb);
 }
 // saves a visual
