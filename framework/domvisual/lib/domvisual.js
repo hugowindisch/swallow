@@ -724,7 +724,7 @@ DOMVisual.prototype.updateOpacityRepresentation = function () {
         style;
     if (element) {
         style = element.style;
-        if (this.opacity) {
+        if (isNumber(this.opacity)) {
             style.webkitOpacity =
                 style.opacity =
                 style.mozOpacity =
