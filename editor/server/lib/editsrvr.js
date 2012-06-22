@@ -170,6 +170,12 @@ function getUrls(options) {
             servetests.serveTestHttp(req, res, match, options);
         }
     });
+    urls.push({
+        filter: /^\/testevent\/([a-z][a-zA-Z0-9]+)$/,
+        handler: function (req, res, match) {
+            servetests.serveTestEvent(req, res, match, options);
+        }
+    });
     return urls;
 }
 

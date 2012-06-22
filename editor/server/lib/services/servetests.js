@@ -24,7 +24,9 @@
 /*jslint regexp: false */
 
 var pillow = require('pillow'),
-    makeAll = pillow.makeAll;
+    makeAll = pillow.makeAll,
+    url = require('url'),
+    ssevents = require('./ssevents');
 
 function ret404(res, err) {
     res.writeHead(404);
@@ -108,6 +110,20 @@ function serveTestHttp(req, res, match, options) {
     }
 }
 
+function serveTestEvent(req, res, match, options) {
+    var u,
+        msg = match[1];
+    if (req.method === 'POST') {
+        res.writeHead(200);
+        u = url.parse(req.url, true);
+        ssevents.emit(msg, u.query);
+        res.end();
+    } else {
+        ret404(res);
+    }
+}
+
 exports.serveRebuildLint = serveRebuildLint;
 exports.serveRebuildTest = serveRebuildTest;
 exports.serveTestHttp = serveTestHttp;
+exports.serveTestEvent = serveTestEvent;

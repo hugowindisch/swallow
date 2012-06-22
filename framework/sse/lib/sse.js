@@ -21,6 +21,7 @@
     IN THE SOFTWARE.
 */
 /*globals window */
+/*jslint nomen: false */
 var events = require('events'),
     utils = require('utils'),
     isArray = utils.isArray,

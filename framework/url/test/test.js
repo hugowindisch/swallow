@@ -95,9 +95,5 @@ exports.run = function (test, done) {
         'http://user:pass@host.com:8080/p/a/t/h?query=string&abc=3&abc=4#xyz'
     );
 
-
-//console.log(url.parse('abcd'));
-//console.log(url.parse('abcd?efg'));
-
     done();
 };
