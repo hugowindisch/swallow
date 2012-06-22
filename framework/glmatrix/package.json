@@ -1,4 +1,7 @@
 {
     "name": "glmatrix",
-    "version": "1.2.3"
+    "version": "1.2.3",
+    "engines": {
+        "pillow": "*"
+    }
 }

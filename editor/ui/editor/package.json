@@ -2,14 +2,19 @@
     "name": "editor",
     "version": "0.0.1",
     "dependencies": {
-        "visual": "0.0.1",
-        "domvisual": "0.0.1",
-        "glmatrix": "0.0.1",
-        "events": "0.0.1",
-        "utils": "0.0.1",
-        "baseui": "0.0.1",
-        "http": "0.0.1",
-        "url": "0.0.1",
-        "depmanager": "0.0.1"
-    }
+        "visual": ">=0.0.1",
+        "domvisual": ">=0.0.1",
+        "glmatrix": ">=0.0.1",
+        "events": ">=0.0.1",
+        "utils": ">=0.0.1",
+        "baseui": ">=0.0.1",
+        "http": ">=0.0.1",
+        "url": ">=0.0.1",
+        "depmanager": ">=0.0.1"
+    },
+    "engines": {
+        "pillow": "*"
+    },
+    "author": "Hugo Windisch <hugo.windisch@gmail.com>",
+    "homepage": "http://www.swallowapps.com"
 }

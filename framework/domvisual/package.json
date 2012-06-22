@@ -2,8 +2,13 @@
     "name": "domvisual",
     "version": "0.0.1",
     "dependencies" : {
-        "visual" : "0.0.1",
-        "utils": "0.0.1",
-        "config": "0.0.1"
-    }
+        "visual" : ">=0.0.1",
+        "utils": ">=0.0.1",
+        "config": ">=0.0.1"
+    },
+    "engines": {
+        "pillow": "*"
+    },
+    "author": "Hugo Windisch <hugo.windisch@gmail.com>",
+    "homepage": "http://www.swallowapps.com"
 }

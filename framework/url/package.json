@@ -4,10 +4,12 @@
     "dependencies": {
         "assert": ">=0.0.1"
     },
+    "scripts": {
+        "test": "test/test.js"
+    },
     "engines": {
         "pillow": "*"
     },
-    "scripts": {
-        "test": "test/test.js"
-    }
+    "author": "Hugo Windisch <hugo.windisch@gmail.com>",
+    "homepage": "http://www.swallowapps.com"
 }

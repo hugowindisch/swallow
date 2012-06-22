@@ -9,5 +9,7 @@
     },
     "engines": {
         "pillow": "*"
-    }
+    },
+    "author": "Hugo Windisch <hugo.windisch@gmail.com>",
+    "homepage": "http://www.swallowapps.com"
 }

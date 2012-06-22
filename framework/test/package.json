@@ -2,5 +2,10 @@
     "name": "test",
     "version": "0.0.1",
     "dependencies": {
-    }
+    },
+    "engines": {
+        "pillow": "*"
+    },
+    "author": "Hugo Windisch <hugo.windisch@gmail.com>",
+    "homepage": "http://www.swallowapps.com"
 }

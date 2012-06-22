@@ -2,8 +2,13 @@
     "name": "visual",
     "version": "0.0.1",
     "dependencies": {
-        "utils": "0.0.1",
-        "events": "0.0.1",
-        "glmatrix": "1.2.3"
-    }
+        "utils": ">=0.0.1",
+        "events": ">=0.0.1",
+        "glmatrix": ">=1.2.3"
+    },
+    "engines": {
+        "pillow": "*"
+    },
+    "author": "Hugo Windisch <hugo.windisch@gmail.com>",
+    "homepage": "http://www.swallowapps.com"
 }
