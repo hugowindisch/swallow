@@ -759,7 +759,6 @@ Group.prototype.cmdRenameStyleAndReferences = function (name, factory, type, new
             n;
         delete theme[oldname];
         theme[newname] = style;
-
         // do this in the children too
         forEachProperty(documentData.children, function (c) {
             var config = c.config;
@@ -783,7 +782,7 @@ Group.prototype.cmdRenameStyleAndReferences = function (name, factory, type, new
             if (basedOn) {
                 forEach(basedOn, function (tType) {
                     if (tType.factory === factory && tType.type === type && tType.style === oldname) {
-                        tType.name = newname;
+                        tType.style = newname;
                     }
                 });
             }
