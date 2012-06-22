@@ -402,12 +402,17 @@ TestViewer.prototype.runPackageTests = function (
             testsDone = true;
             if (errors) {
                 that.log(
-                    errors + ' error' + (errors === 1 ? '' : 's'),
+                    errors +
+                        ' error' +
+                        (errors === 1 ? '' : 's') +
+                        ' in ' +
+                        test.total +
+                        ' tests',
                     null,
                     true
                 );
             } else {
-                that.log('No error on ' + test.total + ' tests');
+                that.log('No error in ' + test.total + ' tests');
             }
             cb(null);
         }

@@ -25,11 +25,13 @@
 /*
 * Parses the query string.
 */
-function parseQueryString(queryString) {
-    var q = queryString.split('&'),
+function parseQueryString(queryString, sep, eq) {
+    sep = sep || '&';
+    eq = eq || '=';
+    var q = queryString.split(sep),
         ret = {};
     q.forEach(function (qs) {
-        var qss = qs.split('='),
+        var qss = qs.split(eq),
             name = qss[0],
             value = qss[1];
         if (!ret[name]) {
@@ -43,6 +45,73 @@ function parseQueryString(queryString) {
     return ret;
 }
 
+function stringifyQueryObject(o, sep, eq) {
+    sep = sep || '&';
+    eq = eq || '=';
+    var prop,
+        ret = '';
+    function format(p, v) {
+        var i, l, vi, ret = '';
+        if (v instanceof Array) {
+            l = v.length;
+            for (i = 0; i < l; i += 1) {
+                vi = v[i];
+                if (i > 0) {
+                    ret += sep;
+                }
+                ret += p + eq + vi;
+            }
+        } else if (v !== '') {
+            ret = p + eq + v;
+        } else {
+            ret = p;
+        }
+        return ret;
+    }
+    for (prop in o) {
+        if (o.hasOwnProperty(prop)) {
+            if (ret !== '') {
+                ret += sep;
+            }
+            ret += format(prop, o[prop]);
+        }
+    }
+    return ret;
+}
+
+/**
+* Formats an urlObj (to produce a string)
+*/
+function format(urlObj) {
+    var path = '';
+    if (urlObj.protocol) {
+        path += urlObj.protocol + '//';
+    }
+    if (urlObj.auth) {
+        path += urlObj.auth + '@';
+    }
+    if (urlObj.host) {
+        path += urlObj.host;
+    } else if (urlObj.hostname) {
+        path += urlObj.hostname;
+        if (urlObj.port) {
+            path += ':' + urlObj.port;
+        }
+    }
+    if (urlObj.pathname) {
+        path += urlObj.pathname;
+    }
+    if (urlObj.search) {
+        path += urlObj.search;
+    } else if (urlObj.query) {
+        path += '?' + stringifyQueryObject(urlObj.query);
+    }
+    if (urlObj.hash) {
+        path += urlObj.hash;
+    }
+    return path;
+}
+
 /**
 * Parses an url and returns an object with the following members: protocol,
 * host, port, hostname, search, query (if parseQS),  pathname, slashes and
@@ -53,29 +122,35 @@ function parseQueryString(queryString) {
 */
 function parse(urlStr, parseQS) {
     parseQS = parseQS || false;
-    var re = /^((http:|https:|ftp:|file:)\/\/((([0-9a-zA-Z_\.])+)(:([0-9]+))?))?([^?;#]+)?(;[^?]*)?(\?[^#]*)?(#.*)?$/,
+    var re = /^((http:|https:|ftp:|file:)\/\/(([0-9a-zA-Z_\.:]+)@)*((([0-9a-zA-Z_\.])+)(:([0-9]+))?))?([^?;#]+)?(;[^?]*)?(\?[^#]*)?(#.*)?$/,
         match = re.exec(urlStr),
         protocol = match[2],
-        host = match[3],
-        port = match[7],
-        hostname = match[4],
-        search = match[10],
-        pathname = match[8],
-        href = '',
+        auth = match[4],
+        host = match[5],
+        port = match[9],
+        hostname = match[6],
+        search = match[12],
+        pathname = match[10],
+        hash = match[13],
         ret = { };
+
     if (protocol) {
+        protocol = protocol.toLowerCase();
         ret.protocol = protocol;
-        href += protocol;
+    }
+    if (auth) {
+        ret.auth = auth;
     }
     if (host) {
+        host = host.toLowerCase();
         ret.host = host;
+    }
+    if (hostname) {
+        hostname = hostname.toLowerCase();
+        ret.hostname = hostname;
     }
     if (port) {
         ret.port = port;
-    }
-    if (hostname) {
-        ret.hostname = hostname;
-        href += hostname;
     }
     if (search) {
         ret.search = search;
@@ -83,31 +158,51 @@ function parse(urlStr, parseQS) {
         if (parseQS) {
             ret.query = parseQueryString(ret.query);
         }
-        href += search;
     }
     if (pathname) {
         ret.pathname = pathname;
         ret.slashes = pathname.indexOf('/') !== -1;
+        ret.path = pathname;
+        if (search) {
+            ret.path += search;
+        }
     }
-    ret.href = href;
+    if (hash) {
+        ret.hash = hash;
+    }
+    ret.href = format(ret);
 
-    // ret.slashes
-    // ret.href: 'http://127.0.0.1:1337/static/editor.html?a=1&b=2'
     return ret;
 }
 
 /**
-* Not currently supported.
-*/
-function format(urlObj) {
-    throw new Error('not currently supported');
-}
-
-/**
-* Not currently supported.
+* Resolves a relative url
 */
 function resolve(from, to) {
-    throw new Error('not currently supported');
+    var tp = parse(to),
+        fp = parse(from);
+
+    delete fp.hostname;
+    delete fp.query;
+    if (tp.protocol || tp.host) {
+        // not relative,
+        return to;
+    }
+    if (tp.pathname) {
+        if (tp.pathname[0] === '/') {
+            fp.pathname = tp.pathname;
+        } else {
+            fp.pathname += '/' + tp.pathname;
+        }
+        fp.search = tp.search;
+        fp.hash = tp.hash;
+    } else if (tp.search) {
+        fp.search = tp.search;
+        fp.hash = tp.hash;
+    } else if (tp.hash) {
+        fp.hash = tp.hash;
+    }
+    return format(fp);
 }
 
 exports.parse = parse;
