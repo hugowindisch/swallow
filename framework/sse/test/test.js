@@ -61,6 +61,9 @@ exports.run = function (test, done) {
     }
     function testOpenEvent(evt) {
         test(assert.strictEqual, evt.type, 'open');
+        // fire the events
+        req1.end();
+        req2.end();
         all();
     }
 
@@ -68,7 +71,4 @@ exports.run = function (test, done) {
     es.on('message', testMessageEvent);
     es.on('blah', testBlahEvent);
 
-    // fire the events
-    req1.end();
-    req2.end();
 };
