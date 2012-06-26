@@ -65,7 +65,7 @@ ImageViewer.prototype.getDescription = function () {
 };
 
 ImageViewer.createPreview = function () {
-    return new domvisual.DOMImg({url: 'domvisual/lib/imagepreview.png'});
+    return new domvisual.DOMImg({url: 'domvisual/img/imagepreview.png'});
 };
 
 ImageViewer.prototype.getConfigurationSheet = function () {

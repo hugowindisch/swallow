@@ -92,6 +92,19 @@ jqtpl.template(
     ).toString()
 );
 
+
+/**
+    Fixes windows path nonsense
+*/
+function unWindowsifyPath(p) {
+    // windows nonsense
+    if (sep !== '/') {
+        p = p.split(sep).join('/');
+    }
+    return p;
+}
+
+
 /**
     Concatenates two objects.
 */
@@ -301,10 +314,8 @@ function publishJSFile(
     var pillowPath = modulename + filename.slice(modulerootfolder.length, -3),
         isTest = filename.indexOf(modulerootfolder + '/test/') === 0;
 
-    // windows nonsense
-    if (sep !== '/') {
-        pillowPath = pillowPath.split(sep).join('/');
-    }
+    // fix windows nonsense
+    pillowPath = unWindowsifyPath(pillowPath);
 
     // if this is a test file, only include it in test mode.
     if (isTest && !test) {
@@ -789,7 +800,9 @@ function findPackageFiles(folder, details, cb) {
                         var isJs = /\.js$/,
                             getExt = /\.(\w+)$/,
                             matches,
-                            ffn = path.join(folder, file.filename);
+                            ffn = unWindowsifyPath(
+                                path.join(folder, file.filename)
+                            );
                         if (file.stats.isFile()) {
                             // keep a pointer to the details
                             file.stats.details = details;
@@ -1050,7 +1063,7 @@ function makeFile(options, dstFolderRelativeFilePath, cb) {
     // and consequently the first subdir should be the package name
     var assetFolder = path.normalize(dstFolderRelativeFilePath),
         assetFolderRoot,
-        splitFolder = assetFolder.split('/');
+        splitFolder = assetFolder.split(sep);
     if (splitFolder.length > 1) {
         assetFolderRoot = splitFolder[0];
     } else if (/\.html$/.test(dstFolderRelativeFilePath)) {
