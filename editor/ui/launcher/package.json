@@ -13,6 +13,7 @@
         "sse": ">=0.0.1",
         "depmanager": ">=0.0.1"
     },
+    "main": "./lib/groups",
     "engines": {
         "pillow": "*"
     },

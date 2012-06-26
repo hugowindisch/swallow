@@ -404,31 +404,4 @@ exports.groups = {
 /**
     Exports all visual constructors in the specified module.
 */
-var constructors = {};
-exports.exportConstructors = function (to) {
-
-    constructors.Help = to.Help = require('/helpviewer/lib/Help').Help;
-
-    constructors.Help = to.Help = require('/helpviewer/lib/Help').Help;
-
-    return exports;
-};
-
-
-/**
-    Runs a given visual full screen.
-*/
-exports.run = function (mainModule) {
-    if (require.main === mainModule) {
-        var url = require('url'),
-            domvisual = require('domvisual'),
-            p = url.parse(document.URL, true),
-            visual,
-            vis;
-        if (p.query && p.query.visual) {
-            visual = p.query.visual;
-            vis = new (constructors[visual])({});
-            domvisual.createFullScreenApplication(vis);
-        }
-    }
-};
+exports.Help = require('/helpviewer/lib/Help').Help;

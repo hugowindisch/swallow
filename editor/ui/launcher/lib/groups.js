@@ -1644,35 +1644,10 @@ exports.groups = {
 /**
     Exports all visual constructors in the specified module.
 */
-var constructors = {};
-exports.exportConstructors = function (to) {
+exports.Launcher = require('/launcher/lib/Launcher').Launcher;
 
-    constructors.Launcher = to.Launcher = require('/launcher/lib/Launcher').Launcher;
+exports.Package = require('/launcher/lib/Package').Package;
 
-    constructors.Package = to.Package = require('/launcher/lib/Package').Package;
+exports.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
-    constructors.VisualModule = to.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
-
-    constructors.Package = to.Package = require('/launcher/lib/Package').Package;
-
-    return exports;
-};
-
-
-/**
-    Runs a given visual full screen.
-*/
-exports.run = function (mainModule) {
-    if (require.main === mainModule) {
-        var url = require('url'),
-            domvisual = require('domvisual'),
-            p = url.parse(document.URL, true),
-            visual,
-            vis;
-        if (p.query && p.query.visual) {
-            visual = p.query.visual;
-            vis = new (constructors[visual])({});
-            domvisual.createFullScreenApplication(vis);
-        }
-    }
-};
+exports.Package = require('/launcher/lib/Package').Package;

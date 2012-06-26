@@ -1,6 +1,7 @@
 {
     "name": "testviewer",
     "version": "0.0.1",
+    "main": "./lib/groups",
     "dependencies": {
         "visual": ">=0.0.1",
         "domvisual": ">=0.0.1",

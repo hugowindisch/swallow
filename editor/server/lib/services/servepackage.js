@@ -55,13 +55,13 @@ function savePackage(options, packageName, cb) {
                         );
                     },
                     function (cb) {
-                        // create lib/packagename.js
+                        // create package.json
                         fs.writeFile(
-                            path.join(dstFolder, packageName, 'lib', packageName + '.js'),
-                            jqtpl.tmpl('mainJs', { }),
+                            path.join(dstFolder, packageName, 'lib', 'groups.js'),
+                            '',
                             cb
                         );
-                    }
+                    },
                 ],
                 cb
             );

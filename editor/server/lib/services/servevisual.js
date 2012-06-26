@@ -200,15 +200,17 @@ function savePackageJSON(packages, pack, allVis, cb) {
             });
         });
         // search external dependencies in themes
-        Object.keys(theme).forEach(function (k) {
-            var style = theme[k],
-                basedOn = style.basedOn;
-            if (basedOn) {
-                basedOn.forEach(function (b) {
-                    addDep(b.factory);
-                });
-            }
-        });
+        if (theme) {
+            Object.keys(theme).forEach(function (k) {
+                var style = theme[k],
+                    basedOn = style.basedOn;
+                if (basedOn) {
+                    basedOn.forEach(function (b) {
+                        addDep(b.factory);
+                    });
+                }
+            });
+        }
         // should we also search in skins? I don't think so.
     });
     // add an unresolved dependencies thing in the package if we found some
@@ -230,7 +232,6 @@ function saveVisual(options, packageName, constructorName, json, cb) {
     } catch (e) {
         return cb(e);
     }
-
     // save it
     findPackages(options.srcFolder, function (err, packages) {
         var pack,

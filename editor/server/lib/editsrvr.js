@@ -65,13 +65,6 @@ jqtpl.template(
     ).toString()
 );
 
-jqtpl.template(
-    'mainJs',
-    fs.readFileSync(
-        path.join(__dirname, 'templates/main.js')
-    ).toString()
-);
-
 
 function getUrls(options) {
     var urls = pillow.getUrls(options);

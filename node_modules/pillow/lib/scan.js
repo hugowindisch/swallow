@@ -32,6 +32,7 @@ var fs = require('fs'),
     jsmin = require('jsmin'),
     jslint = require('JSLint-commonJS'),
     dox = require('dox'),
+    sep = path.sep || '/',
     assetExt = {
         'jpg': true,
         'png': true,
@@ -300,6 +301,11 @@ function publishJSFile(
     var pillowPath = modulename + filename.slice(modulerootfolder.length, -3),
         isTest = filename.indexOf(modulerootfolder + '/test/') === 0;
 
+    // windows nonsense
+    if (sep !== '/') {
+        pillowPath = pillowPath.split(sep).join('/');
+    }
+
     // if this is a test file, only include it in test mode.
     if (isTest && !test) {
         return cb(null);
@@ -354,7 +360,7 @@ function getMainModulePath(details) {
     details.js.forEach(function (n) {
         var s;
         if (regExp.test(n)) {
-            s = details.name + n.slice(details.dirname.length, -3);
+            s = n.slice(details.dirname.length + 1, -3);
             if (!res || s.length < res.length) {
                 res = s;
             }
@@ -452,7 +458,7 @@ function publishJSFiles(
         stream.write(jqtpl.tmpl('headerTemplate', {
             modulename: details.name,
             dependencies: dependencies,
-            modulepath: getMainModulePath(details)
+            modulepath: '/' + details.name + '/' + getMainModulePath(details)
         }));
         stream.end();
     });

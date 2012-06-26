@@ -1,5 +1,5 @@
 {{verbatim}}
 {{/verbatim}}
-if (define.meat) {
+if (define.pillow) {
     define.pillow.defineMain('${modulename}', '${modulepath}');
 }
