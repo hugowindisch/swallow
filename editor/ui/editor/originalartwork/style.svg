@@ -17,6 +17,8 @@
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="style.svg">
+  <title
+     id="title4756">The SwallowApps Editor</title>
   <defs
      id="defs4">
     <marker
@@ -1577,45 +1579,6 @@
     <filter
        color-interpolation-filters="sRGB"
        inkscape:collect="always"
-       id="filter5595-85-6-21-5-8"
-       x="-0.046377275"
-       width="1.0927546"
-       y="-0.19710343"
-       height="1.3942068">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="3.2850571"
-         id="feGaussianBlur5597-6-9-3-6-6" />
-    </filter>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter5595-0-7-8-6"
-       x="-0.046377275"
-       width="1.0927546"
-       y="-0.19710343"
-       height="1.3942068">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="3.2850571"
-         id="feGaussianBlur5597-3-0-1-86" />
-    </filter>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter6858-1"
-       x="-0.24000005"
-       width="1.4800001"
-       y="-0.23999995"
-       height="1.4799999">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="5.9999987"
-         id="feGaussianBlur6860-4" />
-    </filter>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
        id="filter5595-85-6-21-7-2"
        x="-0.046377275"
        width="1.0927546"
@@ -1674,7 +1637,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.525211"
-     inkscape:cx="1450.3808"
+     inkscape:cx="1335.6426"
      inkscape:cy="-153.68776"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -1696,7 +1659,20 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title>The SwallowApps Editor</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>2012</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Hugo Windisch</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Copyright (C) 2012  Hugo Windisch</dc:title>
+          </cc:Agent>
+        </dc:rights>
       </cc:Work>
     </rdf:RDF>
   </metadata>

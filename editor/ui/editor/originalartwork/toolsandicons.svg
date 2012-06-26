@@ -16,6 +16,8 @@
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="toolsandicons.svg">
+  <title
+     id="title6449">The SwallowApps Editor</title>
   <defs
      id="defs4">
     <linearGradient
@@ -1209,7 +1211,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.82584196"
-     inkscape:cx="-554.38569"
+     inkscape:cx="-766.29064"
      inkscape:cy="481.57108"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -1239,7 +1241,20 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title>The SwallowApps Editor</dc:title>
+        <cc:license
+           rdf:resource="http://www.gnu.org/licenses/gpl.html" />
+        <dc:date>2012</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Hugo Windisch</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Copyright (C) 2012  Hugo Windisch</dc:title>
+          </cc:Agent>
+        </dc:rights>
       </cc:Work>
     </rdf:RDF>
   </metadata>
