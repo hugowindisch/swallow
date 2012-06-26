@@ -39,7 +39,7 @@ var utils = require('utils'),
 
 /*
 * Makes a style directly point to its dependencies.
-* @private
+* @api private
 */
 function bindStyle(style, skin) {
     var that = this,
@@ -74,7 +74,7 @@ function bindStyle(style, skin) {
 
 /*
 * Applies a theme.
-* @private
+* @api private
 */
 function applyTheme(toTheme, fromTheme, all) {
     forEachProperty(fromTheme, function (prop, propname) {
@@ -102,7 +102,7 @@ defaultSkin = {
 
 /*
 * Returns the style data for a given style in the given skin.
-* @private
+* @api private
 */
 function getStyleData(style, skin) {
     var results = { data: [], jsData: {} };
@@ -140,7 +140,7 @@ function getStyleData(style, skin) {
 
 /*
 * A theme (a theme is a collection of styles)
-* @private
+* @api private
 */
 function Theme(themeData, skin) {
     // support null theme data by returning a null theme.
@@ -155,7 +155,7 @@ function Theme(themeData, skin) {
 
 /*
 * Returns a style from this theme.
-* @private
+* @api private
 */
 Theme.prototype.getStyle = function (name) {
     return this.themeData[name];
@@ -163,7 +163,7 @@ Theme.prototype.getStyle = function (name) {
 
 /*
 * Returns the style data for a style in this theme.
-* @private
+* @api private
 */
 Theme.prototype.getStyleData = function (name) {
     var style = this.getStyle(name);
@@ -172,7 +172,7 @@ Theme.prototype.getStyleData = function (name) {
 
 /*
 * Returns the theme data.
-* @private
+* @api private
 */
 Theme.prototype.getThemeData = function () {
     return this.themeData;
@@ -180,7 +180,7 @@ Theme.prototype.getThemeData = function () {
 
 /*
 * Returns the skin in this theme.
-* @private
+* @api private
 */
 Theme.prototype.getSkin = function () {
     return this.skin;
@@ -192,7 +192,7 @@ Theme.prototype.getSkin = function () {
 * Even if we don't explicitely override a component in a skin, it
 * must be present because it may use dependencies defined in the current
 * skin.
-* @private
+* @api private
 */
 function Skin(skinData) {
     if (skinData === null) {
@@ -216,7 +216,7 @@ function Skin(skinData) {
 
 /*
 * Constructs the skin private version of a theme.
-* @private
+* @api private
 */
 Skin.prototype.makeTheme = function (factory, type) {
     var fact = require(factory),
@@ -243,7 +243,7 @@ Skin.prototype.makeTheme = function (factory, type) {
 
 /*
 * Returns a theme from this skin.
-* @private
+* @api private
 */
 Skin.prototype.getTheme = function (factory, type) {
     var fact = this.skinData[factory];
@@ -255,7 +255,7 @@ Skin.prototype.getTheme = function (factory, type) {
 
 /*
 * Returns the skin data.
-* @private
+* @api private
 */
 Skin.prototype.getSkinData = function () {
     return this.skinData;

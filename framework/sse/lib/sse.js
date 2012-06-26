@@ -29,7 +29,7 @@ var events = require('events'),
     forEachProperty = utils.forEachProperty;
 
 /**
-* @constructor Constructs an event source.
+* Constructs an event source.
 * @param {String} url is the url for receiving inits.
 * @param {Object} optionalInit is an optional init dictionary.
 */
@@ -60,7 +60,7 @@ EventSource.prototype.close = function () {
 };
 
 /**
-* @private
+* @api private
 */
 EventSource.prototype.updateHooks = function () {
     var that = this,

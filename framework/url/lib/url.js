@@ -24,6 +24,7 @@
 
 /*
 * Parses the query string.
+* @api private
 */
 function parseQueryString(queryString, sep, eq) {
     sep = sep || '&';
@@ -45,6 +46,9 @@ function parseQueryString(queryString, sep, eq) {
     return ret;
 }
 
+/**
+* @api private
+*/
 function stringifyQueryObject(o, sep, eq) {
     sep = sep || '&';
     eq = eq || '=';
@@ -81,6 +85,8 @@ function stringifyQueryObject(o, sep, eq) {
 
 /**
 * Formats an urlObj (to produce a string)
+* @param {String} urlObj. The url object to convert to a string.
+* @returns The url string created from urlObj.
 */
 function format(urlObj) {
     var path = '';
@@ -177,6 +183,9 @@ function parse(urlStr, parseQS) {
 
 /**
 * Resolves a relative url
+* @param {String} from The origin url.
+* @param {String} to The url relative to the origin url that should be returned.
+* @returns The resolved url (a string).
 */
 function resolve(from, to) {
     var tp = parse(to),

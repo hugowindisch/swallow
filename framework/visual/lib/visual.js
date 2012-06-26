@@ -41,7 +41,7 @@ var utils = require('utils'),
 
 /*
 * Enumerates the children of a visual in depth.
-* @private
+* @api private
 */
 function forVisualAndAllChildrenDeep(v, fcn) {
     fcn(v);
@@ -54,7 +54,7 @@ function forVisualAndAllChildrenDeep(v, fcn) {
 
 /*
 * Sets the containement depth of a visual (depth from the topmost parent)
-* @private
+* @api private
 */
 function setContainmentDepth(v, depth) {
     v.containmentDepth = depth;
@@ -68,7 +68,7 @@ function setContainmentDepth(v, depth) {
 
 /*
 * Checks that a matrix has only translations.
-* @private
+* @api private
 */
 function matrixIsTranslateOnly(matrix) {
     if (!matrix) {
@@ -96,7 +96,7 @@ function matrixIsTranslateOnly(matrix) {
 
 /*
 * Checks the equality of two vectors (vec3).
-* @private
+* @api private
 */
 function vec3IsEqual(v1, v2) {
     return v1 === v2 ||
@@ -105,7 +105,7 @@ function vec3IsEqual(v1, v2) {
 
 /*
 * Applies the layout to all children.
-* @private
+* @api private
 */
 function updateChildrenPositions(v) {
     if (v.layout) {
@@ -119,8 +119,6 @@ function updateChildrenPositions(v) {
 * A visual element.
 * It can contain other visual elements.
 * It can render itself in its container (ex: the DOM).
-*
-* @constructor the constructor
 * @param {Object} config the configuration for this visual.
 * @param {Object} groupData the editor data for this visual.
 * @api visual
@@ -150,7 +148,7 @@ Visual.prototype.getDescription = function () {
 
 /**
 * Returns a default (unique) name
-* @private
+* @api private
 */
 Visual.prototype.getDefaultName = function () {
     var ret = 'visual' + defaultNameIndex;
@@ -226,7 +224,7 @@ Visual.prototype.setDimensions = function (v3) {
 
 /**
 * Checks that this visual is unsconstrained.
-* @private
+* @api private
 */
 Visual.prototype.isUnconstrained = function () {
     return this.position === undefined || this.htmlFlowingApplySizing;
@@ -240,7 +238,7 @@ Visual.prototype.isUnconstrained = function () {
 * an auto height or an auto width), the position is unconstrained,
 * and the container is free to resize itself, the dedimensioning will
 * happen.
-* @private
+* @api private
 */
 Visual.prototype.requestDimensions = function (v3) {
     var parent;
@@ -271,7 +269,7 @@ Visual.prototype.requestDimensions = function (v3) {
 
 /**
 * This will compute the dimensions from the content if possible.
-* @private
+* @api private
 */
 Visual.prototype.getDimensionsAdjustedForContent = function () {
     //-------------------
@@ -347,7 +345,7 @@ Visual.prototype.isOnlyTranslated = function () {
 * that do nothing with the real matrix but and display the element differently.
 * The only known case of this is when an element uses the normal html
 * flowing or scrolling: the real positionning is determined by the html engine.
-* @private
+* @api private
 */
 Visual.prototype.getDisplayMatrix = function () {
     return this.getMatrix();
@@ -546,7 +544,7 @@ Visual.prototype.addChild = function (child, name, atOptionalOrder) {
 
 /**
 * Resolves a child name.
-* @private
+* @api private
 */
 Visual.prototype.resolveChild = function (child) {
     // allow the use of a name
@@ -681,7 +679,7 @@ Visual.prototype.swapOrder = function (d1, d2) {
 /**
 * Not currently supported.
 * @returns {Visual} this
-* @private
+* @api private
 */
 Visual.prototype.increaseOrder = function (d) {
     return this;
@@ -690,7 +688,7 @@ Visual.prototype.increaseOrder = function (d) {
 /**
 * Not currently supported.
 * @returns {Visual} this
-* @private
+* @api private
 */
 Visual.prototype.decreaseOrder = function (d) {
     return this;
@@ -699,7 +697,7 @@ Visual.prototype.decreaseOrder = function (d) {
 /**
 * Not currently supported.
 * @returns {Visual} this
-* @private
+* @api private
 */
 Visual.prototype.toMaxOrder = function (d) {
     return this;
@@ -708,7 +706,7 @@ Visual.prototype.toMaxOrder = function (d) {
 /**
 * Not currently supported.
 * @returns {Visual} this
-* @private
+* @api private
 */
 Visual.prototype.toMinOrder = function (d) {
     return this;
@@ -783,7 +781,7 @@ Visual.prototype.orderAfter = function (toMove, ref) {
 * NOTE: this should not be overriden in components. This should only be
 * implemented in subclasses that port the Visual to a new rendering
 * system (ex: DOM, Canvas, WebGL)
-* @private
+* @api private
 */
 Visual.prototype.update = function (why) {
     var container;
@@ -814,42 +812,42 @@ Visual.prototype.update = function (why) {
 };
 
 /**
-* @private
+* @api private
 */
 Visual.prototype.updateMatrixRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 
 /**
-* @private
+* @api private
 */
 Visual.prototype.updateDimensionsRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 
 /**
-* @private
+* @api private
 */
 Visual.prototype.updateChildrenOrderRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 
 /**
-* @private
+* @api private
 */
 Visual.prototype.updateStyleRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 
 /**
-* @private
+* @api private
 */
 Visual.prototype.updateOpacityRepresentation = function () {
     throw new Error("Not supported in abstract base class Visual");
 };
 
 /**
-* @private
+* @api private
 */
 Visual.prototype.updateDone = function () {
     // do nothing, don't complain
@@ -857,7 +855,7 @@ Visual.prototype.updateDone = function () {
 
 /**
 * Creates multiple children from a description like:
-* @private
+* @api private
 */
 Visual.prototype.createChildren = function (groupData) {
     var isFunction = utils.isFunction,
@@ -913,7 +911,7 @@ Visual.prototype.createChildren = function (groupData) {
 
 /**
 * Creates the content of this visual element from editor data.
-* @private
+* @api private
 */
 Visual.prototype.createGroup = function (groupData) {
     var overflowX, overflowY, skin;
@@ -947,7 +945,7 @@ Visual.prototype.createGroup = function (groupData) {
 * }
 * (calling the baseclass, if you need to do so, you can always have a data
 * that is baseclassdata: {} )
-* @private
+* @api private
 */
 Visual.prototype.setConfiguration = function (config) {
     if (utils.isObject(config)) {
@@ -965,14 +963,14 @@ Visual.prototype.setConfiguration = function (config) {
 };
 
 /**
-* @private
+* @api private
 */
 Visual.prototype.getSetFunctionName = function (name) {
     return 'set' + name[0].toUpperCase() + name.slice(1);
 };
 
 /**
-* @private
+* @api private
 */
 Visual.prototype.getGetFunctionName = function (name) {
     return 'get' + name[0].toUpperCase() + name.slice(1);
@@ -990,7 +988,7 @@ Visual.prototype.getConfigurationSheet = function () {
 /**
 * This sets a 'local theme'. It is used by the editor. I'm not sure
 * it should be used in other contexts.
-* @private
+* @api private
 */
 Visual.prototype.setLocalTheme = function (theme) {
     // this dirties at least our content
@@ -1003,7 +1001,7 @@ Visual.prototype.setLocalTheme = function (theme) {
 
 /**
 * The default version does not support skinning.
-* @private
+* @api private
 */
 Visual.prototype.getActiveTheme = function () {
     if (this.hasOwnProperty('theme')) {
@@ -1053,7 +1051,7 @@ Visual.prototype.setSkin = function (skin, deep) {
 
 /**
 * Returns the preferred skin (which is the authoring skin for edited documents).
-* @private
+* @api private
 */
 Visual.prototype.getPreferredSkin = function () {
     return null;
@@ -1061,7 +1059,7 @@ Visual.prototype.getPreferredSkin = function () {
 
 /**
 * Returns the style data for this visual.
-* @private
+* @api private
 */
 Visual.prototype.getStyleData = function () {
     var style = this.style,
@@ -1133,7 +1131,7 @@ function loadPackage(p, applicationDomain, reload, forTesting, callback) {
 }
 
 /**
-* @private
+* @api private
 */
 function getGetActiveTheme(factoryName, typeName) {
     return function () {

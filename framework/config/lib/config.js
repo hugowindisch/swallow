@@ -23,7 +23,7 @@
 /*globals define */
 
 /**
-* @private
+* @api private
 */
 function loadConstructor(
     factory,
@@ -52,7 +52,7 @@ function loadConstructor(
 }
 
 /**
-* @private
+* @api private
 */
 function leftRightConfig(
     labelTxt,
@@ -92,7 +92,7 @@ function leftRightConfig(
 }
 
 /**
-* @private
+* @api private
 */
 function topBottomConfig(
     labelTxt,

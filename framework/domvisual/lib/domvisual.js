@@ -42,9 +42,9 @@ var visual = require('visual'),
     getStyleDimensionAdjustment = styles.getStyleDimensionAdjustment,
     setDirty = dirty.setDirty;
 
-/*
-* Constructs a DOMVisual
-* @private
+/**
+* Constructs a DOMVisual jlkjlkljlkjlkj
+* @api private
 */
 function DOMVisual(config, groupData, element) {
     var that = this;
@@ -63,9 +63,9 @@ function DOMVisual(config, groupData, element) {
 
 DOMVisual.prototype = new Visual();
 
-/*
+/**
 * Adds a child to a DOMVisual
-* @private
+* @api private
 */
 DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     var connectedToTheStage,
@@ -105,9 +105,9 @@ DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     });
 };
 
-/*
+/**
 * Removes a child to a DOMVisual
-* @private
+* @api private
 */
 DOMVisual.prototype.removeChild = function (child) {
     // it is easier to track element containement immediately instead
@@ -131,9 +131,9 @@ DOMVisual.prototype.removeChild = function (child) {
     });
 };
 
-/*
+/**
 * Sets the dimensions of a DOMVisual
-* @private
+* @api private
 */
 DOMVisual.prototype.setDimensions = function (d) {
     if (d[0] !== this.dimensions[0] || d[1] !== this.dimensions[1]) {
@@ -147,9 +147,9 @@ DOMVisual.prototype.setDimensions = function (d) {
     return this;
 };
 
-/*
+/**
 * Enables/Disables interactions in a DOMVisual
-* @private
+* @api private
 */
 DOMVisual.prototype.enableInteractions = function (enable) {
     var disable = !enable;
@@ -160,8 +160,9 @@ DOMVisual.prototype.enableInteractions = function (enable) {
     });
 };
 
-/*
-* @private +/- deprecated
+/**
+* +/- deprecated
+* @api private
 */
 DOMVisual.prototype.setClass = function (cssClassName) {
     var i, l;
@@ -179,7 +180,8 @@ DOMVisual.prototype.setClass = function (cssClassName) {
 };
 
 /*
-* @private +/- deprecated
+* +/- deprecated
+* @api private
 */
 DOMVisual.prototype.clearClass = function (cssClassName) {
     if (this.cssClasses[cssClassName]) {
@@ -189,7 +191,7 @@ DOMVisual.prototype.clearClass = function (cssClassName) {
 };
 
 /*
-* @private
+* @api private
 */
 DOMVisual.prototype.getDisplayMatrix = function () {
     var scrollX = this.element.scrollLeft,
@@ -227,7 +229,7 @@ DOMVisual.prototype.getDisplayMatrix = function () {
 * use null or undefined to disable flow
 * @param {Object} styles extra styles to apply while flowing
 * @param {Boolean} true to size this element normally
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
     if (this.htmlFlowing !== styles) {
@@ -256,7 +258,8 @@ DOMVisual.prototype.setHtmlFlowing = function (styles, applySizing) {
 * dealing with explicit 'html flowed' stuff and hook the event on the release.
 *
 * This may be a very bad idea.
-* @private (poorly documented, and to be changed if possible)
+* (poorly documented, and to be changed if possible)
+* @api private
 */
 DOMVisual.prototype.notifyDOMChanged = function () {
     var that = this,
@@ -289,7 +292,7 @@ DOMVisual.prototype.notifyDOMChanged = function () {
 *        visible hidden scroll auto
 *
 * @param {String} mode A string or array (to separate x and y clipping mode)
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setOverflow = function (mode) {
     this.childrenClipping = mode;
@@ -300,7 +303,7 @@ DOMVisual.prototype.setOverflow = function (mode) {
 /**
 * Sets the scrolling value of this element.
 * @param {vec3} v3 The scrolling position.
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setScroll = function (v3) {
     this.scroll = v3;
@@ -311,7 +314,7 @@ DOMVisual.prototype.setScroll = function (v3) {
 /**
 * Sets the visibility of this eleemnt.
 * @param {Boolean} visible The visibility
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setVisible = function (visible) {
     if (this.visible !== visible) {
@@ -332,7 +335,7 @@ DOMVisual.prototype.getVisible = function () {
 /**
 * Sets the cursor.
 * @param {String} the cursor (ex: 'pointer')
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setCursor = function (cursor) {
     this.element.style.cursor = cursor;
@@ -344,7 +347,7 @@ DOMVisual.prototype.setCursor = function (cursor) {
 * we ultimately want (pretty sure it is not... but for now it is this way).
 * @param {Number} duration The duration in ms
 * @param {String} easingFunction The easing function (defaults to 'easein')
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setTransition = function (
     duration,
@@ -363,7 +366,7 @@ DOMVisual.prototype.setTransition = function (
 
 /**
 * Clears the transition.
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.clearTransition = function () {
     // force update
@@ -432,7 +435,7 @@ DOMVisual.prototype.addTextChild = function (tag, text, config, name) {
 * (note: we could have an option to keep the children... since we can
 * easily remove them first, and re add them after).
 * @param {String} html The html to use.
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setInnerHTML = function (html) {
     this.removeAllChildren();
@@ -444,7 +447,7 @@ DOMVisual.prototype.setInnerHTML = function (html) {
 /**
 * Sets the text of a DOMVisual. This removes all children.
 * @param {String} text The text to use
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setInnerText = function (text) {
     this.removeAllChildren();
@@ -460,7 +463,7 @@ DOMVisual.prototype.setInnerText = function (text) {
 /**
 * Sets html (tag) attributes. This should not be useful most of the time.
 * @param {Object} attr The attributes to use.
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setElementAttributes = function (attr) {
     var element = this.element;
@@ -479,7 +482,7 @@ DOMVisual.prototype.setElementAttributes = function (attr) {
 *     - These attributes OVERRRIDE what is defined in the styles
 *     - FIXME: there is a clash between the setHtmlFlowing thing and this.
 * @param {Object} attr The attributes to use.
-* @returns {DOMVisual} this.
+* @returns {DOMVisual} this (for chaining calls).
 */
 DOMVisual.prototype.setStyleAttributes = function (attr) {
     if (!this.styleAttributes) {
@@ -494,7 +497,7 @@ DOMVisual.prototype.setStyleAttributes = function (attr) {
 };
 
 /*
-* @private
+* @api private
 */
 DOMVisual.prototype.setStyleDimensionsAdjustment = function (v3) {
     if (!vec3IsEqual(v3, this.styleDimensionsAdjustment)) {
@@ -515,7 +518,7 @@ DOMVisual.prototype.setStyleDimensionsAdjustment = function (v3) {
 
 /*
 * DOM update (we essentially treat the DOM as an output thing)
-* @private
+* @api private
 */
 DOMVisual.prototype.updateMatrixRepresentation = function () {
     if (this.element && this.name !== 'stage') {
@@ -604,7 +607,7 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
 };
 
 /*
-* @private
+* @api private
 */
 DOMVisual.prototype.updateDimensionsRepresentation = function () {
     function adjust(v, a) {
@@ -656,7 +659,7 @@ DOMVisual.prototype.updateDimensionsRepresentation = function () {
 };
 
 /*
-* @private
+* @api private
 */
 DOMVisual.prototype.updateChildrenOrderRepresentation = function () {
     if (this.element) {
@@ -683,7 +686,7 @@ DOMVisual.prototype.updateChildrenOrderRepresentation = function () {
 };
 
 /*
-* @private
+* @api private
 */
 DOMVisual.prototype.updateStyleRepresentation = function () {
     var cssClass,
@@ -717,7 +720,7 @@ DOMVisual.prototype.updateStyleRepresentation = function () {
 };
 
 /*
-* @private
+* @api private
 */
 DOMVisual.prototype.updateOpacityRepresentation = function () {
     var element = this.element,
@@ -739,7 +742,7 @@ DOMVisual.prototype.updateOpacityRepresentation = function () {
 };
 
 /*
-* @private
+* @api private
 */
 DOMVisual.prototype.updateDone = function () {
     var element = this.element,
@@ -766,7 +769,7 @@ DOMVisual.prototype.updateDone = function () {
 };
 
 /*
-* @private
+* @api private
 */
 DOMVisual.prototype.getConfigurationSheet = function () {
     return { "class": {}, "style": {} };
@@ -776,7 +779,7 @@ DOMVisual.prototype.getConfigurationSheet = function () {
 * Returns the computed matrix of this element
 * (if the element uses html flowing)
 * This can go wrong (the values may not be already good... apparently)
-* @private
+* @api private
 */
 DOMVisual.prototype.getComputedMatrix = function () {
     // this retrieves stuff for the dom, so we must be clean
@@ -792,7 +795,7 @@ DOMVisual.prototype.getComputedMatrix = function () {
 /*
 * Returns the computed dimension of this element
 * (if the element uses html flowing)
-* @private
+* @api private
 */
 DOMVisual.prototype.getComputedDimensions = function () {
     // this retrieves stuff for the dom, so we must be clean
@@ -812,14 +815,14 @@ DOMVisual.prototype.getComputedDimensions = function () {
 
 /*
 * Runs this element full screen.
-* @private
+* @api private
 */
 DOMVisual.prototype.runFullScreen = function () {
     exports.createFullScreenApplication(this);
 };
 
 /**
-* @constructor Constructs a DOMElement to most general dom element available.
+* Constructs a DOMElement to most general dom element available.
 * @param {Object} config The configuration if any.
 * @param {Object} groupData The data from the editor if any.
 */
@@ -859,7 +862,7 @@ DOMElement.prototype.getConfigurationSheet = function () {
 };
 
 /**
-* @constructor Constructs an image element.
+* Constructs an image element.
 */
 function DOMImg(config) {
     DOMVisual.call(this, config, null, document.createElement('img'));
@@ -924,7 +927,7 @@ DOMImg.prototype.getConfigurationSheet = function () {
 };
 
 /**
-* @constructor Constructs a video element.
+* Constructs a video element.
 */
 function DOMVideo(config) {
     DOMVisual.call(this, config, null, document.createElement('video'));
@@ -972,7 +975,7 @@ DOMVideo.prototype.getConfigurationSheet = function () {
 };
 
 /**
-* @constructor Constructs an input element.
+* Constructs an input element.
 */
 function DOMInput(config) {
     DOMVisual.call(this, config, null, document.createElement('input'));
@@ -1072,7 +1075,7 @@ DOMInput.prototype.getConfigurationSheet = function () {
 };
 
 /**
-* @constructor Constructs a text area.
+* Constructs a text area.
 */
 function DOMTextArea(config) {
 }
@@ -1141,7 +1144,7 @@ DOMTextArea.prototype.getConfigurationSheet = function () {
 
 
 /**
-* @constructor Constructs a combo box.
+* Constructs a combo box.
 */
 function DOMSelect(config) {
     DOMVisual.call(this, config, null, document.createElement('select'));
@@ -1233,7 +1236,7 @@ DOMSelect.prototype.getConfigurationSheet = function () {
 };
 
 /**
-* @constructor Constructs a canvas.
+* Constructs a canvas.
 */
 function DOMCanvas(config) {
     DOMVisual.call(this, config, null, document.createElement('canvas'));
@@ -1289,13 +1292,14 @@ DOMCanvas.prototype.getConfigurationSheet = function () {
 
 /*
 * Creates a full screen appliation for the specified visual element.
-* @private
+* @api private
 */
 exports.createFullScreenApplication = function (child) {
     var bodyElement = document.getElementsByTagName('body')[0],
         thisElement = document.createElement('div'),
         viz = new DOMVisual({}, null, thisElement);
     // do some stupid stuff here:
+    bodyElement.style.overflow = 'hidden';
     bodyElement.appendChild(thisElement);
     viz.setLayout(
         {

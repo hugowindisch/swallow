@@ -92,7 +92,7 @@ function rectToMatrix(r) {
 }
 
 /**
-* @constructor Constructs a position.
+* Constructs a position.
 * @param {mat4} The matrix that positions a 1x1x1 element
 * @param {Object} snapping The snapping mode:
 *            left : % px auto cpx
@@ -113,7 +113,7 @@ function Position(matrix, snapping, opacity) {
 
 /**
 * Checks if this position is fully constrained.
-* @private
+* @api private
 */
 Position.prototype.isUnconstrained = function () {
     var snapping = this.snapping;
@@ -122,7 +122,7 @@ Position.prototype.isUnconstrained = function () {
 
 /**
 * Computes the rects in the context of the specified container dimensions.
-* @private
+* @api private
 */
 Position.prototype.computeDstRect = function (
     containerDimensions,
@@ -279,7 +279,7 @@ Position.prototype.computeDstRect = function (
 
 /**
 * Computes the matrix in the context of the specified container dimensions.
-* @private
+* @api private
 */
 Position.prototype.compute = function (
     containerDimensions,
@@ -310,8 +310,7 @@ Position.prototype.compute = function (
 };
 
 /**
-* @constructor Constructs a layout that essentially consists in a collection of
-*               named positions.
+* Constructs a layout that essentially consists in a collection of named positions.
 * @param {vec3} dimensions  The dimensions of the layout
 * @param {Object} positionData The position map (name: Position).
 */
@@ -322,7 +321,7 @@ function Layout(dimensions, positionData) {
 }
 
 /**
-* @private
+* @api private
 */
 Layout.prototype.build = function (positionData) {
     var that = this;
@@ -335,7 +334,7 @@ Layout.prototype.build = function (positionData) {
 };
 
 /**
-* @private
+* @api private
 */
 Layout.prototype.setPosition = function (name, position) {
     this.positions[name] = position;
@@ -363,7 +362,7 @@ function convertScaleToSize(matrix) {
 
 /**
 * Applies the layout.
-* @private
+* @api private
 */
 function applyLayout(containerDimensions, layout, v) {
     if (layout) {
@@ -404,7 +403,7 @@ function applyLayout(containerDimensions, layout, v) {
 
 /**
 * Computes the reverse dimensioning of a container.
-* @private
+* @api private
 */
 function computeReverseDimensioning(containerDimensions, layout, v) {
     var positions = layout.positions,

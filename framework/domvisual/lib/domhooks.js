@@ -33,7 +33,7 @@ var utils = require('utils'),
 
 /*
 * Filters a key event to uniformize it.
-* @private
+* @api private
 */
 function FilterKeyEvent(evt) {
     var ret = {
@@ -71,7 +71,7 @@ function FilterKeyEvent(evt) {
 
 /*
 * Returns the topmost element.
-* @private
+* @api private
 */
 function getTopmostElement(vis) {
     // should be done on the topmost node
@@ -84,7 +84,7 @@ function getTopmostElement(vis) {
 
 /*
 * Our event hooks
-* @private
+* @api private
 */
 hookMap = {
     keydown: {
@@ -190,7 +190,7 @@ hookMap = {
 
 /*
 * Creates a handler for a given event name.
-* @private
+* @api private
 */
 function createHandler(name, vis, filter) {
     return function (evt) {
@@ -205,7 +205,7 @@ function createHandler(name, vis, filter) {
 
 /*
 * Adds dom event hooks to v if necessary.
-* @private
+* @api private
 */
 function enforceDOMHooks(v) {
     var ret = v.domHooks;
@@ -217,7 +217,7 @@ function enforceDOMHooks(v) {
 
 /*
 * Unhooks a dom handler.
-* @private
+* @api private
 */
 function removeDOMHook(v, event, hook) {
     var hooks = v.domHooks,
@@ -236,7 +236,7 @@ function removeDOMHook(v, event, hook) {
 
 /*
 * Hooks a dom handler.
-* @private
+* @api private
 */
 function addDOMHook(v, event, hook) {
     var hooks = enforceDOMHooks(v);
@@ -256,7 +256,7 @@ function addDOMHook(v, event, hook) {
 * This will inspect the type of events that we have and update the
 * dom event hooks accordingly (i.e. connect us to the keyboard and mouse
 * or not).
-* @private
+* @api private
 */
 updateDOMEventHooks = function (v) {
     var enabled = v.connectedToTheStage,

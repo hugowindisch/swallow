@@ -24,6 +24,7 @@
 
 /*
 * Creates or returns the _events member
+* @api private
 */
 function ensureEvents(ee) {
     if (!ee.hasOwnProperty('_events')) {
@@ -33,7 +34,8 @@ function ensureEvents(ee) {
 }
 
 /**
-* @constructor Constructs an event emitter.
+* Constructs an event emitter.
+* @api private
 */
 function EventEmitter() {
 }

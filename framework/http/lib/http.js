@@ -74,7 +74,7 @@ ClientResponse.prototype.setEncoding = function () {
 };
 
 /**
-* @constructor Constructs a client request.
+* Constructs a client request.
 * @param {Object} options The options (host, port, method, path, headers)
 * @param {String} statusCode The status of the response.
 */

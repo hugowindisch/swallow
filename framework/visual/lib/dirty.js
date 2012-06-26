@@ -28,7 +28,7 @@ var utils = require('utils'),
 
 /*
 * Constructs a dirty list
-* @private
+* @api private
 */
 function DirtyList() {
     this.dirty = [];
@@ -36,7 +36,7 @@ function DirtyList() {
 
 /*
 * Flags an element as dirty.
-* @private
+* @api private
 */
 DirtyList.prototype.setDirty = function (o) {
     var i, l = arguments.length;
@@ -59,7 +59,7 @@ DirtyList.prototype.setDirty = function (o) {
 
 /*
 * Returns a depth sorted dirty list
-* @private
+* @api private
 */
 DirtyList.prototype.getDepthSortedList = function () {
     var dirty = [],
@@ -82,7 +82,7 @@ DirtyList.prototype.getDepthSortedList = function () {
 
 /*
 * Cleans all dirt.
-* @private
+* @api private
 */
 DirtyList.prototype.update = function () {
     var i,
@@ -127,7 +127,7 @@ var dirty = new DirtyList();
 
 /*
 * Sets a visual element as dirty.
-* @private
+* @api private
 */
 exports.setDirty = function (o, why) {
     dirty.setDirty.apply(dirty, arguments);
@@ -135,7 +135,7 @@ exports.setDirty = function (o, why) {
 
 /*
 * Updates a visual element.
-* @private
+* @api private
 */
 exports.update = function () {
     dirty.update();
@@ -143,7 +143,7 @@ exports.update = function () {
 
 /*
 * Sets all children of a visual element as dirty.
-* @private
+* @api private
 */
 exports.setChildrenDirty = function (o, why) {
     var i,
