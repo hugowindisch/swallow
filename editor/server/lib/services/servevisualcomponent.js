@@ -61,11 +61,12 @@ function generateVisualCompoentHtml(
         cssFiles = [];
     if (deps) {
         Object.keys(deps).forEach(function (d) {
-            dependencies.push(path.join(d, d + '.js'));
+            dependencies.push(d + '/' + d + '.js');
         });
         Object.keys(cssFileMap).forEach(function (k) {
-            var details = cssFileMap[k].details;
-            cssFiles.push(details.name + k.slice(details.dirname.length));
+            var details = cssFileMap[k].details,
+                vfn = details.name + k.slice(details.dirname.length);
+            cssFiles.push(vfn.split('\\').join('/'));
         });
     }
     // return the generated buffer
