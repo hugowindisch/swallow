@@ -60,7 +60,7 @@ LayerInfo.prototype.theme = new (visual.Theme)({
     },
     selectedBackground: {
         basedOn: [
-            { factory: 'baseui', type: 'Theme', style: 'pressedButtonBackground' }
+            { factory: 'baseui', type: 'Theme', style: 'controlPressed' }
         ]
     }
 });

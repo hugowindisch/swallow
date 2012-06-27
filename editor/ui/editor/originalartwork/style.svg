@@ -1636,9 +1636,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.525211"
-     inkscape:cx="1335.6426"
-     inkscape:cy="-153.68776"
+     inkscape:zoom="1.7443856"
+     inkscape:cx="490.50796"
+     inkscape:cy="963.55793"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -5546,6 +5546,58 @@
              y="1212.3622"
              style="font-size:28px;font-weight:normal;text-align:center;text-anchor:middle;fill:#808080;-inkscape-font-specification:Arial">inner</tspan></text>
       </g>
+    </g>
+    <g
+       id="g6099"
+       transform="translate(175,310)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sp_bgi_s.png"
+       inkscape:export-xdpi="27.01"
+       inkscape:export-ydpi="27.01">
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot6048"
+         style="font-size:1.97702241px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         transform="matrix(31.770415,0,0,31.770415,-4415.2382,-5022.9175)"><flowRegion
+           id="flowRegion6050"><rect
+             id="rect6052"
+             width="4.2610455"
+             height="4.2006884"
+             x="141.94389"
+             y="153.94078"
+             style="font-size:1.97702241px;fill:#000000;stroke:none" /></flowRegion><flowPara
+           id="flowPara6054">+</flowPara></flowRoot>      <rect
+         y="-117.63782"
+         x="90"
+         height="50.000004"
+         width="45.000004"
+         id="rect3815-2"
+         style="fill:none;stroke:#747474;stroke-width:3.29999995;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.3, 3.3;stroke-dashoffset:0" />
+    </g>
+    <g
+       id="g6099-0"
+       transform="translate(615,310)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sp_bgi.png"
+       inkscape:export-xdpi="27.01"
+       inkscape:export-ydpi="27.01">
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot6048-9"
+         style="font-size:1.97702241000000001px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#808080;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+         transform="matrix(31.770415,0,0,31.770415,-4415.2382,-5022.9175)"><flowRegion
+           id="flowRegion6050-4"><rect
+             id="rect6052-5"
+             width="4.2610455"
+             height="4.2006884"
+             x="141.94389"
+             y="153.94078"
+             style="font-size:1.97702241000000001px;fill:#808080;stroke:none" /></flowRegion><flowPara
+           id="flowPara6054-0">+</flowPara></flowRoot>      <rect
+         y="-117.63782"
+         x="90"
+         height="50.000004"
+         width="45.000004"
+         id="rect3815-2-1"
+         style="fill:none;stroke:#747474;stroke-width:3.29999995;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.3, 3.3;stroke-dashoffset:0" />
     </g>
   </g>
 </svg>

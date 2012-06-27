@@ -118,7 +118,15 @@ var visual = require('visual'),
             },
             FeatureEditor: require('./feature/StyleSettingShadow').StyleSettingShadow,
             config: { label: 'Shadow' }
-        }
+        },
+        bgi: {
+            attributes: {
+                bgi: 'backgroundImage'
+            },
+            FeatureEditor: require('./feature/StyleSettingBackgroundImage').StyleSettingBackgroundImage,
+            config: { label: 'BackgroundImage' }
+        },
+
     },
     allCorners = [ 'tl', 'tr', 'bl', 'br' ],
     allBorders = [ 'l', 'r', 'b', 't' ],

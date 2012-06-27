@@ -75,8 +75,8 @@ color:                                      Color
 textAlign:                                  String (left, right, center)
 
 backgroundColor:                            Color
-backgroundImage:                            (currently: )gradient
-backgroundPosition:                         tbd
+backgroundImage:                            (currently: )gradient or array of
+                                                gradients
 backgroundRepeat:                           tbd
 
 
@@ -102,12 +102,14 @@ function getBrowser() {
 
 var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
+    forEach = utils.forEach,
     attributeToCss,
     attributeToCssString,
     min = Math.min,
     max = Math.max,
     abs = Math.abs,
     round = Math.round,
+    isArray = utils.isArray,
     browser = getBrowser(),
     gradientToCssString,
     textAttributes = {
@@ -297,10 +299,28 @@ gradientToCssString = ({
     };
 
 function backgroundImageToCssString(img) {
-    if (img && img.colors && img.stops && img.type) {
-        return gradientToCssString(img);
+    function singleImageToCssString(img) {
+        if (img && img.colors && img.stops && img.type) {
+            return gradientToCssString(img);
+        }
+        return null;
     }
-    return null;
+    var ret = null;
+    if (isArray(img)) {
+        forEach(img, function (i) {
+            var css = singleImageToCssString(i);
+            if (css) {
+                if (!ret) {
+                    ret = css;
+                } else {
+                    ret = ret + ',' + css;
+                }
+            }
+        });
+    } else if (img) {
+        ret = singleImageToCssString(img);
+    }
+    return ret;
 }
 
 function boxShadowToCSSString(v) {

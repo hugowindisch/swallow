@@ -977,6 +977,11 @@ exports.definition = {
                     order: 10,
                     matrix: [ 35, 0, 0, 0,  0, 39, 0, 0,  0, 0, 1, 0, 27, 27, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                bgi: {
+                    order: 11,
+                    matrix: [ 14, 0, 0, 0,  0, 16, 0, 0,  0, 0, 1, 0, 82, 50, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
             children: {
@@ -1067,7 +1072,16 @@ exports.definition = {
                         url: 'editor/img/sp_txt.png',
                         position: 'txt'
                     }
+                },
+                bgi: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    config: {
+                        url: 'editor/img/sp_bgi.png',
+                        position: 'bgi'
+                    }
                 }
+
             }
         },
         StylePreview: {
@@ -1447,6 +1461,40 @@ exports.definition = {
                     type: "ColorPicker",
                     config: {
                         position: "color"
+                    }
+                }
+            }
+        },
+        StyleSettingBackgroundImage: {
+            dimensions: [340, 240, 1],
+            positions: {
+                label: {
+                    order: 0,
+                    matrix: [ 200, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                clear: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+            },
+            children: {
+                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        text: "Background Image",
+                        bold: true,
+                        position: "label"
+                    }
+                },
+                clear: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    config: {
+                        value: true,
+                        position: "clear"
                     }
                 }
             }
