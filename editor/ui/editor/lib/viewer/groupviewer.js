@@ -255,6 +255,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         endpos,
         matrix,
         nmatrix,
+        prevCursor,
         showMouseBox = true;
 
     function twoPositionsToMatrix(pos1, pos2) {
@@ -304,14 +305,12 @@ GroupViewer.prototype.enableBoxSelection = function (
             }
             mouseBox.setDimensions(res.dimensions);
             mouseBox.setMatrix(res.matrix);
-            decorations.setCursor('crosshair');
         }
     }
     function removeMouseBox() {
         if (mouseBox) {
             decorations.removeChild(mouseBox);
             mouseBox = null;
-            decorations.setCursor(null);
         }
     }
     // we want to add mouse events to the decoration child
@@ -330,6 +329,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         evt.preventDefault();
         decorations.removeListener('mousemovec', mouseMove);
         removeMouseBox();
+        that.setCursor(prevCursor);
         if (selectionEnd) {
             selectionEnd(matrix, nmatrix, startpos, endpos, evt);
         }
@@ -339,6 +339,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         var mat = visuals.getFullDisplayMatrix(true),
             evtPos = [evt.pageX, evt.pageY, 0];
 
+        prevCursor = that.setCursor('crosshair');
         startpos = applyGrid(glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]));
         endpos = startpos;
         decorations.on('mousemovec', mouseMove);
@@ -358,6 +359,16 @@ GroupViewer.prototype.enableBoxSelection = function (
             decorations.removeListener('mousedown', mouseDown);
         };
     }
+};
+
+/**
+    Sets a cursor
+*/
+GroupViewer.prototype.setCursor = function (c) {
+    var prev = this.decorationCursor;
+    this.decorationCursor = c;
+    this.getChild('decorations').setCursor(c);
+    return prev;
 };
 
 /**

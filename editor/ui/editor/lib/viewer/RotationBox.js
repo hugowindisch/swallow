@@ -48,7 +48,7 @@ function RotationBox(config) {
     }
 
     function makeHandler(box) {
-        box.setCursor('crosshair');
+        box.setCursor('move');
         box.on('mousedown', function (evt) {
             var matrix = that.contentMatrix,
                 dimensions = vec3.create([matrix[0], matrix[5], matrix[10]]),

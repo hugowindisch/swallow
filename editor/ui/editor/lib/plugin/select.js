@@ -158,6 +158,7 @@ function setupToolMenu(editor) {
         'Select',
         function () {
             setModal(this);
+            viewer.setCursor(null);
             var dragging = false,
                 draggingWait = true,
                 toggleControlBoxModeWhenFinished = true,
@@ -182,6 +183,7 @@ function setupToolMenu(editor) {
                     if (!evt.ctrlKey && viewer.itemAtPositionIsSelected([mat[12], mat[13], mat[14]])) {
                         dragging = true;
                         draggingWait = true;
+                        viewer.setCursor('move');
                         selectionControlBoxVisibility = viewer.showSelectionControlBox(false);
                         layoutAnchorsVisibility = viewer.showLayoutAnchors(false);
                     } else {
@@ -268,6 +270,7 @@ function setupToolMenu(editor) {
         'Draw',
         function () {
             setModal(this);
+            viewer.setCursor('crosshair');
             viewer.enableBoxSelection(
                 null,
                 null,
@@ -314,6 +317,7 @@ function setupToolMenu(editor) {
         function () {
             var prevSel = selectedTool;
             setModal(this);
+            viewer.setCursor(null);
             viewer.enableBoxSelection(
                 null,
                 null,
