@@ -1466,7 +1466,7 @@ exports.definition = {
             }
         },
         StyleSettingBackgroundImage: {
-            dimensions: [340, 240, 1],
+            dimensions: [340, 380, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1474,8 +1474,13 @@ exports.definition = {
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 clear: {
-                    order: 0,
+                    order: 1,
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                gradient: {
+                    order: 2,
+                    matrix: [ 340, 0, 0, 0,  0, 320, 0, 0,  0, 0, 1, 0,  0, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1495,6 +1500,13 @@ exports.definition = {
                     config: {
                         value: true,
                         position: "clear"
+                    }
+                },
+                gradient: {
+                    factory: "baseui",
+                    type: "GradientEditor",
+                    config: {
+                        position: "gradient"
                     }
                 }
             }

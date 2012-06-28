@@ -21,6 +21,8 @@
 */
 var visual = require('visual'),
     domvisual = require('domvisual'),
+    utils = require('utils'),
+    deepCopy = utils.deepCopy,
     groups = require('/editor/lib/definition').definition.groups;
 
 function StyleSettingBackgroundImage(config) {
@@ -28,6 +30,18 @@ function StyleSettingBackgroundImage(config) {
     domvisual.DOMElement.call(this, config, groups.StyleSettingBackgroundImage);
     var children = this.children,
         that = this;
+    this.getChild('gradient').on('preview', function (v) {
+        that.styleData = { bgi: v };
+        that.emit('preview', that.styleData);
+    });
+    this.getChild('gradient').on('change', function (v) {
+        that.styleData = { bgi: v };
+        that.emit('change', that.styleData);
+    });
+    this.getChild('clear').on('click', function () {
+//        that.styleData = {};
+        that.emit('reset', {});
+    });
 
 }
 StyleSettingBackgroundImage.prototype = new (domvisual.DOMElement)();
@@ -40,16 +54,26 @@ StyleSettingBackgroundImage.prototype.getConfigurationSheet = function () {
 StyleSettingBackgroundImage.prototype.setLabel = function (txt) {
 //    this.children.label.setText(txt);
 };
-StyleSettingBackgroundImage.prototype.setStyleData = function (st) {
-/*    var children = this.children,
-        styleData;
-    this.styleData = {
-        color: st.color
+StyleSettingBackgroundImage.prototype.getDefaultStyleData = function () {
+    return {
+        bgi: {
+            stops: [0, 1],
+            colors: [
+                {r: 0, g: 0, b: 0, a: 1},
+                {r: 255, g: 255, b: 255, a: 1}
+            ],
+            type: 'vertical'
+        }
     };
+};
+StyleSettingBackgroundImage.prototype.setStyleData = function (st) {
+    var sd = this.styleData = deepCopy(st),
+        bgi = sd.bgi;
+    if (!bgi || !bgi.stops || bgi.stops.length < 2) {
+        this.styleData = this.getDefaultStyleData();
+    }
 
-    children.color.setValue(st.color || { r: 0, g: 0, b: 0, a: 1});
-    children.colorCheck.setValue(st.color);
-*/
+    this.getChild('gradient').setValue(this.styleData.bgi);
 };
 
 exports.StyleSettingBackgroundImage = StyleSettingBackgroundImage;

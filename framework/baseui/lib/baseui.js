@@ -21,9 +21,7 @@
     IN THE SOFTWARE.
 */
 
-var domvisual = require('domvisual'),
-    menuitem = require('./menuitem'),
-    glmatrix = require('glmatrix');
+var menuitem = require('./menuitem');
 
 exports.Toolbar = require('./toolbar').Toolbar;
 exports.VerticalMenu = require('./verticalmenu').VerticalMenu;
@@ -41,3 +39,5 @@ exports.LabelValueSlider = require('./labelvalueslider').LabelValueSlider;
 exports.ColorPicker = require('./colorpicker').ColorPicker;
 exports.CheckBox = require('./checkbox').CheckBox;
 exports.ImageViewer = require('./imageviewer').ImageViewer;
+exports.GradientEditor = require('./gradienteditor').GradientEditor;
+exports.GradientStop = require('./gradientstop').GradientStop;

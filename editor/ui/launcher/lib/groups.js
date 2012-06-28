@@ -946,6 +946,27 @@ exports.groups = {
                         "g": 255,
                         "b": 255,
                         "a": 1
+                    },
+                    "backgroundImage": {
+                        "colors": [
+                            {
+                                "r": 255,
+                                "g": 255,
+                                "b": 255,
+                                "a": 1
+                            },
+                            {
+                                "r": 190,
+                                "g": 190,
+                                "b": 190,
+                                "a": 1
+                            }
+                        ],
+                        "stops": [
+                            1,
+                            0.022222222222222223
+                        ],
+                        "type": "vertical"
                     }
                 },
                 "basedOn": [
@@ -1644,10 +1665,11 @@ exports.groups = {
 /**
     Exports all visual constructors in the specified module.
 */
+
 exports.Launcher = require('/launcher/lib/Launcher').Launcher;
 
 exports.Package = require('/launcher/lib/Package').Package;
 
 exports.VisualModule = require('/launcher/lib/VisualModule').VisualModule;
 
-exports.Package = require('/launcher/lib/Package').Package;
+exports.Launcher = require('/launcher/lib/Launcher').Launcher;
