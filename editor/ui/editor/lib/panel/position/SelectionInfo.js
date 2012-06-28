@@ -50,6 +50,8 @@ SelectionInfo.prototype.init = function (editor) {
         children.y.enable(rectDefined);
         children.w.enable(rectDefined);
         children.h.enable(rectDefined);
+        children.opacitySlider.setVisible(rectDefined);
+        children.opacityInput.enable(rectDefined);
 
         if (rectDefined) {
             children.x.setText(rect[0][0].toFixed(1));
