@@ -26,11 +26,11 @@ var visual = require('visual'),
     isFunction = utils.isFunction,
     group = {
         // authoring dimension
-        dimensions: [ 340, 30, 0],
+        dimensions: [ 340, 25, 0],
         positions: {
             color: {
                 order: 0,
-                matrix: [ 25, 0, 0, 0, 0, 25, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+                matrix: [ 22, 0, 0, 0, 0, 22, 0, 0, 0, 0, 1, 0, 35, 0, 0, 1 ],
                 snapping: {
                     left: 'px',
                     right: 'auto',
@@ -42,7 +42,7 @@ var visual = require('visual'),
             },
             stop: {
                 order: 1,
-                matrix: [ 270, 0, 0, 0, 0, 25, 0, 0, 0, 0, 1, 0, 30, 0, 0, 1 ],
+                matrix: [ 200, 0, 0, 0, 0, 22, 0, 0, 0, 0, 1, 0, 60, 0, 0, 1 ],
                 snapping: {
                     left: 'px',
                     right: 'auto',
@@ -54,7 +54,19 @@ var visual = require('visual'),
             },
             action: {
                 order: 2,
-                matrix: [ 25, 0, 0, 0, 0, 25, 0, 0, 0, 0, 1, 0, 310, 0, 0, 1 ],
+                matrix: [ 22, 0, 0, 0, 0, 22, 0, 0, 0, 0, 1, 0, 265, 0, 0, 1 ],
+                snapping: {
+                    left: 'px',
+                    right: 'auto',
+                    width: 'px',
+                    top: 'px',
+                    bottom: 'auto',
+                    height: 'px'
+                }
+            },
+            selection: {
+                order: 2,
+                matrix: [ 30, 0, 0, 0, 0, 22, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
                 snapping: {
                     left: 'px',
                     right: 'auto',
@@ -88,6 +100,15 @@ var visual = require('visual'),
                 config: {
                     position: "action"
                 }
+            },
+            selection: {
+                factory: "domvisual",
+                type: "DOMImg",
+                config: {
+                    position: "selection",
+                    url: "editor/img/currentstop.png",
+                    visible: false
+                }
             }
         }
     };
@@ -102,6 +123,9 @@ function GradientStop(config) {
         that.emit('select');
     }).on('preview', function (v) {
         that.emit('preview', v);
+    });
+    this.getChild('color').on('click', function () {
+        that.emit('select');
     });
 }
 
@@ -139,6 +163,7 @@ GradientStop.prototype.getStop = function (v) {
 };
 
 GradientStop.prototype.setSelected = function (selected) {
+    this.getChild('selection').setVisible(selected);
 };
 
 exports.GradientStop = GradientStop;

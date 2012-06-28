@@ -115,6 +115,7 @@ GradientEditor.prototype.setValue = function (v) {
     var stops = this.getChild('stops'),
         that = this;
     stops.removeAllChildren();
+    delete this.selectedStop;
     if (v) {
         forEach(v.colors, function (color, i) {
             var newChild = new GradientStop({color: color, stop: v.stops[i]});
@@ -131,6 +132,9 @@ GradientEditor.prototype.setValue = function (v) {
             }).on('select', function () {
                 that.select(this);
             });
+            if (!that.selectedStop) {
+                that.select(newChild);
+            }
         });
     }
     return this;
@@ -147,13 +151,16 @@ GradientEditor.prototype.getValue = function () {
 };
 
 GradientEditor.prototype.select = function (stop) {
-    if (this.selectedStop) {
-        this.selectedStop.setSelected(false);
-        delete this.selectedStop;
-    }
-    if (stop) {
-        this.selectedStop = stop;
-        this.getChild('color').setValue(stop.getColor());
+    if (stop !== this.selectedStop) {
+        if (this.selectedStop) {
+            this.selectedStop.setSelected(false);
+            delete this.selectedStop;
+        }
+        if (stop) {
+            this.selectedStop = stop;
+            stop.setSelected(true);
+            this.getChild('color').setValue(stop.getColor());
+        }
     }
 };
 
