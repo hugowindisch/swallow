@@ -258,11 +258,20 @@ function gradientToCSSStringMozilla(gradient) {
         colors = gradient.colors,
         stops = gradient.stops,
         l = colors.length,
+        ind = [],
+        is,
         i;
     for (i = 0; i < l; i += 1) {
-        res += (colorToCSSString(colors[i]) + ' ' +
-            Math.round(stops[i] * 100) + '%');
-        res += (i < l - 1) ? ',' : ')';
+        ind.push(i);
+    }
+    ind.sort(function (i1, i2) {
+        return stops[i1] - stops[i2];
+    });
+    for (i = 0; i < l; i += 1) {
+        is = ind[i];
+        res += (colorToCSSString(colors[is]) + ' ' +
+            Math.round(stops[is] * 100) + '%');
+        res += (i < l - 1) ? ', ' : ')';
     }
     return res;
 }

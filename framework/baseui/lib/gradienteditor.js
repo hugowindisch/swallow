@@ -75,7 +75,6 @@ var visual = require('visual'),
         }
     };
 
-
 function GradientEditor(config) {
     domvisual.DOMElement.call(this, config, group);
     var children = this.children,
