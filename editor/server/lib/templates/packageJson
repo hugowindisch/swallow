@@ -5,8 +5,7 @@
     "dependencies": {
         "visual": ">=0.0.1",
         "domvisual": ">=0.0.1",
-        "utils": ">=0.0.1",
-        "baseui": ">=0.0.1"
+        "utils": ">=0.0.1"
     },
     "engines": {
         "pillow": "*"

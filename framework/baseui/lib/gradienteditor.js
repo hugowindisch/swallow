@@ -34,7 +34,7 @@ var visual = require('visual'),
         positions: {
             color: {
                 order: 0,
-                matrix: [ 340, 0, 0, 0, 0, 160, 0, 0, 0, 0, 1, 0, 0, 160, 0, 1 ],
+                matrix: [ 340, 0, 0, 0, 0, 160, 0, 0, 0, 0, 1, 0, 0, 120, 0, 1 ],
                 snapping: {
                     left: 'px',
                     right: 'auto',
@@ -46,7 +46,7 @@ var visual = require('visual'),
             },
             stops: {
                 order: 1,
-                matrix: [ 340, 0, 0, 0, 0, 160, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+                matrix: [ 340, 0, 0, 0, 0, 120, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
                 snapping: {
                     left: 'px',
                     right: 'auto',
@@ -113,29 +113,68 @@ GradientEditor.prototype.getConfigurationSheet = function () {
 GradientEditor.prototype.setValue = function (v) {
     this.value = v;
     var stops = this.getChild('stops'),
-        that = this;
+        that = this,
+        n = 0,
+        plus;
     stops.removeAllChildren();
     delete this.selectedStop;
+
+    function addStop(config, order) {
+        var newChild = new GradientStop(config);
+        stops.addChild(
+            newChild,
+            n,
+            order
+        );
+        n += 1;
+        newChild.setHtmlFlowing(
+            {position: 'relative'}, true
+        ).on('preview', function () {
+            that.emit('preview', that.getValue());
+        }).on('change', function () {
+            that.emit('change', that.getValue());
+        }).on('select', function () {
+            that.select(this);
+        }).on('remove', function () {
+            stops.removeChild(this);
+            if (that.selectedStop === this) {
+                that.select(stops.getChildAtOrder(0));
+            }
+            that.updateControlVisibility();
+        });
+        if (!that.selectedStop) {
+            that.select(newChild);
+        }
+        return newChild;
+    }
+
     if (v) {
         forEach(v.colors, function (color, i) {
-            var newChild = new GradientStop({color: color, stop: v.stops[i]});
-            stops.addChild(
-                newChild,
+            addStop(
+                {color: color, stop: v.stops[i]},
                 i
             );
-            newChild.setHtmlFlowing(
-                {position: 'relative'}, true
-            ).on('preview', function () {
-                that.emit('preview', that.getValue());
-            }).on('change', function () {
-                that.emit('change', that.getValue());
-            }).on('select', function () {
-                that.select(this);
-            });
-            if (!that.selectedStop) {
-                that.select(newChild);
-            }
         });
+
+        // add a + button
+        plus = new domvisual.DOMImg({url: 'editor/img/addstop.png'});
+        stops.addChild(plus, 'plus');
+        plus.setHtmlFlowing(
+            {position: 'relative'},
+            false
+        ).setDimensions(
+            [22, 22, 0]
+        ).on('click', function () {
+            that.select(addStop(
+                {
+                    color: {r: 0, g: 0, b: 0, a: 1},
+                    stop: 1
+                },
+                stops.numChildren - 1
+            ));
+            that.updateControlVisibility();
+        });
+        this.updateControlVisibility();
     }
     return this;
 };
@@ -144,8 +183,10 @@ GradientEditor.prototype.getValue = function () {
     var stops = this.getChild('stops'),
         ret = { colors: [], stops: [], type: 'vertical' };
     forEachProperty(stops.getChildren(), function (c) {
-        ret.colors.push(c.getColor());
-        ret.stops.push(c.getStop());
+        if (c instanceof GradientStop) {
+            ret.colors.push(c.getColor());
+            ret.stops.push(c.getStop());
+        }
     });
     return ret;
 };
@@ -162,6 +203,18 @@ GradientEditor.prototype.select = function (stop) {
             this.getChild('color').setValue(stop.getColor());
         }
     }
+};
+
+GradientEditor.prototype.updateControlVisibility = function () {
+    var stops = this.getChild('stops'),
+        nc = stops.numChildren;
+    stops.getChild('plus').setVisible(nc <= 5);
+    forEachProperty(stops.getChildren(), function (c) {
+        if (c instanceof GradientStop) {
+            c.enableRemove(nc > 3);
+        }
+    });
+
 };
 
 exports.GradientEditor = GradientEditor;

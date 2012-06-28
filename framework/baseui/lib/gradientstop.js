@@ -52,7 +52,7 @@ var visual = require('visual'),
                     height: 'px'
                 }
             },
-            action: {
+            remove: {
                 order: 2,
                 matrix: [ 22, 0, 0, 0, 0, 22, 0, 0, 0, 0, 1, 0, 265, 0, 0, 1 ],
                 snapping: {
@@ -94,11 +94,12 @@ var visual = require('visual'),
                     maxValue: 1
                 }
             },
-            action: {
+            remove: {
                 factory: "domvisual",
                 type: "DOMImg",
                 config: {
-                    position: "action"
+                    position: "remove",
+                    url: "editor/img/removestop.png"
                 }
             },
             selection: {
@@ -126,6 +127,9 @@ function GradientStop(config) {
     });
     this.getChild('color').on('click', function () {
         that.emit('select');
+    });
+    this.getChild('remove').on('click', function () {
+        that.emit('remove', this);
     });
 }
 
@@ -164,6 +168,10 @@ GradientStop.prototype.getStop = function (v) {
 
 GradientStop.prototype.setSelected = function (selected) {
     this.getChild('selection').setVisible(selected);
+};
+
+GradientStop.prototype.enableRemove = function (enable) {
+    this.getChild('remove').setVisible(enable);
 };
 
 exports.GradientStop = GradientStop;

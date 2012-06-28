@@ -39,7 +39,6 @@ function StyleSettingBackgroundImage(config) {
         that.emit('change', that.styleData);
     });
     this.getChild('clear').on('click', function () {
-//        that.styleData = {};
         that.emit('reset', {});
     });
 
@@ -52,7 +51,7 @@ StyleSettingBackgroundImage.prototype.getConfigurationSheet = function () {
     return { label: null };
 };
 StyleSettingBackgroundImage.prototype.setLabel = function (txt) {
-//    this.children.label.setText(txt);
+    this.children.label.setText(txt);
 };
 StyleSettingBackgroundImage.prototype.getDefaultStyleData = function () {
     return {
