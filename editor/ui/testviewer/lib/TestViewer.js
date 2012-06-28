@@ -389,9 +389,29 @@ TestViewer.prototype.runPackageTests = function (
     var module = packName + '/' + testscript,
         pack,
         err,
+        done,
         errors = 0,
         testsDone = false,
+        timeout = null,
         that = this;
+
+    // watch dog
+    function watchDogClear() {
+        if (timeout !== null) {
+            clearTimeout(timeout);
+            timeout = null;
+        }
+    }
+    function watchDogRestart() {
+        watchDogClear();
+        timeout = setTimeout(
+            function () {
+                that.log('*** TIMEOUT! this seems to be stalled!');
+                done();
+            },
+            1000
+        );
+    }
     // async testing stuff
     function test(f) {
         var l = arguments.length,
@@ -407,6 +427,7 @@ TestViewer.prototype.runPackageTests = function (
             ret = f.apply(this, args);
         } catch (e) {
             if (!testsDone) {
+                watchDogRestart();
                 that.log('ERROR: ' + e, null, true);
                 errors += 1;
             }
@@ -414,8 +435,10 @@ TestViewer.prototype.runPackageTests = function (
         return ret;
     }
     test.total = -1;
-    function done() {
+    // all tests done
+    done = function () {
         if (!testsDone) {
+            watchDogClear();
             testsDone = true;
             if (errors) {
                 that.log(
@@ -433,7 +456,8 @@ TestViewer.prototype.runPackageTests = function (
             }
             cb(null);
         }
-    }
+    };
+
     // start testing
     try {
         pack = testRequire(packName + '/' + testscript);
@@ -447,6 +471,7 @@ TestViewer.prototype.runPackageTests = function (
     } else {
         if (typeof pack.run === 'function') {
             this.log('Starting asynchronous testing through run...');
+            watchDogRestart();
             // FIXME: we would need some kind of heartbeat
             // this call will return true if it wants async testing
             test(function () {
