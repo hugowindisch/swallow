@@ -693,9 +693,14 @@ GroupViewer.prototype.getSelection = function () {
 */
 GroupViewer.prototype.purgeSelection = function (notify) {
     var positions = this.documentData.positions,
-        selection = {};
+        selection = {},
+        posn;
     forEachProperty(this.selection, function (p, n) {
-        if (positions[n]) {
+        posn = positions[n];
+        if (posn &&
+            posn.enableSelect !== false &&
+            posn.enableDisplay !== false
+        ) {
             selection[n] = p;
         }
     });
