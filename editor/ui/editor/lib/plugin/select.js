@@ -1122,7 +1122,10 @@ function setupRunMenu(editor) {
         function () {
             var docInfo = editor.getDocInfo();
             window.open(docInfo.factory + '.' + docInfo.type + '.html', '_blank');
-        }
+        },
+        null,
+        null,
+        'editor/img/plugin/run.png'
     );
     // publish tool
     publishTool = new MenuItem(
