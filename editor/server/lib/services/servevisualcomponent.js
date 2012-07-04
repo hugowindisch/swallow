@@ -58,7 +58,9 @@ function generateVisualCompoentHtml(
 ) {
     // we need to load all components
     var dependencies = [ ],
-        cssFiles = [];
+        cssFiles = [],
+        iconFile = path.join(details.dirname, type + '.favicon.png'),
+        icon = details.stats[iconFile] ? (details.name + '/' + type + '.favicon.png') : null;
     if (deps) {
         Object.keys(deps).forEach(function (d) {
             dependencies.push(d + '/' + d + '.js');
@@ -78,7 +80,8 @@ function generateVisualCompoentHtml(
         editFactory: editFactory,
         editType: editType,
         jquery: options.jquery ? path.basename(options.jquery) : null,
-        monitor: monitor
+        monitor: monitor,
+        icon: icon
     });
 }
 

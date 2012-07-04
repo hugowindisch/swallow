@@ -26,6 +26,7 @@ exports.definition = {
         Editor: {
             // authoring dimension
             dimensions: [ 640, 400, 0],
+            icon: "editor/img/favicon.png",
             positions: {
                 menu: {
                     order: 3,
@@ -917,7 +918,6 @@ exports.definition = {
                         position: "overflowYScroll"
                     }
                 }
-
             }
         },
         LayerInfo: {

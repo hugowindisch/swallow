@@ -3,6 +3,9 @@
     <title>${type}</title>
 {{each css}}    <link rel="stylesheet" type="text/css" href="${$value}">
 {{/each}}
+{{if icon}}
+                <link rel="icon" href="${icon}">
+{{/if}}
     <script src = "pillow.js"></script>
 {{each dependencies}}    <script src = "${$value}"></script>
 {{/each}}
