@@ -201,6 +201,57 @@ function SelectionBox(config) {
             tr[1][0] += d[0];
             tr[0][1] += d[1];
         }
+        return getRectTransform(rect, tr);
+    });
+
+    makeHandler(children.top, function (matrix, rect, delta, dimensions, symmetrical, constrained) {
+        var tr = [vec3.create(rect[0]), vec3.create(rect[1])],
+            cs;
+
+        tr[0][1] += delta[1];
+        tr[0][1] = that.snapPositionToGrid(tr[0])[1];
+        if (symmetrical) {
+            tr[1][1] -= (tr[0][1] - rect[0][1]);
+        }
+
+        return getRectTransform(rect, tr);
+    });
+
+    makeHandler(children.bottom, function (matrix, rect, delta, dimensions, symmetrical, constrained) {
+        var tr = [vec3.create(rect[0]), vec3.create(rect[1])],
+            cs;
+
+        tr[1][1] += delta[1];
+        tr[1][1] = that.snapPositionToGrid(tr[1])[1];
+        if (symmetrical) {
+            tr[0][1] -= (tr[1][1] - rect[1][1]);
+        }
+
+        return getRectTransform(rect, tr);
+    });
+
+    makeHandler(children.left, function (matrix, rect, delta, dimensions, symmetrical, constrained) {
+        var tr = [vec3.create(rect[0]), vec3.create(rect[1])],
+            cs;
+
+        tr[0][0] += delta[0];
+        tr[0][0] = that.snapPositionToGrid(tr[0])[0];
+        if (symmetrical) {
+            tr[1][0] -= (tr[0][0] - rect[0][0]);
+        }
+
+        return getRectTransform(rect, tr);
+    });
+
+    makeHandler(children.right, function (matrix, rect, delta, dimensions, symmetrical, constrained) {
+        var tr = [vec3.create(rect[0]), vec3.create(rect[1])],
+            cs;
+
+        tr[1][0] += delta[0];
+        tr[1][0] = that.snapPositionToGrid(tr[1])[0];
+        if (symmetrical) {
+            tr[0][0] -= (tr[1][0] - rect[1][0]);
+        }
 
         return getRectTransform(rect, tr);
     });

@@ -155,7 +155,28 @@ exports.definition = {
                     order: 3,
                     matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, 400, 0, 1 ],
                     snapping: { left: 'auto', right: 'px', width: 'px', top: 'auto', height: 'px', bottom: 'px' }
+                },
+                top: {
+                    order: 1,
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   195, -10, 0, 1 ],
+                    snapping: { left: 'cpx', right: 'cpx', width: 'auto', top: 'px', height: 'px', bottom: 'auto' }
+                },
+                right: {
+                    order: 2,
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, 195, 0, 1 ],
+                    snapping: { left: 'auto', right: 'px', width: 'px', top: 'cpx', height: 'auto', bottom: 'cpx' }
+                },
+                bottom: {
+                    order: 2,
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   195, 400, 0, 1 ],
+                    snapping: { left: 'cpx', right: 'cpx', width: 'auto', top: 'auto', height: 'px', bottom: 'px' }
+                },
+                left: {
+                    order: 3,
+                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   -10, 195, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'cpx', height: 'auto', bottom: 'cpx' }
                 }
+
             },
             children: {
                 selectionArea: {
@@ -168,34 +189,66 @@ exports.definition = {
                 },
                 topLeft: {
                     factory: "domvisual",
-                    type: "DOMElement",
+                    type: "DOMImg",
                     config: {
-                        "class": [ "editor_SelectionBox_knob" ],
+                        "url": "editor/img/sbtl.png",
                         position: "topLeft"
+                    }
+                },
+                top: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        "url": "editor/img/sbt.png",
+                        position: "top"
                     }
                 },
                 topRight: {
                     factory: "domvisual",
-                    type: "DOMElement",
+                    type: "DOMImg",
                     config: {
-                        "class": [ "editor_SelectionBox_knob" ],
+                        "url": "editor/img/sbtr.png",
                         position: "topRight"
+                    }
+                },
+                right: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        "url": "editor/img/sbr.png",
+                        position: "right"
                     }
                 },
                 bottomLeft: {
                     factory: "domvisual",
-                    type: "DOMElement",
+                    type: "DOMImg",
                     config: {
-                        "class": [ "editor_SelectionBox_knob" ],
+                        "url": "editor/img/sbbl.png",
                         position: "bottomLeft"
+                    }
+                },
+                bottom: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        "url": "editor/img/sbb.png",
+                        position: "bottom"
                     }
                 },
                 bottomRight: {
                     factory: "domvisual",
-                    type: "DOMElement",
+                    type: "DOMImg",
                     config: {
-                        "class": [ "editor_SelectionBox_knob" ],
+                        "url": "editor/img/sbbr.png",
                         position: "bottomRight"
+                    }
+                },
+                left: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        "url": "editor/img/sbl.png",
+                        position: "left"
                     }
                 }
             }

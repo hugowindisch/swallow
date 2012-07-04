@@ -2785,122 +2785,154 @@
     </g>
     <g
        id="g4793"
-       transform="translate(-4.48485,-2.1417074)">
+       transform="translate(-4.48485,-2.1417074)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sbtl.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5"
+       style="fill:#ffcc00">
       <path
          inkscape:connector-curvature="0"
          id="path4764"
          d="m 244.48485,574.50389 0,40 8,0 0,-32 32,0 0,-8 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
       <path
          inkscape:connector-curvature="0"
          id="path4770"
          d="m 258.344,588.36303 0,23.99744 7.99914,0 0,-10.34144 12.48486,12.48486 5.65685,-5.65686 L 272,596.36218 l 10.34143,0 0,-7.99915 -23.99743,0 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
     </g>
     <g
-       id="g4799">
+       id="g4799"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sbt.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5"
+       style="fill:#ffcc00">
       <path
          inkscape:connector-curvature="0"
          id="path4770-6"
          d="m 324,580.36218 -16.96875,16.47015 5.65625,5.49003 7.3125,-7.09762 0,17.13744 8,-10e-6 0,-17.13742 7.3125,7.09761 5.65625,-5.49004 L 324,580.36218 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
       <rect
          y="572.36218"
          x="304"
          height="8"
          width="40"
          id="rect4797"
-         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+         style="opacity:1;fill:#ffcc00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
     </g>
     <g
        id="g4793-7"
-       transform="matrix(-1,0,0,1,642.344,-8.4738281e-4)">
+       transform="matrix(-1,0,0,1,642.344,-8.4738281e-4)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sbtr.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5"
+       style="fill:#ffcc00">
       <path
          inkscape:connector-curvature="0"
          id="path4764-8"
          d="m 244.48485,574.50389 0,40 8,0 0,-32 32,0 0,-8 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
       <path
          inkscape:connector-curvature="0"
          id="path4770-9"
          d="m 258.344,588.36303 0,23.99744 7.99914,0 0,-10.34144 12.48486,12.48486 5.65685,-5.65686 L 272,596.36218 l 10.34143,0 0,-7.99915 -23.99743,0 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
     </g>
     <g
        transform="matrix(0,1,-1,0,964.36218,320.36218)"
-       id="g4799-2">
+       id="g4799-2"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sbr.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5"
+       style="fill:#ffcc00">
       <path
          inkscape:connector-curvature="0"
          id="path4770-6-3"
          d="m 324,580.36218 -16.96875,16.47015 5.65625,5.49003 7.3125,-7.09762 0,17.13744 8,-10e-6 0,-17.13742 7.3125,7.09761 5.65625,-5.49004 L 324,580.36218 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
       <rect
          y="572.36218"
          x="304"
          height="8"
          width="40"
          id="rect4797-5"
-         style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+         style="fill:#ffcc00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
     </g>
     <g
        transform="matrix(0,1,1,0,-331.22474,316.36218)"
-       id="g4799-2-4">
+       id="g4799-2-4"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sbl.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5"
+       style="fill:#ffcc00">
       <path
          inkscape:connector-curvature="0"
          id="path4770-6-3-0"
          d="m 324,580.36218 -16.96875,16.47015 5.65625,5.49003 7.3125,-7.09762 0,17.13744 8,-10e-6 0,-17.13742 7.3125,7.09761 5.65625,-5.49004 L 324,580.36218 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
       <rect
          y="572.36218"
          x="304"
          height="8"
          width="40"
          id="rect4797-5-6"
-         style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+         style="fill:#ffcc00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
     </g>
     <g
        transform="matrix(1,0,0,-1,0,1279.5869)"
-       id="g4799-0">
+       id="g4799-0"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sbb.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5"
+       style="fill:#ffcc00">
       <path
          inkscape:connector-curvature="0"
          id="path4770-6-2"
          d="m 324,580.36218 -16.96875,16.47015 5.65625,5.49003 7.3125,-7.09762 0,17.13744 8,-10e-6 0,-17.13742 7.3125,7.09761 5.65625,-5.49004 L 324,580.36218 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
       <rect
          y="572.36218"
          x="304"
          height="8"
          width="40"
          id="rect4797-0"
-         style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+         style="fill:#ffcc00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
     </g>
     <g
        id="g4793-6"
-       transform="matrix(1,0,0,-1,-2.344,1285.0069)">
+       transform="matrix(1,0,0,-1,-2.344,1285.0069)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sbbl.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5"
+       style="fill:#ffcc00">
       <path
          inkscape:connector-curvature="0"
          id="path4764-7"
          d="m 244.48485,574.50389 0,40 8,0 0,-32 32,0 0,-8 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
       <path
          inkscape:connector-curvature="0"
          id="path4770-1"
          d="m 258.344,588.36303 0,23.99744 7.99914,0 0,-10.34144 12.48486,12.48486 5.65685,-5.65686 L 272,596.36218 l 10.34143,0 0,-7.99915 -23.99743,0 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
     </g>
     <g
        id="g4793-7-6"
-       transform="matrix(-1,0,0,-1,644.48485,1290.8661)">
+       transform="matrix(-1,0,0,-1,644.48485,1290.8661)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/sbbr.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5"
+       style="fill:#ffcc00">
       <path
          inkscape:connector-curvature="0"
          id="path4764-8-7"
          d="m 244.48485,574.50389 0,40 8,0 0,-32 32,0 0,-8 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
       <path
          inkscape:connector-curvature="0"
          id="path4770-9-3"
          d="m 258.344,588.36303 0,23.99744 7.99914,0 0,-10.34144 12.48486,12.48486 5.65685,-5.65686 L 272,596.36218 l 10.34143,0 0,-7.99915 -23.99743,0 z"
-         style="fill:#000000;stroke:none" />
+         style="fill:#ffcc00;stroke:none" />
     </g>
     <g
        id="g6007"
