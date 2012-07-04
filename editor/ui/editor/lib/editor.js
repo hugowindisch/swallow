@@ -19,9 +19,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
-
+/*globals window */
 // this is the top level editor
-
 var visual = require('visual'),
     domvisual = require('domvisual'),
     baseui = require('baseui'),
@@ -170,6 +169,18 @@ Editor.prototype.newGroup = function (factory, type, cb) {
     );
 };
 
+Editor.prototype.runGroup = function (factory, type, cb) {
+    window.open('/make/' + factory + '.' + type + '.html', '_blank');
+
+    // for no reason that I can explain, this opens the thing in a new tab !?
+/*
+    this.saveGroup(factory, type, null, function (err) {
+        window.open(factory + '.' + type + '.html', '_blank');
+        if (cb) {
+            cb(err);
+        }
+    });*/
+};
 
 Editor.prototype.setGroupData = function (factory, type, groupData) {
     var viewer = this.getChild('viewer');

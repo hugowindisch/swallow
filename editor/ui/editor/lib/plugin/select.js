@@ -1121,7 +1121,7 @@ function setupRunMenu(editor) {
         'Run',
         function () {
             var docInfo = editor.getDocInfo();
-            window.open(docInfo.factory + '.' + docInfo.type + '.html', '_blank');
+            editor.runGroup(docInfo.factory, docInfo.type);
         },
         null,
         null,
