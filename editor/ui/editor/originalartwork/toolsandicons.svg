@@ -2969,24 +2969,36 @@
        d="m 80,852.36218 c 0,72 48,120 120,120 l -24,-48 0,24 c -40,0 -72,-32 -72,-72 l 24,0 z"
        id="path4858"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccc" />
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/rbbl.png"
+       inkscape:export-xdpi="10.5"
+       inkscape:export-ydpi="10.5" />
     <path
        style="fill:#0000ff;stroke:none"
        d="m 271.99999,972.36219 c 72,0 120.00002,-48 120.00002,-120 l -48.00002,24 24,0 c 0,40 -32,72 -72,72 l 0,-24 z"
        id="path4858-7"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccc" />
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/rbbr.png"
+       inkscape:export-xdpi="10.5"
+       inkscape:export-ydpi="10.5" />
     <path
        style="fill:#0000ff;stroke:none"
        d="m 176,708.36218 c -72,0 -120,48 -120,120 l 48,-24 -24,0 c 0,-40 32,-72 72,-72 l 0,24 z"
        id="path4858-8"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccc" />
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/rbtl.png"
+       inkscape:export-xdpi="10.5"
+       inkscape:export-ydpi="10.5" />
     <path
        style="fill:#0000ff;stroke:none"
        d="m 376,836.36218 c 0,-72 -48,-120 -120,-120 l 24,48 0,-24 c 40,0 72,32 72,72 l -24,0 z"
        id="path4858-1"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccc" />
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/rbtr.png"
+       inkscape:export-xdpi="10.5"
+       inkscape:export-ydpi="10.5" />
   </g>
 </svg>
