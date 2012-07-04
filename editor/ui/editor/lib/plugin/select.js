@@ -1158,6 +1158,7 @@ function setupHelpMenu(editor) {
         aboutTool,
         wikiTool,
         bugTool,
+        overviewTutorialTool,
         menus = editor.menus;
     // run tool
     helpTool = new MenuItem(
@@ -1186,8 +1187,22 @@ function setupHelpMenu(editor) {
             alert(licenseText);
         }
     );
+
+    // tutorials
+    overviewTutorialTool = new MenuItem(
+        'Tutorial: Overview...',
+        function () {
+            var Tutorial = require('./tutorial').Tutorial,
+                nt = new Tutorial({
+                    url: "http://www.youtube.com/embed/SXQEPokWYog"
+                });
+            nt.runFullScreen();
+        }
+    );
     menus.help.push(
         helpTool,
+        null,
+        overviewTutorialTool,
         null,
         wikiTool,
         bugTool,

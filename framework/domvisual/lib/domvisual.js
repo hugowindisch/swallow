@@ -40,10 +40,11 @@ var visual = require('visual'),
     prune = utils.prune,
     vec3IsEqual = visual.vec3IsEqual,
     getStyleDimensionAdjustment = styles.getStyleDimensionAdjustment,
-    setDirty = dirty.setDirty;
+    setDirty = dirty.setDirty,
+    theStage;
 
 /**
-* Constructs a DOMVisual jlkjlkljlkjlkj
+* Constructs a DOMVisual
 * @api private
 */
 function DOMVisual(config, groupData, element) {
@@ -814,11 +815,74 @@ DOMVisual.prototype.getComputedDimensions = function () {
 };
 
 /*
+* Creates or returns the (already created) stage.
+* @api private
+*/
+function getStage() {
+    var bodyElement,
+        thisElement,
+        viz;
+
+    function updateTopLayout() {
+        viz.setDimensions(
+            [viz.element.offsetWidth, viz.element.offsetHeight, 0]
+        );
+    }
+
+    if (!theStage) {
+        bodyElement = document.getElementsByTagName('body')[0];
+        thisElement = document.createElement('div');
+        viz = new DOMVisual({}, null, thisElement);
+        // do some stupid stuff here:
+        bodyElement.style.overflow = 'hidden';
+        bodyElement.appendChild(thisElement);
+        viz.setLayout(
+            {
+                dimensions: [100, 100, 0],
+                positions: {
+                    root: {
+                        matrix: [
+                            100, 0, 0, 0, 0, 100, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+                        ],
+                        snapping: {
+                            left: 'px',
+                            right: 'px',
+                            width: 'auto',
+                            top: 'px',
+                            bottom: 'px',
+                            height: 'auto'
+                        }
+                    }
+                }
+            }
+        );
+        viz.connectedToTheStage = true;
+        viz.name = 'stage';
+        viz.matrix = glmatrix.mat4.identity();
+        viz.element.style.left = '0px';
+        viz.element.style.right = '0px';
+        viz.element.style.top = '0px';
+        viz.element.style.bottom = '0px';
+        viz.element.style.position = 'absolute';
+        viz.on('resize', function () {
+            updateTopLayout();
+            dirty.update();
+        });
+        updateTopLayout();
+        theStage = viz;
+    }
+    return theStage;
+}
+
+/*
 * Runs this element full screen.
 * @api private
 */
 DOMVisual.prototype.runFullScreen = function () {
-    exports.createFullScreenApplication(this);
+    getStage().addChild(this);
+    this.setPosition('root');
+    dirty.update();
+    return this;
 };
 
 /**
@@ -1288,62 +1352,6 @@ DOMCanvas.prototype.toDataURL = function () {
 */
 DOMCanvas.prototype.getConfigurationSheet = function () {
     return { "width": {}, "height": {} };
-};
-
-/*
-* Creates a full screen appliation for the specified visual element.
-* @api private
-*/
-exports.createFullScreenApplication = function (child) {
-    var bodyElement = document.getElementsByTagName('body')[0],
-        thisElement = document.createElement('div'),
-        viz = new DOMVisual({}, null, thisElement);
-    // do some stupid stuff here:
-    bodyElement.style.overflow = 'hidden';
-    bodyElement.appendChild(thisElement);
-    viz.setLayout(
-        {
-
-            dimensions: [100, 100, 0],
-            positions: {
-                root: {
-                    matrix: [
-                        100, 0, 0, 0, 0, 100, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
-                    ],
-                    snapping: {
-                        left: 'px',
-                        right: 'px',
-                        width: 'auto',
-                        top: 'px',
-                        bottom: 'px',
-                        height: 'auto'
-                    }
-                }
-            }
-        }
-    );
-    viz.connectedToTheStage = true;
-    viz.addChild(child, 'root');
-    child.setPosition('root');
-    viz.name = 'stage';
-    viz.matrix = glmatrix.mat4.identity();
-    viz.element.style.left = '0px';
-    viz.element.style.right = '0px';
-    viz.element.style.top = '0px';
-    viz.element.style.bottom = '0px';
-    viz.element.style.position = 'absolute';
-    function updateTopLayout() {
-        viz.setDimensions(
-            [viz.element.offsetWidth, viz.element.offsetHeight, 0]
-        );
-    }
-    viz.on('resize', function () {
-        updateTopLayout();
-        // update will be automatically called.
-    });
-    updateTopLayout();
-    dirty.update();
-    return child;
 };
 
 exports.DOMElement = DOMElement;

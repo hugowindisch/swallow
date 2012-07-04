@@ -663,6 +663,17 @@ Visual.prototype.getParent = function () {
 };
 
 /**
+* Removes this visual from its container.
+* @returns {Visual} the parent of this visual component.
+*/
+Visual.prototype.remove = function () {
+    if (this.parent) {
+        this.parent.removeChild(this);
+    }
+    return this;
+};
+
+/**
 * Swaps the orders (depths) of two children of this component.
 * @returns {Visual} this
 */
