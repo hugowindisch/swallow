@@ -320,22 +320,22 @@ exports.definition = {
                 },
                 topLeft: {
                     order: 1,
-                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   -10, -10, 0, 1 ],
+                    matrix: [ 16, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   -16, -16, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', height: 'px', bottom: 'auto' }
                 },
                 topRight: {
                     order: 2,
-                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, -10, 0, 1 ],
+                    matrix: [ 16, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   400, -16, 0, 1 ],
                     snapping: { left: 'auto', right: 'px', width: 'px', top: 'px', height: 'px', bottom: 'auto' }
                 },
                 bottomLeft: {
                     order: 2,
-                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   -10, 400, 0, 1 ],
+                    matrix: [ 16, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   -16, 400, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'auto', height: 'px', bottom: 'px' }
                 },
                 bottomRight: {
                     order: 3,
-                    matrix: [ 10, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   400, 400, 0, 1 ],
+                    matrix: [ 16, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   400, 400, 0, 1 ],
                     snapping: { left: 'auto', right: 'px', width: 'px', top: 'auto', height: 'px', bottom: 'px' }
                 }
             },
@@ -350,33 +350,33 @@ exports.definition = {
                 },
                 topLeft: {
                     factory: "domvisual",
-                    type: "DOMElement",
+                    type: "DOMImg",
                     config: {
-                        "class": [ "editor_RotationBox_knob" ],
+                        "url": "editor/img/rbtl.png",
                         position: "topLeft"
                     }
                 },
                 topRight: {
                     factory: "domvisual",
-                    type: "DOMElement",
+                    type: "DOMImg",
                     config: {
-                        "class": [ "editor_RotationBox_knob" ],
+                        "url": "editor/img/rbtr.png",
                         position: "topRight"
                     }
                 },
                 bottomLeft: {
                     factory: "domvisual",
-                    type: "DOMElement",
+                    type: "DOMImg",
                     config: {
-                        "class": [ "editor_RotationBox_knob" ],
+                        "url": "editor/img/rbbl.png",
                         position: "bottomLeft"
                     }
                 },
                 bottomRight: {
                     factory: "domvisual",
-                    type: "DOMElement",
+                    type: "DOMImg",
                     config: {
-                        "class": [ "editor_RotationBox_knob" ],
+                        "url": "editor/img/rbbr.png",
                         position: "bottomRight"
                     }
                 }
