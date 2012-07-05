@@ -181,12 +181,13 @@ VisualList.prototype.updateVisualList = function () {
         docInfo = editor.getDocInfo(),
         editedFactory = docInfo.factory,
         ve,
+        numberOfModules = {},
         that = this;
     function onClick() {
         that.select(this, true);
     }
     function add(factory, type) {
-        var c, f, T;
+        var c, f, T, ret = 0;
         if (!(factory === docInfo.factory && type === docInfo.type)) {
             f = require(factory);
             if (f) {
@@ -197,21 +198,23 @@ VisualList.prototype.updateVisualList = function () {
                     c.setHtmlFlowing({position: 'relative'}, true);
                     choices.addChild(c);
                     c.on('click', onClick);
-
+                    ret = 1;
                 }
             }
         }
-
+        return ret;
     }
     // remove all children
     choices.removeAllChildren();
     // create the always visible choices first
     forEachProperty(visualList, function (json, factory) {
+        var nModules = 0;
         if (alwaysShow[factory] && json.visuals) {
             forEach(json.visuals, function (type) {
-                add(factory, type);
+                nModules += add(factory, type);
             });
         }
+        numberOfModules[factory] = nModules;
     });
     // add a separator
     choices.addChild(
@@ -221,15 +224,16 @@ VisualList.prototype.updateVisualList = function () {
 
     // then the other ones
     forEachProperty(visualList, function (json, factory) {
+        var nModules = 0;
         if (!alwaysShow[factory] && json.visuals) {
             forEach(json.visuals, function (type) {
-                add(factory, type);
+                nModules += add(factory, type);
             });
-
         }
+        numberOfModules[factory] = nModules;
     });
     // then setup the factory selector
-    that.setFactories(visualList);
+    that.setFactories(visualList, numberOfModules);
     that.filterFactories();
 };
 
@@ -263,13 +267,13 @@ VisualList.prototype.init = function (editor) {
     viewer.on('selectionChanged', newBoxSelected);
 };
 
-VisualList.prototype.setFactories = function (factories) {
+VisualList.prototype.setFactories = function (factories, numberOfModules) {
     var factArray = [],
         docInfo = this.editor.getDocInfo(),
         alwaysShow = this.alwaysShow || {};
     forEachProperty(factories, function (f, name) {
         // don't show the factories that are always present
-        if (!alwaysShow[name] && f.visuals && f.visuals.length > 0) {
+        if (!alwaysShow[name] && numberOfModules[name] > 0) {
             factArray.push(name);
         }
     });
