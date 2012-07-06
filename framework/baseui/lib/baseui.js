@@ -21,6 +21,15 @@
     IN THE SOFTWARE.
 */
 
+/**
+* This package provides general purpose ui elements. In its current state it
+* is not properly documented (i.e. you can pretty much ignore the generated
+* documentation, it is useless)
+*
+* @package baseui
+*/
+
+/*! */
 var menuitem = require('./menuitem');
 
 exports.Toolbar = require('./toolbar').Toolbar;

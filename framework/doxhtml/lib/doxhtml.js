@@ -84,7 +84,7 @@ function jsonToHtml(json) {
                 !item.isPrivate &&
                 !item.ignore) {
             // determine the memberOf thing
-            memberOf = ctx.receiver;
+            memberOf = ctx.receiver || ctx.constructor;
             if (fTags.memberOf) {
                 if (fTags.memberOf[0].parent) {
                     memberOf = fTags.memberOf[0].parent;
@@ -99,7 +99,7 @@ function jsonToHtml(json) {
             // display the function name
             fname = ctx.name;
             if (memberOf && memberOf !== packageName) {
-                fname = ctx.receiver + '.' + fname;
+                fname = memberOf + '.' + fname;
             }
             html += '<h1>' + fname + '(';
             if (params.length > 0) {

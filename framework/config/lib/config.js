@@ -23,6 +23,16 @@
 /*globals define */
 
 /**
+* This package provides functions that can be used in configuration sheets.
+* Configuration sheets lets a visual component declare some properties that
+* will be configurable in the editor.
+*
+* @package config
+*/
+
+
+/**
+* loadConstructor
 * @api private
 */
 function loadConstructor(
@@ -52,6 +62,7 @@ function loadConstructor(
 }
 
 /**
+* leftRightConfig
 * @api private
 */
 function leftRightConfig(
@@ -92,6 +103,7 @@ function leftRightConfig(
 }
 
 /**
+* topBottomConfig
 * @api private
 */
 function topBottomConfig(
@@ -135,8 +147,8 @@ function topBottomConfig(
 * Returns a input config element (that can be used in getConfigurationSheet to
 * edit a string)
 * @param {String} label The label that should be used.
-* @returns {Function} a function that will let the editor create the appropriate
-*   input element
+* @returns A function that will let the editor create the appropriate input element
+* @memberOf config
 */
 function inputConfigFullLine(label) {
     return function (editor, cb) {
@@ -170,8 +182,8 @@ function inputConfigFullLine(label) {
 * Returns a input config element (that can be used in getConfigurationSheet to
 * edit a string)
 * @param {String} label The label that should be used.
-* @returns {Function} a function that will let the editor create the appropriate
-*   input element
+* @returns A function that will let the editor create the appropriate input element
+* @memberOf config
 */
 function inputConfig(label) {
     return function (editor, cb) {
@@ -205,8 +217,8 @@ function inputConfig(label) {
 * Returns a boolean config element (that can be used in getConfigurationSheet to
 * edit a Boolean).
 * @param {String} label The label that should be used.
-* @returns {Function} a function that will let the editor create the appropriate
-*   boolean input element
+* @returns A function that will let the editor create the appropriate input element
+* @memberOf config
 */
 function booleanConfig(label) {
     return function (editor, cb) {
@@ -244,8 +256,8 @@ function booleanConfig(label) {
 * Returns a style config element (that can be used in getConfigurationSheet to
 * edit a style).
 * @param {String} label The label that should be used.
-* @returns {Function} a function that will let the editor create the appropriate
-*   style editing element
+* @returns A function that will let the editor create the appropriate input element
+* @memberOf config
 */
 function styleConfig(labelTxt) {
     function sc(mainEditor, cb) {
@@ -300,8 +312,8 @@ function styleConfig(labelTxt) {
 * Returns an image config element (that can be used in getConfigurationSheet to
 * edit an image).
 * @param {String} label The label that should be used.
-* @returns {Function} a function that will let the editor create the appropriate
-*   image editing element
+* @returns A function that will let the editor create the appropriate input element
+* @memberOf config
 */
 function imageUrlConfig(label) {
     return function (editor, cb) {
