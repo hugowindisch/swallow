@@ -22,6 +22,13 @@
 */
 /*jslint regexp: false */
 
+/**
+* This package is an implementation of the nodejs url package.
+*
+* @package url
+*/
+
+
 /*
 * Parses the query string.
 * @api private
@@ -47,6 +54,7 @@ function parseQueryString(queryString, sep, eq) {
 }
 
 /**
+* Stringifies a query object.
 * @api private
 */
 function stringifyQueryObject(o, sep, eq) {
@@ -85,8 +93,10 @@ function stringifyQueryObject(o, sep, eq) {
 
 /**
 * Formats an urlObj (to produce a string)
-* @param {String} urlObj. The url object to convert to a string.
+* @param {String} urlObj The url object to convert to a string.
 * @returns The url string created from urlObj.
+* @type String
+* @memberOf url
 */
 function format(urlObj) {
     var path = '';
@@ -124,7 +134,10 @@ function format(urlObj) {
 * href. The behavior is not guaranteed to be the same as Node.js in all
 * circumstances.
 * @param {String} urlStr The url to parse.
-* @param {Booelean} parseQS true to parse the query string.
+* @param {Boolean} parseQS true to parse the query string.
+* @type Object
+* @returns The url converted to an object.
+* @memberOf url
 */
 function parse(urlStr, parseQS) {
     parseQS = parseQS || false;
@@ -185,7 +198,9 @@ function parse(urlStr, parseQS) {
 * Resolves a relative url
 * @param {String} from The origin url.
 * @param {String} to The url relative to the origin url that should be returned.
-* @returns The resolved url (a string).
+* @returns The resolved url
+* @type String
+* @memberOf url
 */
 function resolve(from, to) {
     var tp = parse(to),

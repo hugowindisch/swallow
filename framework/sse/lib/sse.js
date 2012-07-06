@@ -29,9 +29,23 @@ var events = require('events'),
     forEachProperty = utils.forEachProperty;
 
 /**
-* Constructs an event source.
+* This package adapts the EventSource provided by the browser to make it
+* become a standard EventEmitter (so you can use on, once, etc... as defined
+* in events.EventEmitter).
+*
+* EventEmitter will eventually be supported for browsers that don't support it.
+*
+* @package sse
+*/
+
+
+/**
+* Constructs an event source (this EventSource is an events.EventEmitter
+* therefore all EventEmitter functions (on, once etc.) can be used with it.
+*
 * @param {String} url is the url for receiving inits.
 * @param {Object} optionalInit is an optional init dictionary.
+* @memberOf sse
 */
 function EventSource(url, optionalInit) {
     var that = this;
@@ -52,7 +66,8 @@ EventSource.prototype = new events.EventEmitter();
 
 /**
 * Closes the vent source.
-* @returns {EventSource} this.
+* @returns this.
+* @type EventSource
 */
 EventSource.prototype.close = function () {
     this.evtSrc.close();
@@ -60,6 +75,7 @@ EventSource.prototype.close = function () {
 };
 
 /**
+* updateHooks
 * @api private
 */
 EventSource.prototype.updateHooks = function () {

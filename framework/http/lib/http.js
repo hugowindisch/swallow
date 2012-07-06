@@ -33,9 +33,17 @@ var utils = require('utils'),
     };
 
 /**
+* This package provides implements the request and get methods in a way
+* very similar to nodejs. Not all nodejs features are supported.
+* @package http
+*/
+
+
+/**
 * Constructs a client response.
 * @param {Object} headers The http headers.
 * @param {String} statusCode The status of the response.
+* @memberOf http
 */
 function ClientResponse(headers, statusCode) {
     this.headers = headers;
@@ -48,7 +56,8 @@ ClientResponse.prototype = new (events.EventEmitter)();
 
 /**
 * Pauses the response (not currently supported).
-* @returns {ClientResponse} this.
+* @returns this.
+* @type ClientResponse
 */
 ClientResponse.prototype.pause = function () {
     // not currently supported
@@ -57,7 +66,8 @@ ClientResponse.prototype.pause = function () {
 
 /**
 * Resumes the response (not currently supported).
-* @returns {ClientResponse} this.
+* @returns this.
+* @type ClientResponse
 */
 ClientResponse.prototype.resume = function () {
     // not currently supported
@@ -66,7 +76,8 @@ ClientResponse.prototype.resume = function () {
 
 /**
 * Sets the encoding of the response (not currently supported).
-* @returns {ClientResponse} this.
+* @returns this.
+* @type ClientResponse
 */
 ClientResponse.prototype.setEncoding = function () {
     // not currently supported
@@ -77,6 +88,7 @@ ClientResponse.prototype.setEncoding = function () {
 * Constructs a client request.
 * @param {Object} options The options (host, port, method, path, headers)
 * @param {String} statusCode The status of the response.
+* @memberOf http
 */
 function ClientRequest(options) {
     var url = '',
@@ -151,7 +163,8 @@ ClientRequest.prototype = new (events.EventEmitter)();
 /**
 * Writes to the request.
 * @param {String} chunk The data to write.
-* @returns {ClientRequest} this.
+* @returns this.
+* @type ClientRequest
 */
 ClientRequest.prototype.write = function (chunk) {
     if (this.toSend === null) {
@@ -165,7 +178,8 @@ ClientRequest.prototype.write = function (chunk) {
 /**
 * Ends the request.
 * @param {String} data Optional data to write.
-* @returns {ClientRequest} this.
+* @returns this.
+* @type ClientRequest
 */
 ClientRequest.prototype.end = function (data) {
     var that = this;
@@ -181,7 +195,8 @@ ClientRequest.prototype.end = function (data) {
 
 /**
 * Aborts the request.
-* @returns {ClientRequest} this.
+* @returns this.
+* @type ClientRequest
 */
 ClientRequest.prototype.abort = function () {
     this.request.abort();
@@ -192,7 +207,9 @@ ClientRequest.prototype.abort = function () {
 * Initiates an http request.
 * @param {Object} options The options (host, port, method, path, headers)
 * @param {Function} callback The optional callback.
-* @returns {ClientRequest} this.
+* @returns A new ClientRequest
+* @type ClientRequest
+* @memberOf http
 */
 function request(options, callback) {
     var ret = new ClientRequest(options);
@@ -206,7 +223,9 @@ function request(options, callback) {
 * Initiates an http get.
 * @param {Object} options The options (host, port, method, path, headers)
 * @param {Function} callback The optional callback.
-* @returns {ClientRequest} this.
+* @returns A new ClientRequest
+* @type ClientRequest
+* @memberOf http
 */
 function get(options, callback) {
     options.method = 'GET';

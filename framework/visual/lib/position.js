@@ -34,8 +34,9 @@ var utils = require('utils'),
 * Returns a rect that fully encloses the result of applying the provided
 * matrix to a (1x1) rectangle.
 * @param {mat4} m The matrix
-* @returns {array} An array of two vec3 that give the topleft and bottom right
-*               corners of the enclosing rect.
+* @returns An array of two vec3 that give the topleft and bottom right corners of the enclosing rect.
+* @type Array
+* @memberOf visual
 */
 function getEnclosingRect(m) {
     var tv1 = mat4.multiplyVec3(m, [1, 0, 0]),
@@ -72,8 +73,8 @@ function getEnclosingRect(m) {
 
 /**
 * Converts a rect to a matrix that would transform a 1x1 element to the rect.
-* @param {array} r An array of two vec3 giving the topleft and bottomright
-*                   corners of the rect to transform.
+* @param {array} r An array of two vec3 giving the topleft and bottomright corners of the rect to transform.
+* @memberOf visual
 */
 function rectToMatrix(r) {
     var m = mat4.identity(),
@@ -93,15 +94,17 @@ function rectToMatrix(r) {
 
 /**
 * Constructs a position.
-* @param {mat4} The matrix that positions a 1x1x1 element
-* @param {Object} snapping The snapping mode:
+* Snapping modes:
 *            left : % px auto cpx
 *            right: % px auto cpx
 *            width: % px auto
 *            top: % px auto cpx
 *            bottom: % px auto cpx
 *            height: % px auto
+* @param {mat4} The matrix that positions a 1x1x1 element
+* @param {Object} snapping The snapping mode
 * @param {Number} An opacity to apply on that position
+* @memberOf visual
 */
 function Position(matrix, snapping, opacity) {
     this.matrix = matrix;
@@ -313,6 +316,7 @@ Position.prototype.compute = function (
 * Constructs a layout that essentially consists in a collection of named positions.
 * @param {vec3} dimensions  The dimensions of the layout
 * @param {Object} positionData The position map (name: Position).
+* @memberOf visual
 */
 function Layout(dimensions, positionData) {
     this.dimensions = dimensions;
@@ -321,6 +325,7 @@ function Layout(dimensions, positionData) {
 }
 
 /**
+* build
 * @api private
 */
 Layout.prototype.build = function (positionData) {
@@ -334,6 +339,7 @@ Layout.prototype.build = function (positionData) {
 };
 
 /**
+* setPosition
 * @api private
 */
 Layout.prototype.setPosition = function (name, position) {
@@ -344,8 +350,9 @@ Layout.prototype.setPosition = function (name, position) {
 * Removes the scaling from a matrix (so that its directing vectors have a length
 * of 1).
 * @param {mat4} matrix The matrix to modify
-* @returns {Object} matrix will be the modified matrix and dimensions will be
-*                   the extracted dimensions.
+* @returns matrix will be the modified matrix and dimensions will be the extracted dimensions.
+* @type Object
+* @memberOf visual
 */
 function convertScaleToSize(matrix) {
     var v1 = [matrix[0], matrix[1], matrix[2]],

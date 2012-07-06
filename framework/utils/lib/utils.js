@@ -22,9 +22,17 @@
 */
 
 /**
+* This package implements various utility functions.
+*
+* @package utils
+*/
+
+/**
 * Returns the type of a vlue, correctly distinguishing between object and array.
 * @param {any} value The value we want to inspect.
-* @returns {String} The type of the value.
+* @returns The type of the value.
+* @type String
+* @memberOf utils
 */
 function typeOf(value) {
     var s = typeof value;
@@ -43,7 +51,9 @@ function typeOf(value) {
 /**
 * Returns true if is is a string.
 * @param {any} s The value to inspect.
-* @returns {String} true if s is a string.
+* @returns true if s is a string.
+* @type Boolean
+* @memberOf utils
 */
 function isString(s) {
     return typeOf(s) === 'string';
@@ -52,7 +62,9 @@ function isString(s) {
 /**
 * Returns true if is is a number.
 * @param {any} n The value to inspect.
-* @returns {String} true if s is a number.
+* @returns true if s is a number.
+* @type Boolean
+* @memberOf utils
 */
 function isNumber(n) {
     return typeOf(n) === 'number';
@@ -61,7 +73,9 @@ function isNumber(n) {
 /**
 * Returns true if is is an array.
 * @param {any} a The value to inspect.
-* @returns {String} true if s is an array.
+* @returns true if s is an array.
+* @type Boolean
+* @memberOf utils
 */
 function isArray(a) {
     return typeOf(a) === 'array';
@@ -70,7 +84,9 @@ function isArray(a) {
 /**
 * Returns true if is is an object.
 * @param {any} o The value to inspect.
-* @returns {String} true if s is an object.
+* @returns true if s is an object.
+* @type Boolean
+* @memberOf utils
 */
 function isObject(o) {
     return typeOf(o) === 'object';
@@ -79,7 +95,9 @@ function isObject(o) {
 /**
 * Returns true if is is a function.
 * @param {any} f The value to inspect.
-* @returns {String} true if s is a function.
+* @returns true if s is a function.
+* @type Boolean
+* @memberOf utils
 */
 function isFunction(f) {
     return typeOf(f) === 'function';
@@ -89,6 +107,7 @@ function isFunction(f) {
 * Enumerates the object calling f for each (value, name) pair.
 * @param {Ojbect} object The object to iterate.
 * @param {Function} f The callback to call for each (value, name) pair.
+* @memberOf utils
 */
 function forEachProperty(object, f) {
     var p;
@@ -107,6 +126,7 @@ function forEachProperty(object, f) {
 * @param {Ojbect} object The object to iterate.
 * @param {Function} f The callback to call for each (value, name) pair.
 * @param {Function} optionalSortFunction An optional sorting function.
+* @memberOf utils
 */
 
 function forEachSortedProperty(object, f, optionalSortFunction) {
@@ -140,6 +160,7 @@ function forEachSortedProperty(object, f, optionalSortFunction) {
 * Enumerates the array calling f for each (value, index) pair.
 * @param {Ojbect} array The array to iterate.
 * @param {Function} f The callback to call for each (value, index) pair.
+* @memberOf utils
 */
 function forEach(array, f) {
     var l = array.length, i;
@@ -152,6 +173,8 @@ function forEach(array, f) {
 * Returns a deep copy of object o.
 * @param {any} o The object (or value) to copy.
 * @returns A copy of the value.
+* @type any
+* @memberOf utils
 */
 function deepCopy(o) {
     var res, i, l, v;
@@ -181,6 +204,8 @@ function deepCopy(o) {
 * Copies all property of from to to
 * @param {Object} from The from object.
 * @param {Object} to The to object.
+* @type Object
+* @memberOf utils
 */
 function apply(to, from) {
     forEachProperty(from, function (v, n) {
@@ -193,6 +218,8 @@ function apply(to, from) {
 * Copies all property of from to to by calling deepCopy on all copied values.
 * @param {Object} from The from object.
 * @param {Object} to The to object.
+* @type Object
+* @memberOf utils
 */
 function applyDeep(to, from) {
     forEachProperty(from, function (v, n) {
@@ -204,7 +231,9 @@ function applyDeep(to, from) {
 /**
 * Recursively removes undefined an null properties from an object.
 * @param {Object} o The object to prune.
-* @returns {Number} The number of remaining properties in o
+* @returns The number of remaining properties in o
+* @type Number
+* @memberOf utils
 */
 function prune(o) {
     var n = 0;
@@ -229,6 +258,8 @@ function prune(o) {
 /**
 * ensure(o, 'a', 'b', 'c') will make sure o.a.b.c exists and return it
 * @returns The modified object.
+* @type Object
+* @memberOf utils
 */
 function ensure(o) {
     var l = arguments.length, i, n, nextO;
@@ -246,6 +277,8 @@ function ensure(o) {
 /**
 * ensure(o, 'a', 'b', 'c') will make sure o.a.b.c exists and return it
 * @returns The found value or null
+* @type any
+* @memberOf utils
 */
 function ensured(o) {
     var l = arguments.length, i, n, nextO;
@@ -266,7 +299,9 @@ function ensured(o) {
 * @param {Number} minN The minimum value of n.
 * @param {Number} maxN The maximum value of n.
 * @param {Number} ifNaN The value to use if isNaN(n).
-* @returns {Number} The limited number.
+* @returns The limited number.
+* @type Number
+* @memberOf utils
 */
 function limitRange(n, minN, maxN, ifNaN) {
     n = Number(n);

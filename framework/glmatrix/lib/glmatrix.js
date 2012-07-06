@@ -35,6 +35,13 @@
 /*global Float32Array */
 /*jslint laxbreak: true, white: false */
 
+/**
+* This package implements vec3 (3d vector) mat4 (4x4) along with various
+* matrix and vector operations.
+* @package glmatrix
+*/
+
+/*!*/
 var vec3 = exports.vec3 = {},
     mat3 = exports.mat3 = {},
     mat4 = exports.mat4 = {},

@@ -187,7 +187,7 @@ Theme.prototype.getSkin = function () {
 };
 
 /*
-* @constructor A skin defines remote styles (overrides themes from many
+* A skin defines remote styles (overrides themes from many
 * different components)
 * Even if we don't explicitely override a component in a skin, it
 * must be present because it may use dependencies defined in the current

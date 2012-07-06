@@ -1,5 +1,5 @@
 /**
-    event.js
+    events.js
     Copyright (C) 2012 Hugo Windisch
 
     Permission is hereby granted, free of charge, to any person obtaining a
@@ -22,6 +22,14 @@
 */
 /*jslint nomen: false */
 
+
+/**
+* This package implements a client side version of the EventEmitter class
+* of nodejs.
+* @package events
+*/
+
+
 /*
 * Creates or returns the _events member
 * @api private
@@ -35,7 +43,7 @@ function ensureEvents(ee) {
 
 /**
 * Constructs an event emitter.
-* @api private
+* @memberOf events
 */
 function EventEmitter() {
 }
@@ -44,7 +52,9 @@ function EventEmitter() {
 * Adds a listener to the emitter.
 * @param {String} event The name of the event.
 * @param {Function} listener The listener to add.
-* @returns {EventEmitter} this.
+* @returns this.
+* @type EventEmitter
+* @memberOf EventEmiter
 */
 EventEmitter.prototype.addListener = function (event, listener) {
     var events = ensureEvents(this),
@@ -74,7 +84,9 @@ EventEmitter.prototype.addListener = function (event, listener) {
 * Adds a listener to the emitter.
 * @param {String} event The name of the event.
 * @param {Function} listener The listener to add.
-* @returns {EventEmitter} this.
+* @returns this.
+* @type EventEmitter
+* @memberOf EventEmiter
 */
 EventEmitter.prototype.on = EventEmitter.prototype.addListener;
 
@@ -82,7 +94,9 @@ EventEmitter.prototype.on = EventEmitter.prototype.addListener;
 * Adds a one-shot listener to the emitter.
 * @param {String} event The name of the event.
 * @param {Function} listener The listener to add.
-* @returns {EventEmitter} this.
+* @returns this.
+* @type EventEmitter
+* @memberOf EventEmiter
 */
 EventEmitter.prototype.once = function (event, listener) {
     var that = this;
@@ -98,7 +112,9 @@ EventEmitter.prototype.once = function (event, listener) {
 * Removes a listener from the emitter.
 * @param {String} event The name of the event.
 * @param {Function} listener The listener to add.
-* @returns {EventEmitter} this.
+* @returns this.
+* @type EventEmitter
+* @memberOf EventEmiter
 */
 EventEmitter.prototype.removeListener = function (event, listener) {
     var events, i, n, handlers;
@@ -126,7 +142,9 @@ EventEmitter.prototype.removeListener = function (event, listener) {
 /**
 * Removes all listener for the specified event from the emitter.
 * @param {String} event The name of the event.
-* @returns {EventEmitter} this.
+* @returns this.
+* @type EventEmitter
+* @memberOf EventEmiter
 */
 EventEmitter.prototype.removeAllListeners = function (event) {
     if (this._events) {
@@ -139,7 +157,9 @@ EventEmitter.prototype.removeAllListeners = function (event) {
 * Sets the maximum number of listeners on this emitter
 * (not currently supported).
 * @param {Number} n The maximum number of listeners.
-* @returns {EventEmitter} this.
+* @returns this.
+* @type EventEmitter
+* @memberOf EventEmiter
 */
 EventEmitter.prototype.setMaxListeners = function (n) {
     this._maxListeners = n;
@@ -149,7 +169,9 @@ EventEmitter.prototype.setMaxListeners = function (n) {
 /**
 * Returns an array of listeners for the specified event.
 * @param {String} event The event for which we want to retrieve listeners.
-* @returns {Array} the listeners.
+* @returns the listeners.
+* @type Array
+* @memberOf EventEmiter
 */
 EventEmitter.prototype.listeners = function (event) {
     var events = ensureEvents(this),
@@ -168,7 +190,9 @@ EventEmitter.prototype.listeners = function (event) {
 * to be compatible with what node does, getListeners was coded to not inflate
 * _events when we query the listeners for events that have no listeners).
 * @param {String} event The event for which we want to retrieve listeners.
-* @returns {Array} the listeners.
+* @returns the listeners.
+* @type Array
+* @memberOf EventEmiter
 */
 EventEmitter.prototype.getListeners = function (event) {
     var ret;
@@ -188,7 +212,9 @@ EventEmitter.prototype.getListeners = function (event) {
 * Emits an event. The first parameter is the name of the event. Other (optional)
 * parameters are the event data.
 * @param {String} event The name of the event.
-* @returns {EventEmittter} this.
+* @returns this.
+* @type EventEmitter
+* @memberOf EventEmiter
 */
 EventEmitter.prototype.emit = function (event) {
     var events = this._events,

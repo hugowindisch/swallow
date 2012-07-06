@@ -22,7 +22,19 @@
 */
 
 /**
+* This package is an implementation of the CommonJS Unit Testing/1.0 test
+* module.
+*
+* @package test
+*/
+
+
+/**
 * Scans a module for test functions and runs them.
+* @param {Object} module The module to scan for test functions
+* @returns An array of all errors that were caught while running test functions.
+* @type Array
+* @memberOf test
 */
 exports.run = function (module) {
     var k, f, errors = [];
@@ -33,7 +45,9 @@ exports.run = function (module) {
             try {
                 f();
             } catch (e) {
+                errors.push(e);
             }
         }
     }
+    return errors;
 };
