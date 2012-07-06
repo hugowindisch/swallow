@@ -1,29 +1,18 @@
 SwallowApps is a graphic tool for creating applications and components
 that run in a browser.
 
-The tool lets you create components by placing other components graphically
-in an interactive editor.
+Features
+========
 
-The tool supports styling and skinning. Styling lets you choose the appearance
-of your content and use the same display attributes for many different
-elements. Skinning lets you override the styles of the components that
-you require (e.g. you don't like the color of the slider? you can override
-it inside your own component). Styling and skinning are interactive operations.
-
-Every component can be required and used by other components or simply used as
-a standalone application.
-
-Programmatically, a component is essentially a constructor exported by a
-CommonJS module. Many components can reside in a CommonJS package. Of course,
-it is possible to create non-graphic packages or share packages between
-the server and the client.
-
-Standard packages are provided for most of the standard stuff (http, urls,
-events, etc.) so that programming cilent components is as close as possible
-to programming server stuff in Node.js.
-
-Swallow is developped with Swallow. It runs in a browser. When you know
-how to use it, you know how to improve and extend it.
++ Graphic Editor for creating visual components
++ Small javascript framework based on CommonJS
++ Cient side apis (http, events, assert, etc) based on NodeJS or CommonJS
++ Styling and skinning of components using css3 features
++ Ultra efficient workflow: f5 'remakes' everything almost instantaneously
+* Integrated documentation generation
+* Integrated code validation
+* Integrated asynchronous testing
+* Built with itself (mastering the framework lets you modify all the tools)
 
 Before you start
 ================
@@ -123,32 +112,6 @@ will be regenerated for all packages, including yours.
 
 The following server side apis are supported in the client: assert, events,
 http, test and url.
-
-Goals Of The Project
-====================
-
-Here are the key ideas behind this project:
--------------------------------------------
-
-+ No matter how great HTML and CSS are, it should be possible to create
-most web content interactively and graphically (that's how newspapers,
-movies, reports, computer games etc. are designed, this should also
-apply to web pages), using interactive design tools.
-
-+ Using the same programming language on the client and on the server is a
-good idea.
-
-+ Using the same packaging and module loading mechanisms on the client and
-on the server (e.g. require()) is also a good idea.
-
-+ Using the same apis on the client and the server is a good idea.
-
-Here are the goals of the project
----------------------------------
-
-+ Create an interactive application creation tool for the web, based on
-Node.js and CommonJS, that can run inside a browser.
-
 
 What's Missing, what's Wrong, etc.
 ===================================
