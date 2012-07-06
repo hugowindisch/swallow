@@ -18,6 +18,15 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
+/**
+* This package implements the test viewer and is not currently
+* documented.
+*
+* @package testviewer
+* @skipdoc
+*/
+/*! */
+
 var visual = require('visual'),
     domvisual = require('domvisual'),
     http = require('http'),

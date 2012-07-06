@@ -28,6 +28,15 @@ var visual = require('visual'),
     forEach = utils.forEach,
     http = require('http');
 
+/**
+* This package implements portions of the editor and is not currently
+* documented.
+*
+* @package depmanager
+* @skipdoc
+*/
+
+
 /*
 The goal of this thing is to put the dynamic loading of dependencies in
 one place and to provide accessors for operations that spawn multiple

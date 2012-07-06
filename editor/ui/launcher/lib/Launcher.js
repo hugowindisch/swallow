@@ -20,6 +20,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 /*globals window */
+
+/**
+* This package implements the launcher and is not currently
+* documented.
+*
+* @package launcher
+* @skipdoc
+*/
+/*! */
+
 var visual = require('visual'),
     domvisual = require('domvisual'),
     http = require('http'),

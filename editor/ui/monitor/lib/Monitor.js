@@ -18,6 +18,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
+
+/**
+* This package implements the monitor and is not currently
+* documented.
+*
+* @package monitor
+* @skipdoc
+*/
+/*! */
+
 var visual = require('visual'),
     domvisual = require('domvisual'),
     group = require('/monitor/lib/groups').groups.Monitor;

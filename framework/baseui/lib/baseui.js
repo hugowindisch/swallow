@@ -22,11 +22,11 @@
 */
 
 /**
-* This package provides general purpose ui elements. In its current state it
-* is not properly documented (i.e. you can pretty much ignore the generated
-* documentation, it is useless)
+* This package provides general purpose ui elements. It needs documentation
+* but is not currently documented.
 *
 * @package baseui
+* @skipdoc
 */
 
 /*! */

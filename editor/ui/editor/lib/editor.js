@@ -21,6 +21,15 @@
 */
 /*globals window */
 // this is the top level editor
+
+/**
+* This package implements portions of the editor and is not currently
+* documented.
+*
+* @package editor
+* @skipdoc
+*/
+/*! */
 var visual = require('visual'),
     domvisual = require('domvisual'),
     baseui = require('baseui'),
