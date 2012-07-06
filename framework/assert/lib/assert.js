@@ -24,6 +24,16 @@
 /*jslint eqeqeq: false, nomen: false */
 var xp;
 
+/**
+* This package provides assertion testing functions. It follows the CommonJS
+* Unit Testing/1.0 specification and the NodeJS implementation.
+* @package assert
+*/
+
+
+/*!
+* Tests equality
+*/
 function equal(o1, o2) {
     var p;
     if (typeof(o1) === 'object' && typeof(o2) === 'object') {
@@ -62,7 +72,15 @@ function equal(o1, o2) {
 }
 
 /**
-* Constructs an assertion error.
+* Constructs an assertion error. The optional parameter has the following members:
+*
+* + message: the message to display
+* + actual: the actual value
+* + expected: the expected value
+* + operator: the operator (ex: ===)
+* @param {Object} o An optional object
+actual, expected, operator
+* @memberOf assert
 */
 function AssertionError(o) {
 
@@ -101,6 +119,11 @@ AssertionError.prototype.toString = function () {
 
 /**
 * Throws an assertion error (not in the commonJS spec but supported by nodeJS).
+* @param {any} actual The actual value
+* @param {any} expected The expected value
+* @param {String} message The message to display in the exeption
+* @param {String} operator The operator used to compare actual and expected
+* @memberOf assert
 */
 function fail(actual, expected, message, operator) {
     throw new AssertionError({
@@ -113,6 +136,9 @@ function fail(actual, expected, message, operator) {
 
 /**
 * Fails if the specified guard is not true (by throwing an AssertionError).
+* @param {any} guard The guard to test.
+* @param {String} msgOpt An optional string to use in case of error
+* @memberOf assert
 */
 function ok(guard, msgOpt) {
     if (!guard) {
@@ -126,7 +152,10 @@ xp.ok = ok;
 xp.fail = fail;
 
 /**
-* Tests equality.
+* Tests equality of two values, actual and expected.
+* @param {any} actual The actual value
+* @param {any} expected The expected value
+* @memberOf assert
 */
 xp.equal = function (actual, expected, msgOpt) {
     if ((actual == expected) === false) {
@@ -136,6 +165,7 @@ xp.equal = function (actual, expected, msgOpt) {
 
 /**
 * Tests inequality.
+* @memberOf assert
 */
 xp.notEqual = function (actual, expected, msgOpt) {
     if ((actual != expected) === false) {
@@ -145,6 +175,7 @@ xp.notEqual = function (actual, expected, msgOpt) {
 
 /**
 * Tests deep equality.
+* @memberOf assert
 */
 xp.deepEqual = function (actual, expected, msgOpt) {
     if (equal(actual, expected) === false) {
@@ -153,7 +184,8 @@ xp.deepEqual = function (actual, expected, msgOpt) {
 };
 
 /**
-* Tests deep ineequality.
+* Tests deep inequality.
+* @memberOf assert
 */
 xp.notDeepEqual = function (actual, expected, msgOpt) {
     if (equal(actual, expected)) {
@@ -163,6 +195,7 @@ xp.notDeepEqual = function (actual, expected, msgOpt) {
 
 /**
 * Tests strict equality.
+* @memberOf assert
 */
 xp.strictEqual = function (actual, expected, msgOpt) {
     if ((actual === expected) === false) {
@@ -172,6 +205,7 @@ xp.strictEqual = function (actual, expected, msgOpt) {
 
 /**
 * Tests strict inequality.
+* @memberOf assert
 */
 xp.notStrictEqual = function (actual, expected, msgOpt) {
     if ((actual !== expected) === false) {
@@ -181,6 +215,7 @@ xp.notStrictEqual = function (actual, expected, msgOpt) {
 
 /**
 * Checks that the specified function throws something.
+* @memberOf assert
 */
 xp.throws = function (block, errorOpt, msgOpt) {
     var err, to;
@@ -206,6 +241,7 @@ xp.throws = function (block, errorOpt, msgOpt) {
 
 /**
 * Tests if value is not a false value.
+* @memberOf assert
 */
 xp.ifError = function (v) {
     if (v) {
@@ -215,6 +251,7 @@ xp.ifError = function (v) {
 
 /**
 * Checks that the specified function does not throw anything.
+* @memberOf assert
 */
 xp.doesNotThrow = function (block, errorOpt, msgOpt) {
     var to;
