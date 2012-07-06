@@ -784,7 +784,7 @@ DOMVisual.prototype.updateDone = function () {
 };
 
 /*
-* getConfigurationSheet
+* @getConfigurationSheet
 * @api private
 */
 DOMVisual.prototype.getConfigurationSheet = function () {
@@ -914,7 +914,8 @@ DOMElement.prototype = new DOMVisual();
 
 /**
 * Returns the description of this element (to be displayed in the editor).
-* @returns {String} The textual descripton of this element.
+* @returns The textual descripton of this element.
+* @type String
 */
 DOMElement.prototype.getDescription = function () {
     return "A styled rectangle with optional text";
@@ -922,7 +923,8 @@ DOMElement.prototype.getDescription = function () {
 
 /**
 * Creates a preview for the editor
-* @returns {Visual} The visual to display as a preview.
+* @returns The visual to display as a preview.
+* @type Visual
 */
 DOMElement.createPreview = function () {
     return new (exports.DOMImg)({url: 'domvisual/img/elementpreview.png'});
@@ -931,7 +933,8 @@ DOMElement.createPreview = function () {
 /**
 * Returns the configuration sheet of this element (allowing the editor to
 * configure it in the panel)
-* @returns {Object} The configuration sheet for this element.
+* @returns The configuration sheet for this element.
+* @type Object
 */
 DOMElement.prototype.getConfigurationSheet = function () {
     return {
@@ -953,7 +956,8 @@ DOMImg.prototype = new DOMVisual();
 
 /**
 * Returns the description of this element (to be displayed in the editor).
-* @returns {String} The textual descripton of this element.
+* @returns The textual descripton of this element.
+* @type String
 */
 DOMImg.prototype.getDescription = function () {
     return "A png or jpeg image";
@@ -961,7 +965,8 @@ DOMImg.prototype.getDescription = function () {
 
 /**
 * Creates a preview for the editor
-* @returns {Visual} The visual to display as a preview.
+* @returns The visual to display as a preview.
+* @type Visual
 */
 DOMImg.createPreview = function () {
     return new (DOMImg)({url: 'domvisual/img/imagepreview.png'});
@@ -970,7 +975,8 @@ DOMImg.createPreview = function () {
 /**
 * Sets the url of the image to display.
 * @param {String} url The url of the image to display.
-* @returns {DOMImg} this.
+* @returns this.
+* @type DOMImg
 */
 DOMImg.prototype.setUrl = function (url) {
     this.element.src = url;
@@ -979,7 +985,8 @@ DOMImg.prototype.setUrl = function (url) {
 
 /**
 * Returns the dimensions of the inner image (real dimensions)
-* @returns {vec3} The dimensions of the image.
+* @returns The dimensions of the image.
+* @type vec3
 */
 DOMImg.prototype.getImageDimensions = function () {
     var element = this.element;
@@ -988,7 +995,8 @@ DOMImg.prototype.getImageDimensions = function () {
 
 /**
 * Returns the dimensions of the inner image (real dimensions)
-* @returns {vec3} The dimensions of the image.
+* @returns The dimensions of the image.
+* @type vec3
 */
 DOMImg.prototype.getNaturalDimensions = function () {
     return this.getImageDimensions();
@@ -997,7 +1005,8 @@ DOMImg.prototype.getNaturalDimensions = function () {
 /**
 * Returns the configuration sheet of this element (allowing the editor to
 * configure it in the panel)
-* @returns {Object} The configuration sheet for this element.
+* @returns The configuration sheet for this element.
+* @type Object
 */
 DOMImg.prototype.getConfigurationSheet = function () {
     return {
@@ -1019,7 +1028,8 @@ DOMVideo.prototype = new DOMVisual();
 
 /**
 * Returns the description of this element (to be displayed in the editor).
-* @returns {String} The textual descripton of this element.
+* @returns The textual descripton of this element.
+* @type String
 */
 DOMVideo.prototype.getDescription = function () {
     return "A movie";
@@ -1027,7 +1037,8 @@ DOMVideo.prototype.getDescription = function () {
 
 /**
 * Creates a preview for the editor
-* @returns {Visual} The visual to display as a preview.
+* @returns The visual to display as a preview.
+* @type Visual
 */
 DOMVideo.createPreview = function () {
     return new (DOMImg)({url: 'domvisual/img/videopreview.png'});
@@ -1036,7 +1047,8 @@ DOMVideo.createPreview = function () {
 /**
 * Sets the url of the video to display.
 * @param {String} url The url of the video to display.
-* @returns {DOMVideo} this.
+* @returns this.
+* @type DOMVideo
 */
 DOMVideo.prototype.setUrl = function (url) {
     this.element.src = url;
@@ -1046,7 +1058,8 @@ DOMVideo.prototype.setUrl = function (url) {
 /**
 * Returns the configuration sheet of this element (allowing the editor to
 * configure it in the panel)
-* @returns {Object} The configuration sheet for this element.
+* @returns The configuration sheet for this element.
+* @type Object
 */
 DOMVideo.prototype.getConfigurationSheet = function () {
     return {
@@ -1069,7 +1082,8 @@ DOMInput.prototype = new DOMVisual();
 /**
 * Sets the type of this input element.
 * @param {String} type The type of element.
-* @returns {DOMInput} this.
+* @returns this.
+* @type DOMinput
 */
 DOMInput.prototype.setType = function (type) {
     this.element.type = type;
@@ -1078,7 +1092,8 @@ DOMInput.prototype.setType = function (type) {
 
 /**
 * Returns the type of this input element.
-* @returns {String} The type of element.
+* @returns The type of element.
+* @type String
 */
 DOMInput.prototype.getType = function () {
     return this.element.type;
@@ -1087,7 +1102,8 @@ DOMInput.prototype.getType = function () {
 /**
 * Sets the text (value) of this input element.
 * @param {String} text The text.
-* @returns {DOMInput} this.
+* @returns this.
+* @type DOMInput
 */
 DOMInput.prototype.setText = function (text) {
     if (text === undefined || text === null) {
@@ -1102,13 +1118,15 @@ DOMInput.prototype.setText = function (text) {
 /**
 * Sets the text (value) of this input element.
 * @param {String} text The text.
-* @returns {DOMInput} this.
+* @returns this.
+* @type DOMInput
 */
 DOMInput.prototype.setValue = DOMInput.prototype.setText;
 
 /**
 * Returns the text (value) of this input element.
-* @returns {String} The text (or value) of this element
+* @returns The text (or value) of this element
+* @type String
 */
 DOMInput.prototype.getText = function () {
     return this.element.value;
@@ -1116,14 +1134,16 @@ DOMInput.prototype.getText = function () {
 
 /**
 * Returns the text (value) of this input element.
-* @returns {String} The text (or value) of this element
+* @returns The text (or value) of this element
+* @type String
 */
 DOMInput.prototype.getValue = DOMInput.prototype.getText;
 
 /**
 * Enables or disables this element.
 * @param {Boolean} enable true to enable false to disable (gray).
-* @returns {DOMInput} this.
+* @returns this.
+* @type String
 */
 DOMInput.prototype.enable = function (enable) {
     this.element.disabled = !enable;
@@ -1133,7 +1153,8 @@ DOMInput.prototype.enable = function (enable) {
 /**
 * Checks or unchecks this element.
 * @param {Boolean} state The check state.
-* @returns {DOMInput} this.
+* @returns this.
+* @type DOMInput
 */
 DOMInput.prototype.setChecked = function (state) {
     this.element.checked = state;
@@ -1142,7 +1163,8 @@ DOMInput.prototype.setChecked = function (state) {
 
 /**
 * Returns the check state of this element.
-* @returns {Boolean} state The check state.
+* @returns state The check state.
+* @type Boolean
 */
 DOMInput.prototype.getChecked = function (state) {
     return this.element.checked === true;
@@ -1151,7 +1173,8 @@ DOMInput.prototype.getChecked = function (state) {
 /**
 * Returns the configuration sheet of this element (allowing the editor to
 * configure it in the panel)
-* @returns {Object} The configuration sheet for this element.
+* @returns The configuration sheet for this element.
+* @type Object
 */
 DOMInput.prototype.getConfigurationSheet = function () {
     return { "class": {}, "style": {}, "text": {}, "type": {} };
@@ -1169,7 +1192,8 @@ DOMTextArea.prototype = new DOMVisual();
 /**
 * Sets the text or value.
 * @param {String} txt The text to set.
-* @returns {DOMTextArea} this.
+* @returns this.
+* @type DOMTextArea
 */
 DOMTextArea.prototype.setText = function (txt) {
     this.element.value = txt;
@@ -1179,13 +1203,15 @@ DOMTextArea.prototype.setText = function (txt) {
 /**
 * Sets the text or value.
 * @param {String} txt The text to set.
-* @returns {DOMTextArea} this.
+* @returns this.
+* @type DOMTextArea
 */
 DOMTextArea.prototype.setValue = DOMTextArea.prototype.setText;
 
 /**
 * Returns the text (value) of this text area element.
-* @returns {String} The text (or value) of this element
+* @returns The text (or value) of this element
+* @type String
 */
 DOMTextArea.prototype.getText = function (txt) {
     return this.element.value;
@@ -1193,14 +1219,16 @@ DOMTextArea.prototype.getText = function (txt) {
 
 /**
 * Returns the text (value) of this text area element.
-* @returns {String} The text (or value) of this element
+* @returns The text (or value) of this element
+* @type String
 */
 DOMTextArea.prototype.getValue = DOMTextArea.prototype.getText;
 
 /**
 * Sets the nubmer of rows.
 * @param {Number} r The number of rows.
-* @returns {DOMTextArea} this.
+* @returns this.
+* @type DOMTextArea
 */
 DOMTextArea.prototype.setRows = function (r) {
     this.element.rows = r;
@@ -1210,7 +1238,8 @@ DOMTextArea.prototype.setRows = function (r) {
 /**
 * Sets the nubmer of columns.
 * @param {Number} c The number of columns.
-* @returns {DOMTextArea} this.
+* @returns this.
+* @type DOMTextArea
 */
 DOMTextArea.prototype.setCols = function (c) {
     this.element.cols = c;
@@ -1220,7 +1249,8 @@ DOMTextArea.prototype.setCols = function (c) {
 /**
 * Returns the configuration sheet of this element (allowing the editor to
 * configure it in the panel)
-* @returns {Object} The configuration sheet for this element.
+* @returns The configuration sheet for this element.
+* @type Object
 */
 DOMTextArea.prototype.getConfigurationSheet = function () {
     return { "text": {}, "rows": {}, "cols": {} };
@@ -1240,7 +1270,8 @@ DOMSelect.prototype = new DOMVisual();
 /**
 * Sets the choices of this combo box.
 * @param {Object} options The choices fro the combo box.
-* @returns {DOMSelect} this.
+* @returns this.
+* @type DOMSelect
 */
 DOMSelect.prototype.setOptions = function (options) {
     // FIXME: we could support object and array for options
@@ -1257,7 +1288,8 @@ DOMSelect.prototype.setOptions = function (options) {
 /**
 * Sets the selection index of the combo box.
 * @param {Number} n The selection index.
-* @returns {DOMSelect} this.
+* @returns this.
+* @type DOMSelect
 */
 DOMSelect.prototype.setSelectedIndex = function (n) {
     this.element.selectedIndex = n;
@@ -1266,7 +1298,8 @@ DOMSelect.prototype.setSelectedIndex = function (n) {
 
 /**
 * Returns the selection index of the combo box.
-* @returns {Number} The selection index.
+* @returns The selection index.
+* @type Number
 */
 DOMSelect.prototype.getSelectedIndex = function () {
     return this.element.selectedIndex;
@@ -1275,7 +1308,8 @@ DOMSelect.prototype.getSelectedIndex = function () {
 /**
 * Sets the selected option of the combo box.
 * @param {String} o The selected option.
-* @returns {DOMSelect} this.
+* @returns this.
+* @type DOMSelect
 */
 DOMSelect.prototype.setSelectedOption = function (o) {
     var index = null;
@@ -1290,7 +1324,8 @@ DOMSelect.prototype.setSelectedOption = function (o) {
 
 /**
 * Returns the selected option of the combo box.
-* @returns {String} The selected option.
+* @returns The selected option.
+* @type String
 */
 DOMSelect.prototype.getSelectedOption = function () {
     var index = this.getSelectedIndex(),
@@ -1304,7 +1339,8 @@ DOMSelect.prototype.getSelectedOption = function () {
 /**
 * Enables or disables the combo box.
 * @param {Boolean} enable true to enable the combo box.
-* @returns {DOMSelect} this.
+* @returns this.
+* @type DOMSelect
 */
 DOMSelect.prototype.enable = function (enable) {
     this.element.disabled = !enable;
@@ -1314,7 +1350,8 @@ DOMSelect.prototype.enable = function (enable) {
 /**
 * Returns the configuration sheet of this element (allowing the editor to
 * configure it in the panel)
-* @returns {Object} The configuration sheet for this element.
+* @returns The configuration sheet for this element.
+* @type Object
 */
 DOMSelect.prototype.getConfigurationSheet = function () {
     return { "options": {} };
@@ -1333,7 +1370,8 @@ DOMCanvas.prototype = new DOMVisual();
 /**
 * Sets the width of the canvas.
 * @param {Number} w The width
-* @returns {DOMCanvas} this.
+* @returns this.
+* @type DOMCanvas
 */
 DOMCanvas.prototype.setWidth = function (w) {
     this.element.setAttribute('width', w);
@@ -1343,7 +1381,8 @@ DOMCanvas.prototype.setWidth = function (w) {
 /**
 * Sets the height of the canvas.
 * @param {Number} w The height
-* @returns {DOMCanvas} this.
+* @returns this.
+* @type DOMCanvas
 */
 DOMCanvas.prototype.setHeight = function (h) {
     this.element.setAttribute('height', h);
@@ -1352,7 +1391,8 @@ DOMCanvas.prototype.setHeight = function (h) {
 
 /**
 * Returns the 2d context of the canvas.
-* @returns {Object} The 2d context.
+* @returns The 2d context.
+* @type Object
 */
 DOMCanvas.prototype.getContext2D = function () {
     // return the 2d context
@@ -1361,7 +1401,8 @@ DOMCanvas.prototype.getContext2D = function () {
 
 /**
 * Returns the data url of the canvas.
-* @returns {String} The data url.
+* @returns The data url.
+* @type String
 */
 DOMCanvas.prototype.toDataURL = function () {
     return this.element.toDataURL.apply(this.element, arguments);
@@ -1370,7 +1411,8 @@ DOMCanvas.prototype.toDataURL = function () {
 /**
 * Returns the configuration sheet of this element (allowing the editor to
 * configure it in the panel)
-* @returns {Object} The configuration sheet for this element.
+* @returns The configuration sheet for this element.
+* @type Object
 */
 DOMCanvas.prototype.getConfigurationSheet = function () {
     return { "width": {}, "height": {} };
