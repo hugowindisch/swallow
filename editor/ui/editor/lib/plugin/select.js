@@ -1194,7 +1194,7 @@ function setupHelpMenu(editor) {
         function () {
             var Tutorial = require('./tutorial').Tutorial,
                 nt = new Tutorial({
-                    url: "http://www.youtube.com/embed/SXQEPokWYog"
+                    code: "m0os24I4PUc"
                 });
             nt.runFullScreen();
         }

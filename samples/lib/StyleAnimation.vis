@@ -1,0 +1,296 @@
+{
+    "description": "An animation example using styles",
+    "privateVisual": true,
+    "privateTheme": true,
+    "dimensions": [
+        600,
+        400,
+        1
+    ],
+    "gridSize": 8,
+    "children": {
+        "pos": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "pos",
+                "innerText": "",
+                "style": "style"
+            }
+        },
+        "pos0": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "pos0",
+                "innerText": "",
+                "style": "style0"
+            }
+        },
+        "pos1": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "pos1",
+                "innerText": "",
+                "style": "style1"
+            }
+        }
+    },
+    "positions": {
+        "pos": {
+            "matrix": {
+                "0": 128,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 120,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 72,
+                "13": 40,
+                "14": 3,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 0,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "pos0": {
+            "matrix": {
+                "0": 208,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 184,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 336,
+                "13": 48,
+                "14": 2,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 1,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "pos1": {
+            "matrix": {
+                "0": 192,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 152,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 80,
+                "13": 136,
+                "14": 3,
+                "15": 1,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16,
+                "byteLength": 64,
+                "byteOffset": 0
+            },
+            "order": 2,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        }
+    },
+    "theme": {
+        "style": {
+            "jsData": {
+                "backgroundColor": {
+                    "r": 9.5625,
+                    "g": 108.375,
+                    "b": 0,
+                    "a": 1
+                }
+            }
+        },
+        "style0": {
+            "jsData": {
+                "backgroundColor": {
+                    "r": 103.59375,
+                    "g": 194.4375,
+                    "b": 0,
+                    "a": 1
+                },
+                "borderTopLeftRadius": 66.66666666666666,
+                "borderTopRightRadius": 66.66666666666666,
+                "borderBottomLeftRadius": 66.66666666666666,
+                "borderBottomRightRadius": 66.66666666666666,
+                "borderTopStyle": "solid",
+                "borderTopColor": {
+                    "r": 156.1875,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "borderLeftStyle": "solid",
+                "borderLeftColor": {
+                    "r": 156.1875,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "borderRightStyle": "solid",
+                "borderRightColor": {
+                    "r": 156.1875,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "borderBottomStyle": "solid",
+                "borderBottomColor": {
+                    "r": 156.1875,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "borderLeftWidth": 7.833333333333334,
+                "borderRightWidth": 7.833333333333334,
+                "borderBottomWidth": 7.833333333333334,
+                "borderTopWidth": 7.833333333333334,
+                "boxShadow": {
+                    "offsetX": -44.44444444444444,
+                    "offsetY": -18.888888888888886,
+                    "blurRadius": 91.66666666666666,
+                    "spreadRadius": 0,
+                    "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 1
+                    }
+                }
+            }
+        },
+        "style1": {
+            "jsData": {
+                "backgroundColor": {
+                    "r": 87.65625,
+                    "g": 100.40625,
+                    "b": 0,
+                    "a": 0.41875
+                },
+                "borderBottomStyle": "dashed",
+                "borderBottomWidth": 10.666666666666668,
+                "borderTopStyle": "dotted",
+                "borderTopWidth": 4.666666666666667,
+                "borderTopColor": {
+                    "r": 172.125,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "boxShadow": {
+                    "offsetX": 96.66666666666666,
+                    "offsetY": 73.33333333333334,
+                    "blurRadius": 100,
+                    "spreadRadius": 39.44444444444444,
+                    "color": {
+                        "r": 94.03125,
+                        "g": 196.03125,
+                        "b": 0,
+                        "a": 0.6
+                    }
+                }
+            }
+        },
+        "style2": {
+            "jsData": {
+                "borderTopRightRadius": 71.66666666666667
+            },
+            "basedOn": [
+                {
+                    "factory": "testcontent",
+                    "type": "StyleAnimation",
+                    "style": "style"
+                }
+            ]
+        }
+    },
+    "overflowX": "visible",
+    "overflowY": "visible",
+    "privateStyles": false,
+    "skin": {
+        "baseui": {
+            "Theme": {
+                "control": {
+                    "jsData": {
+                        "backgroundColor": {
+                            "r": 184.875,
+                            "g": 145.03125,
+                            "b": 0,
+                            "a": 1
+                        },
+                        "borderTopLeftRadius": 20,
+                        "borderTopRightRadius": 20,
+                        "borderBottomLeftRadius": 20,
+                        "borderBottomRightRadius": 20,
+                        "boxShadow": {
+                            "offsetX": 0,
+                            "offsetY": 0,
+                            "blurRadius": 54.44444444444444,
+                            "spreadRadius": 0,
+                            "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0,
+                                "a": 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -192,6 +192,7 @@ exports.run = function () {
     options.srcFolder = options.srcFolder || [
         path.join(swallowroot, 'framework'),
         path.join(swallowroot, 'editor', 'ui'),
+        path.join(swallowroot, 'samples'),
         packages
     ];
     // Make sure we have the directory structure that we need before

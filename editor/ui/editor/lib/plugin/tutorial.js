@@ -92,11 +92,11 @@ var visual = require('visual'),
         }
     };
 
-
 function Tutorial(config) {
     var that = this,
-        inner = '<object width="600" height="450"><param name="movie" value="http://www.youtube.com/v/SXQEPokWYog?version=3&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/SXQEPokWYog?version=3&amp;hl=en_US" type="application/x-shockwave-flash" width="600" height="450" allowscriptaccess="always" allowfullscreen="true"></embed></object>';
+        inner;
     domvisual.DOMElement.call(this, config, group);
+    inner = '<object width="600" height="450"><param name="movie" value="http://www.youtube.com/v/' + this.code + '?version=3&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/' + this.code + '?version=3&amp;hl=en_US" type="application/x-shockwave-flash" width="600" height="450" allowscriptaccess="always" allowfullscreen="true"></embed></object>';
     this.getChild('video').addHtmlChild(
         'div',
         inner
@@ -130,8 +130,8 @@ Tutorial.prototype.getConfigurationSheet = function () {
     return {};
 };
 
-Tutorial.prototype.setUrl = function (url) {
-    this.url = url;
+Tutorial.prototype.setCode = function (code) {
+    this.code = code;
     return this;
 };
 

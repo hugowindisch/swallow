@@ -1,0 +1,149 @@
+{
+    "description": "A module that uses components",
+    "private": true,
+    "privateTheme": true,
+    "dimensions": [
+        600,
+        400,
+        1
+    ],
+    "gridSize": 8,
+    "children": {
+        "pos": {
+            "factory": "testcontent",
+            "type": "PositionAnimation",
+            "config": {
+                "position": "pos"
+            }
+        },
+        "pos1": {
+            "factory": "baseui",
+            "type": "Slider",
+            "config": {
+                "position": "pos1",
+                "minValue": "0",
+                "maxValue": "100",
+                "value": "0"
+            }
+        },
+        "pos0": {
+            "factory": "testcontent",
+            "type": "InnerModule",
+            "config": {
+                "position": "pos0"
+            }
+        }
+    },
+    "positions": {
+        "pos": {
+            "matrix": {
+                "0": 224.00001525878906,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 160,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 31.999984741210938,
+                "13": 104,
+                "14": 5,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "length": 16,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 0,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "pos0": {
+            "matrix": {
+                "0": 248,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 184,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 328,
+                "13": 104,
+                "14": 4,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "length": 16,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 1,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "pos1": {
+            "matrix": {
+                "0": 520,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 24,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 48,
+                "13": 352,
+                "14": 7,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "length": 16,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 2,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        }
+    },
+    "theme": {},
+    "overflowX": "visible",
+    "overflowY": "visible",
+    "privateVisual": false,
+    "privateStyles": false
+}

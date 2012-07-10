@@ -1,0 +1,254 @@
+{
+    "description": "An animation example using empty positions.",
+    "privateVisual": true,
+    "privateTheme": true,
+    "dimensions": [
+        600,
+        400,
+        1
+    ],
+    "gridSize": 8,
+    "children": {
+        "pos0": {
+            "factory": "domvisual",
+            "type": "DOMImg",
+            "config": {
+                "position": "pos0",
+                "url": "testcontent/lib/campo.jpg"
+            }
+        },
+        "pos": {
+            "factory": "domvisual",
+            "type": "DOMImg",
+            "config": {
+                "position": "pos",
+                "url": "testcontent/lib/cooking.jpg"
+            }
+        },
+        "pos1": {
+            "factory": "domvisual",
+            "type": "DOMImg",
+            "config": {
+                "position": "pos1",
+                "url": "testcontent/lib/tree.jpg"
+            }
+        }
+    },
+    "positions": {
+        "pos": {
+            "matrix": {
+                "0": 159.66744995117188,
+                "1": -133.30531311035156,
+                "2": 0,
+                "3": 0,
+                "4": 107.669677734375,
+                "5": 128.96217346191406,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 12.662858963012695,
+                "13": 135.037841796875,
+                "14": 2,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 0,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "pos0": {
+            "matrix": {
+                "0": 168.07305908203125,
+                "1": 148.0791778564453,
+                "2": 0,
+                "3": 0,
+                "4": -116.34793090820312,
+                "5": 132.05740356445312,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 404.3479309082031,
+                "13": -0.1365966796875,
+                "14": 2,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 1,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "pos1": {
+            "matrix": {
+                "0": -223.9367218017578,
+                "1": 60.632850646972656,
+                "2": 0,
+                "3": 0,
+                "4": -52.26969909667969,
+                "5": -193.04888916015625,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 433.3160705566406,
+                "13": 315.8031005859375,
+                "14": 2,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 2,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            },
+            "opacity": 0.7478260869565218
+        },
+        "pos2": {
+            "matrix": {
+                "0": 88.46400451660156,
+                "1": 0.4340536296367645,
+                "2": 0,
+                "3": 0,
+                "4": -0.34518498182296753,
+                "5": 72.56881713867188,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 16.345184326171875,
+                "13": 6.99713134765625,
+                "14": 9,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 3,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "pos3": {
+            "matrix": {
+                "0": 79.91744232177734,
+                "1": 0.12076345086097717,
+                "2": 0,
+                "3": 0,
+                "4": -0.08255357295274734,
+                "5": 72.17357635498047,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 504.0825500488281,
+                "13": 8,
+                "14": 11,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 4,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "pos4": {
+            "matrix": {
+                "0": 86.82940673828125,
+                "1": -1.4253965616226196,
+                "2": 0,
+                "3": 0,
+                "4": 1.1705889701843262,
+                "5": 78.5746078491211,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 240,
+                "13": 1.4253921508789062,
+                "14": 9,
+                "15": 1,
+                "byteLength": 64,
+                "byteOffset": 0,
+                "buffer": {
+                    "byteLength": 64
+                },
+                "length": 16
+            },
+            "order": 5,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        }
+    },
+    "theme": {},
+    "overflowX": "visible",
+    "overflowY": "visible",
+    "privateStyles": false
+}
