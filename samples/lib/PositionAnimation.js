@@ -5,7 +5,7 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
     forEachProperty = utils.forEachProperty,
-    group = require('/testcontent/lib/groups').groups.PositionAnimation;
+    group = require('/samples/lib/groups').groups.PositionAnimation;
 
 function PositionAnimation(config) {
     // call the baseclass
@@ -30,7 +30,7 @@ function PositionAnimation(config) {
     // hook the transition function to some handlers
     this.on('keydown', transition).on('click', transition);
 }
-PositionAnimation.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'testcontent', 'PositionAnimation');
+PositionAnimation.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'samples', 'PositionAnimation');
 PositionAnimation.prototype.getConfigurationSheet = function () {
     return {  };
 };

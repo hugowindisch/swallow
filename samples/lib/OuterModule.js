@@ -3,12 +3,12 @@
 */
 var visual = require('visual'),
     domvisual = require('domvisual'),
-    group = require('/testcontent/lib/groups').groups.OuterModule;
+    group = require('/samples/lib/groups').groups.OuterModule;
 
 function OuterModule(config) {
     domvisual.DOMElement.call(this, config, group);
 }
-OuterModule.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'testcontent', 'OuterModule');
+OuterModule.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'samples', 'OuterModule');
 OuterModule.prototype.getConfigurationSheet = function () {
     return {  };
 };

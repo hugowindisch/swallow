@@ -10,7 +10,7 @@
     "gridSize": 8,
     "children": {
         "pos": {
-            "factory": "testcontent",
+            "factory": "samples",
             "type": "PositionAnimation",
             "config": {
                 "position": "pos"
@@ -27,7 +27,7 @@
             }
         },
         "pos0": {
-            "factory": "testcontent",
+            "factory": "samples",
             "type": "InnerModule",
             "config": {
                 "position": "pos0"

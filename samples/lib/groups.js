@@ -354,7 +354,7 @@ exports.groups = {
                 "type": "ImageViewer",
                 "config": {
                     "position": "pos5",
-                    "url": "testcontent/lib/campo.jpg"
+                    "url": "samples/lib/campo.jpg"
                 }
             },
             "pos1": {
@@ -362,7 +362,7 @@ exports.groups = {
                 "type": "ImageViewer",
                 "config": {
                     "position": "pos1",
-                    "url": "testcontent/lib/field.jpg"
+                    "url": "samples/lib/field.jpg"
                 }
             },
             "pos2": {
@@ -370,7 +370,7 @@ exports.groups = {
                 "type": "ImageViewer",
                 "config": {
                     "position": "pos2",
-                    "url": "testcontent/lib/lavande.jpg"
+                    "url": "samples/lib/lavande.jpg"
                 }
             },
             "pos3": {
@@ -378,7 +378,7 @@ exports.groups = {
                 "type": "ImageViewer",
                 "config": {
                     "position": "pos3",
-                    "url": "testcontent/lib/tree.jpg"
+                    "url": "samples/lib/tree.jpg"
                 }
             },
             "pos4": {
@@ -386,7 +386,7 @@ exports.groups = {
                 "type": "ImageViewer",
                 "config": {
                     "position": "pos4",
-                    "url": "testcontent/lib/cooking.jpg"
+                    "url": "samples/lib/cooking.jpg"
                 }
             },
             "pos6": {
@@ -755,7 +755,7 @@ exports.groups = {
                 },
                 "basedOn": [
                     {
-                        "factory": "testcontent",
+                        "factory": "samples",
                         "type": "StyleAnimation",
                         "style": "style"
                     }
@@ -911,7 +911,7 @@ exports.groups = {
         "gridSize": 8,
         "children": {
             "pos": {
-                "factory": "testcontent",
+                "factory": "samples",
                 "type": "PositionAnimation",
                 "config": {
                     "position": "pos"
@@ -928,7 +928,7 @@ exports.groups = {
                 }
             },
             "pos0": {
-                "factory": "testcontent",
+                "factory": "samples",
                 "type": "InnerModule",
                 "config": {
                     "position": "pos0"
@@ -1064,7 +1064,7 @@ exports.groups = {
                 "type": "DOMImg",
                 "config": {
                     "position": "pos0",
-                    "url": "testcontent/lib/campo.jpg"
+                    "url": "samples/lib/campo.jpg"
                 }
             },
             "pos": {
@@ -1072,7 +1072,7 @@ exports.groups = {
                 "type": "DOMImg",
                 "config": {
                     "position": "pos",
-                    "url": "testcontent/lib/cooking.jpg"
+                    "url": "samples/lib/cooking.jpg"
                 }
             },
             "pos1": {
@@ -1080,7 +1080,7 @@ exports.groups = {
                 "type": "DOMImg",
                 "config": {
                     "position": "pos1",
-                    "url": "testcontent/lib/tree.jpg"
+                    "url": "samples/lib/tree.jpg"
                 }
             }
         },
@@ -1308,14 +1308,14 @@ exports.groups = {
     Exports all visual constructors in the specified module.
 */
 
-exports.Portfolio = require('/testcontent/lib/Portfolio').Portfolio;
+exports.Portfolio = require('/samples/lib/Portfolio').Portfolio;
 
-exports.StyleAnimation = require('/testcontent/lib/StyleAnimation').StyleAnimation;
+exports.StyleAnimation = require('/samples/lib/StyleAnimation').StyleAnimation;
 
-exports.InnerModule = require('/testcontent/lib/InnerModule').InnerModule;
+exports.InnerModule = require('/samples/lib/InnerModule').InnerModule;
 
-exports.OuterModule = require('/testcontent/lib/OuterModule').OuterModule;
+exports.OuterModule = require('/samples/lib/OuterModule').OuterModule;
 
-exports.PositionAnimation = require('/testcontent/lib/PositionAnimation').PositionAnimation;
+exports.PositionAnimation = require('/samples/lib/PositionAnimation').PositionAnimation;
 
-exports.Portfolio = require('/testcontent/lib/Portfolio').Portfolio;
+exports.Portfolio = require('/samples/lib/Portfolio').Portfolio;

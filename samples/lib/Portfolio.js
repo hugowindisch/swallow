@@ -44,6 +44,6 @@ function Portfolio(config) {
         }
     );
 }
-Portfolio.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'testcontent', 'Portfolio');
+Portfolio.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'samples', 'Portfolio');
 
 exports.Portfolio = Portfolio;

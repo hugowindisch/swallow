@@ -5,7 +5,7 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
     forEachProperty = utils.forEachProperty,
-    group = require('/testcontent/lib/groups').groups.StyleAnimation;
+    group = require('/samples/lib/groups').groups.StyleAnimation;
 
 function StyleAnimation(config) {
     // call the baseclass
@@ -24,7 +24,7 @@ function StyleAnimation(config) {
     // hook the transition function to some handlers
     this.on('keydown', transition).on('click', transition);
 }
-StyleAnimation.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'testcontent', 'StyleAnimation');
+StyleAnimation.prototype = visual.inheritVisual(domvisual.DOMElement, group, 'samples', 'StyleAnimation');
 StyleAnimation.prototype.getConfigurationSheet = function () {
     return {  };
 };

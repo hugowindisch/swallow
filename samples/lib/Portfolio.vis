@@ -353,7 +353,7 @@
             "type": "ImageViewer",
             "config": {
                 "position": "pos5",
-                "url": "testcontent/lib/campo.jpg"
+                "url": "samples/lib/campo.jpg"
             }
         },
         "pos1": {
@@ -361,7 +361,7 @@
             "type": "ImageViewer",
             "config": {
                 "position": "pos1",
-                "url": "testcontent/lib/field.jpg"
+                "url": "samples/lib/field.jpg"
             }
         },
         "pos2": {
@@ -369,7 +369,7 @@
             "type": "ImageViewer",
             "config": {
                 "position": "pos2",
-                "url": "testcontent/lib/lavande.jpg"
+                "url": "samples/lib/lavande.jpg"
             }
         },
         "pos3": {
@@ -377,7 +377,7 @@
             "type": "ImageViewer",
             "config": {
                 "position": "pos3",
-                "url": "testcontent/lib/tree.jpg"
+                "url": "samples/lib/tree.jpg"
             }
         },
         "pos4": {
@@ -385,7 +385,7 @@
             "type": "ImageViewer",
             "config": {
                 "position": "pos4",
-                "url": "testcontent/lib/cooking.jpg"
+                "url": "samples/lib/cooking.jpg"
             }
         },
         "pos6": {

@@ -14,7 +14,7 @@
             "type": "DOMImg",
             "config": {
                 "position": "pos0",
-                "url": "testcontent/lib/campo.jpg"
+                "url": "samples/lib/campo.jpg"
             }
         },
         "pos": {
@@ -22,7 +22,7 @@
             "type": "DOMImg",
             "config": {
                 "position": "pos",
-                "url": "testcontent/lib/cooking.jpg"
+                "url": "samples/lib/cooking.jpg"
             }
         },
         "pos1": {
@@ -30,7 +30,7 @@
             "type": "DOMImg",
             "config": {
                 "position": "pos1",
-                "url": "testcontent/lib/tree.jpg"
+                "url": "samples/lib/tree.jpg"
             }
         }
     },

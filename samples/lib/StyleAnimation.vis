@@ -251,7 +251,7 @@
             },
             "basedOn": [
                 {
-                    "factory": "testcontent",
+                    "factory": "samples",
                     "type": "StyleAnimation",
                     "style": "style"
                 }
