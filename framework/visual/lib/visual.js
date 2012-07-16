@@ -33,6 +33,7 @@ var utils = require('utils'),
     defaultSkin = themes.defaultSkin,
     isString = utils.isString,
     isObject = utils.isObject,
+    isNumber = utils.isNumber,
     applyLayout = position.applyLayout,
     setDirty = dirty.setDirty,
     setChildrenDirty = dirty.setChildrenDirty,
@@ -567,8 +568,10 @@ Visual.prototype.addChild = function (child, name, atOptionalOrder) {
 };
 
 /**
-* Resolves a child name.
-* @api private
+* Resolves a child name to a visual or a child depth to a visual. If a visual is provided, validates that it is a child of this container. This is similar to getChild but accepts more input types.
+* @param {String|Number|Object} child
+* @returns the resolved visual
+* @type Visual
 */
 Visual.prototype.resolveChild = function (child) {
     // allow the use of a name
@@ -577,10 +580,14 @@ Visual.prototype.resolveChild = function (child) {
         if (!child) {
             throw new Error('Unavailable child');
         }
-    } else {
+    } else if (isNumber(child)) {
+        child = this.getChildAtOrder(child);
+    } else if (isObject(child)) {
         if (child.parent !== this) {
             throw new Error('Invalid child');
         }
+    } else {
+        throw new Error("Unexpected child type " + (typeof child));
     }
     return child;
 };
@@ -710,52 +717,12 @@ Visual.prototype.remove = function () {
 * @type Visual
 */
 Visual.prototype.swapOrder = function (d1, d2) {
-    var o1 = utils.isNumber(d1) ? this.getChildAtOrder(d1) : this.children[d1],
-        o2 = utils.isNumber(d2) ? this.getChildAtOrder(d2) : this.children[d2],
+    var o1 = this.resolveChild(d1),
+        o2 = this.resolveChild(d2),
         d = o1.order;
     o1.order = o2.order;
     o2.order = d;
     setDirty(this, 'childrenOrder');
-    return this;
-};
-
-/**
-* Not currently supported.
-* @returns this
-* @type Visual
-* @api private
-*/
-Visual.prototype.increaseOrder = function (d) {
-    return this;
-};
-
-/**
-* Not currently supported.
-* @returns this
-* @type Visual
-* @api private
-*/
-Visual.prototype.decreaseOrder = function (d) {
-    return this;
-};
-
-/**
-* Not currently supported.
-* @returns this
-* @type Visual
-* @api private
-*/
-Visual.prototype.toMaxOrder = function (d) {
-    return this;
-};
-
-/**
-* Not currently supported.
-* @returns this
-* @type Visual
-* @api private
-*/
-Visual.prototype.toMinOrder = function (d) {
     return this;
 };
 
@@ -772,16 +739,16 @@ Visual.prototype.orderBefore = function (toMove, ref) {
     }
     var refOrder = 0,
         children = this.children,
-        cToMove = children[toMove],
+        cToMove = this.resolveChild(toMove),
         rc;
     if (cToMove) {
         if (ref && children) {
-            rc = children[ref];
+            rc = this.resolveChild(ref);
             if (rc) {
                 refOrder = rc.order;
             }
         }
-        forEachProperty(this.children, function (c) {
+        forEachProperty(children, function (c) {
             if (c.order >= refOrder) {
                 c.order += 1;
             }
@@ -805,16 +772,16 @@ Visual.prototype.orderAfter = function (toMove, ref) {
     }
     var refOrder = 0,
         children = this.children,
-        cToMove = children[toMove],
+        cToMove = this.resolveChild(toMove),
         rc;
     if (cToMove) {
         if (ref && children) {
-            rc = children[ref];
+            rc = this.resolveChild(ref);
             if (rc) {
                 refOrder = rc.order + 1;
             }
         }
-        forEachProperty(this.children, function (c, name) {
+        forEachProperty(children, function (c, name) {
             if (c.order >= refOrder) {
                 c.order += 1;
             }
