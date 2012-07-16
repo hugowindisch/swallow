@@ -1,6 +1,9 @@
 SwallowApps is a graphic tool for creating applications and components
 that run in a browser.
 
+#Intro
+http://www.youtube.com/watch?v=m0os24I4PUc
+
 #Features
 + Graphic Editor for creating visual components
 + Small javascript framework based on CommonJS
