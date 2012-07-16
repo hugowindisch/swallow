@@ -1,11 +1,10 @@
 # What is swallow
-The ever increasing number of graphic features (transformation matrices, shadows, gradients, backgrounds, animation effects, filters, masks, canvas, etc.) supported by modern browsers is difficult to fully leverage without graphic design tools. For most people design is a task that must be performed graphically and interactively: we want to see what we do and get instant feedback whenever we add, remove or change something. Moreover we don't necessarily want to learn programming languages and file formats in order to be able to create user interfaces.
+The number of graphic features (transformation matrices, shadows, gradients, backgrounds, animation effects, filters, masks, canvas, etc.) supported by modern browsers increases everyday. But using these features is difficult without an interactive tools: for most people design is a task that must be performed graphically and interactively, we want to see what we do and get instant feedback whenever we add, remove or change something. Moreover we don't necessarily want to learn programming languages and file formats in order to be able to create user interfaces.
 
-Swallow is an open source graphic environment for creating HTML5 applications. Its main goal is to separate graphic design from programming so that designers can work visually on visual elements and programmers can work with programming tools on code.
+Swallow is an open source graphic environment for creating HTML5 applications visually. Its main goal is to separate graphic design from programming so that designers can work visually on visual elements and programmers can work with programming tools on code.
 
 ## The Editor
-The editor is a visual tool that is documented visual with youtube
-videos. These video are available in the Help menu of the editor.
+The editor is a visual tool that is documented visual with youtube videos. These video are available in the Help menu of the editor.
 
 ## The Framework
 The framework consists of:
@@ -52,13 +51,12 @@ This module looks like this:
     exports.MyClass} = MyClass;
 ```
 
-It can be found in your woriking directory under the work/packages/youpackage/lib
-directory.
+It can be found in your working directory under the work/packages/youpackage/lib directory.
 
-Note: Instanciating this class will create an instance of your visual element.
+Note: Instanciating this class will create an instance of your visual element. This will be discussed in greater detail a little bit later.
 
 ##I have created something with the editor, what's next: Event Handlers
-The next step is to add event handlers. As soon as your baseclass has been called, you can add event handlers to your class. Your class inherits from an implementation of the EventEmitter class defined in NodeJS. This gives you access to the following methods:
+The next step is to add event handlers. As soon as your base class has been called, you can add event handlers to your class. Your class inherits from an implementation of the EventEmitter class defined in NodeJS. This gives you access to the following methods: on, once, addListener, removeListener, emit etc.
 
 ```javascript
         // In your constructor, the constructor of the baseclass is called:
@@ -79,7 +77,6 @@ TODO: Document the liftetime management of handlers
 
 ##Dealing with Mouse events (and positional events)
 SwallowApps lets you compute the position of mouse events relative to your component (in HTML, mouse events are positioned relatively to the page). This can be useful if you want to use the mouse to position a visual element inside another visual element (just like swallow's visual editor does).
-
 
 ```javascript
         this.getChild('myChild').on('mousemove', function (evt) {
@@ -103,6 +100,8 @@ The following code will move a child name 'pos' to a position named 'offscreen'.
 
 Note: A complete example of this can be found in samples/lib/PositionAnimation.js (and you can run the PositionAnimation sample).
 
+Note: When the size of a container changes, its positions are recomputed according to resizing rules defined in the editor. The layout is dynamic and postion names define the various anchor points available inside a given layout.
+
 TODO: Add a video showing how to add postions and children and how to rename them.
 TODO: Show how animation is supported.
 
@@ -120,6 +119,15 @@ TODO: Show how animation is supported
 ##Playing with Depth
 You can change the visual ordering of visual elements: which one is on top, which one is hidden by others.
 
+```javascript
+// this will return the topmost child
+myContainer.getChildAtOrder(0);
+
+// this will swap the order of two children
+myContainer.swapOrder(0, 2);
+myContainer.orderBefore('childToMove', 'refChild');
+myContainer.orderAfter('childToMove', 'refChild');
+```
 
 ##Setting other attributes
 Other than the position and style of elements you can also set the following attributes:
