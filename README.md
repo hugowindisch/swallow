@@ -41,7 +41,7 @@ swallowapps -work=./work
 Then, open Chrome or Firefox at localhost:1337. This will start the launcher. From the launcher, you can select existing modules to edit, or create new ones.
 
 #Getting Started with Programming
-Please read <swallow/blob/master/MANUAL.md> for instructions about programming with swallow.
+Please read https://github.com/hugowindisch/swallow/blob/master/MANUAL.md for instructions about programming with swallow.
 
 #API Documentation
 The documentation of the various packages can be generated from the JSDOC in the package source files. From the launcher, click the 'i' button, then click make. The documentation will be regenerated for all packages, including yours.
