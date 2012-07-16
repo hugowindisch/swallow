@@ -8,7 +8,8 @@
         "domvisual": ">=0.0.1",
         "url": ">=0.0.1",
         "baseui": ">=0.0.1",
-        "launcher": ">=0.0.1"
+        "launcher": ">=0.0.1",
+        "domquery": ">=0.0.1"
     },
     "engines": {
         "pillow": "*"

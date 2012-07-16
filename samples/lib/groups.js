@@ -1301,6 +1301,114 @@ exports.groups = {
         "overflowX": "visible",
         "overflowY": "visible",
         "privateStyles": false
+    },
+    "JSONAndLists": {
+        "description": "",
+        "private": true,
+        "privateTheme": true,
+        "dimensions": [
+            600,
+            400,
+            0
+        ],
+        "gridSize": 8,
+        "children": {
+            "theStuff": {
+                "factory": "domvisual",
+                "type": "DOMElement",
+                "config": {
+                    "position": "theStuff"
+                }
+            }
+        },
+        "positions": {
+            "theStuff": {
+                "matrix": {
+                    "0": 536,
+                    "1": 0,
+                    "2": 0,
+                    "3": 0,
+                    "4": 0,
+                    "5": 336,
+                    "6": 0,
+                    "7": 0,
+                    "8": 0,
+                    "9": 0,
+                    "10": 1,
+                    "11": 0,
+                    "12": 32,
+                    "13": 32,
+                    "14": 0,
+                    "15": 1,
+                    "byteLength": 64,
+                    "byteOffset": 0,
+                    "length": 16,
+                    "buffer": {
+                        "byteLength": 64
+                    }
+                },
+                "order": 0,
+                "snapping": {
+                    "left": "px",
+                    "right": "auto",
+                    "width": "px",
+                    "top": "px",
+                    "bottom": "auto",
+                    "height": "px"
+                }
+            }
+        },
+        "theme": {
+            "style": {
+                "jsData": {
+                    "backgroundColor": {
+                        "r": 181.6875,
+                        "g": 106.78125,
+                        "b": 160.96875,
+                        "a": 1
+                    },
+                    "backgroundImage": {
+                        "colors": [
+                            {
+                                "r": 255,
+                                "g": 255,
+                                "b": 255,
+                                "a": 1
+                            },
+                            {
+                                "r": 0,
+                                "g": 165.75,
+                                "b": 0,
+                                "a": 1
+                            }
+                        ],
+                        "stops": [
+                            1,
+                            0.27
+                        ],
+                        "type": "vertical"
+                    },
+                    "borderTopLeftRadius": 38.88888888888889,
+                    "borderTopRightRadius": 38.88888888888889,
+                    "borderBottomLeftRadius": 38.88888888888889,
+                    "borderBottomRightRadius": 38.88888888888889,
+                    "boxShadow": {
+                        "offsetX": 0,
+                        "offsetY": 0,
+                        "blurRadius": 17.77777777777778,
+                        "spreadRadius": 0,
+                        "color": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0,
+                            "a": 1
+                        }
+                    }
+                }
+            }
+        },
+        "overflowX": "visible",
+        "overflowY": "visible"
     }
 };
 
@@ -1318,4 +1426,6 @@ exports.OuterModule = require('/samples/lib/OuterModule').OuterModule;
 
 exports.PositionAnimation = require('/samples/lib/PositionAnimation').PositionAnimation;
 
-exports.Portfolio = require('/samples/lib/Portfolio').Portfolio;
+exports.JSONAndLists = require('/samples/lib/JSONAndLists').JSONAndLists;
+
+exports.JSONAndLists = require('/samples/lib/JSONAndLists').JSONAndLists;
