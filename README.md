@@ -1,5 +1,6 @@
-SwallowApps is a graphic tool for creating applications and components
-that run in a browser.
+SwallowApps is a graphic tool for creating applications and components that run in a browser. It has some similarities with the Flash (TM) authoring environment but targets an HTML5 runtime. It borrows its packaging system and some of its apis from CommonJS and NodeJS. Its backend components are developed using NodeJS.
+
+![Screenshot](screenshot.png)
 
 #Intro
 http://www.youtube.com/watch?v=m0os24I4PUc
