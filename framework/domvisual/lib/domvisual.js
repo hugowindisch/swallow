@@ -57,7 +57,6 @@ var visual = require('visual'),
 function DOMVisual(config, groupData, element) {
     var that = this;
     this.element = element;
-    this.cssClasses = {};
     this.connectedToTheStage = false;
     this.disableInteractiveEventHooks = false;
     this.visible = true;
@@ -174,6 +173,9 @@ DOMVisual.prototype.enableInteractions = function (enable) {
 */
 DOMVisual.prototype.setClass = function (cssClassName) {
     var i, l;
+    if (this.cssClasses === undefined) {
+        this.cssClasses = {};
+    }
     if (isArray(cssClassName)) {
         l = cssClassName.length;
         for (i = 0; i < l; i += 1) {
@@ -829,62 +831,111 @@ DOMVisual.prototype.getComputedDimensions = function () {
     return ret;
 };
 
-/*
-* Creates or returns the (already created) stage.
-* @api private
-*/
-function getStage() {
-    var bodyElement,
-        thisElement,
-        viz;
 
+/*
+* Creates a 'stage' in a given element. This can be used to create the
+* top level stage in a full screen application or to punch swallow components
+* inside some free flowing html.
+*/
+function createStage(inElement) {
+    var viz = new DOMVisual({}, null, inElement);
+    // do some stupid stuff here:
     function updateTopLayout() {
         viz.setDimensions(
             [viz.element.offsetWidth, viz.element.offsetHeight, 0]
         );
     }
 
-    if (!theStage) {
-        bodyElement = document.getElementsByTagName('body')[0];
-        thisElement = document.createElement('div');
-        viz = new DOMVisual({}, null, thisElement);
-        // do some stupid stuff here:
-        bodyElement.style.overflow = 'hidden';
-        bodyElement.appendChild(thisElement);
-        viz.setLayout(
-            {
-                dimensions: [100, 100, 0],
-                positions: {
-                    root: {
-                        matrix: [
-                            100, 0, 0, 0, 0, 100, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
-                        ],
-                        snapping: {
-                            left: 'px',
-                            right: 'px',
-                            width: 'auto',
-                            top: 'px',
-                            bottom: 'px',
-                            height: 'auto'
-                        }
+    inElement.innerHTML = '';
+    inElement.style.overflow = 'hidden';
+    viz.setLayout(
+        {
+            dimensions: [100, 100, 0],
+            positions: {
+                root: {
+                    matrix: [
+                        100, 0, 0, 0, 0, 100, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+                    ],
+                    snapping: {
+                        left: 'px',
+                        right: 'px',
+                        width: 'auto',
+                        top: 'px',
+                        bottom: 'px',
+                        height: 'auto'
                     }
                 }
             }
-        );
-        viz.connectedToTheStage = true;
-        viz.name = 'stage';
-        viz.matrix = glmatrix.mat4.identity();
-        viz.element.style.left = '0px';
-        viz.element.style.right = '0px';
-        viz.element.style.top = '0px';
-        viz.element.style.bottom = '0px';
-        viz.element.style.position = 'absolute';
-        viz.on('resize', function () {
-            updateTopLayout();
-            dirty.update();
-        });
+        }
+    );
+    viz.connectedToTheStage = true;
+    viz.name = 'stage';
+    viz.matrix = glmatrix.mat4.identity();
+    viz.element.style.left = '0px';
+    viz.element.style.right = '0px';
+    viz.element.style.top = '0px';
+    viz.element.style.bottom = '0px';
+    viz.element.style.position = 'absolute';
+    viz.on('resize', function () {
         updateTopLayout();
-        theStage = viz;
+        dirty.update();
+    });
+    updateTopLayout();
+    return viz;
+}
+
+function createVisual(inElement, factory, type, config, optionalWidth, optionalHeight) {
+    var viz = new DOMVisual({}, null, inElement),
+        f = require(factory),
+        T = f[type],
+        c = new T(config),
+        w = optionalWidth || Number(inElement.offsetWidth),
+        h = optionalHeight || Number(inElement.offsetHeight);
+    viz.setLayout(
+        {
+            dimensions: [w, h, 0],
+            positions: {
+                root: {
+                    matrix: [
+                        w, 0, 0, 0,       0, h, 0, 0,      0, 0, 1, 0,     0, 0, 0, 1
+                    ],
+                    snapping: {
+                        left: 'px',
+                        right: 'px',
+                        width: 'auto',
+                        top: 'px',
+                        bottom: 'px',
+                        height: 'auto'
+                    }
+                }
+            }
+        }
+    );
+    viz.connectedToTheStage = true;
+    viz.name = 'stage';
+    viz.matrix = glmatrix.mat4.identity();
+    viz.element.style.position = 'relative';
+
+// can we let any element be its own root by overriding its element or something
+    viz.addChild(c, 'root');
+    c.setPosition('root');
+    viz.setDimensions([w, h, 1]);
+    return c;
+
+}
+exports.createVisual = createVisual;
+
+/*
+* Creates or returns the (already created) stage.
+* @api private
+*/
+function getStage() {
+    var topMost;
+    if (!theStage) {
+        topMost = document.createElement('div');
+        document.getElementsByTagName('body')[0].appendChild(topMost);
+        theStage = createStage(topMost);
+
     }
     return theStage;
 }
@@ -1424,6 +1475,7 @@ exports.DOMVideo = DOMVideo;
 exports.DOMInput = DOMInput;
 exports.DOMSelect = DOMSelect;
 exports.DOMCanvas = DOMCanvas;
+exports.styleToCss = styleToCss;
 exports.hasTextAttributes = styles.hasTextAttributes;
 exports.makeKeyString = keycodes.makeKeyString;
 exports.decorateVk = keycodes.decorateVk;
