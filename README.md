@@ -26,14 +26,17 @@ on webkit) may work but have not been tested).
 
 #Installation
 npm install swallowapps -g
+(you may need to use sudo)
 
 Note that the -g is optional
 
 #Execution
 From the console:
 
-swallowapps
-(or if you did not install with -g, swallowapps/editor/server/lib/editsrver.js)
+(mkdir work, then:)
+
+swallowapps -work=./work
+(or if you did not install with -g, node swallowapps/editor/server/lib/editsrver.js -work=./work)
 
 Then, open Chrome or Firefox at localhost:1337. This will start the launcher. From the launcher, you can select existing modules to edit, or create new ones.
 
