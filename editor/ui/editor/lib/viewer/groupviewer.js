@@ -539,9 +539,15 @@ GroupViewer.prototype.regenerateGrid = function () {
         ctx.fillStyle = 'rgb(150,150,150)';
         ctx.fillRect(gridOffs[0], gridOffs[1], 1, 1);
         //ctx.fillRect(1,1,2,2);
-        children.decorations.setBackgroundImage(grid.toDataURL());
+        children.decorations.setStyleAttributes({
+            backgroundImage: grid.toDataURL(),
+            backgroundRepeat: 'repeat'
+        });
     } else {
-        children.decorations.setBackgroundImage(null);
+        children.decorations.setStyleAttributes({
+            backgroundImage: null,
+            backgroundRepeat: null
+        });
     }
 };
 

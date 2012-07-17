@@ -75,9 +75,11 @@ color:                                      Color
 textAlign:                                  String (left, right, center)
 
 backgroundColor:                            Color
-backgroundImage:                            (currently: )gradient or array of
+backgroundImage:                            (currently: ) gradient or array of
                                                 gradients
-backgroundRepeat:                           tbd
+backgroundRepeat:                           string or array of strigns
+backgroundOrigin:                           string or array of strings
+backgroundPosition:                         tbd
 
 
 boxShadow:                                  <offset-x>
@@ -110,6 +112,8 @@ var utils = require('utils'),
     abs = Math.abs,
     round = Math.round,
     isArray = utils.isArray,
+    isString = utils.isString,
+    isObject = utils.isObject,
     browser = getBrowser(),
     gradientToCssString,
     textAttributes = {
@@ -307,9 +311,15 @@ gradientToCssString = ({
         return null;
     };
 
+function imageUrlToCssString(url) {
+    return 'url(' + url + ')';
+}
+
 function backgroundImageToCssString(img) {
     function singleImageToCssString(img) {
-        if (img && img.colors && img.stops && img.type) {
+        if (isString(img)) {
+            return imageUrlToCssString(img);
+        } else if (isObject(img) && img.colors && img.stops && img.type) {
             return gradientToCssString(img);
         }
         return null;

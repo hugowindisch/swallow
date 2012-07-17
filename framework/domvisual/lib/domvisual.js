@@ -388,22 +388,6 @@ DOMVisual.prototype.clearTransition = function () {
 };
 
 /**
-* Sets the background image. This will become deprecated when we support
-* the background image thing in styles.
-*/
-DOMVisual.prototype.setBackgroundImage = function (url, repeat, position) {
-    repeat = repeat || 'repeat';
-    var style = this.element.style;
-    if (url !== null) {
-        style.backgroundImage = 'url(' + url + ')';
-        style.backgroundRepeat = 'repeat';
-    } else {
-        style.backgroundImage = null;
-    }
-    return this;
-};
-
-/**
 * Adds some html as a child of this element (can be used to create children
 * that use plain html. i.e. to create more software components that don't use
 * the editor.
