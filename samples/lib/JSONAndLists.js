@@ -5,6 +5,7 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     group = require('/samples/lib/groups').groups.JSONAndLists,
     http = require('http'),
+    whiskers = require('whiskers'),
     domquery = require('domquery');
 
 function JSONAndLists(config) {
@@ -49,6 +50,8 @@ JSONAndLists.prototype.setHtml = function (html) {
         ).setStyle(visual.defaultSkin, 'samples', 'JSONAndLists', 'style'
         ).setMargins(40, 40, 40, 40
         ).setPadding(10, 10, 10, 10);
+
+        console.log(whiskers.render('<test>{test}</test', { test: 'abcd' }));
 
         visual.update();
     }, 50);
