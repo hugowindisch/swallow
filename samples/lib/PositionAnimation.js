@@ -24,7 +24,12 @@ function PositionAnimation(config) {
             n = 0;
         }
         forEachProperty(pos[n], function (p, n) {
-            that.getChild(n).setTransition(300).setPosition(p);
+            that.getChild(n
+            ).setTransition(300
+            ).setPosition(p
+            ).once('transitionend', function (evt) {
+                this.clearTransition();
+            });
         });
     }
     // hook the transition function to some handlers

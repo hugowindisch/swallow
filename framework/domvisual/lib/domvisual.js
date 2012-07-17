@@ -369,9 +369,11 @@ DOMVisual.prototype.setTransition = function (
     // set the transition
     this.transition = {
         duration: duration || 300,
-        easingFunction: easingFunction || 'easein'
+        easingFunction: easingFunction || 'easein',
+        // we do not support partial transitions yet
+        property: 'all'
     };
-    setDirty(this, 'matrix');
+    this.updateTransitionRepresentation();
     return this;
 };
 
@@ -384,7 +386,7 @@ DOMVisual.prototype.clearTransition = function () {
     dirty.update();
     // remove the transition
     delete this.transition;
-    setDirty(this, 'matrix');
+    this.updateTransitionRepresentation();
 };
 
 /**
@@ -521,28 +523,7 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
         var matrix = this.matrix,
             style = this.element.style,
             htmlFlowing = this.htmlFlowing,
-            transition = this.transition,
             transform;
-        // transitions FIXME: not sure this should be here
-        if (transition) {
-            style.webkitTransitionProperty =
-                style.mozTransitionProperty =
-                style.transitionProperty =
-                'all';
-            style.webkitTransitionDuration =
-                style.mozTransitionProperty =
-                style.transitionDuration =
-                transition.duration;
-
-            style.webkitTransitionTimingFunction =
-                style.mozTransitionProperty =
-                style.transitionTimingFunction =
-                transition.easingFunction;
-        } else {
-            style.webkitTransitionProperty = null;
-            style.webkitTransitionDuration = null;
-            style.webkitTransitionTimingFunction = null;
-        }
         // full matrix not yet supported
         if (!htmlFlowing) {
             // we can either use left & top (if html5 is not supported)
@@ -599,6 +580,37 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
                 style.transform =
                 null;
         }
+    }
+};
+
+/*
+* updateTransitionRepresentation
+* @api private
+*/
+DOMVisual.prototype.updateTransitionRepresentation = function () {
+    var transition = this.transition,
+        style = this.element.style;
+
+    // transitions FIXME: not sure this should be here
+    if (transition) {
+        style.webkitTransitionProperty =
+            style.mozTransitionProperty =
+            style.transitionProperty =
+            transition.property;
+
+        style.webkitTransitionDuration =
+            style.mozTransitionProperty =
+            style.transitionDuration =
+            transition.duration;
+
+        style.webkitTransitionTimingFunction =
+            style.mozTransitionProperty =
+            style.transitionTimingFunction =
+            transition.easingFunction;
+    } else {
+        style.webkitTransitionProperty = null;
+        style.webkitTransitionDuration = null;
+        style.webkitTransitionTimingFunction = null;
     }
 };
 
@@ -860,6 +872,7 @@ function createStage(inElement) {
     viz.element.style.top = '0px';
     viz.element.style.bottom = '0px';
     viz.element.style.position = 'absolute';
+    viz.setOverflow('hidden');
     viz.on('resize', function () {
         updateTopLayout();
         dirty.update();

@@ -16,7 +16,7 @@ The framework consists of:
 - optional packages (baseui, domquery, doxhtml, sse) that implement other useful apis and extensions. You can also add your own extensions by adding more packages or porting NodeJS packages.
 
 # Getting Started
-Here I will provide programming example for the most useful programming features.
+Here I will provide programming examples for the most useful programming features.
 
 ##How do I start?
 From the Launcher, you can create a new package, then create a new module in that package. Package names should start with a lowercase letter. Visual module names should start with an uppercase letter.
@@ -98,12 +98,27 @@ The following code will move a child name 'pos' to a position named 'offscreen'.
     this.getChild('pos').setPosition('offscreen');
 ```
 
+To animate this displacement we can write:
+```javascript
+    this.getChild('pos').setTransition(300).setPosition('offscreen');
+```
+
+To do something when the transition ends (here we clear all transitions), we can handle the 'transitionend' event. Since this event will be fired for all affected properties, we only want to handle it once:
+
+```javascript
+    this.getChild('pos'
+    ).setTransition(300
+    ).setPosition('offscreen'
+    ).once('transitionend', function (evt) {
+        this.clearTransition();
+    });
+```
+
 Note: A complete example of this can be found in samples/lib/PositionAnimation.js (and you can run the PositionAnimation sample).
 
 Note: When the size of a container changes, its positions are recomputed according to resizing rules defined in the editor. The layout is dynamic and postion names define the various anchor points available inside a given layout.
 
 TODO: Add a video showing how to add postions and children and how to rename them.
-TODO: Show how animation is supported.
 
 ##Animating Styles
 Some visual elements use styles. A good example of this is domvisual.DOMElement that has a setStyle method. You can use any style defined in your visual component and pass it to setStyle:
@@ -112,9 +127,18 @@ Some visual elements use styles. A good example of this is domvisual.DOMElement 
     this.getChild('pos').setStyle('style0');
 ```
 
-Note: A complete example of this can be found in samples/lib/StyleAnimation.js (and you can run the StyleAnimation sample).
+Here again, we can use a transition and handle the end of transition event:
 
-TODO: Show how animation is supported
+```javascript
+    this.getChild(
+    ).setTransition(300, 'ease-in'
+    ).setStyle('style0'
+    ).once('transitionend', function (evt) {
+        this.clearTransition();
+    });
+```
+
+Note: A complete example of this can be found in samples/lib/StyleAnimation.js (and you can run the StyleAnimation sample).
 
 ##Playing with Depth
 You can change the visual ordering of visual elements: which one is on top, which one is hidden by others.
@@ -237,3 +261,13 @@ You can add tests to your packages and run these tests from the TestViewer (http
 
 ##Custom positioning
 (postion vs ...)
+
+##Application Domains
+If you need to load packages at execution time, you can ues application domains to make sure that, when you stop referencing the packages you loaded, all their dependencies will also be unloaded (missing dependencies will be loaded in the same application domain as the main package that you load).
+
+Here is how you can load a package dynamically at runtime:
+```javascript
+    visual.loadPackage('mypackage', applicationDomain, reload, forTesting, callback)
+```
+
+FIXME: define.pillow.createApplicationDomain()... we should have something in visual to do that

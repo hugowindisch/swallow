@@ -29,6 +29,7 @@ var utils = require('utils'),
     decorateVk = keycodes.decorateVk,
     updateDOMEventHooks,
     forEachProperty = utils.forEachProperty,
+    browser = require('./browser').getBrowser(),
     hookMap;
 
 /*
@@ -184,8 +185,16 @@ hookMap = {
         getDOMElement: function (vis) {
             return vis.element;
         }
+    },
+    transitionend: {
+        domEvent: ({
+            'AppleWebKit': 'webkitTransitionEnd',
+            'Mozilla': 'transitionend'
+        })[browser],
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
     }
-
 };
 
 /*

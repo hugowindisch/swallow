@@ -88,20 +88,6 @@ boxShadow:                                  <offset-x>
                                             spreadradius
                                             color
 */
-// oversimplistic browser detection
-function getBrowser() {
-    var ua = navigator.userAgent,
-        browser;
-    if (ua.indexOf("AppleWebKit") !== -1) {
-        browser = 'AppleWebKit';
-    } else if (ua.indexOf("MSIE") !== -1) {
-        browser = 'MSIE';
-    } else if (ua.indexOf("Mozilla") !== -1) {
-        browser = 'Mozilla';
-    }
-    return browser;
-}
-
 var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEach,
@@ -114,7 +100,7 @@ var utils = require('utils'),
     isArray = utils.isArray,
     isString = utils.isString,
     isObject = utils.isObject,
-    browser = getBrowser(),
+    browser = require('./browser').getBrowser(),
     gradientToCssString,
     textAttributes = {
         fontFamily: true,
