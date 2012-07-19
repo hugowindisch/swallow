@@ -92,6 +92,30 @@ jqtpl.template(
     ).toString()
 );
 
+// FIXME: maybe there is a normal (non convoluted) way of dealing with
+// the drain thing (I think that there is a problem if you neglect the
+// return code from write and the drain event)
+function safeWrite(stream, d, end) {
+    if (stream.queued) {
+        stream.queued.push({d: d, end: end});
+    } else if (stream.write(d)) {
+        if (end) {
+            stream.end();
+        }
+    } else {
+        stream.queued = []; //[{d: d, end: end}];
+        if (end) {
+            stream.end();
+        }
+        stream.once('drain', function () {
+            var q = stream.queued;
+            delete stream.queued;
+            q.forEach(function (b) {
+                safeWrite(stream, b.d, b.end);
+            });
+        });
+    }
+}
 
 /**
     Fixes windows path nonsense
@@ -348,7 +372,7 @@ function publishJSFile(
                 out = jsmin.jsmin(out);
             }
             // write the result
-            jsstream.write(out);
+            safeWrite(jsstream, out, false);
             cb(null);
         }
     ], cb);
@@ -450,6 +474,10 @@ function publishJSFiles(
         cb(null);
     });
 
+    stream.once('error', function (e) {
+        cb(e);
+    });
+
     // process all the js files
     async.forEach(details.js, function (f, cb) {
         publishJSFile(
@@ -464,14 +492,14 @@ function publishJSFiles(
         );
     }, function (err) {
         if (err) {
+            stream.destroy();
             return cb(err);
         }
-        stream.write(jqtpl.tmpl('headerTemplate', {
+        safeWrite(stream, jqtpl.tmpl('headerTemplate', {
             modulename: details.name,
             dependencies: dependencies,
             modulepath: '/' + details.name + '/' + getMainModulePath(details)
-        }));
-        stream.end();
+        }), true);
     });
 }
 
