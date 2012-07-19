@@ -1156,6 +1156,9 @@ licenseText = 'The SwallowApps Editor, an interactive application builder for cr
 function setupHelpMenu(editor) {
     var helpTool,
         aboutTool,
+        readmeTool,
+        manualTool,
+        sourcesTool,
         wikiTool,
         bugTool,
         overviewTutorialTool,
@@ -1164,17 +1167,35 @@ function setupHelpMenu(editor) {
     helpTool = new MenuItem(
         'Documentation...',
         function () {
-            window.open('/make/helpviewer.Help.html', '_blank');
+            window.open('/swallow/make/helpviewer.Help.html', '_blank');
+        }
+    );
+    readmeTool = new MenuItem(
+        'Readme...',
+        function () {
+            window.open('https://github.com/hugowindisch/swallow/blob/master/README.md', '_blank');
+        }
+    );
+    manualTool = new MenuItem(
+        'Manual...',
+        function () {
+            window.open('https://github.com/hugowindisch/swallow/blob/master/MANUAL.md', '_blank');
+        }
+    );
+    sourcesTool = new MenuItem(
+        'Sources...',
+        function () {
+            window.open('https://github.com/hugowindisch/swallow', '_blank');
         }
     );
     wikiTool = new MenuItem(
-        'Wiki...',
+        'Development Wiki...',
         function () {
             window.open('https://github.com/hugowindisch/swallow/wiki', '_blank');
         }
     );
     bugTool = new MenuItem(
-        'Bugs...',
+        'Bug Tracking...',
         function () {
             window.open('https://github.com/hugowindisch/swallow/issues', '_blank');
         }
@@ -1204,6 +1225,10 @@ function setupHelpMenu(editor) {
         null,
         overviewTutorialTool,
         null,
+        readmeTool,
+        manualTool,
+        null,
+        sourcesTool,
         wikiTool,
         bugTool,
         null,

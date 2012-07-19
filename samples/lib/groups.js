@@ -556,16 +556,16 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 72,
-                    "13": 40,
-                    "14": 3,
+                    "12": 32,
+                    "13": 24,
+                    "14": 4,
                     "15": 1,
-                    "byteLength": 64,
                     "byteOffset": 0,
+                    "length": 16,
+                    "byteLength": 64,
                     "buffer": {
                         "byteLength": 64
-                    },
-                    "length": 16
+                    }
                 },
                 "order": 0,
                 "snapping": {
@@ -626,16 +626,16 @@ exports.groups = {
                     "9": 0,
                     "10": 1,
                     "11": 0,
-                    "12": 80,
-                    "13": 136,
-                    "14": 3,
+                    "12": 120,
+                    "13": 168,
+                    "14": 4,
                     "15": 1,
-                    "buffer": {
-                        "byteLength": 64
-                    },
+                    "byteOffset": 0,
                     "length": 16,
                     "byteLength": 64,
-                    "byteOffset": 0
+                    "buffer": {
+                        "byteLength": 64
+                    }
                 },
                 "order": 2,
                 "snapping": {
@@ -1428,4 +1428,4 @@ exports.PositionAnimation = require('/samples/lib/PositionAnimation').PositionAn
 
 exports.JSONAndLists = require('/samples/lib/JSONAndLists').JSONAndLists;
 
-exports.JSONAndLists = require('/samples/lib/JSONAndLists').JSONAndLists;
+exports.StyleAnimation = require('/samples/lib/StyleAnimation').StyleAnimation;

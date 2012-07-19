@@ -42,7 +42,7 @@ function VisualModule(config) {
     });
     this.getChild('publish').on('click', function () {
         var ti = that.typeInfo;
-        http.get({ path: '/publish/' + ti.factory + '.' + ti.type}, function (res) {
+        http.get({ path: '/swallow/publish/' + ti.factory + '.' + ti.type}, function (res) {
             res.on('error', function (e) {
                 alert('Error loading');
             });
@@ -52,7 +52,7 @@ function VisualModule(config) {
     this.getChild('monitor').on('click', function () {
         var ti = that.typeInfo,
             req = http.request(
-                { method: 'POST', path: '/monitor/' + ti.factory + '.' + ti.type},
+                { method: 'POST', path: '/swallow/monitor/' + ti.factory + '.' + ti.type},
                 function (res) {
                     res.on('error', function (e) {
                         alert('Error setting monitored application');
@@ -69,7 +69,7 @@ function VisualModule(config) {
         var ti = that.typeInfo,
             req = http.request(
                 { method: 'DELETE',
-                    path: '/package/' + ti.factory + '/visual/' + ti.type },
+                    path: '/swallow/package/' + ti.factory + '/visual/' + ti.type },
                 function (res) {
                     res.on('error', function (e) {
                         alert('Error deleting');

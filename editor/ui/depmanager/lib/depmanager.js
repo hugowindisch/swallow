@@ -57,7 +57,7 @@ function DependencyManager() {
     this.factories = {};
     this.visualList = {};
     // sse handling
-    this.sse = new sse.EventSource('/events');
+    this.sse = new sse.EventSource('/swallow/events');
 
     this.sse.on('savecomponent', function (evt) {
         var typeInfo = JSON.parse(evt.data);
@@ -143,7 +143,7 @@ DependencyManager.prototype.getStyleList = function () {
 DependencyManager.prototype.loadVisualList = function () {
     var data = '',
         that = this;
-    http.get({ path: '/package'}, function (res) {
+    http.get({ path: '/swallow/package'}, function (res) {
         res.on('data', function (d) {
             data += d;
         });

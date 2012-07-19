@@ -34,7 +34,7 @@ var visual = require('visual'),
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty,
     forEachSortedProperty = utils.forEachSortedProperty,
-    group = require('/testviewer/lib/groups').groups.TestViewer;
+    group = require('./groups').groups.TestViewer;
 /*globals define */
 
 function TestViewer(config) {
@@ -99,7 +99,7 @@ TestViewer.prototype.separator = function () {
 TestViewer.prototype.loadPackages = function (cb) {
     var data = '',
         that = this,
-        path = '/package';
+        path = '/swallow/package';
     http.get({ path: path}, function (res) {
         res.on('data', function (d) {
             data += d;
@@ -148,7 +148,7 @@ TestViewer.prototype.runLint = function () {
 
 TestViewer.prototype.makeLint = function (cb) {
     var that = this,
-        path = '/makelint',
+        path = '/swallow/makelint',
         req;
     that.log('Regenerating lint results...');
     req = http.request({ path: path, method: 'POST'}, function (res) {
@@ -183,7 +183,7 @@ TestViewer.prototype.showLint = function (cb) {
 
     forEachProperty(this.packages, function (p, name) {
         var data = '',
-            path = '/make/' + name + '/' + name + '.lint.json';
+            path = '/swallow/make/' + name + '/' + name + '.lint.json';
         toLoad += 1;
         http.get(
             { path: path},
@@ -283,7 +283,7 @@ TestViewer.prototype.runTest = function () {
 
 TestViewer.prototype.makeTest = function (cb) {
     var that = this,
-        path = '/maketest',
+        path = '/swallow/maketest',
         req;
     that.log('Rebuilding test packages...');
     req = http.request({ path: path, method: 'POST'}, function (res) {

@@ -25,12 +25,12 @@ var assert = require('assert'),
     http = require('http');
 
 exports.run = function (test, done) {
-    var es = new sse.EventSource('/events'),
+    var es = new sse.EventSource('/swallow/events'),
         req1 = http.request(
-            { method: "POST", path: "/testevent/message?a=1&b=2&c=3" }
+            { method: "POST", path: "/swallow/testevent/message?a=1&b=2&c=3" }
         ),
         req2 = http.request(
-            { method: "POST", path: "/testevent/blah?a=abc&b=def&c=ghi" }
+            { method: "POST", path: "/swallow/testevent/blah?a=abc&b=def&c=ghi" }
         ),
         expected = 3;
 

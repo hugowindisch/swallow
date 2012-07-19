@@ -62,7 +62,7 @@ Help.prototype.getConfigurationSheet = function () {
 Help.prototype.makeHelp = function () {
     var that = this,
         req = http.request(
-            { method: 'POST', path: '/makehelp' },
+            { method: 'POST', path: '/swallow/makehelp' },
             function (res) {
                 res.on('end', function (e) {
                     that.showPackages();
@@ -77,7 +77,7 @@ Help.prototype.showPackages = function () {
     var data = '',
         that = this,
         packages = this.getChild('packages'),
-        path = '/package';
+        path = '/swallow/package';
     packages.setOverflow('auto').removeAllChildren();
     http.get({ path: path}, function (res) {
         res.on('data', function (d) {
@@ -115,7 +115,7 @@ Help.prototype.showHelp = function (packageName) {
         that = this,
         help = this.getChild('help'),
         pName = this.getChild('packageName'),
-        helpPath = '/make/' + packageName + '/' + packageName + '.dox.json';
+        helpPath = '/swallow/make/' + packageName + '/' + packageName + '.dox.json';
     help.setOverflow('auto');
     help.removeAllChildren();
     http.get({ path: helpPath}, function (res) {

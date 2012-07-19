@@ -74,82 +74,82 @@ function getUrls() {
         filter: /^\/$/,
         handler: function (req, res, match) {
             // response comes from the http server
-            res.setHeader("Location", "/make/launcher.Launcher.html");
+            res.setHeader("Location", "/swallow/make/launcher.Launcher.html");
             res.writeHead(302);
             res.end();
         }
     });
     urls.push({
-        filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.html$/,
+        filter: /^\/swallow\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.html$/,
         handler: servevisualcomponent.serveVisualComponent(false, false)
     });
     urls.push({
-        filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.mon$/,
+        filter: /^\/swallow\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.mon$/,
         handler: servevisualcomponent.serveVisualComponent(false, true)
     });
     urls.push({
-        filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.edit$/,
+        filter: /^\/swallow\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.edit$/,
         handler: servevisualcomponent.serveVisualComponent(true, false)
     });
     urls.push({
-        filter: /^\/make\/(.*)$/,
+        filter: /^\/swallow\/make\/(.*)$/,
         handler: pillow.makeAndServe
     });
     urls.push({
-        filter: /^\/publish\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
+        filter: /^\/swallow\/publish\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
         handler: servevisualcomponent.publishVisualComponent
     });
     // sets the currently monitored application
     urls.push({
-        filter: /^\/monitor\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
+        filter: /^\/swallow\/monitor\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
         handler: servevisualcomponent.monitor
     });
     urls.push({
-        filter: /^\/monitor$/,
+        filter: /^\/swallow\/monitor$/,
         handler: servevisualcomponent.monitor
     });
     urls.push({
-        filter: /^\/m$/,
+        filter: /^\/swallow\/m$/,
         handler: servevisualcomponent.redirectToMonitored
     });
     urls.push({
-        filter: /^\/package$/,
+        filter: /^\/swallow\/package$/,
         handler: servepackagelist.servePackageList
     });
     urls.push({
-        filter: /^\/package\/([a-z][a-zA-Z0-9]+)\/visual\/([A-Z][a-zA-Z0-9]+)$/,
+        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9]+)\/visual\/([A-Z][a-zA-Z0-9]+)$/,
         handler: servevisual.serveVisual
     });
     urls.push({
-        filter: /^\/package\/([a-z][a-zA-Z0-9]+)$/,
+        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9]+)$/,
         handler: servepackage.servePackage
     });
     urls.push({
-        filter: /^\/package\/([a-z][a-zA-Z0-9]+)\/image$/,
+        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9]+)\/image$/,
         handler: serveimagelist.serveImageList
     });
     urls.push({
-        filter: /^\/events$/,
+        filter: /^\/swallow\/events$/,
         handler: ssevents.serveEvents
     });
     urls.push({
-        filter: /^\/makehelp$/,
+        filter: /^\/swallow\/makehelp$/,
         handler: servehelp.serveRebuildHelp
     });
     urls.push({
-        filter: /^\/makelint$/,
+        filter: /^\/swallow\/makelint$/,
         handler: servetests.serveRebuildLint
     });
     urls.push({
-        filter: /^\/maketest$/,
+        filter: /^\/swallow\/maketest$/,
         handler: servetests.serveRebuildTest
     });
     urls.push({
-        filter: /^\/testhttp(.*)$/,
+        filter: /^\/swallow\/testhttp(.*)$/,
         handler: servetests.serveTestHttp
     });
     urls.push({
-        filter: /^\/testevent\/([a-z][a-zA-Z0-9]+)$/,
+        filter: /^\/swallow\/testevent\/([a-z][a-zA-Z0-9]+)$/,
         handler: servetests.serveTestEvent
     });
     return urls;

@@ -47,7 +47,7 @@ var visual = require('visual'),
 
 
 function modulePath(factory, type) {
-    return '/package/' + factory + '/visual/' + type;
+    return '/swallow/package/' + factory + '/visual/' + type;
 }
 
 function Editor(config) {
@@ -110,7 +110,7 @@ Editor.prototype.loadGroup = function (factory, type) {
 };
 Editor.prototype.publishGroup = function (factory, type) {
     var that = this;
-    http.get({ path: '/publish/' + this.docInfo.factory + '.' + this.docInfo.type}, function (res) {
+    http.get({ path: '/swallow/publish/' + this.docInfo.factory + '.' + this.docInfo.type}, function (res) {
         res.on('error', function (e) {
             alert('Error loading');
         });
@@ -120,7 +120,7 @@ Editor.prototype.publishGroup = function (factory, type) {
 Editor.prototype.monitorGroup = function (factory, type) {
     var ti = this.docInfo,
         req = http.request(
-            { method: 'POST', path: '/monitor/' + ti.factory + '.' + ti.type},
+            { method: 'POST', path: '/swallow/monitor/' + ti.factory + '.' + ti.type},
             function (res) {
                 res.on('error', function (e) {
                     alert('Error setting monitored application');
@@ -179,7 +179,7 @@ Editor.prototype.newGroup = function (factory, type, cb) {
 };
 
 Editor.prototype.runGroup = function (factory, type, cb) {
-    window.open('/make/' + factory + '.' + type + '.html', '_blank');
+    window.open('/swallow/make/' + factory + '.' + type + '.html', '_blank');
 
     // for no reason that I can explain, this opens the thing in a new tab !?
 /*

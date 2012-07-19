@@ -26,7 +26,7 @@
 {{if monitor}}
             // monitoring will reload the app on any change
             (function () {
-                var es = new window.EventSource('/events');
+                var es = new window.EventSource('/swallow/events');
                 es.addEventListener('monitor', function (evt) {
                     var ti = JSON.parse(evt.data);
                     window.location = ti.factory + '.' + ti.type + '.mon';

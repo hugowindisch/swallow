@@ -322,7 +322,7 @@ function imageUrlConfig(label) {
             data = '';
 
         http.get(
-            { path: '/package/' + editorInfo.factory + '/image'},
+            { path: '/swallow/package/' + editorInfo.factory + '/image'},
             function (res) {
                 res.on('data', function (d) {
                     data += d;

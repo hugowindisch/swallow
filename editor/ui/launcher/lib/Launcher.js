@@ -90,7 +90,7 @@ function Launcher(config) {
             req = http.request(
                 {
                     method: 'PUT',
-                    path: '/package/' + name
+                    path: '/swallow/package/' + name
                 },
                 function (res) {
                     res.on('error', function (e) {
@@ -119,7 +119,7 @@ function Launcher(config) {
             req = http.request(
                 {
                     method: 'PUT',
-                    path: '/package/' + packageName + '/visual/' + name
+                    path: '/swallow/package/' + packageName + '/visual/' + name
                 },
                 function (res) {
                     res.on('error', function (e) {
@@ -135,7 +135,7 @@ function Launcher(config) {
         }
     });
     this.getChild('monitor').on('click', function () {
-        window.open('/m', '_blank');
+        window.open('/swallow/m', '_blank');
     }).setCursor('pointer');
 
     this.getChild('github').on('click', function () {
@@ -147,11 +147,11 @@ function Launcher(config) {
     }).setCursor('pointer');
 
     this.getChild('help').on('click', function () {
-        window.open('/make/helpviewer.Help.html', '_blank');
+        window.open('/swallow/make/helpviewer.Help.html', '_blank');
     }).setCursor('pointer');
 
     this.getChild('test').on('click', function () {
-        window.open('/make/testviewer.TestViewer.html', '_blank');
+        window.open('/swallow/make/testviewer.TestViewer.html', '_blank');
     }).setCursor('pointer');
 
 

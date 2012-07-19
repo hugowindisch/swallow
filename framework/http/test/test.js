@@ -50,7 +50,7 @@ exports.run = function (test, done) {
     function testGET(cb) {
         var data = '';
         http.get(
-            { path: '/testhttp' },
+            { path: '/swallow/testhttp' },
             function (res) {
                 res.on('data', function (d) {
                     data += d;
@@ -66,7 +66,7 @@ exports.run = function (test, done) {
                     test(
                         assert.strictEqual,
                         req.url,
-                        '/testhttp'
+                        '/swallow/testhttp'
                     );
                     test(
                         assert.strictEqual,
@@ -91,7 +91,7 @@ exports.run = function (test, done) {
         var data = '',
             r;
         r = http.request(
-            { path: '/testhttp', method: 'POST' },
+            { path: '/swallow/testhttp', method: 'POST' },
             function (res) {
                 res.on('data', function (d) {
                     data += d;
@@ -107,7 +107,7 @@ exports.run = function (test, done) {
                     test(
                         assert.strictEqual,
                         req.url,
-                        '/testhttp'
+                        '/swallow/testhttp'
                     );
                     test(
                         assert.strictEqual,
@@ -130,7 +130,7 @@ exports.run = function (test, done) {
         var data = '',
             r;
         r = http.request(
-            { path: '/testhttp', method: 'PUT' },
+            { path: '/swallow/testhttp', method: 'PUT' },
             function (res) {
                 res.on('data', function (d) {
                     data += d;
@@ -146,7 +146,7 @@ exports.run = function (test, done) {
                     test(
                         assert.strictEqual,
                         req.url,
-                        '/testhttp'
+                        '/swallow/testhttp'
                     );
                     test(
                         assert.strictEqual,
