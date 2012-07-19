@@ -33,7 +33,10 @@ var pillow = require('pillow'),
     };
 
 
-function servePackageList(req, res, match, options) {
+function servePackageList(req, res, cxt) {
+    var match = cxt.match,
+        options = cxt.options;
+
     function ret404(err) {
         res.writeHead(404);
         if (err) {

@@ -71,8 +71,10 @@ function savePackage(options, packageName, cb) {
     });
 }
 
-function servePackage(req, res, match, options) {
-    var packageName = match[1],
+function servePackage(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match,
+        packageName = match[1],
         constructorName = match[2];
 
     function ret404(err) {
@@ -99,7 +101,7 @@ function servePackage(req, res, match, options) {
         break;
     case 'DELETE':
         // not currently supported
-        break;
+        return ret404();
     }
 }
 exports.servePackage = servePackage;

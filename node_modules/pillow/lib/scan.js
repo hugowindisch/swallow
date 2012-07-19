@@ -126,7 +126,7 @@ function createFolder(foldername, cb) {
         basedir = path.dirname(fn);
 
     function makeUnexistingDir(dirname, cb) {
-        path.exists(dirname, function (exists) {
+        fs.exists(dirname, function (exists) {
             fs.mkdir(dirname, '0775', function (err) {
                 var eExist = /^EEXIST/;
                 if (!err || eExist.test(err.message)) {
@@ -136,7 +136,7 @@ function createFolder(foldername, cb) {
             });
         });
     }
-    path.exists(basedir, function (exists) {
+    fs.exists(basedir, function (exists) {
         if (!exists) {
             createFolder(basedir, function (err) {
                 if (err) {

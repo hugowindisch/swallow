@@ -27,7 +27,11 @@ var pillow = require('pillow'),
     makeAll = pillow.makeAll;
 
 
-function serveRebuildHelp(req, res, match, options) {
+function serveRebuildHelp(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match,
+        extOptions = {};
+
     function ret404(err) {
         res.writeHead(404);
         if (err) {
@@ -37,7 +41,6 @@ function serveRebuildHelp(req, res, match, options) {
     }
 
     if (req.method === 'POST') {
-        var extOptions = {};
         Object.keys(options).forEach(function (k) {
             extOptions[k] = options[k];
         });

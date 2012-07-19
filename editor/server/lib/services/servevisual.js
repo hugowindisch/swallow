@@ -366,8 +366,10 @@ function loadVisual(options, packageName, constructorName, cb) {
         }
     });
 }
-function serveVisual(req, res, match, options) {
-    var packageName = match[1],
+function serveVisual(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match,
+        packageName = match[1],
         constructorName = match[2],
         postData;
 

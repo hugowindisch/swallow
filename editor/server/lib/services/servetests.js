@@ -36,9 +36,12 @@ function ret404(res, err) {
     res.end();
 }
 
-function serveRebuildLint(req, res, match, options) {
+function serveRebuildLint(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match,
+        extOptions = {};
+
     if (req.method === 'POST') {
-        var extOptions = {};
         Object.keys(options).forEach(function (k) {
             extOptions[k] = options[k];
         });
@@ -57,9 +60,11 @@ function serveRebuildLint(req, res, match, options) {
     }
 }
 
-function serveRebuildTest(req, res, match, options) {
+function serveRebuildTest(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match,
+        extOptions = {};
     if (req.method === 'POST') {
-        var extOptions = {};
         Object.keys(options).forEach(function (k) {
             extOptions[k] = options[k];
         });
@@ -78,9 +83,11 @@ function serveRebuildTest(req, res, match, options) {
     }
 }
 
-function serveTestHttp(req, res, match, options) {
+function serveTestHttp(req, res, cxt) {
     res.writeHead(200);
-    var ret = {
+    var options = cxt.options,
+        match = cxt.match,
+        ret = {
             method: req.method,
             url: req.url,
             headers: req.headers,
@@ -110,9 +117,12 @@ function serveTestHttp(req, res, match, options) {
     }
 }
 
-function serveTestEvent(req, res, match, options) {
-    var u,
+function serveTestEvent(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match,
+        u,
         msg = match[1];
+
     if (req.method === 'POST') {
         res.writeHead(200);
         u = url.parse(req.url, true);

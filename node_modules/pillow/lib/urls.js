@@ -23,13 +23,9 @@
 */
 /*jslint regexp: false */
 var handlers = require('./handlers');
-exports.getUrls = function (options) {
-    return [
-        {
-            filter: /^\/make\/(.*)$/,
-            handler: function (req, res, match) {
-                handlers.makeAndServe(req, res, match, options);
-            }
-        }
-    ];
-};
+exports.urls = [
+    {
+        filter: /^\/make\/(.*)$/,
+        handler: handlers.makeAndServe
+    }
+];

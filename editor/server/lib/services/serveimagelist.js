@@ -34,7 +34,10 @@ var pillow = require('pillow'),
         json: 'application/json'
     };
 
-function serveImageList(req, res, match, options) {
+function serveImageList(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match;
+
     function ret404(err) {
         res.writeHead(404);
         if (err) {

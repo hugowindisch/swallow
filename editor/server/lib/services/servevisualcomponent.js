@@ -45,7 +45,7 @@ function apply(to, from) {
     Publishes the html that allows to run the package in a browser
     using a standalone statically loaded html.
 */
-function generateVisualCompoentHtml(
+function generateVisualComponentHtml(
     options,
     details,
     packageMap,
@@ -85,15 +85,17 @@ function generateVisualCompoentHtml(
     });
 }
 
-function serveVisualComponent(options, forEdit, monitor) {
-    return function (req, res, match) {
-        var factory = forEdit ? 'editor' : match[1],
+function serveVisualComponent(forEdit, monitor) {
+    return function (req, res, cxt) {
+        var options = cxt.options,
+            match = cxt.match,
+            factory = forEdit ? 'editor' : match[1],
             type = forEdit ? 'Editor' : match[2],
             extendedOptions = apply(
                 {
                     extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
                         if (factory === details.name) {
-                            var htmlBuf = generateVisualCompoentHtml(
+                            var htmlBuf = generateVisualComponentHtml(
                                 opt,
                                 details,
                                 packageMap,
@@ -127,8 +129,10 @@ function serveVisualComponent(options, forEdit, monitor) {
     };
 }
 
-function publishVisualComponent(req, res, match, options) {
-    var factory = match[1],
+function publishVisualComponent(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match,
+        factory = match[1],
         type = match[2],
         publishFolder = options.publishFolder,
         cmpFolder = path.join(publishFolder, factory + '.' + type);
@@ -162,7 +166,7 @@ function publishVisualComponent(req, res, match, options) {
                         {
                             extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
                                 if (factory === details.name) {
-                                    var htmlBuf = generateVisualCompoentHtml(
+                                    var htmlBuf = generateVisualComponentHtml(
                                         opt,
                                         details,
                                         packageMap,
@@ -202,8 +206,10 @@ function publishVisualComponent(req, res, match, options) {
     );
 }
 
-function monitor(req, res, match, options) {
-    var factory = match[1],
+function monitor(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match,
+        factory = match[1],
         type = match[2],
         processed;
     switch (req.method) {
@@ -229,8 +235,10 @@ function monitor(req, res, match, options) {
     res.end();
 }
 
-function redirectToMonitored(req, res, match, options) {
-    var m = monitored;
+function redirectToMonitored(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match,
+        m = monitored;
     res.setHeader("Location", "/make/" + m.factory + '.' + m.type + '.mon');
     res.writeHead(302);
     res.end();

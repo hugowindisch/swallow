@@ -24,7 +24,9 @@ var events = require('events'),
     theMessageCount = 0,
     emitter = new events.EventEmitter();
 
-function serveEvents(req, res, match, options) {
+function serveEvents(req, res, cxt) {
+    var options = cxt.options,
+        match = cxt.match;
     // setup the response and socket
     req.socket.setTimeout(1000000);
     res.writeHead(200, {

@@ -34,7 +34,9 @@ var pillow = require('pillow'),
     servevisualcomponent = require('./services/servevisualcomponent'),
     servehelp = require('./services/servehelp'),
     servetests = require('./services/servetests'),
-    ssevents = require('./services/ssevents');
+    ssevents = require('./services/ssevents'),
+    swallowroot = path.join(__dirname, '../../..'),
+    work = path.join(swallowroot, 'work');
 
 
 jqtpl.template(
@@ -66,9 +68,9 @@ jqtpl.template(
 );
 
 
-function getUrls(options) {
-    var urls = pillow.getUrls(options);
-    urls.unshift({
+function getUrls() {
+    var urls = [];
+    urls.push({
         filter: /^\/$/,
         handler: function (req, res, match) {
             // response comes from the http server
@@ -77,124 +79,112 @@ function getUrls(options) {
             res.end();
         }
     });
-
-    urls.unshift({
+    urls.push({
         filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.html$/,
-        handler: servevisualcomponent.serveVisualComponent(options, false, false)
+        handler: servevisualcomponent.serveVisualComponent(false, false)
     });
-    urls.unshift({
+    urls.push({
         filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.mon$/,
-        handler: servevisualcomponent.serveVisualComponent(options, false, true)
+        handler: servevisualcomponent.serveVisualComponent(false, true)
     });
-    urls.unshift({
+    urls.push({
         filter: /^\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.edit$/,
-        handler: servevisualcomponent.serveVisualComponent(options, true, false)
+        handler: servevisualcomponent.serveVisualComponent(true, false)
     });
-    urls.unshift({
+    urls.push({
+        filter: /^\/make\/(.*)$/,
+        handler: pillow.makeAndServe
+    });
+    urls.push({
         filter: /^\/publish\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
-        handler: function (req, res, match) {
-            servevisualcomponent.publishVisualComponent(req, res, match, options);
-        }
+        handler: servevisualcomponent.publishVisualComponent
     });
     // sets the currently monitored application
-    urls.unshift({
+    urls.push({
         filter: /^\/monitor\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
         handler: servevisualcomponent.monitor
     });
-    urls.unshift({
+    urls.push({
         filter: /^\/monitor$/,
         handler: servevisualcomponent.monitor
     });
-    urls.unshift({
+    urls.push({
         filter: /^\/m$/,
         handler: servevisualcomponent.redirectToMonitored
     });
     urls.push({
         filter: /^\/package$/,
-        handler: function (req, res, match) {
-            servepackagelist.servePackageList(req, res, match, options);
-        }
+        handler: servepackagelist.servePackageList
     });
     urls.push({
         filter: /^\/package\/([a-z][a-zA-Z0-9]+)\/visual\/([A-Z][a-zA-Z0-9]+)$/,
-        handler: function (req, res, match) {
-            servevisual.serveVisual(req, res, match, options);
-        }
+        handler: servevisual.serveVisual
     });
     urls.push({
         filter: /^\/package\/([a-z][a-zA-Z0-9]+)$/,
-        handler: function (req, res, match) {
-            servepackage.servePackage(req, res, match, options);
-        }
+        handler: servepackage.servePackage
     });
     urls.push({
         filter: /^\/package\/([a-z][a-zA-Z0-9]+)\/image$/,
-        handler: function (req, res, match) {
-            serveimagelist.serveImageList(req, res, match, options);
-        }
+        handler: serveimagelist.serveImageList
     });
     urls.push({
         filter: /^\/events$/,
-        handler: function (req, res, match) {
-            ssevents.serveEvents(req, res, match, options);
-        }
+        handler: ssevents.serveEvents
     });
     urls.push({
         filter: /^\/makehelp$/,
-        handler: function (req, res, match) {
-            servehelp.serveRebuildHelp(req, res, match, options);
-        }
+        handler: servehelp.serveRebuildHelp
     });
     urls.push({
         filter: /^\/makelint$/,
-        handler: function (req, res, match) {
-            servetests.serveRebuildLint(req, res, match, options);
-        }
+        handler: servetests.serveRebuildLint
     });
     urls.push({
         filter: /^\/maketest$/,
-        handler: function (req, res, match) {
-            servetests.serveRebuildTest(req, res, match, options);
-        }
+        handler: servetests.serveRebuildTest
     });
     urls.push({
         filter: /^\/testhttp(.*)$/,
-        handler: function (req, res, match) {
-            servetests.serveTestHttp(req, res, match, options);
-        }
+        handler: servetests.serveTestHttp
     });
     urls.push({
         filter: /^\/testevent\/([a-z][a-zA-Z0-9]+)$/,
-        handler: function (req, res, match) {
-            servetests.serveTestEvent(req, res, match, options);
-        }
+        handler: servetests.serveTestEvent
     });
     return urls;
 }
 
-exports.run = function () {
-    var options = pillow.processArgs(
-            process.argv.slice(2),
-            pillow.argFilters
-        ),
-        swallowroot = path.join(__dirname, '../../..'),
-        work = path.join(swallowroot, 'work'),
-        packages;
-    // choose appropriate defaults for all options
+function fixOptions(options) {
     options.css = true;
     options.cacheext = options.cacheext || [ 'png', 'jpg' ];
     options.work = options.work || work;
-    work = options.work;
     options.newPackages = path.join(work, 'packages');
     options.dstFolder = path.join(work, 'generated');
     options.publishFolder = path.join(work, 'publish');
-    packages = path.join(work, 'packages');
     options.srcFolder = options.srcFolder || [
         path.join(swallowroot, 'framework'),
         path.join(swallowroot, 'editor', 'ui'),
         path.join(swallowroot, 'samples'),
-        packages
+        options.newPackages
     ];
+    return options;
+};
+
+function getDefaultOptions() {
+    var options = pillow.processArgs(
+            process.argv.slice(2),
+            pillow.argFilters);
+
+    // patch the options
+    return fixOptions(options);
+}
+
+exports.run = function () {
+    var options = getDefaultOptions();
+        work = options.work,
+        packages = options.newPackages;
+
     // Make sure we have the directory structure that we need before
     // we start.
     // Note: no need for parallelism here (we are starting up). Let's
@@ -223,7 +213,7 @@ exports.run = function () {
                 }
             }
             // we are now ready to run
-            pillow.serve(getUrls(options), options.port);
+            pillow.serve(getUrls(), options);
 
         } else {
             console.log(work + ' is not a directory, exiting');
@@ -234,6 +224,11 @@ exports.run = function () {
         return;
     }
 };
+
+exports.getMiddleWare = function (options) {
+    options = options || fixOptions({});
+    return pillow.getMiddleWare(getUrls(), options);
+}
 
 // allow this file to be executed directly
 if (process.argv[1] === __filename) {

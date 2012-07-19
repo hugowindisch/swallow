@@ -34,7 +34,7 @@ var pillow = require('../'),
 
 if (!options.help) {
     if (options.srcFolder.length > 0) {
-        pillow.serve(pillow.getUrls(options), options.port);
+        pillow.serve(pillow.urls, options);
     } else {
         console.log('--help for help');
     }

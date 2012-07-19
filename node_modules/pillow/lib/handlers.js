@@ -39,10 +39,13 @@ var async = require('async'),
 /**
     Handler for making files on the fly and serving them.
 */
-exports.makeAndServe = function (req, res, match, cxt) {
+exports.makeAndServe = function (req, res, cxt) {
+    var match = cxt.match,
+        options = cxt.options;
+
     async.waterfall([
         function (cb) {
-            scan.makeFile(cxt, match[1], cb);
+            scan.makeFile(options, match[1], cb);
         },
         function (data, cb) {
             var extRE = /\.([^.]*)$/,
@@ -50,15 +53,15 @@ exports.makeAndServe = function (req, res, match, cxt) {
                 ext = m ? m[1] : null,
                 mime = 'text/plain',
                 mustCache = false,
-                rs = fs.createReadStream(path.join(cxt.dstFolder, match[1]));
+                rs = fs.createReadStream(path.join(options.dstFolder, match[1]));
 
             if (m) {
                 mime = mimetypes[ext] || mime;
             }
 
             // cache some packages
-            if (cxt.cache) {
-                cxt.cache.forEach(function (packageName) {
+            if (options.cache) {
+                options.cache.forEach(function (packageName) {
                     var m = new RegExp('^' + packageName + '\/');
                     if (m.test(match[1])) {
                         mustCache = true;
@@ -66,8 +69,8 @@ exports.makeAndServe = function (req, res, match, cxt) {
                 });
             }
             // cache some extensions
-            if (cxt.cacheext && ext) {
-                cxt.cacheext.forEach(function (extToCache) {
+            if (options.cacheext && ext) {
+                options.cacheext.forEach(function (extToCache) {
                     if (extToCache === ext) {
                         mustCache = true;
                     }

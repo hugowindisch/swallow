@@ -7,5 +7,5 @@
         "Ernesto Méndez <der@der-design.com>"
     ],
     "engines" : { "pillow": "*" },
-    "main" : "lib/whiskers"
+    "main" : "./lib/whiskers"
 }
