@@ -189,7 +189,7 @@ Launcher.prototype.updatePackageList = function () {
         that = this;
     delete this.selected;
     packageList.removeAllChildren();
-    packageList.setOverflow(['visible', 'auto']);
+    packageList.setOverflow(['hidden', 'auto']);
     forEachSortedProperty(this.packages, function (p, pn) {
         var pv = new Package({ name: pn });
         pv.setHtmlFlowing({ position: 'relative'}, true);
@@ -227,7 +227,7 @@ Launcher.prototype.updateModuleList = function () {
         selPackageName = this.selected,
         factory;
     moduleList.removeAllChildren();
-    moduleList.setOverflow(['visible', 'auto']);
+    moduleList.setOverflow(['hidden', 'auto']);
     delete this.selectedModule;
     if (this.selected) {
         factory = require(selPackageName);
