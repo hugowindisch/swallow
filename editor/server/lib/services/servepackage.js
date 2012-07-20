@@ -87,7 +87,7 @@ function servePackage(req, res, cxt) {
 
     switch (req.method) {
     case 'GET':
-        break;
+        return ret404();
     case 'PUT':
         savePackage(options, packageName, function (err) {
             if (err) {

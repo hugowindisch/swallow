@@ -26,33 +26,296 @@ var swallowapps = require('swallowapps'),
     async = require('async'),
     fs = require('fs'),
     http = require('http'),
-    path = require('path');
+    wrench = require('wrench'),
+    path = require('path'),
+    url = require('url'),
+    swallowroot = path.join(__dirname, '../../..'),
+    work = path.join(swallowroot, 'testwork');
 
-function httpGet(path, cb) {
+function httpGet(u, cb) {
     var data = '';
-    http.get(path, function (res) {
+    http.get(u, function (res) {
         res.on('data', function (d) {
             data += d;
         });
         res.on('end', function () {
-            cb(null, data);
+            cb(null, data, res);
         });
         res.on('error', function (e) {
-            cb(e);
+            cb(e, null, res);
         });
     });
 }
 
+function httpPost(u, toSend, cb) {
+    var data = '',
+        r = url.parse(u),
+        req;
+    r.method = 'POST';
+    req = http.request(r, function (res) {
+        res.on('data', function (d) {
+            data += d;
+        });
+        res.on('end', function () {
+            cb(null, data, res);
+        });
+        res.on('error', function (e) {
+            cb(e, null, res);
+        });
+    });
+    if (toSend) {
+        req.write(toSend);
+    }
+    req.end();
+}
+
+/*
+http://localhost:1337/swallow/events,
+http://localhost:1337/swallow/testevent/abcd,
+*/
 function testGetMiddleWare(cb) {
     var app = require('express').createServer(),
         options = {
-            srcFolder: __dirname,
-            dstFolder: path.join(__dirname, 'generated')
+            work: work
         };
-    app.use(swallowapps.getMiddleWare());
+    app.use(swallowapps.getMiddleWare(options));
     app.listen(1337);
-    httpGet('http://localhost:1337/swallow/testhttp', function (err, data) {
+    // we can test a bunch of requests
+    // (we cannot really do them in parallel since we use the same dstfolder
+    // in all cases)
+    async.series([
+        // http echo mode
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/testhttp', function (err, data) {
+                console.log('testhttp ' + err);
+                cb(err);
+            });
+        },
+        // get a webpage for running one of the samples
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/make/samples.StyleAnimation.html', function (err, data) {
+                console.log('/make/samples.StyleAnimation.html ' + err);
+                // if it worked, validate a few more things
+                if (!err) {
+                    try {
+                        assert(fs.existsSync(options.dstFolder));
+                        assert(fs.existsSync(path.join(options.dstFolder, 'samples')));
+                        assert(fs.existsSync(path.join(options.dstFolder, 'samples', 'samples.js')));
+                        assert(data.indexOf('StyleAnimation') >= 0);
+                    } catch (e) {
+                        err = e;
+                    }
+                }
+                wrench.rmdirSyncRecursive(options.dstFolder, true);
+                cb(err);
+            });
+        },
+        // get a webpage for monitoring one of the samples
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/make/samples.StyleAnimation.mon', function (err, data) {
+                console.log('/make/samples.StyleAnimation.mon ' + err);
+                // if it worked, validate a few more things
+                if (!err) {
+                    try {
+                        assert(fs.existsSync(options.dstFolder));
+                        assert(fs.existsSync(path.join(options.dstFolder, 'samples')));
+                        assert(fs.existsSync(path.join(options.dstFolder, 'samples', 'samples.js')));
+                        assert(data.indexOf('StyleAnimation') >= 0);
+                    } catch (e) {
+                        err = e;
+                    }
+                }
+
+                wrench.rmdirSyncRecursive(options.dstFolder, true);
+                cb(err);
+            });
+        },
+        // get a webpage for editing one of the samples
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/make/samples.StyleAnimation.edit', function (err, data) {
+                console.log('/make/samples.StyleAnimation.edit ' + err);
+                wrench.rmdirSyncRecursive(options.dstFolder, true);
+                cb(err);
+            });
+        },
+        // make an asset
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/make/samples/lib/tree.jpg', function (err, data) {
+                console.log('/make/samples/lib/tree.jpg ' + err);
+                // if it worked, validate a few more things
+                if (!err) {
+                    try {
+                        assert(fs.existsSync(options.dstFolder));
+                        assert(fs.existsSync(path.join(options.dstFolder, 'samples')));
+                        assert(fs.existsSync(path.join(options.dstFolder, 'samples', 'lib')));
+                        assert(fs.existsSync(path.join(options.dstFolder, 'samples', 'lib', 'tree.jpg')));
+                    } catch (e) {
+                        err = e;
+                    }
+                }
+
+                wrench.rmdirSyncRecursive(options.dstFolder, true);
+                cb(err);
+            });
+        },
+        // publish a sample
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/publish/samples.StyleAnimation', function (err, data) {
+                console.log('/publish/samples.StyleAnimation ' + err);
+                // if it worked, validate a few more things
+                if (!err) {
+                    try {
+                        assert(fs.existsSync(options.publishFolder));
+                        assert(fs.existsSync(path.join(options.publishFolder, 'samples.StyleAnimation')));
+                        assert(fs.existsSync(path.join(options.publishFolder, 'samples.StyleAnimation', 'index.html')));
+                        assert(fs.existsSync(path.join(options.publishFolder, 'samples.StyleAnimation', 'pillow.js')));
+                        assert(fs.existsSync(path.join(options.publishFolder, 'samples.StyleAnimation', 'samples')));
+
+                    } catch (e) {
+                        err = e;
+                    }
+                }
+                wrench.rmdirSyncRecursive(options.publishFolder, true);
+                cb(err);
+            });
+        },
+        // monitor something
+        function (cb) {
+            httpPost('http://localhost:1337/swallow/monitor/samples.StyleAnimation', null, function (err, data) {
+                console.log('/monitor/samples.StyleAnimation ' + err);
+                // if it worked, validate a few more things
+                if (!err) {
+                    httpGet('http://localhost:1337/swallow/monitor', function (err, data) {
+                        var monitored = JSON.parse(data);
+                        if (!err) {
+                            try {
+                                assert(monitored);
+                                assert.strictEqual(monitored.factory, 'samples');
+                                assert.strictEqual(monitored.type, 'StyleAnimation');
+                            } catch (e) {
+                                err = e;
+                            }
+                        }
+                        cb(err);
+                    });
+                } else {
+                    cb(err);
+                }
+            });
+        },
+        // get the monitored application
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/m', function (err, data, res) {
+                console.log('http://localhost:1337/swallow/m ' + err);
+                if (!err) {
+                    try {
+                        assert.strictEqual(res.statusCode, 302);
+                        assert.strictEqual(res.headers.location, '/swallow/make/samples.StyleAnimation.mon');
+                    } catch (e) {
+                        err = e;
+                    }
+                }
+                wrench.rmdirSyncRecursive(options.dstFolder, true);
+                cb(err);
+            });
+        },
+        // get the full list of packages
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/package', function (err, data) {
+                var json;
+                console.log('/package ' + err);
+                if (!err) {
+                    try {
+                        json = JSON.parse(data);
+                        assert(json);
+                        assert(json.samples);
+                        assert.strictEqual(json.samples.name, 'samples');
+                    } catch (e) {
+                        err = e;
+                    }
+                }
+                cb(err);
+            });
+        },
+        // get a vis file
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/package/samples/visual/StyleAnimation', function (err, data) {
+                var json;
+                console.log('/package/samples/visual/StyleAnimation ' + err);
+                if (!err) {
+                    try {
+                        json = JSON.parse(data);
+                        assert(json);
+                        assert.strictEqual(json.description, 'An animation example using styles');
+                    } catch (e) {
+                        err = e;
+                    }
+                }
+                cb(err);
+            });
+        },
+        // get a list of images for a sample
+        function (cb) {
+            httpGet('http://localhost:1337/swallow/package/samples/image', function (err, data) {
+                var json;
+                console.log('/package/samples/image ' + err);
+                if (!err) {
+                    try {
+                        json = JSON.parse(data);
+                        assert(json);
+                        assert(json instanceof Array);
+                    } catch (e) {
+                        err = e;
+                    }
+                }
+                cb(err);
+            });
+        },
+        // generate help files
+        function (cb) {
+            httpPost('http://localhost:1337/swallow/makehelp', null, function (err, data) {
+                var json;
+                console.log('/makehelp ' + err);
+                if (!err) {
+                    httpGet('http://localhost:1337/swallow/make/samples/samples.dox.json', function (err, data) {
+                        cb(err);
+                    });
+                } else {
+                    cb(err);
+                }
+            });
+        },
+        // generate help files
+        function (cb) {
+            httpPost('http://localhost:1337/swallow/makelint', null, function (err, data) {
+                var json;
+                console.log('/makelint ' + err);
+                if (!err) {
+                    httpGet('http://localhost:1337/swallow/make/samples/samples.lint.json', function (err, data) {
+                        cb(err);
+                    });
+                } else {
+                    cb(err);
+                }
+            });
+        },
+        // generate test module
+        function (cb) {
+            httpPost('http://localhost:1337/swallow/maketest', null, function (err, data) {
+                var json;
+                console.log('/maketest ' + err);
+                if (!err) {
+                    httpGet('http://localhost:1337/swallow/make/samples/samples.test.js', function (err, data) {
+                        cb(err);
+                    });
+                } else {
+                    cb(err);
+                }
+            });
+        }
+    ], function (err) {
         app.close();
+        wrench.rmdirSyncRecursive(options.work, true);
         cb(err);
     });
 }

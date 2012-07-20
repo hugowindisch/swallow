@@ -68,17 +68,19 @@ jqtpl.template(
 );
 
 
-function getUrls() {
+function getUrls(forMiddleWare) {
     var urls = [];
-    urls.push({
-        filter: /^\/$/,
-        handler: function (req, res, match) {
-            // response comes from the http server
-            res.setHeader("Location", "/swallow/make/launcher.Launcher.html");
-            res.writeHead(302);
-            res.end();
-        }
-    });
+    if (!forMiddleWare) {
+        urls.push({
+            filter: /^\/$/,
+            handler: function (req, res, match) {
+                // response comes from the http server
+                res.setHeader("Location", "/swallow/make/launcher.Launcher.html");
+                res.writeHead(302);
+                res.end();
+            }
+        });
+    }
     urls.push({
         filter: /^\/swallow\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.html$/,
         handler: servevisualcomponent.serveVisualComponent(false, false)
@@ -159,9 +161,9 @@ function fixOptions(options) {
     options.css = true;
     options.cacheext = options.cacheext || [ 'png', 'jpg' ];
     options.work = options.work || work;
-    options.newPackages = path.join(work, 'packages');
-    options.dstFolder = path.join(work, 'generated');
-    options.publishFolder = path.join(work, 'publish');
+    options.newPackages = path.join(options.work, 'packages');
+    options.dstFolder = path.join(options.work, 'generated');
+    options.publishFolder = path.join(options.work, 'publish');
     options.srcFolder = options.srcFolder || [
         path.join(swallowroot, 'framework'),
         path.join(swallowroot, 'editor', 'ui'),
@@ -169,66 +171,46 @@ function fixOptions(options) {
         options.newPackages
     ];
     return options;
-};
+}
 
 function getDefaultOptions() {
-    var options = pillow.processArgs(
-            process.argv.slice(2),
-            pillow.argFilters);
-
+    var options = pillow.processArgs(process.argv.slice(2), pillow.argFilters);
     // patch the options
     return fixOptions(options);
 }
 
+function createWorkingFolders(options) {
+    var work = options.work,
+        packages = options.newPackages;
+
+    // create the work directory if it is missing
+    if (!fs.existsSync(work)) {
+        fs.mkdirSync(work);
+    }
+    // create the package directory if it is missing
+    if (!fs.existsSync(packages)) {
+        fs.mkdirSync(packages);
+    }
+}
+
 exports.run = function () {
     var options = getDefaultOptions();
-        work = options.work,
-        packages = options.newPackages;
 
     // Make sure we have the directory structure that we need before
     // we start.
-    // Note: no need for parallelism here (we are starting up). Let's
-    // check that the work folder
-    // exists and that the packages folder exists
-    // we will not create the work folder but we will create the
-    // packages folder if it is missing
-    try {
-        // do we have a work directory?
-        if (fs.statSync(work).isDirectory()) {
-            try {
-                // do we have a packages directory in our work directory?
-                if (!fs.statSync(packages).isDirectory()) {
-                    console.log(packages + ' is not a directory, exiting');
-                    return;
-                }
-            } catch (e) {
-                try {
-                    // can we actually create the packages directory
-                    fs.mkdirSync(packages);
-                } catch (err) {
-                    console.log(
-                        'Could not create ' + packages + ' because of ' + err
-                    );
-                    return;
-                }
-            }
-            // we are now ready to run
-            pillow.serve(getUrls(), options);
-
-        } else {
-            console.log(work + ' is not a directory, exiting');
-            return;
-        }
-    } catch (error) {
-        console.log('Cannot access work directory, error ' + error);
-        return;
-    }
+    createWorkingFolders(options);
+    // we are now ready to run
+    pillow.serve(getUrls(false), options);
 };
 
 exports.getMiddleWare = function (options) {
-    options = options || fixOptions({});
-    return pillow.getMiddleWare(getUrls(), options);
-}
+    options = fixOptions(options || {});
+    // Make sure we have the directory structure that we need before
+    // we start.
+    createWorkingFolders(options);
+    // return the middleware
+    return pillow.getMiddleWare(getUrls(true), options);
+};
 
 // allow this file to be executed directly
 if (process.argv[1] === __filename) {

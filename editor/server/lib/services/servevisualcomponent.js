@@ -109,7 +109,8 @@ function serveVisualComponent(forEdit, monitor) {
                             // now we are ready to return this
                             res.writeHead(200);
                             res.write(htmlBuf);
-                            res.end();
+                            // we intentionally don't call res.end here
+                            // ee call it when makePackage returns
                         }
                         cb(null);
                     }
@@ -124,6 +125,8 @@ function serveVisualComponent(forEdit, monitor) {
                     res.writeHead(404);
                     console.log(err);
                 }
+                // res.end is done here
+                res.end();
             }
         );
     };
@@ -214,7 +217,6 @@ function monitor(req, res, cxt) {
         processed;
     switch (req.method) {
     case 'GET':
-        monitored = { factory: factory, type: type };
         res.writeHead(200, {'Content-Type': mimeType.json});
         res.write(JSON.stringify(monitored));
         res.end();
