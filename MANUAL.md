@@ -1,7 +1,7 @@
-# What is swallow
+# What is swallowapps
 The number of graphic features (transformation matrices, shadows, gradients, backgrounds, animation effects, filters, masks, canvas, etc.) supported by modern browsers increases everyday. But using these features is difficult without an interactive tools: for most people design is a task that must be performed graphically and interactively, we want to see what we do and get instant feedback whenever we add, remove or change something. Moreover we don't necessarily want to learn programming languages and file formats in order to be able to create user interfaces.
 
-Swallow is an open source graphic environment for creating HTML5 applications visually. Its main goal is to separate graphic design from programming so that designers can work visually on visual elements and programmers can work with programming tools on code.
+Swallowapps is an open source graphic environment for creating HTML5 applications visually. Its main goal is to separate graphic design from programming so that designers can work visually on visual elements and programmers can work with programming tools on code.
 
 ## The Editor
 The editor is a visual tool that is documented visual with youtube videos. These video are available in the Help menu of the editor.
@@ -11,7 +11,7 @@ The framework consists of:
 
 - packages that implement standard apis (assert, http, events, http, glmatrix) that handle tasks that are already well defined in NodJS or CommonJS and are similar on the client and the server.
 
-- custom packages (visual, domvisual, config, utils) that implement apis that are specific to swallow and that let you create or use visual components.
+- custom packages (visual, domvisual, config, utils) that implement apis that are specific to swallowapps and that let you create or use visual components.
 
 - optional packages (baseui, domquery, doxhtml, sse) that implement other useful apis and extensions. You can also add your own extensions by adding more packages or porting NodeJS packages.
 
@@ -26,7 +26,7 @@ The package you created has a package.json file. It is a commonJS package. It is
 The module you created is a Javascript file and a CommonJS module (it can require() packages and modules, and be require()d by other packages and modules). It is located in work/packages/yourpackagename/lib.
 
 ##Where is the code?
-Swallow generates a small javascript module for each new visual element that you create.
+Swallowapps generates a small javascript module for each new visual element that you create.
 
 This module looks like this:
 
@@ -76,7 +76,7 @@ TODO: Document the and c version of some events
 TODO: Document the liftetime management of handlers
 
 ##Dealing with Mouse events (and positional events)
-SwallowApps lets you compute the position of mouse events relative to your component (in HTML, mouse events are positioned relatively to the page). This can be useful if you want to use the mouse to position a visual element inside another visual element (just like swallow's visual editor does).
+SwallowApps lets you compute the position of mouse events relative to your component (in HTML, mouse events are positioned relatively to the page). This can be useful if you want to use the mouse to position a visual element inside another visual element (just like swallowapps's visual editor does).
 
 ```javascript
         this.getChild('myChild').on('mousemove', function (evt) {
@@ -221,13 +221,51 @@ TODO: add something to input a number with optional range validation
 You can manually ...
 
 ##Flowing Elements
-Swallow implements an absolute positioning model: graphic elements are explicitely positioned using a graphic editor. But sometimes it is very convenient to let HTML flow elements.
+Swallowapps implements an absolute positioning model: graphic elements are explicitely positioned using a graphic editor. But sometimes it is very convenient to let HTML flow elements.
 
 You can tell html to flow some of the elements of a given container by doing something like:
 
 ```javascript
     myContainer.getChild('myChild').setHtmlFlowing({position: 'relative'}, false);
 ```
+
+##Development: Interfacing with Server Services
+Most client side applications present data that originates from a server. To facilitate the whole development process (and avoid same origin conflicts), swallowapps can run as a middleware in your Express, Connect or barebones NodeJS development server. All swallowapps urls share the same /swallow/ root (to avoid polluting your url namespace).
+
+Here is how swallowapps can run in Express or Connect:
+'''javascript
+    var app = require('express').createServer(),
+        swallowapps = require('swallowapps'),
+        options = {
+            work: '/path/to/your/work/folder'
+        };
+    app.use(swallowapps.getMiddleWare(options));
+
+    // Do something with the app
+    app.listen(1337);
+'''
+
+Here is how the same results could be achieved in a barebones NodeJS solution:
+'''javascript
+    var http = require('http'),
+        swallowapps = require('swallowapps'),
+        options = {
+            work: '/path/to/your/work/folder'
+        },
+        mw = swallowapps.getMiddleWare(options);
+
+    srv = http.createServer(function (req, res) {
+        // Note: optionally you could pass a next function to the middleware
+        // as a 3rd argument. This next function is called when the middleware
+        // does not consume the request.
+        mw(req, res);
+    }).listen(port, '0.0.0.0');
+'''
+
+In both cases, you will be able to run the Launcher from your own server on the following path: '/swallow/make/launcher.Launcher.html'.
+
+##Deployment: Generating a Statically Servable of Your Apps
+
 
 #Advanced Features
 This section discusses topics that will probably not be useful for playing with the tool but that will probably become essential in some real life situations.
@@ -249,9 +287,6 @@ You can add tests to your packages and run these tests from the TestViewer (http
 ##Adding non visual packages
 
 ##Porting NodeJS packages
-
-##Dealing with server side parts
-
 
 
 

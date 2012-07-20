@@ -10,11 +10,11 @@ http://www.youtube.com/watch?v=m0os24I4PUc
 + Small javascript framework based on CommonJS
 + Cient side apis (http, events, assert, etc) based on NodeJS or CommonJS
 + Styling and skinning of components using css3 features
-+ Ultra efficient workflow: f5 'remakes' everything almost instantaneously
-* Integrated documentation generation
-* Integrated code validation
-* Integrated asynchronous testing
-* Built with itself (mastering the framework lets you modify all the tools)
++ Runs standalone or as a middleware in your own Express, Connect or NodeJS project
++ Integrated documentation generation
++ Integrated code validation
++ Integrated asynchronous testing
++ Built with itself (mastering the framework lets you modify all the tools)
 
 #Before you start
 + Make sure you have a recent version of NodeJS (ubuntu: installation with

@@ -47,49 +47,54 @@ exports.makeAndServe = function (req, res, cxt) {
         function (cb) {
             scan.makeFile(options, match[1], cb);
         },
-        function (data, cb) {
+        function (data) {
             var extRE = /\.([^.]*)$/,
                 m = extRE.exec(match[1]),
                 ext = m ? m[1] : null,
-                mime = 'text/plain',
+                mime,
                 mustCache = false,
-                rs = fs.createReadStream(path.join(options.dstFolder, match[1]));
+                filePath = path.join(options.dstFolder, match[1]),
+                rs;
 
             if (m) {
-                mime = mimetypes[ext] || mime;
-            }
+                rs = fs.createReadStream(filePath);
+                mime = mimetypes[ext.toLowerCase()] || mime;
 
-            // cache some packages
-            if (options.cache) {
-                options.cache.forEach(function (packageName) {
-                    var m = new RegExp('^' + packageName + '\/');
-                    if (m.test(match[1])) {
-                        mustCache = true;
-                    }
-                });
-            }
-            // cache some extensions
-            if (options.cacheext && ext) {
-                options.cacheext.forEach(function (extToCache) {
-                    if (extToCache === ext) {
-                        mustCache = true;
-                    }
-                });
-            }
+                // cache some packages
+                if (options.cache) {
+                    options.cache.forEach(function (packageName) {
+                        var m = new RegExp('^' + packageName + '\/');
+                        if (m.test(match[1])) {
+                            mustCache = true;
+                        }
+                    });
+                }
+                // cache some extensions
+                if (options.cacheext && ext) {
+                    options.cacheext.forEach(function (extToCache) {
+                        if (extToCache === ext) {
+                            mustCache = true;
+                        }
+                    });
+                }
 
-            rs.on('error', function (err) {
+                rs.on('error', function (err) {
+                    res.writeHead(404);
+                    res.end();
+                });
+
+                rs.once('open', function (fd) {
+                    var headers = {'Content-Type': mime};
+                    if (mustCache) {
+                        headers['Cache-Control'] = 'max-age=2592000';
+                    }
+                    res.writeHead(200, headers);
+                });
+                rs.pipe(res);
+            } else {
                 res.writeHead(404);
                 res.end();
-            });
-            rs.once('open', function (fd) {
-                var headers = {'Content-Type': mime};
-                if (mustCache) {
-                    headers['Cache-Control'] = 'max-age=2592000';
-                }
-                res.writeHead(200, headers);
-            });
-
-            rs.pipe(res);
+            }
         }
     ], function (err) {
         if (err) {

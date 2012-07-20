@@ -48,7 +48,7 @@ function getMiddleWare(urls, options) {
                 h.handler(req, res, { options: options, match: m, next: setUnHandled });
             }
         }
-        if (!handled) {
+        if (!handled && next) {
             next();
         }
     };

@@ -41,10 +41,10 @@ function httpGet(path, cb) {
             data += d;
         });
         res.on('end', function () {
-            cb(null, data);
+            cb(null, data, res);
         });
         res.on('error', function (e) {
-            cb(e);
+            cb(e, null, res);
         });
     });
 }
@@ -55,18 +55,68 @@ function testMakeAndServe(cb) {
     cb(res);
 }
 
+function inServer(options, cb) {
+    // give the server a little time to start
+    setTimeout(
+        function () {
+            async.series([
+                // test a request that works (an existing file)
+                function (cb) {
+                    httpGet('http://localhost:1337/make/testpackage/testpackage.js', function (err, data, res) {
+                        if (!err) {
+                            try {
+                                assert.strictEqual(res.statusCode, 200);
+                            } catch (e) {
+                                err = e;
+                            }
+                        }
+                        cb(err);
+                    });
+                },
+                function (cb) {
+                    httpGet('http://localhost:1337/make/testpackage/thisfiledoesnotexist.js', function (err, data, res) {
+                        if (!err) {
+                            try {
+                                assert.strictEqual(res.statusCode, 404);
+                            } catch (e) {
+                                err = e;
+                            }
+                        }
+                        cb(err);
+                    });
+                },
+                function (cb) {
+                    httpGet('http://localhost:1337/make/testpackage', function (err, data, res) {
+                        if (!err) {
+                            try {
+                                assert.strictEqual(res.statusCode, 404);
+                            } catch (e) {
+                                err = e;
+                            }
+                        }
+                        cb(err);
+                    });
+                }
+            ], function (err) {
+                wrench.rmdirSyncRecursive(options.dstFolder, true);
+                cb(err);
+            });
+        },
+        100
+    );
+
+}
+
 function testServe(cb) {
     var res = null,
         options = {
             srcFolder: __dirname,
             dstFolder: path.join(__dirname, 'generated')
         },
-        srv = pillow.serve(pillow.urls, options),
-        data = '';
-    // should we sleep here?
-    httpGet('http://localhost:1337/make/testpackage/testpackage.js', function (err, data) {
+        srv = pillow.serve(pillow.urls, options);
+    // run the 'in server tests'
+    inServer(options, function (err) {
         srv.close();
-        wrench.rmdirSyncRecursive(options.dstFolder, true);
         cb(err);
     });
 }
@@ -79,9 +129,8 @@ function testGetMiddleWare(cb) {
         };
     app.use(pillow.getMiddleWare(pillow.urls, options));
     app.listen(1337);
-    httpGet('http://localhost:1337/make/testpackage/testpackage.js', function (err, data) {
+    inServer(options, function (err) {
         app.close();
-        wrench.rmdirSyncRecursive(options.dstFolder, true);
         cb(err);
     });
 }
@@ -177,6 +226,24 @@ function testMakeFile(cb) {
     });
 }
 
+function testMakeMissingFile(cb) {
+    var res = null,
+        options = {
+            srcFolder: __dirname,
+            dstFolder: path.join(__dirname, 'generated')
+        };
+    pillow.makeFile(options, 'testpackage/thisdoesnotexist.js', function (err) {
+        if (err) {
+            err = null;
+        } else {
+            err = new Error('No error when making a missing file');
+        }
+        wrench.rmdirSyncRecursive(options.dstFolder, true);
+        cb(res);
+    });
+}
+
+
 function testProcessArgs(cb) {
     var res = null;
     cb(res);
@@ -237,6 +304,7 @@ async.series(
         testMakeAll,
         testMakePackage,
         testMakeFile,
+        testMakeMissingFile,
         testProcessArgs,
         testShowHelp,
         testArgFilters,
