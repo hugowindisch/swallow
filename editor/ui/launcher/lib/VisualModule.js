@@ -93,16 +93,26 @@ VisualModule.prototype.setPreview = function (Preview) {
     var preview;
     if (Preview.createPreview) {
         // specific preview
-        preview = Preview.createPreview();
+        try {
+            preview = Preview.createPreview();
+        } catch (e) {
+            preview = null;
+        }
     } else {
-        // generic preview
-        preview = new Preview({});
-        preview.setOverflow('hidden');
-        preview.enableScaling(true);
+        try {
+            // generic preview
+            preview = new Preview({});
+            preview.setOverflow('hidden');
+            preview.enableScaling(true);
+        } catch (err) {
+            preview = null;
+        }
     }
-    preview.setPosition('preview');
-    preview.enableInteractions(false);
-    this.addChild(preview, 'preview');
+    if (preview) {
+        preview.setPosition('preview');
+        preview.enableInteractions(false);
+        this.addChild(preview, 'preview');
+    }
 };
 VisualModule.prototype.setTypeInfo = function (typeInfo) {
     this.typeInfo = typeInfo;
