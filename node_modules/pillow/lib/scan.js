@@ -38,9 +38,10 @@ var fs = require('fs'),
         'png': true,
         'gif': true,
         'html': true,
-        'json': false,
+        'json': true,
         'css': true,
-        'vis': false
+        'vis': false,
+        'md': true
     },
     lintOptions = {
         bitwise: true,

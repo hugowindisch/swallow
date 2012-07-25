@@ -33,7 +33,8 @@ var async = require('async'),
         html: 'text/html',
         json: 'application/json',
         css: 'text/css',
-        js: 'application/ecmascript'
+        js: 'application/ecmascript',
+        md: 'text/x-markdown'
     };
 
 /**
