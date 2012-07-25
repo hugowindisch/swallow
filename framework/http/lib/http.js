@@ -23,7 +23,9 @@
 var utils = require('utils'),
     events = require('events'),
     update = require('visual').update,
+    url = require('url'),
     forEachProperty = utils.forEachProperty,
+    isString = utils.isString,
     readyStates = {
         unsent: 0,
         opened: 1,
@@ -94,7 +96,8 @@ function ClientRequest(options) {
     var url = '',
         that = this,
         response;
-
+    // note: this does not seem to be done with url (since path is not
+    // used by url.format)
     if (options.host) {
         url += options.host;
         if (options.port) {
@@ -228,6 +231,9 @@ function request(options, callback) {
 * @memberOf http
 */
 function get(options, callback) {
+    if (isString(options)) {
+        options = url.parse(options);
+    }
     options.method = 'GET';
     var ret = request(options, callback);
     ret.end();
