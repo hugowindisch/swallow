@@ -1,0 +1,42 @@
+{
+    "name" : "markdown",
+    "version" : "0.4.0",
+    "description" : "A sensible Markdown parser for javascript",
+    "keywords" : [ "markdown", "text processing", "ast" ],
+    "maintainers" : [
+        {
+            "name" : "Dominic Baggott",
+            "email" : "dominic.baggott@gmail.com",
+            "web" : "http://evilstreak.co.uk"
+        },
+        {
+            "name" : "Ash Berlin",
+            "email" : "ash_markdownjs@firemirror.com",
+            "web" : "http://ashberlin.com"
+        }
+    ],
+    "contributors" : [
+    {
+        "name" : "Dominic Baggott",
+        "email" : "dominic.baggott@gmail.com",
+        "web" : "http://evilstreak.co.uk"
+    },
+    {
+        "name" : "Ash Berlin",
+        "email" : "ash_markdownjs@firemirror.com",
+        "web" : "http://ashberlin.com"
+    }
+    ],
+    "licenses" : [
+        {
+            "type" : "MIT",
+            "url" : "http://www.opensource.org/licenses/mit-license.php"
+        }
+    ],
+    "scripts": {
+        "test": "tap test/*.t.js"
+    },
+    "engines": {
+        "pillow": "*"
+    }
+}
