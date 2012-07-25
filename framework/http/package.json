@@ -5,7 +5,8 @@
         "utils": ">=0.0.1",
         "events": ">=0.0.1",
         "visual": ">=0.0.1",
-        "assert": ">=0.0.1"
+        "assert": ">=0.0.1",
+        "url": ">=0.0.1"
     },
     "scripts": {
         "test": "test/test.js"
