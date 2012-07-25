@@ -158,3 +158,11 @@ exports.setChildrenDirty = function (o, why) {
         dirty.setDirty.apply(dirty, args);
     });
 };
+
+/*
+* Checks if we are in an update.
+* @api private
+*/
+exports.isInUpdate = function () {
+    return inUpdate;
+};
