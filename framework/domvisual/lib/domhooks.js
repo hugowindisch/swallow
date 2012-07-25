@@ -194,7 +194,13 @@ hookMap = {
         getDOMElement: function (vis) {
             return vis.element;
         }
+    },
+    DOMSubtreeModified: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
     }
+
 };
 
 /*
@@ -207,7 +213,9 @@ function createHandler(name, vis, filter) {
             evt = filter(evt);
         }
         vis.emit(name, evt);
-        dirty.update();
+        if (!dirty.isInUpdate()) {
+            dirty.update();
+        }
         updateDOMEventHooks(vis);
     };
 }
