@@ -184,6 +184,16 @@ Visual.prototype.getFullName = function () {
 };
 
 /**
+* Iterates all the children.
+* @returns this
+* @type Visual
+*/
+Visual.prototype.forEachChild = function (f) {
+    forEachProperty(this.children, f);
+    return this;
+};
+
+/**
 * Allows scaling. When a visual is moved to a given position, it
 * is resized. The resizing part of the transformation can either be
 * interpreted as a scaling or as a resizing.
@@ -565,6 +575,15 @@ Visual.prototype.addChild = function (child, name, atOptionalOrder) {
     // immediately redimension this child
     applyLayout(this.dimensions, this.layout, child);
     return this;
+};
+
+/**
+* Returns the number of children.
+* @returns the number of children
+* @type Number
+*/
+Visual.prototype.getNumChildren = function () {
+    return this.numChildren;
 };
 
 /**
