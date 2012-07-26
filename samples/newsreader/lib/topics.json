@@ -1,0 +1,58 @@
+[
+    {
+        "category": "finance",
+        "author": "Joe",
+        "topic": {
+            "factory": "newsreader",
+            "type": "Topic",
+            "config": {
+                "title": "The Genome of Grass",
+                "short": "Grass genes have been patented. Walking on grass is no longer free...",
+                "content": "newsreader/lib/topic/fulltext1.md",
+                "image": "newsreader/lib/topic/img/field.jpg"
+            }
+        }
+    },
+    {
+        "category": "sports",
+        "author": "Joe",
+        "topic": {
+            "factory": "newsreader",
+            "type": "Topic",
+            "config": {
+                "title": "México's Best Kept Secret",
+                "short": "Lucha Libre, a salsa infused breed of wrestling...",
+                "content": "newsreader/lib/topic/fulltext1.md",
+                "image": "newsreader/lib/topic/img/lucha.jpg"
+            }
+        }
+    },
+    {
+        "category": "movies",
+        "author": "Joe",
+        "topic": {
+            "factory": "newsreader",
+            "type": "Topic",
+            "config": {
+                "title": "Hand Made Guitars",
+                "short": "A new documentary about Paracho, guitar capital of...",
+                "content": "newsreader/lib/topic/fulltext1.md",
+                "image": "newsreader/lib/topic/img/guitar.jpg"
+            }
+        }
+    },
+    {
+        "category": "world",
+        "author": "Joe",
+        "topic": {
+            "factory": "newsreader",
+            "type": "Topic",
+            "config": {
+                "title": "UFO Discovered in a Lake",
+                "short": "Researchers have discovered what seems to be a UFO...",
+                "content": "newsreader/lib/topic/fulltext1.md",
+                "image": "newsreader/lib/topic/img/lake.jpg"
+            }
+        }
+    }
+]

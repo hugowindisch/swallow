@@ -1,0 +1,354 @@
+{
+    "description": "",
+    "private": true,
+    "privateTheme": true,
+    "dimensions": [
+        600,
+        400,
+        1
+    ],
+    "gridSize": 8,
+    "children": {
+        "pos": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "pos",
+                "innerText": "",
+                "style": "titleBar"
+            }
+        },
+        "pos0": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "pos0",
+                "innerText": "Title",
+                "style": "style0"
+            }
+        },
+        "pos1": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "pos1",
+                "innerText": "",
+                "style": "icon"
+            }
+        },
+        "pos2": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "pos2",
+                "innerText": "lorem ipsum",
+                "style": "mainText"
+            }
+        }
+    },
+    "positions": {
+        "pos": {
+            "matrix": {
+                "0": 600,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 80,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 0,
+                "13": 0,
+                "14": 0,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 0,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "pos0": {
+            "matrix": {
+                "0": 488,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 40,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 111.99999237060547,
+                "13": 16,
+                "14": 0.3636363744735718,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 1,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "pos1": {
+            "matrix": {
+                "0": 80,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 80,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 0,
+                "13": 0,
+                "14": 0.7272727489471436,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 2,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "auto",
+                "bottom": "px",
+                "height": "px"
+            }
+        },
+        "pos2": {
+            "matrix": {
+                "0": 472,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 152,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 56,
+                "13": 136,
+                "14": 0,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 3,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        }
+    },
+    "theme": {
+        "style0": {
+            "jsData": {
+                "fontFamily": "sans-serif",
+                "fontSize": 38.15555555555556,
+                "fontWeight": "bold",
+                "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 1
+                }
+            }
+        },
+        "icon": {
+            "jsData": {
+                "borderTopLeftRadius": 17.77777777777778,
+                "borderTopRightRadius": 17.77777777777778,
+                "borderBottomLeftRadius": 17.77777777777778,
+                "borderBottomRightRadius": 17.77777777777778,
+                "borderTopStyle": "solid",
+                "borderLeftStyle": "solid",
+                "borderLeftWidth": 4.5,
+                "borderRightStyle": "solid",
+                "borderRightWidth": 4.5,
+                "borderBottomStyle": "solid",
+                "borderBottomWidth": 4.5,
+                "borderTopWidth": 4.5,
+                "borderLeftColor": {
+                    "r": 180.09375,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.475
+                },
+                "borderRightColor": {
+                    "r": 180.09375,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.475
+                },
+                "borderBottomColor": {
+                    "r": 180.09375,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.475
+                },
+                "borderTopColor": {
+                    "r": 180.09375,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.475
+                },
+                "backgroundImage": {
+                    "colors": [
+                        {
+                            "r": 132,
+                            "g": 0,
+                            "b": 0,
+                            "a": 1
+                        },
+                        {
+                            "r": 132,
+                            "g": 0,
+                            "b": 0,
+                            "a": 1
+                        },
+                        {
+                            "r": 255,
+                            "g": 0,
+                            "b": 0,
+                            "a": 1
+                        }
+                    ],
+                    "stops": [
+                        0,
+                        1,
+                        0.555
+                    ],
+                    "type": "vertical"
+                },
+                "boxShadow": {
+                    "offsetX": 0,
+                    "offsetY": 0,
+                    "blurRadius": 10,
+                    "spreadRadius": 0,
+                    "color": {
+                        "r": 89.25,
+                        "g": 0,
+                        "b": 0,
+                        "a": 1
+                    }
+                }
+            },
+            "basedOn": [
+                {
+                    "factory": "newsreader",
+                    "type": "GlobalStyling",
+                    "style": "titleBar"
+                }
+            ]
+        },
+        "titleBar": {
+            "jsData": {
+                "backgroundImage": {
+                    "colors": [
+                        {
+                            "r": 255,
+                            "g": 255,
+                            "b": 255,
+                            "a": 1
+                        },
+                        {
+                            "r": 148.21875,
+                            "g": 0,
+                            "b": 0,
+                            "a": 1
+                        },
+                        {
+                            "r": 189.65625,
+                            "g": 0,
+                            "b": 0,
+                            "a": 1
+                        },
+                        {
+                            "r": 255,
+                            "g": 0,
+                            "b": 0,
+                            "a": 1
+                        }
+                    ],
+                    "stops": [
+                        0.89,
+                        1,
+                        0.075,
+                        0.76
+                    ],
+                    "type": "vertical"
+                },
+                "boxShadow": {
+                    "offsetX": 0,
+                    "offsetY": 0,
+                    "blurRadius": 26.111111111111114,
+                    "spreadRadius": 0,
+                    "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 1
+                    }
+                }
+            }
+        },
+        "mainText": {
+            "jsData": {
+                "fontFamily": "sans-serif",
+                "fontSize": 14
+            }
+        }
+    },
+    "overflowX": "visible",
+    "overflowY": "visible",
+    "privateVisual": false,
+    "privateStyles": false
+}

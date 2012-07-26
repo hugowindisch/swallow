@@ -1,0 +1,173 @@
+{
+    "description": "",
+    "private": true,
+    "privateTheme": true,
+    "dimensions": [
+        320,
+        356,
+        1
+    ],
+    "gridSize": 8,
+    "children": {
+        "pos": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "pos",
+                "innerText": "",
+                "style": {
+                    "factory": "newsreader",
+                    "type": "GlobalStyling",
+                    "style": "titleBar"
+                }
+            }
+        }
+    },
+    "positions": {
+        "content": {
+            "matrix": {
+                "0": 320,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 356,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 0,
+                "13": 0,
+                "14": 0,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 0,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "right": {
+            "matrix": {
+                "0": 320,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 356,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 320,
+                "13": 0,
+                "14": 1,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 1,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "left": {
+            "matrix": {
+                "0": 320,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 356,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": -320,
+                "13": 0,
+                "14": 1,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 2,
+            "snapping": {
+                "left": "%",
+                "right": "%",
+                "width": "auto",
+                "top": "%",
+                "bottom": "%",
+                "height": "auto"
+            }
+        },
+        "pos": {
+            "matrix": {
+                "0": 320,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 64,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 0,
+                "13": 0,
+                "14": 0,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 3,
+            "snapping": {
+                "left": "px",
+                "right": "px",
+                "width": "auto",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        }
+    },
+    "theme": {},
+    "overflowX": "visible",
+    "overflowY": "visible",
+    "privateVisual": false,
+    "privateStyles": false
+}

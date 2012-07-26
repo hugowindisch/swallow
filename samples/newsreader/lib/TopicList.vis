@@ -1,0 +1,152 @@
+{
+    "description": "",
+    "private": true,
+    "privateTheme": true,
+    "dimensions": [
+        320,
+        356,
+        1
+    ],
+    "gridSize": 8,
+    "children": {
+        "topics": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "topics"
+            }
+        },
+        "button": {
+            "factory": "newsreader",
+            "type": "Icon",
+            "config": {
+                "position": "button"
+            }
+        },
+        "title": {
+            "factory": "domvisual",
+            "type": "DOMElement",
+            "config": {
+                "position": "title",
+                "innerText": "News",
+                "style": {
+                    "factory": "newsreader",
+                    "type": "GlobalStyling",
+                    "style": "style0"
+                }
+            }
+        }
+    },
+    "positions": {
+        "topics": {
+            "matrix": {
+                "0": 320,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 288,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 0,
+                "13": 64,
+                "14": 0,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 0,
+            "snapping": {
+                "left": "px",
+                "right": "px",
+                "width": "auto",
+                "top": "px",
+                "bottom": "px",
+                "height": "auto"
+            }
+        },
+        "button": {
+            "matrix": {
+                "0": 48,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 48,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 8,
+                "13": 4,
+                "14": 0,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 1,
+            "snapping": {
+                "left": "px",
+                "right": "auto",
+                "width": "px",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        },
+        "title": {
+            "matrix": {
+                "0": 224,
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 40,
+                "6": 0,
+                "7": 0,
+                "8": 0,
+                "9": 0,
+                "10": 1,
+                "11": 0,
+                "12": 80,
+                "13": 8,
+                "14": 2.441558361053467,
+                "15": 1,
+                "byteOffset": 0,
+                "length": 16,
+                "byteLength": 64,
+                "buffer": {
+                    "byteLength": 64
+                }
+            },
+            "order": 2,
+            "snapping": {
+                "left": "px",
+                "right": "px",
+                "width": "auto",
+                "top": "px",
+                "bottom": "auto",
+                "height": "px"
+            }
+        }
+    },
+    "theme": {},
+    "overflowX": "visible",
+    "overflowY": "visible",
+    "privateVisual": false,
+    "privateStyles": false
+}
