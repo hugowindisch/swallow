@@ -366,6 +366,7 @@ function setupEditMenu(editor) {
         cutTool,
         copyTool,
         pasteTool,
+        pasteInPlaceTool,
         deleteTool,
         clipboard = null,
         menus = editor.menus;
@@ -456,48 +457,80 @@ function setupEditMenu(editor) {
         null,
         selectionNotEmpty
     );
+
+    function paste(inPlace) {
+        var group = viewer.getGroup(),
+            documentData = group.documentData,
+            children = documentData.children,
+            c,
+            positions = documentData.positions,
+            selection = viewer.getSelection(),
+            cmdGroup = group.cmdCommandGroup('cmdPaste', 'Paste', { clearSelection: true }),
+            order = group.getTopmostOrder(),
+            minorder,
+            offset,
+            posmap = {},
+            usedmap = {};
+
+        function check(n) {
+            return usedmap[n];
+        }
+        function rndOffset() {
+            return Math.round(Math.random() * 8) * 4 - 16;
+        }
+        forEachProperty(clipboard.positions, function (p, n) {
+            // min order
+            if (minorder === undefined || p.order < minorder) {
+                minorder = p.order;
+            }
+        });
+
+        // offset for positioning
+        if (inPlace) {
+
+            offset = [0, 0];
+        } else {
+            offset = [rndOffset(), rndOffset()];
+        }
+        forEachProperty(clipboard.positions, function (p, n) {
+            var uniqueName = group.getUniquePositionName(n, check),
+                cp = deepCopy(p),
+                c = clipboard.children[n],
+                newc;
+            cp.matrix[12] += offset[0];
+            cp.matrix[13] += offset[1];
+            posmap[n] = uniqueName;
+            usedmap[uniqueName] = true;
+            cp.order = order + p.order - minorder;
+            cmdGroup.add(group.cmdAddPosition(uniqueName, cp));
+            if (c) {
+                newc = deepCopy(c);
+                newc.config.position = uniqueName;
+                cmdGroup.add(group.cmdAddVisual(uniqueName, newc));
+            }
+        });
+        group.doCommand(cmdGroup);
+    }
+
     pasteTool = new MenuItem(
         'Paste',
         function () {
-            var group = viewer.getGroup(),
-                documentData = group.documentData,
-                children = documentData.children,
-                c,
-                positions = documentData.positions,
-                selection = viewer.getSelection(),
-                cmdGroup = group.cmdCommandGroup('cmdPaste', 'Paste', { clearSelection: true }),
-                order = group.getTopmostOrder(),
-                minorder,
-                posmap = {},
-                usedmap = {};
-
-            function check(n) {
-                return usedmap[n];
-            }
-            forEachProperty(clipboard.positions, function (p, n) {
-                if (minorder === undefined || p.order < minorder) {
-                    minorder = p.order;
-                }
-            });
-            forEachProperty(clipboard.positions, function (p, n) {
-                var uniqueName = group.getUniquePositionName(n, check),
-                    cp = deepCopy(p),
-                    c = clipboard.children[n],
-                    newc;
-                posmap[n] = uniqueName;
-                usedmap[uniqueName] = true;
-                cp.order = order + p.order - minorder;
-                cmdGroup.add(group.cmdAddPosition(uniqueName, cp));
-                if (c) {
-                    newc = deepCopy(c);
-                    newc.config.position = uniqueName;
-                    cmdGroup.add(group.cmdAddVisual(uniqueName, newc));
-                }
-            });
-            group.doCommand(cmdGroup);
+            paste(false);
         },
         null,
         new Accelerator('VK_V', true),
+        null,
+        function () {
+            return clipboard !== null;
+        }
+    );
+    pasteInPlaceTool = new MenuItem(
+        'Paste In Place',
+        function () {
+            paste(true);
+        },
+        null,
+        null,
         null,
         function () {
             return clipboard !== null;
@@ -521,6 +554,7 @@ function setupEditMenu(editor) {
         cutTool,
         copyTool,
         pasteTool,
+        pasteInPlaceTool,
         deleteTool
     );
 }
