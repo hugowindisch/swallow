@@ -52,6 +52,7 @@ function generateVisualComponentHtml(
     deps,
     cssFileMap,
     type,
+    title,
     editFactory,
     editType,
     monitor
@@ -81,7 +82,8 @@ function generateVisualComponentHtml(
         editType: editType,
         jquery: options.jquery ? path.basename(options.jquery) : null,
         monitor: monitor,
-        icon: icon
+        icon: icon,
+        title: title
     });
 }
 
@@ -102,6 +104,7 @@ function serveVisualComponent(forEdit, monitor) {
                                 deps,
                                 cssFileMap,
                                 type,
+                                forEdit ? ('Edit: ' + match[2]) : type,
                                 forEdit ? match[1] : null,
                                 forEdit ? match[2] : null,
                                 monitor
@@ -175,6 +178,7 @@ function publishVisualComponent(req, res, cxt) {
                                         packageMap,
                                         deps,
                                         cssFileMap,
+                                        type,
                                         type
                                     );
                                     // now we are ready to write this file
