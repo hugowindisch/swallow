@@ -90,14 +90,16 @@ function getTopmostElement(vis) {
 hookMap = {
     keydown: {
         getDOMElement: function (vis) {
-            return document;
+            var el = vis.element;
+            return el.nodeName.toLowerCase() === 'input' ? el : document;
         },
         filterEvent: FilterKeyEvent,
         interactive: true
     },
     keyup: {
         getDOMElement: function (vis) {
-            return document;
+            var el = vis.element;
+            return el.nodeName.toLowerCase() === 'input' ? el : document;
         },
         filterEvent: FilterKeyEvent,
         interactive: true
@@ -200,7 +202,6 @@ hookMap = {
             return vis.element;
         }
     }
-
 };
 
 /*

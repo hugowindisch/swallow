@@ -1160,6 +1160,13 @@ DOMVideo.prototype.getConfigurationSheet = function () {
 */
 function DOMInput(config) {
     DOMVisual.call(this, config, null, document.createElement('input'));
+    var that = this;
+    // prevent form submission that we will never use
+    this.on('keydown', function (evt) {
+        if (evt.keyCode === 13) {
+            evt.stopPropagation();
+        }
+    });
 }
 
 DOMInput.prototype = new DOMVisual();
