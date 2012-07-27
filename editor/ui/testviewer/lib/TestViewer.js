@@ -218,9 +218,13 @@ TestViewer.prototype.logLintRecord = function (packageName, record) {
 
     this.log(packageName, 'h2');
     forEachProperty(record, function (results, filename) {
-        var erroneous = results !== true;
-        that.log(filename + (erroneous ? '' : ' ok'), 'h3', erroneous);
-        if (erroneous) {
+        var erroneous = results !== true,
+            skipped = erroneous && (results[0].evidence.indexOf('/*jslint fails') >= 0),
+            statusStr = erroneous ?
+                (skipped ? ' ** skipped (not jslint compliant) **' : '') :
+                ' ok';
+        that.log(filename + statusStr, 'h3', erroneous);
+        if (erroneous && !skipped) {
             forEach(results, function (err) {
                 if (err === null) {
                     that.log('(lint stopped, too many errors)', 'b');
