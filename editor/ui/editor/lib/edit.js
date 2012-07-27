@@ -85,6 +85,7 @@ function CommandChain() {
     events.EventEmitter.call(this);
     this.commands = [];
     this.undoneCommands = [];
+    this.savePoint = null;
 }
 CommandChain.prototype = new (events.EventEmitter)();
 CommandChain.prototype.doCommand = function (cmd) {
@@ -128,6 +129,27 @@ CommandChain.prototype.getRedoMessage = function () {
     }
     return null;
 };
+CommandChain.prototype.setSavePoint = function () {
+    var commands = this.commands,
+        l = commands.length;
+    if (l > 0) {
+        this.savePoint = commands[l - 1];
+    } else {
+        this.savePoint = null;
+    }
+};
+CommandChain.prototype.isOnSavePoint = function () {
+    var commands = this.commands,
+        l = commands.length,
+        ret;
+    if (l > 0) {
+        ret = (this.savePoint === commands[l - 1]);
+    } else {
+        ret = this.savePoint === null;
+    }
+    return ret;
+};
+
 exports.Command = Command;
 exports.CommandGroup = CommandGroup;
 exports.CommandChain = CommandChain;

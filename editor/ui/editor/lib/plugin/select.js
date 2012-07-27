@@ -97,10 +97,15 @@ function setupFileMenu(editor) {
     saveTool = new MenuItem(
         'Save',
         function () {
+            viewer.getGroup().getCommandChain().setSavePoint();
             editor.saveGroup();
         },
         null,
-        new Accelerator('VK_S', true)
+        new Accelerator('VK_S', true),
+        null,
+        function () {
+            return !viewer.getGroup().getCommandChain().isOnSavePoint();
+        }
     );
     newTool = new MenuItem(
         'New...',
@@ -1030,7 +1035,13 @@ function setupObjectMenu(editor) {
             unsetContentTool.emit('change');
             unsetContentTool.setEnabled(selectionHasNonEmptyPositions());
         }
-        commandChain.on('command', signalChange);
+        function commandExecuted() {
+            var docInfo = editor.getDocInfo();
+            document.title = (group.getCommandChain().isOnSavePoint() ? '' : '* ') +
+                'Edit: ' + docInfo.type;
+            signalChange();
+        }
+        commandChain.on('command', commandExecuted);
         viewer.on('selectionChanged', signalChange);
     }());
 

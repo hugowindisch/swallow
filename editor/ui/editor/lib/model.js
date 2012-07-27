@@ -69,6 +69,7 @@ function Group(documentData, docInfo) {
     this.normalizeDocument();
     this.normalizeOrders();
 }
+
 // these are getters (stuff that inspect the Group model)
 Group.prototype.getCommandChain = function () {
     return this.commandChain;
