@@ -95,26 +95,35 @@ ClientResponse.prototype.setEncoding = function () {
 function ClientRequest(options) {
     var url = '',
         that = this,
+        auth = ['', ''],
         response;
+
     // note: this does not seem to be done with url (since path is not
     // used by url.format)
-    if (options.host) {
-        url += options.host;
+    if (options.hostname) {
+        url += 'http://' + options.hostname;
         if (options.port) {
             url = url + ':' + options.port;
         }
+    } else if (options.host) {
+        url += 'http://' + options.host;
     }
     if (options.path) {
         url = url + options.path;
     }
+    if (options.auth) {
+        auth = options.auth.split(':');
+    }
     this.options = options;
-    this.request = new XMLHttpRequest();
     this.toSend = null;
+    this.request = new XMLHttpRequest();
     try {
         this.request.open(
             options.method,
             url,
-            true
+            true,
+            auth[0],
+            auth[1]
         );
     } catch (e) {
         setTimeout(function () {
@@ -208,13 +217,20 @@ ClientRequest.prototype.abort = function () {
 
 /**
 * Initiates an http request.
-* @param {Object} options The options (host, port, method, path, headers)
+* Currently unsupported options are:
+* + localAddress: Local interface to bind for network connections.
+* + socketPath: Unix Domain Socket
+* + agent
+* @param {Object|String} options The options (host, port, method, path, headers)
 * @param {Function} callback The optional callback.
 * @returns A new ClientRequest
 * @type ClientRequest
 * @memberOf http
 */
 function request(options, callback) {
+    if (isString(options)) {
+        options = url.parse(options);
+    }
     var ret = new ClientRequest(options);
     if (callback) {
         ret.on('response', callback);
@@ -224,7 +240,11 @@ function request(options, callback) {
 
 /**
 * Initiates an http get.
-* @param {Object} options The options (host, port, method, path, headers)
+* Currently unsupported options are:
+* + localAddress: Local interface to bind for network connections.
+* + socketPath: Unix Domain Socket
+* + agent
+* @param {Object|String} options The options (host, port, method, path, headers)
 * @param {Function} callback The optional callback.
 * @returns A new ClientRequest
 * @type ClientRequest

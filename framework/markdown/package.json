@@ -33,9 +33,6 @@
             "url" : "http://www.opensource.org/licenses/mit-license.php"
         }
     ],
-    "scripts": {
-        "test": "tap test/*.t.js"
-    },
     "engines": {
         "pillow": "*"
     }

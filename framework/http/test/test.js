@@ -46,11 +46,11 @@ function parallel(array, cb) {
 
 exports.run = function (test, done) {
     var tested = 0;
-    // test http GET
-    function testGET(cb) {
+
+    function doGET(options, extraValidation, cb) {
         var data = '';
         http.get(
-            { path: '/swallow/testhttp' },
+            options,
             function (res) {
                 res.on('data', function (d) {
                     data += d;
@@ -78,12 +78,53 @@ exports.run = function (test, done) {
                         typeof res.headers,
                         'object'
                     );
+                    if (extraValidation) {
+                        extraValidation(req, res);
+                    }
                     cb(null);
                 });
                 res.on('error', function (err) {
                     cb(err);
                 });
             }
+        );
+    }
+
+    // test http GET
+    function testGET(cb) {
+        doGET({ path: '/swallow/testhttp' }, null, cb);
+    }
+    function testGETWithString(cb) {
+        doGET('/swallow/testhttp', null, cb);
+    }
+    function testGETWithFullUrl(cb) {
+        doGET('http://localhost:1337/swallow/testhttp', null, cb);
+    }
+    function testGETWithHeaders(cb) {
+        doGET({
+                path: '/swallow/testhttp',
+                headers: {
+                    'Content-Type': 'expectedContentType'
+                }
+            },
+            function (reqdata, res) {
+                test(
+                    assert.strictEqual,
+                    reqdata.headers['content-type'],
+                    'expectedContentType'
+                );
+            },
+            cb
+        );
+    }
+    function testGETWithAuth(cb) {
+        doGET(
+            'http://joe:pass@localhost:1337/swallow/testhttp',
+            // not so clear how to test that. I'm not sure what is
+            // supposed to happen and maybe the headers are NOT
+            // sent if we are on a non SSL encrypted connexion (?)
+            function (reqdata, res) {},
+            cb
         );
     }
     // test http POST
@@ -168,13 +209,17 @@ exports.run = function (test, done) {
     // launch the tests
     parallel([
         testGET,
+        testGETWithString,
+        testGETWithFullUrl,
+        testGETWithHeaders,
+        testGETWithAuth,
         testPOST,
         testPUT
     ], function () {
         test(
             assert.strictEqual,
             test.total,
-            10
+            27
         );
         // we are done!
         done();
