@@ -29,6 +29,8 @@ var glmatrix = require('glmatrix'),
     forEach = utils.forEach,
     deepCopy = utils.deepCopy,
     isString = utils.isString,
+    isObject = utils.isObject,
+    deepEqual = utils.deepEqual,
     prune = utils.prune,
     ensure = utils.ensure,
     ensured = utils.ensured,
@@ -195,6 +197,7 @@ Group.prototype.getTopmostOrder = function () {
     });
     return order;
 };
+
 /*
     It is difficult to preview the styles in the editor. Why? because
     the style sheets have references to factories (a factory may have a
@@ -259,6 +262,158 @@ Group.prototype.createBoundThemeFromData = function (optionalThemeData, optional
         return null;
     };
     return theme;
+};
+
+/**
+    Creates a selection copy (including the local styles).
+*/
+Group.prototype.getSnapshot = function (selection) {
+    var documentData = this.documentData,
+        positions = documentData.positions,
+        children = documentData.children,
+        res = {
+            positions: {},
+            children: {},
+            theme: documentData.theme,
+            docInfo: this.docInfo
+        },
+        c;
+    forEachProperty(selection, function (p, n) {
+        c = children[n];
+        res.positions[n] = p;
+        if (c) {
+            res.children[n] = c;
+        }
+    });
+    return JSON.stringify(res);
+};
+
+/*
+    This is pretty ugly and twisted but... don't know how to do it differently
+    at this time
+*/
+function forEachStyleConfig(visFactory, visType, fcn) {
+    var f = require(visFactory),
+        sheet = f[visType].prototype.getConfigurationSheet.call(null);
+    forEachProperty(sheet, function (prop, propName) {
+        if (prop && prop.isStyleConfig === true) {
+            fcn(propName);
+        }
+    });
+}
+
+/**
+    Pastes a selection copy, potentially regenerating the styles.
+    (dealing with the styles is the more complicated part)
+*/
+Group.prototype.pasteSnapshot = function (str, inPlace) {
+    str = String(str);
+    var that = this,
+        clipboardData,
+        documentData = this.documentData,
+        children = documentData.children,
+        c,
+        positions = documentData.positions,
+        cmdGroup = this.cmdCommandGroup('cmdPaste', 'Paste', { clearSelection: true }),
+        order = this.getTopmostOrder(),
+        minorder,
+        offset,
+        posmap = {},
+        usedmap = {},
+        usedStyleMap = {};
+    // silently ignore crap
+    try {
+        clipboardData = JSON.parse(str);
+    } catch (e) {
+        return;
+    }
+    if (!(clipboardData.children && clipboardData.positions && clipboardData.theme && clipboardData.docInfo)) {
+        return;
+    }
+    function check(n) {
+        return usedmap[n];
+    }
+    function checkStyle(n) {
+        return usedStyleMap[n];
+    }
+    function rndOffset() {
+        return Math.round(Math.random() * 8) * 4 - 16;
+    }
+    forEachProperty(clipboardData, function (p, n) {
+        // min order
+        if (minorder === undefined || p.order < minorder) {
+            minorder = p.order;
+        }
+    });
+
+    // offset for positioning
+    if (inPlace) {
+
+        offset = [0, 0];
+    } else {
+        offset = [rndOffset(), rndOffset()];
+    }
+    forEachProperty(clipboardData.positions, function (p, n) {
+        var uniqueName = that.getUniquePositionName(n, check),
+            cp = deepCopy(p),
+            c = clipboardData.children[n],
+            newc;
+        // fixes a style (so that it is locally added if it refers to
+        // a style in the source document... (we copy styles from the origin
+        // document... maybe we should only do this if origin and dest
+        // are the same).
+        function fixStyle(st) {
+            var cbStyle,
+                di = clipboardData.docInfo;
+            // is the style an inner style of the clipboard data, that
+            // is not present in an exactly similar form locally?
+            if (isString(st) && !deepEqual(documentData.theme[st], clipboardData.theme[st])) {
+                cbStyle = clipboardData.theme[st];
+            } else if (isObject(st) && st.factory === di.factory && st.type === di.type && !deepEqual(documentData.theme[st.style], clipboardData.theme[st.style])) {
+                cbStyle = clipboardData.theme[st.style];
+            }
+            // add the style locally if it is the case
+            if (cbStyle) {
+                // do the same job to all dependencies
+                if (cbStyle.basedOn) {
+                    forEach(cbStyle.basedOn, function (bst, index) {
+                        var fixed = fixStyle(bst);
+                        if (fixed !== bst) {
+                            cbStyle.basedOn[index] = {
+                                factory: that.docInfo.factory,
+                                type: that.docInfo.type,
+                                style: fixed
+                            };
+                        }
+                    });
+                }
+                // add the result
+                st = that.getUniqueStyleName(null, checkStyle);
+                usedStyleMap[st] = true;
+                cmdGroup.add(that.cmdAddStyle(st, cbStyle));
+            }
+            return st;
+        }
+
+        cp.matrix[12] += offset[0];
+        cp.matrix[13] += offset[1];
+        posmap[n] = uniqueName;
+        usedmap[uniqueName] = true;
+        cp.order = order + p.order - minorder;
+        // we are ready to add the position
+        cmdGroup.add(that.cmdAddPosition(uniqueName, cp));
+        if (c) {
+            newc = deepCopy(c);
+            newc.config.position = uniqueName;
+            // here we must fix local styles that are missing or different
+            // by adding them to the document.
+            forEachStyleConfig(newc.factory, newc.type, function (prop) {
+                newc.config[prop] = fixStyle(newc.config[prop]);
+            });
+            cmdGroup.add(that.cmdAddVisual(uniqueName, newc));
+        }
+    });
+    this.doCommand(cmdGroup);
 };
 
 /**
@@ -481,7 +636,6 @@ Group.prototype.cmdRenamePosition = function (name, newname) {
 
 };
 
-
 /**
     Adds a new visual to the model.
 */
@@ -692,20 +846,6 @@ Group.prototype.cmdRemoveStyle = function (name) {
         { model: this, name: name, styleChanged: true }
     );
 };
-
-/*
-    This is pretty ugly and twisted but... don't know how to do it differently
-    at this time
-*/
-function forEachStyleConfig(visFactory, visType, fcn) {
-    var f = require(visFactory),
-        sheet = f[visType].prototype.getConfigurationSheet.call(null);
-    forEachProperty(sheet, function (prop, propName) {
-        if (prop && prop.isStyleConfig === true) {
-            fcn(propName);
-        }
-    });
-}
 
 Group.prototype.cmdRemoveStyleAndReferences = function (factory, type, style) {
     var that = this,

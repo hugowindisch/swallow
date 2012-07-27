@@ -904,24 +904,7 @@ GroupViewer.prototype.getPositionRect = function (name) {
     }
     return res;
 };
-GroupViewer.prototype.getSelectionCopy = function () {
-    var documentData = this.documentData,
-        positions = documentData.positions,
-        children = documentData.children,
-        res = {
-            positions: {},
-            children: {}
-        },
-        c;
-    forEachProperty(this.selection, function (p, n) {
-        c = children[n];
-        res.positions[n] = deepCopy(p);
-        if (c) {
-            res.children[n] = deepCopy(c);
-        }
-    });
-    return res;
-};
+
 GroupViewer.prototype.getPreviewTheme = function () {
     if (this.previewTheme === undefined) {
         this.previewTheme = this.group.createBoundThemeFromData();

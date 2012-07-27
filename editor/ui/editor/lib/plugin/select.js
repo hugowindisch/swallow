@@ -368,7 +368,7 @@ function setupEditMenu(editor) {
         pasteTool,
         pasteInPlaceTool,
         deleteTool,
-        clipboard = null,
+        ls = window.localStorage,
         menus = editor.menus;
 
     function selectionNotEmpty() {
@@ -413,9 +413,17 @@ function setupEditMenu(editor) {
             return msg !== null;
         }
     );
+
     function copy() {
-        clipboard = viewer.getSelectionCopy();
+        var group = viewer.getGroup();
+        ls.clipboard = group.getSnapshot(viewer.getSelection());
     }
+
+    function paste(inPlace) {
+        var group = viewer.getGroup();
+        group.pasteSnapshot(ls.clipboard);
+    }
+
     function deleteSelected(cmdName, message) {
         var group = viewer.getGroup(),
             documentData = group.documentData,
@@ -458,60 +466,6 @@ function setupEditMenu(editor) {
         selectionNotEmpty
     );
 
-    function paste(inPlace) {
-        var group = viewer.getGroup(),
-            documentData = group.documentData,
-            children = documentData.children,
-            c,
-            positions = documentData.positions,
-            selection = viewer.getSelection(),
-            cmdGroup = group.cmdCommandGroup('cmdPaste', 'Paste', { clearSelection: true }),
-            order = group.getTopmostOrder(),
-            minorder,
-            offset,
-            posmap = {},
-            usedmap = {};
-
-        function check(n) {
-            return usedmap[n];
-        }
-        function rndOffset() {
-            return Math.round(Math.random() * 8) * 4 - 16;
-        }
-        forEachProperty(clipboard.positions, function (p, n) {
-            // min order
-            if (minorder === undefined || p.order < minorder) {
-                minorder = p.order;
-            }
-        });
-
-        // offset for positioning
-        if (inPlace) {
-
-            offset = [0, 0];
-        } else {
-            offset = [rndOffset(), rndOffset()];
-        }
-        forEachProperty(clipboard.positions, function (p, n) {
-            var uniqueName = group.getUniquePositionName(n, check),
-                cp = deepCopy(p),
-                c = clipboard.children[n],
-                newc;
-            cp.matrix[12] += offset[0];
-            cp.matrix[13] += offset[1];
-            posmap[n] = uniqueName;
-            usedmap[uniqueName] = true;
-            cp.order = order + p.order - minorder;
-            cmdGroup.add(group.cmdAddPosition(uniqueName, cp));
-            if (c) {
-                newc = deepCopy(c);
-                newc.config.position = uniqueName;
-                cmdGroup.add(group.cmdAddVisual(uniqueName, newc));
-            }
-        });
-        group.doCommand(cmdGroup);
-    }
-
     pasteTool = new MenuItem(
         'Paste',
         function () {
@@ -521,7 +475,7 @@ function setupEditMenu(editor) {
         new Accelerator('VK_V', true),
         null,
         function () {
-            return clipboard !== null;
+            return ls.clipboard !== null;
         }
     );
     pasteInPlaceTool = new MenuItem(
@@ -533,7 +487,7 @@ function setupEditMenu(editor) {
         null,
         null,
         function () {
-            return clipboard !== null;
+            return ls.clipboard !== null;
         }
     );
     deleteTool = new MenuItem(

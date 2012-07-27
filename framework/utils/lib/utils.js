@@ -201,6 +201,57 @@ function deepCopy(o) {
 }
 
 /**
+* Deeply tests strict equality between two objects
+* @param {any} o1 The first object.
+* @param {any} o2 The second object.
+* @memberOf utils
+* @type Boolean
+* @returns Strict equality between two objects.
+*/
+function deepEqual(o1, o2) {
+    function eqa(a1, a2) {
+        var l = a1.length, i;
+        if (l === a2.length) {
+            for (i = 0; i < l; i += 1) {
+                if (!deepEqual(a1[i], a2[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    function eqo(o1, o2) {
+        var v, tested = {};
+        for (v in o1) {
+            if (o1.hasOwnProperty(v) && o2.hasOwnProperty(v)) {
+                if (!deepEqual(o1[v], o2[v])) {
+                    return false;
+                }
+                tested[v] = true;
+            }
+        }
+        for (v in o2) {
+            if (o2.hasOwnProperty(v) && !tested[v]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function de(o1, o2) {
+        switch (typeOf(o1)) {
+        case 'object':
+        case 'array':
+            return eqa(o1, o2);
+        default:
+            return o1 === o2;
+        }
+    }
+    return typeOf(o1) === typeOf(o2) && de(o1, o2);
+}
+
+/**
 * Copies all property of from to to
 * @param {Object} from The from object.
 * @param {Object} to The to object.
@@ -325,6 +376,7 @@ exports.isArray = isArray;
 exports.isObject = isObject;
 exports.isFunction = isFunction;
 exports.deepCopy = deepCopy;
+exports.deepEqual = deepEqual;
 exports.limitRange = limitRange;
 exports.applyDeep = applyDeep;
 exports.apply = apply;
