@@ -113,18 +113,6 @@ function vec3IsEqual(v1, v2) {
         (v1 && v2 && v1[0] === v2[0] && v1[1] === v2[1] && v1[3] === v2[3]);
 }
 
-/*
-* Applies the layout to all children.
-* @api private
-*/
-function updateChildrenPositions(v) {
-    if (v.layout) {
-        forEachProperty(v.children, function (c) {
-            applyLayout(v.dimensions, v.layout, c);
-        });
-    }
-}
-
 /**
 * A visual element.
 * It can contain other visual elements.
@@ -521,7 +509,12 @@ Visual.prototype.getNaturalDimensions = function () {
 * themselves.
 */
 Visual.prototype.applyLayout = function () {
-    updateChildrenPositions(this);
+    var dimensions = this.dimensions,
+        layout = this.layout;
+    forEachProperty(this.children, function (c) {
+        applyLayout(dimensions, layout, c);
+    });
+    return this;
 };
 
 /**

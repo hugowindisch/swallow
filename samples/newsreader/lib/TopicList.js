@@ -55,8 +55,11 @@ TopicList.prototype.setCategory = function (cat) {
             v = new (require(top.factory)[top.type])(top.config);
             topics.addChild(v);
             v.setHtmlFlowing({position: 'relative'}, true);
-            // FIXME
-            v.setPosition('topicPlaceHolder');
+            // set a 'function' position to resize ourselves to our container
+            // width
+            v.setPosition(function (cntDim) {
+                this.setDimensions([cntDim[0], this.dimensions[1], 0]);
+            });
             v.on('pushpage', function (p) {
                 that.emit('pushpage', p);
             });

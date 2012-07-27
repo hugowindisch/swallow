@@ -2104,4 +2104,4 @@ exports.TopicText = require('/newsreader/lib/TopicText').TopicText;
 
 exports.TopicList = require('/newsreader/lib/TopicList').TopicList;
 
-exports.TopicText = require('/newsreader/lib/TopicText').TopicText;
+exports.TopicList = require('/newsreader/lib/TopicList').TopicList;

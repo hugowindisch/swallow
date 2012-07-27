@@ -28,6 +28,7 @@ var utils = require('utils'),
     setDirty = dirty.setDirty,
     isString = utils.isString,
     isObject = utils.isObject,
+    isFunction = utils.isFunction,
     forEachProperty = utils.forEachProperty;
 
 /**
@@ -372,12 +373,15 @@ function convertScaleToSize(matrix) {
 * @api private
 */
 function applyLayout(containerDimensions, layout, v) {
+    var pos = v.getPosition(),
+        positions,
+        layoutDimensions,
+        res,
+        matrix;
+
     if (layout) {
-        var positions = layout.positions,
-            layoutDimensions = layout.dimensions,
-            pos = v.getPosition(),
-            res,
-            matrix;
+        positions = layout.positions;
+        layoutDimensions = layout.dimensions;
         if (isString(pos)) {
             pos = positions[pos];
         }
@@ -405,6 +409,15 @@ function applyLayout(containerDimensions, layout, v) {
                 v.setOpacity(pos.opacity);
             }
         }
+    }
+    // We support a position as a function (let a child redimension itself,
+    // from its container dimensions)
+    // this can work without a layout
+    if (isFunction(pos)) {
+        // we support positions as 'functions' that will receive
+        // the container dimensions and do whatever they feel appropriate
+        // with this.
+        pos.call(v, containerDimensions, layout);
     }
 }
 
