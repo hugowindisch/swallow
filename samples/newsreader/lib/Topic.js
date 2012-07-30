@@ -12,7 +12,7 @@ function Topic(config) {
     domvisual.DOMElement.call(this, config, group);
     this.on('click', function () {
         this.emit('pushpage', new TopicText({url: this.contentUrl, title: this.title}));
-    });
+    }).setCursor('pointer');
 }
 Topic.prototype = visual.inheritVisual(domvisual.DOMElement, group, packageName, className);
 Topic.prototype.getConfigurationSheet = function () {

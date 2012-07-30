@@ -21,7 +21,7 @@ function TopicList(config) {
         cats.on('changecat', function (c) {
             that.setCategory(c);
         });
-    });
+    }).setCursor('pointer');
 }
 TopicList.prototype = visual.inheritVisual(domvisual.DOMElement, group, packageName, className);
 TopicList.prototype.getConfigurationSheet = function () {

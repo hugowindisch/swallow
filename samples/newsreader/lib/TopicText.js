@@ -17,7 +17,7 @@ function TopicText(config) {
     ).setImg('newsreader/img/back.png'
     ).on('mousedown', function () {
         that.emit('poppage');
-    });
+    }).setCursor('pointer');
 }
 TopicText.prototype = visual.inheritVisual(domvisual.DOMElement, group, packageName, className);
 TopicText.prototype.getConfigurationSheet = function () {
