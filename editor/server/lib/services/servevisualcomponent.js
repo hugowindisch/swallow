@@ -104,7 +104,7 @@ function serveVisualComponent(forEdit, monitor) {
                                 deps,
                                 cssFileMap,
                                 type,
-                                forEdit ? ('Edit: ' + match[2]) : type,
+                                type,
                                 forEdit ? match[1] : null,
                                 forEdit ? match[2] : null,
                                 monitor

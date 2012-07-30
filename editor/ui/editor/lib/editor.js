@@ -131,9 +131,6 @@ Editor.prototype.monitorGroup = function (factory, type) {
     return this;
 };
 
-
-
-
 Editor.prototype.saveGroup = function (factory, type, doc, cb) {
     factory = factory || this.docInfo.factory;
     type = type || this.docInfo.type;
@@ -208,7 +205,9 @@ Editor.prototype.setGroupData = function (factory, type, groupData) {
 };
 
 /**
-    Adds some plugins
+    Adds some plugins.
+    Well... there is no real plugin system yet. But most editor functions
+    are injected here.
 */
 Editor.prototype.addPlugins = function (plugins) {
     var menus = {

@@ -1035,14 +1035,25 @@ function setupObjectMenu(editor) {
             unsetContentTool.emit('change');
             unsetContentTool.setEnabled(selectionHasNonEmptyPositions());
         }
-        function commandExecuted() {
+        // updates the document title
+        function updateTabTitle() {
             var docInfo = editor.getDocInfo();
             document.title = (group.getCommandChain().isOnSavePoint() ? '' : '* ') +
                 'Edit: ' + docInfo.type;
+        }
+        // FIXME: this should be done with the normal event thing
+        window.onbeforeunload = function (evt) {
+            if (!group.getCommandChain().isOnSavePoint()) {
+                return 'You have unsaved changes in your document.';
+            }
+        };
+        function commandExecuted() {
+            updateTabTitle();
             signalChange();
         }
         commandChain.on('command', commandExecuted);
         viewer.on('selectionChanged', signalChange);
+        updateTabTitle();
     }());
 
     menus.object.push(
