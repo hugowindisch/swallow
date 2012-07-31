@@ -67,6 +67,7 @@ function httpPost(u, toSend, cb) {
         req.write(toSend);
     }
     req.end();
+    return req;
 }
 
 /*
@@ -94,7 +95,6 @@ function testGetMiddleWare(cb) {
         // get a webpage for running one of the samples
         function (cb) {
             httpGet('http://localhost:1337/swallow/make/samples.StyleAnimation.html', function (err, data) {
-                console.log('/make/samples.StyleAnimation.html ' + err);
                 // if it worked, validate a few more things
                 if (!err) {
                     try {
@@ -107,13 +107,13 @@ function testGetMiddleWare(cb) {
                     }
                 }
                 wrench.rmdirSyncRecursive(options.dstFolder, true);
+                console.log('/make/samples.StyleAnimation.html ' + err);
                 cb(err);
             });
         },
         // get a webpage for monitoring one of the samples
         function (cb) {
             httpGet('http://localhost:1337/swallow/make/samples.StyleAnimation.mon', function (err, data) {
-                console.log('/make/samples.StyleAnimation.mon ' + err);
                 // if it worked, validate a few more things
                 if (!err) {
                     try {
@@ -127,21 +127,21 @@ function testGetMiddleWare(cb) {
                 }
 
                 wrench.rmdirSyncRecursive(options.dstFolder, true);
+                console.log('/make/samples.StyleAnimation.mon ' + err);
                 cb(err);
             });
         },
         // get a webpage for editing one of the samples
         function (cb) {
             httpGet('http://localhost:1337/swallow/make/samples.StyleAnimation.edit', function (err, data) {
-                console.log('/make/samples.StyleAnimation.edit ' + err);
                 wrench.rmdirSyncRecursive(options.dstFolder, true);
+                console.log('/make/samples.StyleAnimation.edit ' + err);
                 cb(err);
             });
         },
         // make an asset
         function (cb) {
             httpGet('http://localhost:1337/swallow/make/samples/lib/tree.jpg', function (err, data) {
-                console.log('/make/samples/lib/tree.jpg ' + err);
                 // if it worked, validate a few more things
                 if (!err) {
                     try {
@@ -155,13 +155,13 @@ function testGetMiddleWare(cb) {
                 }
 
                 wrench.rmdirSyncRecursive(options.dstFolder, true);
+                console.log('/make/samples/lib/tree.jpg ' + err);
                 cb(err);
             });
         },
         // publish a sample
         function (cb) {
             httpGet('http://localhost:1337/swallow/publish/samples.StyleAnimation', function (err, data) {
-                console.log('/publish/samples.StyleAnimation ' + err);
                 // if it worked, validate a few more things
                 if (!err) {
                     try {
@@ -176,13 +176,13 @@ function testGetMiddleWare(cb) {
                     }
                 }
                 wrench.rmdirSyncRecursive(options.publishFolder, true);
+                console.log('/publish/samples.StyleAnimation ' + err);
                 cb(err);
             });
         },
         // monitor something
         function (cb) {
-            httpPost('http://localhost:1337/swallow/monitor/samples.StyleAnimation', null, function (err, data) {
-                console.log('/monitor/samples.StyleAnimation ' + err);
+            httpPost('http://localhost:1337/swallow/monitor/samples.StyleAnimation', null, function (err, data, res) {
                 // if it worked, validate a few more things
                 if (!err) {
                     httpGet('http://localhost:1337/swallow/monitor', function (err, data) {
@@ -196,9 +196,11 @@ function testGetMiddleWare(cb) {
                                 err = e;
                             }
                         }
+                        console.log('/monitor/samples.StyleAnimation ' + err);
                         cb(err);
                     });
                 } else {
+                    console.log('(ERR) /monitor/samples.StyleAnimation ' + err);
                     cb(err);
                 }
             });
@@ -206,7 +208,6 @@ function testGetMiddleWare(cb) {
         // get the monitored application
         function (cb) {
             httpGet('http://localhost:1337/swallow/m', function (err, data, res) {
-                console.log('http://localhost:1337/swallow/m ' + err);
                 if (!err) {
                     try {
                         assert.strictEqual(res.statusCode, 302);
@@ -216,6 +217,7 @@ function testGetMiddleWare(cb) {
                     }
                 }
                 wrench.rmdirSyncRecursive(options.dstFolder, true);
+                console.log('/monitor/samples.StyleAnimation ' + err);
                 cb(err);
             });
         },
@@ -223,7 +225,6 @@ function testGetMiddleWare(cb) {
         function (cb) {
             httpGet('http://localhost:1337/swallow/package', function (err, data) {
                 var json;
-                console.log('/package ' + err);
                 if (!err) {
                     try {
                         json = JSON.parse(data);
@@ -234,6 +235,7 @@ function testGetMiddleWare(cb) {
                         err = e;
                     }
                 }
+                console.log('/swallow/package ' + err);
                 cb(err);
             });
         },
@@ -241,7 +243,6 @@ function testGetMiddleWare(cb) {
         function (cb) {
             httpGet('http://localhost:1337/swallow/package/samples/visual/StyleAnimation', function (err, data) {
                 var json;
-                console.log('/package/samples/visual/StyleAnimation ' + err);
                 if (!err) {
                     try {
                         json = JSON.parse(data);
@@ -251,6 +252,7 @@ function testGetMiddleWare(cb) {
                         err = e;
                     }
                 }
+                console.log('/package/samples/visual/StyleAnimation ' + err);
                 cb(err);
             });
         },
@@ -258,7 +260,6 @@ function testGetMiddleWare(cb) {
         function (cb) {
             httpGet('http://localhost:1337/swallow/package/samples/image', function (err, data) {
                 var json;
-                console.log('/package/samples/image ' + err);
                 if (!err) {
                     try {
                         json = JSON.parse(data);
@@ -268,6 +269,7 @@ function testGetMiddleWare(cb) {
                         err = e;
                     }
                 }
+                console.log('/swallow/package/samples/image ' + err);
                 cb(err);
             });
         },
@@ -275,26 +277,28 @@ function testGetMiddleWare(cb) {
         function (cb) {
             httpPost('http://localhost:1337/swallow/makehelp', null, function (err, data) {
                 var json;
-                console.log('/makehelp ' + err);
                 if (!err) {
                     httpGet('http://localhost:1337/swallow/make/samples/samples.dox.json', function (err, data) {
+                        console.log('/swallow/makehelp ' + err);
                         cb(err);
                     });
                 } else {
+                    console.log('/swallow/makehelp ' + err);
                     cb(err);
                 }
             });
         },
-        // generate help files
+        // generate lint
         function (cb) {
             httpPost('http://localhost:1337/swallow/makelint', null, function (err, data) {
                 var json;
-                console.log('/makelint ' + err);
                 if (!err) {
                     httpGet('http://localhost:1337/swallow/make/samples/samples.lint.json', function (err, data) {
+                        console.log('/swallow/makelint ' + err);
                         cb(err);
                     });
                 } else {
+                    console.log('/swallow/makelint ' + err);
                     cb(err);
                 }
             });
@@ -303,12 +307,13 @@ function testGetMiddleWare(cb) {
         function (cb) {
             httpPost('http://localhost:1337/swallow/maketest', null, function (err, data) {
                 var json;
-                console.log('/maketest ' + err);
                 if (!err) {
                     httpGet('http://localhost:1337/swallow/make/samples/samples.test.js', function (err, data) {
+                        console.log('/swallow/maketest ' + err);
                         cb(err);
                     });
                 } else {
+                    console.log('/swallow/maketest ' + err);
                     cb(err);
                 }
             });
