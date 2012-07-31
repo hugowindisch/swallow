@@ -1,10 +1,8 @@
 # What is swallowapps
-The number of graphic features (transformation matrices, shadows, gradients, backgrounds, animation effects, filters, masks, canvas, etc.) supported by modern browsers increases every day. But using these features is difficult without an interactive tools: for most people design is a task that must be performed graphically and interactively, we want to see what we do and get instant feedback whenever we add, remove or change something. Moreover we don't necessarily want to learn programming languages and file formats in order to be able to create user interfaces.
-
-Swallowapps is an open source graphic environment for creating HTML5 applications visually. Its main goal is to separate graphic design from programming so that designers can work visually on visual elements and programmers can work with programming tools on code.
+Swallowapps is an open source graphic environment for creating HTML5 applications visually.
 
 ## The Editor
-The editor is a visual tool that is documented visual with youtube videos. These video are available in the Help menu of the editor.
+The editor is a visual tool that is documented visually with youtube videos. These video are available in the Help menu of the editor.
 
 ## The Framework
 The framework consists of:
@@ -51,7 +49,7 @@ This module looks like this:
     exports.MyClass} = MyClass;
 ```
 
-It can be found in your working directory under the work/packages/youpackage/lib directory.
+It can be found in your working directory under the work/packages/yourpackage/lib directory.
 
 Note: Instanciating this class will create an instance of your visual element. This will be discussed in greater detail a little bit later.
 
@@ -72,8 +70,8 @@ Here are the events that are currently supported:
 keydown, keyup, resize, click, mousedown, mousedownt, mousedownc, mouseup, mouseupc, mouseupt, mouseover, mousemove, mousemovec, mouseout, change, load, error.
 
 TODO: Add all what's missing
-TODO: Document the and c version of some events
-TODO: Document the liftetime management of handlers
+TODO: Document the 't' and 'c' version of some events
+TODO: Document the lifetime management of handlers
 
 ##Dealing with Mouse events (and positional events)
 SwallowApps lets you compute the position of mouse events relative to your component (in HTML, mouse events are positioned relatively to the page). This can be useful if you want to use the mouse to position a visual element inside another visual element (just like swallowapps's visual editor does).
@@ -116,9 +114,9 @@ To do something when the transition ends (here we clear all transitions), we can
 
 Note: A complete example of this can be found in samples/lib/PositionAnimation.js (and you can run the PositionAnimation sample).
 
-Note: When the size of a container changes, its positions are recomputed according to resizing rules defined in the editor. The layout is dynamic and postion names define the various anchor points available inside a given layout.
+Note: When the size of a container changes, its positions are recomputed according to resizing rules defined in the editor. The layout is dynamic and position names define the various anchor points available inside a given layout.
 
-TODO: Add a video showing how to add postions and children and how to rename them.
+TODO: Add a video showing how to add positions and children and how to rename them.
 
 ##Animating Styles
 Some visual elements use styles. A good example of this is domvisual.DOMElement that has a setStyle method. You can use any style defined in your visual component and pass it to setStyle:
@@ -157,15 +155,16 @@ myContainer.orderAfter('childToMove', 'refChild');
 Other than the position and style of elements you can also set the following attributes:
 
 TODO: explain the following methods:
-TODO: Make sure we need special things in the framework (these could all be style Attributes)
 
-DOMVisual.prototype.setElementAttributes = function (attr) {
+DOMVisual.prototype.setElementAttributes
 DOMVisual.prototype.setStyleAttributes
 setClass, clearClass
 setOverflow
 setVisible
 setCursor
 setTransition (... tb fixed...)
+
+TODO: (framework cleanup): make sure every time we have a specific function instead of a style there is a good reason for it.
 
 Note: overflow, visible, cursor: should this be really different from styles?
 My thought on this: ALL visual elements should support this.
@@ -211,17 +210,37 @@ You will also need to add a getter and a setter for all the properties that you 
 The config methods currently supported in the config package are:
 + inputConfig(label): Lets the user input a string
 + inputConfigFullLine(label): Lets the user input a string (on a full line)
-+ booleanConfig(label): Lets the user input a boolean (checkbox)
++ booleanConfig(label): Lets the user input a boolean (check box)
 + imageUrlConfig(label): Lets the user pick an image
 + styleConfig(label): Lets the user pick a style
 
 TODO: add something to input a number with optional range validation
 
 ##Creating instances of visual components.
-You can manually ...
+Visual components are exposed as a constructor that is exported by a package. Consequently, instanciating a visual component manually simply consists in doing something like:
+
+```
+    var myC = require('apackage').MyConstructor({ someOptional: 'config values'});
+```
+
+Then, when the graphic compoonent is created, it can simply be addded to a parent visual component by doing:
+
+```
+    parent.addChild(myC, 'childName');
+```
+
+There cannot be multiple children with the same name.
+
+At this point, the child can be moved to a named position (a box in the parent's layout) by doing:
+
+```
+    myC.setPosition('theNameOfABox');
+```
+
+From that point the child will be pinned to that position and automatically resized if this position is itself resized by the parent.
 
 ##Flowing Elements
-Swallowapps implements an absolute positioning model: graphic elements are explicitely positioned using a graphic editor. But sometimes it is very convenient to let HTML flow elements.
+Swallowapps implements an absolute positioning model: graphic elements are explicitly positioned using a graphic editor. But sometimes it is very convenient to let HTML flow elements.
 
 You can tell html to flow some of the elements of a given container by doing something like:
 
@@ -229,8 +248,13 @@ You can tell html to flow some of the elements of a given container by doing som
     myContainer.getChild('myChild').setHtmlFlowing({position: 'relative'}, false);
 ```
 
+TODO: setHtmlFlowing is still a bit of a mysterious function with weird arguments. The good thing is that we now have (in the editor and examples) a good documentation of many possible use cases (easily search-able with grep). At some point, the function should probably be renamed 'flow' and its argument made less cryptic.
+
 ##Development: Interfacing with Server Services
-Most client side applications present data that originates from a server. To facilitate the whole development process (and avoid same origin conflicts), swallowapps can run as a middleware in your Express, Connect or barebones NodeJS development server. All swallowapps urls share the same /swallow/ root (to avoid polluting your url namespace).
+Most client side applications display data items that are retrieved from a server through http requests (ex: a list of users). Consequently most http applications are tightly coupled to one or more http services that must exist at development time.
+
+
+To facilitate the whole development process (and avoid same origin conflicts), swallowapps can run as a middleware in your Express, Connect or bare bones NodeJS development server. All swallowapps urls share the same /swallow/ root (to avoid polluting your url namespace).
 
 Here is how swallowapps can run in Express or Connect:
 '''javascript
@@ -245,7 +269,7 @@ Here is how swallowapps can run in Express or Connect:
     app.listen(1337);
 '''
 
-Here is how the same results could be achieved in a barebones NodeJS solution:
+Here is how the same results could be achieved in a bare bones NodeJS solution:
 '''javascript
     var http = require('http'),
         swallowapps = require('swallowapps'),
@@ -265,40 +289,85 @@ Here is how the same results could be achieved in a barebones NodeJS solution:
 In both cases, you will be able to run the Launcher from your own server on the following path: '/swallow/make/launcher.Launcher.html'.
 
 ##Deployment: Generating a Statically Servable of Your Apps
+Swallowapps remakes application on the fly every time they are reloaded in the browser (only changed files are actually processed). This is reasonably fast but is not acceptable in a deployment environment. Happily, everything that is generated by swallowapps can be served statically. The 'publish' function does that. When you publish something, your work/publish folder will be updated and will contain a folder named 'yourpackage.YourComponent' that contains everything needed to run your application from the file system or from a static http server. The 'index.html' inside this folder will start the application.
 
 
 #Advanced Features
-This section discusses topics that will probably not be useful for playing with the tool but that will probably become essential in some real life situations.
+This section discusses topics that will probably not be useful for playing with the tool but that will quickly become essential in some real life situations.
 
-##Dealing with html
+##Dealing with free flowing text and html: domquery
+The visual components created with swallowapps are good at dealing with absolute positioning. They are perfect to create the layout of an application and to control all elements that must be explicitly positioned.
 
+Swallowapps definitely allows that. You can create a DOMElement and simply assign html to it by doing:
 
+```javascript
+myElement.setInnerHTLM(someHtmlString);
+```
+Passed this point you can use external packages to deal with this HTML if you need to do so. Swallowapps also provides the 'domquery' package that lets you use css selectors to access and modify dom elements manually. The domquery package is still in an early stage of development but most css selectors are already supported. You can also use domquery to instanciate swallowapps components.
 
-##Dealing with external data and lists
+Here is a quick example of the use of domquery to find elements with the 'swallow' class and replace them by a button:
+
+```javascript
+        domquery('.swallow', el
+        ).setVisual('baseui', 'Button', { text: 'hello'});
+```
+
+Here is a quick example of how swallowapps styles can be assigned to arbitrary elements:
+
+```javascript
+        domquery('.swallowstuff h1', el
+        ).setStyle(visual.defaultSkin, 'samples', 'JSONAndLists', 'style'
+        ).setMargins(40, 40, 40, 40
+        ).setPadding(10, 10, 10, 10);
+```
+
+Note: more direct support for this will be added to the editor at some point (allowing you to easily preview what happens from the editor (and interactively style the html parts of your app)).
+
+TODO: Also explain the builtin support for jQuery.
+
+##Dealing with external data and lists: whiskers and markdown
+
+If you need to convert JSON to html you can use the whiskers templating package:
+
+```javascript
+        console.log(whiskers.render('<test>{test}</test', { test: 'abcd' }));
+```
+
+If you need to convert markdown to html, you can use the markdown package. You can combine these two packages with domquery at your own convenience.
 
 
 ##Adding Tests to your Packages
 You can add tests to your packages and run these tests from the TestViewer (http://localhost:1337/make/testviewer.TestViewer.html). You will find examples of this in many standard packages (http is a good example, because it demonstrates how asynchronous testing works).
 
-+ Tests should be added in a subfolder
++ Tests should be added in a sub-folder
 
 ##Adding JSDoc to your packages
+The JSDoc that you add to your packages will be used by the helpviewer application to generate and display help files for your packages.
 
 ##Adding non visual packages
+You are free to add any package that you want in work/packages. Swallowapps packages must declare the 'pillow' engine as shown here:
 
-##Porting NodeJS packages
-
+```javascript
+{
+    "name": "myPackage",
+    "version": "0.0.1",
+    "engines": {
+        "pillow": "*"
+    }
+}
+```
 
 
 #More Advanced Features
 
 ##Multiple Layouts
+TODO: explain this
 
 ##Custom positioning
-(postion vs ...)
+TODO: explain the use of visual.setPosition(function (parentDimension, layout) {}) and explain how a visual component's applyLayout method could be overridden to support a different positioning system.
 
 ##Application Domains
-If you need to load packages at execution time, you can ues application domains to make sure that, when you stop referencing the packages you loaded, all their dependencies will also be unloaded (missing dependencies will be loaded in the same application domain as the main package that you load).
+If you need to load packages at execution time, you can use application domains to make sure that, when you stop referencing the packages you loaded, all their dependencies will also be unloaded (missing dependencies will be loaded in the same application domain as the main package that you load).
 
 Here is how you can load a package dynamically at runtime:
 ```javascript

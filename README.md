@@ -1,4 +1,10 @@
-SwallowApps is a graphic tool for creating applications and components that run in a browser. It has some similarities with the Flash (TM) authoring environment but targets an HTML5 runtime. It borrows its packaging system and some of its apis from CommonJS and NodeJS. Its backend components are developed using NodeJS.
+#Swallowapps: an open source and interactive application authoring tool for the web
+
+Swallowapps provides fully interactive tools for the design of web content: you create the visual part of your application using visual tools and get instant feedback while you adjust dimensions, transformation matrices, colors, shadows, gradients and all other styling elements in an intuitive and interactive way.
+
+When comes the time for programming, swallowapps combines the convenience of the commonJS packaging specification (the require() function, package.json etc.), with a totally transparent build process: modify any source module of any package that you use, hit F5 in the browser and your updated application is reloaded. In terms of apis, client side implementations of nodeJS apis (http, events, assert, url, etc.) are used whenever it's possible to allow maximum knowledge sharing and code reuse between server side and client side programming, while swallowapps specific packages deal with the visual side of things.
+
+Finally, swallowapps development tools are built with themselves so as you learn how to use the tools you also learn how to modify them and make them tightly fit your specific needs.
 
 ![Screenshot](https://github.com/hugowindisch/swallow/raw/master/screenshot.png)
 
@@ -6,13 +12,13 @@ SwallowApps is a graphic tool for creating applications and components that run 
 http://www.youtube.com/watch?v=m0os24I4PUc
 
 #Features
-+ Graphic Editor for creating visual components
++ Graphic Editor (with copy, paste, undo, redo, styling, skinning, free positioning, z ordering etc) for creating visual components
++ JSON based document format (for the editor)
 + Small javascript framework based on CommonJS
-+ Cient side apis (http, events, assert, etc) based on NodeJS or CommonJS
-+ Styling and skinning of components using css3 features
-+ Runs standalone or as a middleware in your own Express, Connect or NodeJS project
-+ Integrated documentation generation
-+ Integrated code validation
++ Client side apis (http, events, assert, etc) based on NodeJS or CommonJS
++ Middleware operation in Express, Connect or plain NodeJS, OR Standalone operation
++ Integrated documentation generation (DOX, JSDoc)
++ Integrated code validation (JSLint)
 + Integrated asynchronous testing
 + Built with itself (mastering the framework lets you modify all the tools)
 

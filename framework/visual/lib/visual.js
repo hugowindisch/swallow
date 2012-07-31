@@ -423,7 +423,7 @@ Visual.prototype.getOpacity = function () {
 * Sets the position. The position is a string that gives the name of the postion
 * to which this visual coponent is placed (in the current layout of this
 * visual component's container).
-* @param {String} position The name of the position to use.
+* @param {String|Function} position The name of the position to use or a function that will receive containerDimensions, layout (with the proper this).
 * @returns this
 * @type Visual
 */
