@@ -114,3 +114,6 @@ Elsewhere:
 
 #Coding standard
 The coding standard for packages is pretty simple: they should successfully pass the jslint validator. Other than that, packages should be adequately tested (but this is not currently the case with all existing packages).
+
+#Discussion Group
+https://groups.google.com/forum/#!forum/swallowapps
