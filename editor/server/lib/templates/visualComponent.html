@@ -26,7 +26,7 @@
             pillow.supportJQuery(require);
 {{/if}}
 {{if editFactory}}
-            new (require('${factory}').${type})().loadGroup('${editFactory}', '${editType}').runFullScreen();
+            new (require('${factory}').${type})().editGroup('${editFactory}', '${editType}').runFullScreen();
 {{else}}
             new (require('${factory}').${type})().runFullScreen();
 {{/if}}

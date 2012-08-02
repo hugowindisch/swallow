@@ -90,29 +90,128 @@ function getTransform(viewer, xl, constrain, selectionRect) {
 
 function setupFileMenu(editor) {
     var viewer = editor.getViewer(),
+        newTool,    // this should in fact wait for the thing to be created AND select it!
+        editTool,
         saveTool,
-        newTool,
+        saveAllTool,
+        closeTool,
+        loadFile1Tool,
+        loadFile2Tool,
         menus = editor.menus;
 
+    loadFile1Tool = new MenuItem(
+        '(experimental) Switch 1',
+        function () {
+            editor.editGroup('samples', 'InnerModule');
+        }
+    );
+
+    loadFile2Tool = new MenuItem(
+        '(experimental) Switch 2',
+        function () {
+            editor.editGroup('samples', 'OuterModule');
+        }
+    );
+
+    editTool = new MenuItem(
+        'Edit',
+        null,
+        function () {
+            var groups = editor.getGroups(),
+                items = [];
+            forEachProperty(groups, function (g) {
+                items.push(new MenuItem(
+                    g.docInfo.factory + '.' + g.docInfo.type,
+                    function () {
+                        editor.editGroup(g.docInfo.factory, g.docInfo.type);
+                    },
+                    null,
+                    null,
+                    null,
+                    true,
+                    g === editor.getSelectedGroup()
+                ));
+            });
+            return items;
+        },
+        null,
+        null,
+        function () {
+            return utils.keys(editor.getGroups()).length > 1;
+        }
+    );
     saveTool = new MenuItem(
         'Save',
+        null,
         function () {
-            viewer.getGroup().getCommandChain().setSavePoint();
-            editor.saveGroup();
+            var groups = editor.getGroups(),
+                items = [];
+            forEachProperty(groups, function (g) {
+                items.push(new MenuItem(
+                    g.docInfo.factory + '.' + g.docInfo.type,
+                    function () {
+                        editor.saveGroup(g.docInfo.factory, g.docInfo.type);
+                    },
+                    null,
+                    null,
+                    null,
+                    function () {
+                        return !g.getCommandChain().isOnSavePoint();
+                    }
+                ));
+            });
+            return items;
+        },
+        null,
+        null,
+        function () {
+            return editor.hasUnsavedGroups();
+        }
+    );
+
+    saveAllTool = new MenuItem(
+        'Save All',
+        function () {
+            editor.saveAllGroups();
         },
         null,
         new Accelerator('VK_S', true),
         null,
         function () {
-            return !viewer.getGroup().getCommandChain().isOnSavePoint();
+            return editor.hasUnsavedGroups();
         }
     );
+
+    closeTool = new MenuItem(
+        'Close',
+        null,
+        function () {
+            var groups = editor.getGroups(),
+                items = [];
+            forEachProperty(groups, function (g) {
+                items.push(new MenuItem(
+                    g.docInfo.factory + '.' + g.docInfo.type,
+                    function () {
+                        editor.closeGroup(g.docInfo.factory, g.docInfo.type);
+                    }
+                ));
+            });
+            return items;
+        },
+        null,
+        null,
+        function () {
+            return utils.keys(editor.getGroups()).length > 1;
+        }
+
+    );
+
     newTool = new MenuItem(
         'New...',
         function () {
             // FIXME, very crude
             var result = window.prompt('name', ''),
-                sres = result.split(' '),
+                sres = result.split('.'),
                 factory,
                 type;
             if (sres.length > 1) {
@@ -120,19 +219,22 @@ function setupFileMenu(editor) {
                 type = sres[1];
             } else if (result.length > 0) {
                 type = sres[0];
-                factory = editor.getDocInfo().factory;
+                factory = editor.getSelectedGroup().docInfo.factory;
             }
             // create
-            editor.newGroup(factory, type, function (err) {
-                if (!err) {
-                    window.open(factory + '.' + type + '.edit', '_blank');
-                }
-            });
+            editor.newGroup(factory, type);
         }
     );
     menus.file.push(
+        newTool,
+        editTool,
         saveTool,
-        newTool
+        saveAllTool,
+        closeTool,
+        null,
+        loadFile1Tool,
+        loadFile2Tool
+
     );
 }
 
@@ -1037,7 +1139,7 @@ function setupObjectMenu(editor) {
         }
         // updates the document title
         function updateTabTitle() {
-            var docInfo = editor.getDocInfo();
+            var docInfo = group.docInfo;
             document.title = (group.getCommandChain().isOnSavePoint() ? '' : '* ') +
                 'Edit: ' + docInfo.type;
         }
@@ -1130,7 +1232,7 @@ function setupRunMenu(editor) {
     runTool = new MenuItem(
         'Run',
         function () {
-            var docInfo = editor.getDocInfo();
+            var docInfo = editor.getViewer().getGroup().docInfo;
             editor.runGroup(docInfo.factory, docInfo.type);
         },
         null,

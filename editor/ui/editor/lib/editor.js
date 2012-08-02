@@ -51,20 +51,22 @@ function modulePath(factory, type) {
 }
 
 function Editor(config) {
+    // keep track of the loaded groups
+    this.groups = {
+    };
     // create the dependency manager
     this.dependencyManager = new DependencyManager();
     this.dependencyManager.loadVisualList();
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Editor);
     // create the menu bar and toolbar
-    this.setStyle('background');
-    this.setOverflow('hidden');
+    this.setStyle('background').setOverflow('hidden');
     // a bit ugly. but the viewer does not know the editor and must
     // be notifed of this.
     var viewer = this.getChild('viewer'),
         that = this;
     this.dependencyManager.on('change', function (visualList, packages, typeInfo) {
-        var di = that.docInfo;
+        var di = that.getDocInfo();
         that.dependencyManagerLoaded = true;
         if (di && (!typeInfo || typeInfo.factory !== di.factory || typeInfo.type !== di.type)) {
             viewer.fullRedraw();
@@ -89,28 +91,68 @@ Editor.prototype.theme = new (visual.Theme)({
 // Editor interface
 ////////////////////
 Editor.prototype.getDocInfo = function () {
-    return this.docInfo;
+    return this.selectedGroup.docInfo;
 };
-Editor.prototype.loadGroup = function (factory, type) {
-    var data = '',
+Editor.prototype.getSelectedGroup = function () {
+    return this.selectedGroup;
+};
+Editor.prototype.getGroups = function () {
+    return this.groups;
+};
+Editor.prototype.editGroup = function (factory, type) {
+    var key = factory + '.' + type,
+        docInfo = { factory: factory, type: type },
+        newGroup,
         that = this;
+
+    if (this.groups[key]) {
+        this.selectGroup(this.groups[key]);
+    } else {
+        this.loadGroup(factory, type, function (err, jsonData) {
+            if (!err) {
+                try {
+                    that.groups[key] =
+                        newGroup =
+                        new (require('./model').Group)(jsonData, docInfo);
+                    that.selectGroup(newGroup);
+                } catch (e) {
+                    err = e;
+                }
+            }
+            if (err) {
+                alert(err);
+            }
+        });
+    }
+    return this;
+};
+Editor.prototype.loadGroup = function (factory, type, cb) {
+    var data = '',
+        that = this,
+        key = factory + '.' + type;
     http.get({ path: modulePath(factory, type)}, function (res) {
         res.on('data', function (d) {
             data += d;
         });
         res.on('end', function () {
             var jsonData = JSON.parse(data);
-            that.setGroupData(factory, type, jsonData);
+            if (cb) {
+                cb(null, jsonData);
+            }
         });
         res.on('error', function (e) {
-            alert('Error loading');
+            if (cb) {
+                cb(e);
+            }
         });
     });
     return this;
 };
 Editor.prototype.publishGroup = function (factory, type) {
+    factory = factory || this.selectedGroup.docInfo.factory;
+    type = type || this.selectedGroup.docInfo.type;
     var that = this;
-    http.get({ path: '/swallow/publish/' + this.docInfo.factory + '.' + this.docInfo.type}, function (res) {
+    http.get({ path: '/swallow/publish/' + factory + '.' + type}, function (res) {
         res.on('error', function (e) {
             alert('Error loading');
         });
@@ -118,9 +160,11 @@ Editor.prototype.publishGroup = function (factory, type) {
     return this;
 };
 Editor.prototype.monitorGroup = function (factory, type) {
-    var ti = this.docInfo,
-        req = http.request(
-            { method: 'POST', path: '/swallow/monitor/' + ti.factory + '.' + ti.type},
+    factory = factory || this.selectedGroup.docInfo.factory;
+    type = type || this.selectedGroup.docInfo.type;
+
+    var req = http.request(
+            { method: 'POST', path: '/swallow/monitor/' + factory + '.' + type},
             function (res) {
                 res.on('error', function (e) {
                     alert('Error setting monitored application');
@@ -130,12 +174,41 @@ Editor.prototype.monitorGroup = function (factory, type) {
     req.end();
     return this;
 };
+Editor.prototype.closeGroup = function (factory, type) {
+    var key = factory + '.' + type,
+        group = this.groups[key],
+        otherGroup;
+    forEachProperty(this.groups, function (g, k) {
+        if (g !== group) {
+            otherGroup = g;
+            return true;
+        }
+    });
+    if (otherGroup) {
+        this.selectGroup(otherGroup);
+        if (group.getCommandChain().isOnSavePoint()) {
+            delete this.groups[key];
+        }
+    }
+};
+Editor.prototype.saveGroup = function (factory, type, cb) {
+    factory = factory || this.selectedGroup.docInfo.factory;
+    type = type || this.selectedGroup.docInfo.type;
+    var req,
+        key = factory + '.' + type,
+        group = this.groups[key],
+        doc;
 
-Editor.prototype.saveGroup = function (factory, type, doc, cb) {
-    factory = factory || this.docInfo.factory;
-    type = type || this.docInfo.type;
-    doc = doc || this.children.viewer.getGroup().documentData;
-    var req = http.request(
+    // prevent problems
+    if (!group) {
+        if (cb) {
+            cb(new Error('Group not loaded ' + key));
+        }
+        return;
+    }
+
+    doc = group.documentData;
+    req = http.request(
         {
             method: 'POST',
             path: modulePath(factory, type)
@@ -158,11 +231,24 @@ Editor.prototype.saveGroup = function (factory, type, doc, cb) {
     req.end();
 };
 
-Editor.prototype.newGroup = function (factory, type, cb) {
-    this.saveGroup(
-        factory,
-        type,
-        {
+Editor.prototype.hasUnsavedGroups = function () {
+    return forEachProperty(this.groups, function (g) {
+        return !g.getCommandChain().isOnSavePoint();
+    });
+};
+
+Editor.prototype.saveAllGroups = function () {
+    var that = this;
+    forEachProperty(this.groups, function (g) {
+        if (!g.getCommandChain().isOnSavePoint()) {
+            that.saveGroup(g.docInfo.factory, g.docInfo.type);
+        }
+    });
+};
+
+Editor.prototype.newGroup = function (factory, type) {
+    var key = factory + '.' + type,
+        emptyGroup = {
             description: '',
             privateVisual: true,
             privateTheme: true,
@@ -171,36 +257,32 @@ Editor.prototype.newGroup = function (factory, type, cb) {
             children: {},
             positions: {}
         },
-        cb
-    );
+        docInfo = {factory: factory, type: type},
+        newGroup;
+
+    if (!this.groups[key]) {
+        this.groups[key] =
+            newGroup =
+            new (require('./model').Group)(emptyGroup, docInfo);
+        this.selectGroup(newGroup);
+    }
 };
 
 Editor.prototype.runGroup = function (factory, type, cb) {
     window.open('/swallow/make/' + factory + '.' + type + '.html', '_blank');
-
-    // for no reason that I can explain, this opens the thing in a new tab !?
-/*
-    this.saveGroup(factory, type, null, function (err) {
-        window.open(factory + '.' + type + '.html', '_blank');
-        if (cb) {
-            cb(err);
-        }
-    });*/
 };
 
-Editor.prototype.setGroupData = function (factory, type, groupData) {
-    var viewer = this.getChild('viewer');
-    this.docInfo = {
-        factory: factory,
-        type: type
-    };
-    viewer.setGroup(
-        new (require('./model').Group)(groupData, this.docInfo)
-    );
-    this.getChild('panel').init(this);
-    this.addPlugins(defaultPlugins);
-    if (this.dependencyManagerLoaded) {
-        viewer.fullRedraw();
+Editor.prototype.selectGroup = function (group) {
+    if (group !== this.selectedGroup) {
+        this.selectedGroup = group;
+
+        var viewer = this.getChild('viewer');
+        viewer.setGroup(group);
+        this.getChild('panel').init(this);
+        this.initPlugins(defaultPlugins);
+        if (this.dependencyManagerLoaded) {
+            viewer.fullRedraw();
+        }
     }
 };
 
@@ -209,7 +291,7 @@ Editor.prototype.setGroupData = function (factory, type, groupData) {
     Well... there is no real plugin system yet. But most editor functions
     are injected here.
 */
-Editor.prototype.addPlugins = function (plugins) {
+Editor.prototype.initPlugins = function (plugins) {
     var menus = {
             file: [],
             edit: [],

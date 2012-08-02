@@ -52,6 +52,7 @@ Panel.prototype.init = function (editor) {
     siFolder.setExpanded(false);
     vlFolder.setExpanded(true);
 
+    this.removeAllChildren();
     this.addChild(ciFolder);
     this.addChild(liFolder);
     this.addChild(siFolder);

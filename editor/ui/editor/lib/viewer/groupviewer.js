@@ -944,6 +944,8 @@ GroupViewer.prototype.setGroup = function (group) {
         commandChain = group.getCommandChain(),
         documentData = group.documentData,
         borderPix = this.groupBorderPix;
+    delete this.previewTheme;
+    this.selection = {};
     this.group = group;
     this.documentData = documentData;
     // FIXME (or food for thoughts) maybe we should deal with command groups
