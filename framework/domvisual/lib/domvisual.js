@@ -143,7 +143,7 @@ DOMVisual.prototype.removeChild = function (child) {
 * @api private
 */
 DOMVisual.prototype.setDimensions = function (d) {
-    if (d[0] !== this.dimensions[0] || d[1] !== this.dimensions[1]) {
+    if ((!this.hasOwnProperty('dimensions')) || d[0] !== this.dimensions[0] || d[1] !== this.dimensions[1]) {
         Visual.prototype.setDimensions.apply(this, arguments);
         // the whole thing of upwards notification is still a bit experimental
         // and maybe ugly... but... if we resize something that is flowed,

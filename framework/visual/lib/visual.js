@@ -225,7 +225,7 @@ Visual.prototype.enableInteractions = function (enable) {
 */
 Visual.prototype.setDimensions = function (v3) {
     var dimensions = this.dimensions;
-    if (!vec3IsEqual(this.dimensions, v3)) {
+    if (!this.hasOwnProperty('dimensions') || !vec3IsEqual(this.dimensions, v3)) {
         this.dimensions = v3;
         setDirty(this, 'dimensions');
         // Keep all children in synch (in terms of position and matrix)
