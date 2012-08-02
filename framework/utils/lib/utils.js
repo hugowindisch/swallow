@@ -114,10 +114,13 @@ function forEachProperty(object, f) {
     if (object) {
         for (p in object) {
             if (object.hasOwnProperty(p)) {
-                f(object[p], p, object);
+                if (f(object[p], p, object) === true) {
+                    return true;
+                }
             }
         }
     }
+    return false;
 }
 
 /**
@@ -151,9 +154,12 @@ function forEachSortedProperty(object, f, optionalSortFunction) {
         a.sort(cmp);
         for (i = 0; i < l; i += 1) {
             n = a[i];
-            f(object[n], n);
+            if (f(object[n], n) === true) {
+                return true;
+            }
         }
     }
+    return false;
 }
 
 /**
@@ -165,8 +171,11 @@ function forEachSortedProperty(object, f, optionalSortFunction) {
 function forEach(array, f) {
     var l = array.length, i;
     for (i = 0; i < l; i += 1) {
-        f(array[i], i, array);
+        if (f(array[i], i, array) === true) {
+            return true;
+        }
     }
+    return false;
 }
 
 /**
@@ -280,6 +289,20 @@ function applyDeep(to, from) {
 }
 
 /**
+* Returns the keys.
+* @param {Object} from The from object.
+* @type Array
+* @memberOf utils
+*/
+function keys(from) {
+    var ks = [];
+    forEachProperty(from, function (o, k) {
+        ks.push(k);
+    });
+    return ks;
+}
+
+/**
 * Recursively removes undefined an null properties from an object.
 * @param {Object} o The object to prune.
 * @returns The number of remaining properties in o
@@ -380,6 +403,7 @@ exports.deepEqual = deepEqual;
 exports.limitRange = limitRange;
 exports.applyDeep = applyDeep;
 exports.apply = apply;
+exports.keys = keys;
 exports.prune = prune;
 exports.ensure = ensure;
 exports.ensured = ensured;
