@@ -95,23 +95,7 @@ function setupFileMenu(editor) {
         saveTool,
         saveAllTool,
         closeTool,
-        loadFile1Tool,
-        loadFile2Tool,
         menus = editor.menus;
-
-    loadFile1Tool = new MenuItem(
-        '(experimental) Switch 1',
-        function () {
-            editor.editGroup('samples', 'InnerModule');
-        }
-    );
-
-    loadFile2Tool = new MenuItem(
-        '(experimental) Switch 2',
-        function () {
-            editor.editGroup('samples', 'OuterModule');
-        }
-    );
 
     editTool = new MenuItem(
         'Edit',
@@ -230,11 +214,7 @@ function setupFileMenu(editor) {
         editTool,
         saveTool,
         saveAllTool,
-        closeTool,
-        null,
-        loadFile1Tool,
-        loadFile2Tool
-
+        closeTool
     );
 }
 
@@ -1140,13 +1120,13 @@ function setupObjectMenu(editor) {
         // updates the document title
         function updateTabTitle() {
             var docInfo = group.docInfo;
-            document.title = (group.getCommandChain().isOnSavePoint() ? '' : '* ') +
+            document.title = (commandChain.isOnSavePoint() ? '' : '* ') +
                 'Edit: ' + docInfo.type;
         }
         // FIXME: this should be done with the normal event thing
         window.onbeforeunload = function (evt) {
-            if (!group.getCommandChain().isOnSavePoint()) {
-                return 'You have unsaved changes in your document.';
+            if (editor.hasUnsavedGroups()) {
+                return 'You have unsaved groups.';
             }
         };
         function commandExecuted() {

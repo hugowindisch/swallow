@@ -197,7 +197,7 @@ VisualList.prototype.updateVisualList = function () {
                     c.init(that.editor);
                     c.setHtmlFlowing({position: 'relative'}, true);
                     choices.addChild(c);
-                    c.on('click', onClick);
+                    c.on('select', onClick);
                     ret = 1;
                 }
             }

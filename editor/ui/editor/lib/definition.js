@@ -269,16 +269,21 @@ exports.definition = {
                 },
                 name: {
                     order: 2,
-                    matrix: [ 240, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
+                    matrix: [ 220, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
                     order: 4,
-                    matrix: [ 240, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   75, 25, 0, 1 ],
+                    matrix: [ 220, 0, 0, 0,   0, 40, 0, 0,    0, 0, 1, 0,   75, 25, 0, 1 ],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                button: {
+                    order: 5,
+                    matrix: [ 56, 0, 0, 0,   0, 32, 0, 0,    0, 0, 1, 0,   300, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 configurationSheet: {
-                    order: 5,
+                    order: 6,
                     matrix: [ 360, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'px', height: 'auto' }
                 }
@@ -299,6 +304,14 @@ exports.definition = {
                         "text": "factory name",
                         "bold": true,
                         position: "name"
+                    }
+                },
+                button: {
+                    factory: "baseui",
+                    type: "Button",
+                    config: {
+                        position: 'button',
+                        text: 'Edit'
                     }
                 },
                 description: {

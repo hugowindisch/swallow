@@ -28,9 +28,29 @@ var visual = require('visual'),
     ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet;
 
 function VisualInfo(config) {
+    var that = this;
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.VisualInfo);
-    this.children.selectionBox.setVisible(false);
+    this.getChild('selectionBox').setVisible(false);
+    this.on('mouseover', function () {
+        var ti = that.ti;
+        that.getChild('button').setVisible(
+            ti !== undefined &&
+                ti.factory !== 'domvisual' &&
+                ti.factory !== 'baseui'
+        );
+    }).on('mouseout', function () {
+        that.getChild('button').setVisible(false);
+    }).getChild(
+        'button'
+    ).setVisible(
+        false
+    ).on(
+        'click',
+        function () {
+            that.editor.editGroup(that.ti.factory, that.ti.type);
+        }
+    );
 }
 VisualInfo.prototype = new (domvisual.DOMElement)();
 VisualInfo.prototype.theme = new (visual.Theme)({
@@ -45,7 +65,8 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
     function loadPreview() {
         var factory,
             Constr,
-            preview;
+            preview,
+            previewClickBox;
         factory = require(ti.factory);
         if (factory) {
             Constr = factory[ti.type];
@@ -66,6 +87,14 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
                 if (Constr.prototype.getDescription) {
                     that.children.description.setText(Constr.prototype.getDescription());
                 }
+                // click
+                previewClickBox = new domvisual.DOMElement({});
+                that.addChild(previewClickBox, 'clickBox');
+                previewClickBox.setPosition(
+                    'preview'
+                ).on('click', function () {
+                    that.emit('select');
+                }).setCursor('pointer');
             }
         }
     }
