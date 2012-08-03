@@ -90,19 +90,22 @@ function getTransform(viewer, xl, constrain, selectionRect) {
 
 function setupFileMenu(editor) {
     var viewer = editor.getViewer(),
-        newTool,    // this should in fact wait for the thing to be created AND select it!
-        editTool,
+        newTool,
+        editOtherTool,
         saveTool,
+        saveOtherTool,
         saveAllTool,
         closeTool,
+        closeOtherTool,
         menus = editor.menus;
 
-    editTool = new MenuItem(
-        'Edit',
+    editOtherTool = new MenuItem(
+        'Edit Other:',
         null,
         function () {
             var groups = editor.getGroups(),
-                items = [];
+                items = [],
+                selected = editor.getSelectedGroup();
             forEachProperty(groups, function (g) {
                 items.push(new MenuItem(
                     g.docInfo.factory + '.' + g.docInfo.type,
@@ -113,7 +116,7 @@ function setupFileMenu(editor) {
                     null,
                     null,
                     true,
-                    g === editor.getSelectedGroup()
+                    g === selected
                 ));
             });
             return items;
@@ -126,6 +129,20 @@ function setupFileMenu(editor) {
     );
     saveTool = new MenuItem(
         'Save',
+        function () {
+            var group = editor.getSelectedGroup();
+            editor.saveGroup(group.docInfo.factory, group.docInfo.type);
+        },
+        null,
+        new Accelerator('VK_S', true),
+        null,
+        function () {
+            return !editor.getSelectedGroup().getCommandChain().isOnSavePoint();
+        }
+    );
+
+    saveOtherTool = new MenuItem(
+        'Save Other:',
         null,
         function () {
             var groups = editor.getGroups(),
@@ -159,7 +176,7 @@ function setupFileMenu(editor) {
             editor.saveAllGroups();
         },
         null,
-        new Accelerator('VK_S', true),
+        null,
         null,
         function () {
             return editor.hasUnsavedGroups();
@@ -168,16 +185,35 @@ function setupFileMenu(editor) {
 
     closeTool = new MenuItem(
         'Close',
+        function () {
+            var docInfo = editor.getDocInfo();
+            editor.closeGroup(docInfo.factory, docInfo.type);
+        },
+        null,
+        null,
+        null,
+        function () {
+            return utils.keys(editor.getGroups()).length > 1;
+        }
+    );
+    closeOtherTool = new MenuItem(
+        'Close Other:',
         null,
         function () {
             var groups = editor.getGroups(),
-                items = [];
+                items = [],
+                selected = editor.getSelectedGroup();
             forEachProperty(groups, function (g) {
                 items.push(new MenuItem(
                     g.docInfo.factory + '.' + g.docInfo.type,
                     function () {
                         editor.closeGroup(g.docInfo.factory, g.docInfo.type);
-                    }
+                    },
+                    null,
+                    null,
+                    null,
+                    true,
+                    g === selected
                 ));
             });
             return items;
@@ -187,7 +223,6 @@ function setupFileMenu(editor) {
         function () {
             return utils.keys(editor.getGroups()).length > 1;
         }
-
     );
 
     newTool = new MenuItem(
@@ -211,10 +246,15 @@ function setupFileMenu(editor) {
     );
     menus.file.push(
         newTool,
-        editTool,
+        null,
+        editOtherTool,
+        null,
         saveTool,
         saveAllTool,
-        closeTool
+        saveOtherTool,
+        null,
+        closeTool,
+        closeOtherTool
     );
 }
 
