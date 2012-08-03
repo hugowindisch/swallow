@@ -30,16 +30,10 @@ var visual = require('visual'),
 function VisualList(config) {
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.VisualList);
-    var that = this;
-    this.getChild('library').on('change', function (evt) {
-        that.filterFactories();
-    });
-    this.getChild('unsetContent').on('click', function (evt) {
-        that.select(null, true);
-    });
-
 }
 VisualList.prototype = new (domvisual.DOMElement)();
+
+/*
 VisualList.prototype.filterFactories = function () {
     var editor = this.editor,
         choices = this.children.choices,
@@ -55,6 +49,8 @@ VisualList.prototype.filterFactories = function () {
         }
     });
 };
+*/
+
 VisualList.prototype.select = function (vi, apply) {
     var sel = this.selected,
         ret = false,
@@ -90,15 +86,19 @@ VisualList.prototype.selectByTypeInfo = function (ti) {
             type = ti.type,
             that = this,
             editor = this.editor;
-        forEachProperty(choices.children, function (c) {
+        if (!forEachProperty(choices.children, function (c) {
             // skip separators
             if (c instanceof VisualInfo) {
                 var cti = c.getTypeInfo();
                 if (cti.factory === factory && cti.type === type) {
                     that.select(c);
+                    return true;
                 }
             }
-        });
+        })) {
+            // missing, we must add it
+            this.select(this.addVisualInfo(factory, type));
+        }
     } else {
         this.select(null);
     }
@@ -169,69 +169,65 @@ VisualList.prototype.applySelectedPosition = function () {
         }
     }
 };
-VisualList.prototype.updateVisualList = function () {
+VisualList.prototype.addVisualInfo = function (factory, type) {
     var editor = this.editor,
-        packageManager = editor.getDependencyManager(),
-        visualList = packageManager.getVisualList(),
-        jsd,
-        alwaysShow = this.alwaysShow,
         choices = this.children.choices,
         docInfo = editor.getDocInfo(),
-        ve,
-        numberOfModules = {},
         that = this;
+
     function onClick() {
         that.select(this, true);
     }
     function add(factory, type) {
-        var c, f, T, ret = 0;
-        if (true/*!(factory === docInfo.factory && type === docInfo.type)*/) {
-            f = require(factory);
-            if (f) {
-                T = f[type];
-                if (T && (T.prototype instanceof visual.Visual) && (!T.prototype.privateVisual || docInfo === null || (factory === docInfo.factory))) {
-                    c = new VisualInfo({ typeInfo: {factory: factory, type: type}});
-                    c.init(that.editor);
-                    c.setHtmlFlowing({position: 'relative'}, true);
-                    choices.addChild(c);
-                    c.on('select', onClick);
-                    ret = 1;
-                }
+        var c = null, f, T;
+        f = require(factory);
+        if (f) {
+            T = f[type];
+            if (T && (T.prototype instanceof visual.Visual) && (!T.prototype.privateVisual || docInfo === null || (factory === docInfo.factory))) {
+                c = new VisualInfo({ typeInfo: {factory: factory, type: type}});
+                c.init(that.editor);
+                c.setHtmlFlowing({position: 'relative'}, true);
+                choices.addChild(c);
+                c.on('select', onClick);
             }
         }
-        return ret;
+        return c;
     }
+    return add(factory, type);
+};
+
+VisualList.prototype.updateVisualList = function () {
+    var editor = this.editor,
+        packageManager = editor.getDependencyManager(),
+        visualList = packageManager.getVisualList(),
+        alwaysShow = this.alwaysShow,
+        choices = this.children.choices,
+        docInfo = editor.getDocInfo(),
+        filteredFactory = this.children.library.getSelectedOption(),
+        that = this;
     // remove all children
     choices.removeAllChildren();
     // create the always visible choices first
     forEachProperty(visualList, function (json, factory) {
-        var nModules = 0;
         if (alwaysShow[factory] && json.visuals) {
             forEach(json.visuals, function (type) {
-                nModules += add(factory, type);
+                that.addVisualInfo(factory, type);
             });
         }
-        numberOfModules[factory] = nModules;
     });
     // add a separator
     choices.addChild(
         (new (domvisual.DOMElement)()).setHtmlFlowing({position: 'relative'}, true).setDimensions([1, 20, 1]),
         'separator'
     );
-
     // then the other ones
     forEachProperty(visualList, function (json, factory) {
-        var nModules = 0;
-        if (!alwaysShow[factory] && json.visuals) {
+        if (!alwaysShow[factory] && filteredFactory === factory && json.visuals) {
             forEach(json.visuals, function (type) {
-                nModules += add(factory, type);
+                that.addVisualInfo(factory, type);
             });
         }
-        numberOfModules[factory] = nModules;
     });
-    // then setup the factory selector
-    that.setFactories(visualList, numberOfModules);
-    that.filterFactories();
 };
 
 VisualList.prototype.init = function (editor) {
@@ -241,13 +237,6 @@ VisualList.prototype.init = function (editor) {
     this.editor = editor;
     this.alwaysShow = { domvisual: true };
 
-    this.updateVisualList();
-    editor.getDependencyManager().on('change', function (visualList, packages, typeInfo) {
-        var docInfo = editor.getDocInfo();
-        if (!typeInfo || docInfo === null || typeInfo.factory !== docInfo.factory || typeInfo.type !== docInfo.type) {
-            that.updateVisualList();
-        }
-    });
     // a new box has been selected
     function newBoxSelected() {
         var typeInfo;
@@ -261,19 +250,48 @@ VisualList.prototype.init = function (editor) {
         that.selectByTypeInfo(typeInfo);
     }
 
-    viewer.on('selectionChanged', newBoxSelected);
-    viewer.on('setGroup', function () {
-        that.filterFactories();
+    function fullUpdate() {
+        var docInfo = editor.getDocInfo();
+        that.initFactories();
+        that.children.library.setSelectedOption(docInfo.factory);
+        that.updateVisualList();
+        newBoxSelected();
+    }
+
+    // change in the dependency manager
+    editor.getDependencyManager().on('change', function (visualList, packages, typeInfo) {
+        var docInfo = editor.getDocInfo();
+        if (!typeInfo || docInfo === null || typeInfo.factory !== docInfo.factory || typeInfo.type !== docInfo.type) {
+            fullUpdate();
+        }
     });
+
+    viewer.on('selectionChanged', newBoxSelected);
+    viewer.on('setGroup', fullUpdate);
+
+    this.getChild('library').on('change', function (evt) {
+        that.updateVisualList();
+        newBoxSelected();
+    });
+    this.getChild('unsetContent').on('click', function (evt) {
+        that.select(null, true);
+    });
+
 };
 
-VisualList.prototype.setFactories = function (factories, numberOfModules) {
-    var factArray = [],
+VisualList.prototype.initFactories = function () {
+    var editor = this.editor,
+        packageManager = editor.getDependencyManager(),
+        visualList = packageManager.getVisualList(),
+        factArray = [],
         alwaysShow = this.alwaysShow || {};
-    forEachProperty(factories, function (f, name) {
-        // don't show the factories that are always present
-        if (!alwaysShow[name] && numberOfModules[name] > 0) {
-            factArray.push(name);
+
+    forEachProperty(visualList, function (json, factory) {
+        if (json.visuals) {
+            forEach(json.visuals, function (type) {
+                factArray.push(factory);
+                return true;
+            });
         }
     });
     factArray.sort(function (i1, i2) {
