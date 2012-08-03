@@ -52,7 +52,8 @@ function modulePath(factory, type) {
 }
 
 function Editor(config) {
-    var that = this;
+    var that = this,
+        toLoad;
 
     // keep track of the loaded groups
     this.groups = {
@@ -77,10 +78,25 @@ function Editor(config) {
     this.initPlugins(defaultPlugins);
     // init the panel
     this.getChild('panel').init(this);
-
+    function loadLocation() {
+        var factory, type;
+        if (window.location.hash) {
+            toLoad = window.location.hash.split('.');
+            if (toLoad.length === 2) {
+                factory = toLoad[0].slice(1);
+                type = toLoad[1];
+                that.editGroup(factory, type);
+            }
+        }
+        // FIXME: we should have a Visual.setInterval that would cleanly
+        // remove the interval when the thing is removed from the stage,
+        // and do the update automatically
+        visual.update();
+    }
+    // poll the location
+    setInterval(loadLocation, 200);
 }
 Editor.prototype = new (domvisual.DOMElement)();
-
 Editor.prototype.theme = new (visual.Theme)({
     background: {
         basedOn: [
@@ -282,6 +298,7 @@ Editor.prototype.runGroup = function (factory, type, cb) {
 
 Editor.prototype.selectGroup = function (group) {
     if (group !== this.selectedGroup) {
+        window.location.hash = '#' + group.docInfo.factory + '.' + group.docInfo.type;
         this.selectedGroup = group;
         var viewer = this.getChild('viewer');
         viewer.setGroup(group);

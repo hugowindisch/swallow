@@ -90,10 +90,6 @@ function getUrls(forMiddleWare) {
         handler: servevisualcomponent.serveVisualComponent(false, true)
     });
     urls.push({
-        filter: /^\/swallow\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.edit$/,
-        handler: servevisualcomponent.serveVisualComponent(true, false)
-    });
-    urls.push({
         filter: /^\/swallow\/make\/(.*)$/,
         handler: pillow.makeAndServe
     });

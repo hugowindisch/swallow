@@ -25,11 +25,7 @@
 {{if jquery}}
             pillow.supportJQuery(require);
 {{/if}}
-{{if editFactory}}
-            new (require('${factory}').${type})().editGroup('${editFactory}', '${editType}').runFullScreen();
-{{else}}
             new (require('${factory}').${type})().runFullScreen();
-{{/if}}
 
 {{if monitor}}
             // monitoring will reload the app on any change

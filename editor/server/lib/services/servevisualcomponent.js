@@ -53,8 +53,6 @@ function generateVisualComponentHtml(
     cssFileMap,
     type,
     title,
-    editFactory,
-    editType,
     monitor
 ) {
     // we need to load all components
@@ -78,8 +76,6 @@ function generateVisualComponentHtml(
         css: cssFiles,
         factory: details.name,
         type: type,
-        editFactory: editFactory,
-        editType: editType,
         jquery: options.jquery ? path.basename(options.jquery) : null,
         monitor: monitor,
         icon: icon,
@@ -91,8 +87,8 @@ function serveVisualComponent(forEdit, monitor) {
     return function (req, res, cxt) {
         var options = cxt.options,
             match = cxt.match,
-            factory = forEdit ? 'editor' : match[1],
-            type = forEdit ? 'Editor' : match[2],
+            factory = match[1],
+            type = match[2],
             extendedOptions = apply(
                 {
                     extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
@@ -105,8 +101,6 @@ function serveVisualComponent(forEdit, monitor) {
                                 cssFileMap,
                                 type,
                                 type,
-                                forEdit ? match[1] : null,
-                                forEdit ? match[2] : null,
                                 monitor
                             );
                             // now we are ready to return this

@@ -63,7 +63,7 @@ function VisualModule(config) {
     });
     this.getChild('edit').on('click', function () {
         var ti = that.typeInfo;
-        window.open(ti.factory + '.' + ti.type + '.edit', '_blank');
+        window.open('/swallow/make/editor.Editor.html#' + ti.factory + '.' + ti.type, '_blank');
     });
     this.getChild('delete').on('click', function () {
         var ti = that.typeInfo,
