@@ -1110,18 +1110,22 @@ function setupObjectMenu(editor) {
 
     // setup auto update of some tools
     (function () {
-        var group = viewer.getGroup(),
-            documentData = group.documentData,
-            commandChain = group.getCommandChain();
         function signalChange() {
             unsetContentTool.emit('change');
             unsetContentTool.setEnabled(selectionHasNonEmptyPositions());
         }
         // updates the document title
         function updateTabTitle() {
-            var docInfo = group.docInfo;
-            document.title = (commandChain.isOnSavePoint() ? '' : '* ') +
-                'Edit: ' + docInfo.type;
+            var group = viewer.getGroup(),
+                commandChain,
+                docInfo;
+
+            if (group) {
+                commandChain = group.getCommandChain();
+                docInfo = group.docInfo;
+                document.title = (commandChain.isOnSavePoint() ? '' : '* ') +
+                    'Edit: ' + docInfo.type;
+            }
         }
         // FIXME: this should be done with the normal event thing
         window.onbeforeunload = function (evt) {
@@ -1133,7 +1137,8 @@ function setupObjectMenu(editor) {
             updateTabTitle();
             signalChange();
         }
-        commandChain.on('command', commandExecuted);
+        viewer.on('setGroup', updateTabTitle);
+        viewer.on('command', commandExecuted);
         viewer.on('selectionChanged', signalChange);
         updateTabTitle();
     }());

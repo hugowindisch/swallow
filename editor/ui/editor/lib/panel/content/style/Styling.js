@@ -468,7 +468,7 @@ Styling.prototype.updateLocalStyleList = function () {
 
 
 Styling.prototype.setEditor = function (editor) {
-    var commandChain = editor.getViewer().getGroup().commandChain,
+    var viewer = editor.getViewer(),
         that = this;
     this.editor = editor;
 
@@ -493,7 +493,7 @@ Styling.prototype.setEditor = function (editor) {
         }
         if (!that.connectedToTheStage) {
             // quite a hack!
-            commandChain.removeListener('command', detectStyleChanges);
+            viewer.removeListener('command', detectStyleChanges);
         } else {
             if (forEachSubCommand) {
                 forEachSubCommand(check);
@@ -504,7 +504,7 @@ Styling.prototype.setEditor = function (editor) {
             }
         }
     }
-    commandChain.on('command', detectStyleChanges);
+    viewer.on('command', detectStyleChanges);
 
 };
 

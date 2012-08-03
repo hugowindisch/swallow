@@ -70,15 +70,18 @@ ComponentInfo.prototype.init = function (editor) {
 
     function updateControls() {
         var group = viewer.getGroup(),
+            documentData;
+        if (group) {
             documentData = group.documentData;
-        children.w.setText(documentData.dimensions[0]);
-        children.h.setText(documentData.dimensions[1]);
-        children.description.setText(documentData.description);
-        children.privateCheck.setChecked(documentData.privateVisual === true);
-        children.privateStylesCheck.setChecked(documentData.privateStyles === true);
-        children.grid.setValue(documentData.gridSize);
-        that.overflowX.setSelectedValue(documentData.overflowX);
-        that.overflowY.setSelectedValue(documentData.overflowY);
+            children.w.setText(documentData.dimensions[0]);
+            children.h.setText(documentData.dimensions[1]);
+            children.description.setText(documentData.description);
+            children.privateCheck.setChecked(documentData.privateVisual === true);
+            children.privateStylesCheck.setChecked(documentData.privateStyles === true);
+            children.grid.setValue(documentData.gridSize);
+            that.overflowX.setSelectedValue(documentData.overflowX);
+            that.overflowY.setSelectedValue(documentData.overflowY);
+        }
     }
 
     children.w.on('change', updateDoc);

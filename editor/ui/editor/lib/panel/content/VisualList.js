@@ -43,9 +43,7 @@ VisualList.prototype = new (domvisual.DOMElement)();
 VisualList.prototype.filterFactories = function () {
     var editor = this.editor,
         choices = this.children.choices,
-        docInfo = editor.getDocInfo(),
         filteredFactory = this.children.library.getSelectedOption(),
-        editedFactory = docInfo.factory,
         alwaysShow = this.alwaysShow,
         selected = this.selected;
     forEachProperty(choices.children, function (c) {
@@ -179,7 +177,6 @@ VisualList.prototype.updateVisualList = function () {
         alwaysShow = this.alwaysShow,
         choices = this.children.choices,
         docInfo = editor.getDocInfo(),
-        editedFactory = docInfo.factory,
         ve,
         numberOfModules = {},
         that = this;
@@ -188,11 +185,11 @@ VisualList.prototype.updateVisualList = function () {
     }
     function add(factory, type) {
         var c, f, T, ret = 0;
-        if (!(factory === docInfo.factory && type === docInfo.type)) {
+        if (true/*!(factory === docInfo.factory && type === docInfo.type)*/) {
             f = require(factory);
             if (f) {
                 T = f[type];
-                if (T && (T.prototype instanceof visual.Visual) && (!T.prototype.privateVisual || (factory === docInfo.factory))) {
+                if (T && (T.prototype instanceof visual.Visual) && (!T.prototype.privateVisual || docInfo === null || (factory === docInfo.factory))) {
                     c = new VisualInfo({ typeInfo: {factory: factory, type: type}});
                     c.init(that.editor);
                     c.setHtmlFlowing({position: 'relative'}, true);
@@ -240,14 +237,14 @@ VisualList.prototype.updateVisualList = function () {
 VisualList.prototype.init = function (editor) {
     var viewer = editor.getViewer(),
         container = this.parent,
-        docInfo = editor.getDocInfo(),
         that = this;
     this.editor = editor;
     this.alwaysShow = { domvisual: true };
 
     this.updateVisualList();
     editor.getDependencyManager().on('change', function (visualList, packages, typeInfo) {
-        if (!typeInfo || typeInfo.factory !== docInfo.factory || typeInfo.type !== docInfo.type) {
+        var docInfo = editor.getDocInfo();
+        if (!typeInfo || docInfo === null || typeInfo.factory !== docInfo.factory || typeInfo.type !== docInfo.type) {
             that.updateVisualList();
         }
     });
@@ -265,11 +262,13 @@ VisualList.prototype.init = function (editor) {
     }
 
     viewer.on('selectionChanged', newBoxSelected);
+    viewer.on('setGroup', function () {
+        that.filterFactories();
+    });
 };
 
 VisualList.prototype.setFactories = function (factories, numberOfModules) {
     var factArray = [],
-        docInfo = this.editor.getDocInfo(),
         alwaysShow = this.alwaysShow || {};
     forEachProperty(factories, function (f, name) {
         // don't show the factories that are always present

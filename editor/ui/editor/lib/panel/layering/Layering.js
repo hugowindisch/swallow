@@ -41,8 +41,6 @@ Layering.prototype.getConfigurationSheet = function () {
 };
 Layering.prototype.init = function (editor) {
     var viewer = editor.getViewer(),
-        group = viewer.getGroup(),
-        commandChain = group.getCommandChain(),
         that = this;
     this.editor = editor;
     function refresh() {
@@ -65,7 +63,8 @@ Layering.prototype.init = function (editor) {
             refresh();
         }
     }
-    commandChain.on('command', checkIfLayeringChanged);
+    viewer.on('command', checkIfLayeringChanged);
+    viewer.on('setGroup', refresh);
     refresh();
 };
 Layering.prototype.updateList = function () {
@@ -73,45 +72,51 @@ Layering.prototype.updateList = function () {
         group = viewer.getGroup(),
         that = this,
         prevName,
-        documentData = group.documentData,
-        positions = documentData.positions,
+        documentData,
+        positions,
         it = [];
 
-    forEachProperty(documentData.positions, function (c, name) {
-        it.push({name: name, order: c.order});
-    });
-    it.sort(function (i1, i2) {
-        return i2.order - i1.order;
-    });
-    // remove the children that are not in the list
-    forEachProperty(this.children, function (c, name) {
-        if (!documentData.children[name]) {
-            that.removeChild(name);
-        }
-    });
-    // add the ones that are missing and update the others
-    forEach(it, function (i) {
-        var name = i.name,
-            ch = that.getChild(name);
+    if (group) {
+        documentData = group.documentData;
+        positions = documentData.positions;
+        forEachProperty(documentData.positions, function (c, name) {
+            it.push({name: name, order: c.order});
+        });
+        it.sort(function (i1, i2) {
+            return i2.order - i1.order;
+        });
+        // remove the children that are not in the list
+        forEachProperty(this.children, function (c, name) {
+            if (!documentData.children[name]) {
+                that.removeChild(name);
+            }
+        });
+        // add the ones that are missing and update the others
+        forEach(it, function (i) {
+            var name = i.name,
+                ch = that.getChild(name);
 
-        if (!ch) {
-            ch = new LayerInfo({contentName: name, viewer: viewer});
-            ch.setHtmlFlowing({position: 'relative'}, true);
-            that.addChild(ch, name);
-        } else {
-            // simply update it
-            ch.updateAll();
-        }
-        that.orderAfter(name, prevName);
-        prevName = name;
-    });
-    this.requestDimensions([
-        groups.Layering.dimensions[0],
-        // FIXME
-        // quite a hack. We compensate for the borders because
-        // the style is css based and has a 1 pixel border... quite ugly!
-        it.length * (groups.LayerInfo.dimensions[1] + 2) + 10, 1
-    ]);
+            if (!ch) {
+                ch = new LayerInfo({contentName: name, viewer: viewer});
+                ch.setHtmlFlowing({position: 'relative'}, true);
+                that.addChild(ch, name);
+            } else {
+                // simply update it
+                ch.updateAll();
+            }
+            that.orderAfter(name, prevName);
+            prevName = name;
+        });
+        this.requestDimensions([
+            groups.Layering.dimensions[0],
+            // FIXME
+            // quite a hack. We compensate for the borders because
+            // the style is css based and has a 1 pixel border... quite ugly!
+            it.length * (groups.LayerInfo.dimensions[1] + 2) + 10, 1
+        ]);
+    } else {
+        this.removeAllChildren();
+    }
 };
 
 exports.Layering = Layering;

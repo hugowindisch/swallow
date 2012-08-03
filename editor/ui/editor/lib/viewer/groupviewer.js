@@ -946,7 +946,18 @@ GroupViewer.prototype.setGroup = function (group) {
         borderPix = this.groupBorderPix;
     delete this.previewTheme;
     this.selection = {};
+    // the group selection mechanism:
+    // - we clear all listeners from the selected group's command chain
+    // - we assign this group to ourself
+    // - we emit a setgroup event
+    // - also: we always forward the 'command' events from the selected
+    // command chain, so we act as a proxy for this command chain. This
+    // means that all the 'satellite' user interface elements that act
+    // on us can use US instead of the group's command chain and this way
+    // dont worry about re connecting themselves to the group's command Chain
+    commandChain.removeAllListeners();
     this.group = group;
+    this.emit('setGroup', group);
     this.documentData = documentData;
     // FIXME (or food for thoughts) maybe we should deal with command groups
     // by iterating all their sub commands
@@ -1012,6 +1023,9 @@ GroupViewer.prototype.setGroup = function (group) {
         if (notifySelectionChanged) {
             that.emit('selectionChanged');
         }
+        // finally, forward the 'command'
+        // (we act as a proxy for the selected document's command chain)
+        that.emit('command', command, name, message, hint, forEachSubCommand);
     }
     // hook ourselves
     commandChain.on('command', onCommand);

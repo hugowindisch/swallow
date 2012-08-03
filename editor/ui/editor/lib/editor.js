@@ -32,6 +32,7 @@
 /*! */
 var visual = require('visual'),
     domvisual = require('domvisual'),
+    events = require('events'),
     baseui = require('baseui'),
     url = require('url'),
     http = require('http'),
@@ -51,6 +52,8 @@ function modulePath(factory, type) {
 }
 
 function Editor(config) {
+    var that = this;
+
     // keep track of the loaded groups
     this.groups = {
     };
@@ -59,19 +62,22 @@ function Editor(config) {
     this.dependencyManager.loadVisualList();
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Editor);
-    // create the menu bar and toolbar
     this.setStyle('background').setOverflow('hidden');
-    // a bit ugly. but the viewer does not know the editor and must
-    // be notifed of this.
-    var viewer = this.getChild('viewer'),
-        that = this;
+    // FIXME
+    // a bit sideways... maybe the groupviewer should hook itself directly
+    // to the editor
     this.dependencyManager.on('change', function (visualList, packages, typeInfo) {
         var di = that.getDocInfo();
         that.dependencyManagerLoaded = true;
         if (di && (!typeInfo || typeInfo.factory !== di.factory || typeInfo.type !== di.type)) {
-            viewer.fullRedraw();
+            that.getChild('viewer').fullRedraw();
         }
     });
+    // init the plugins
+    this.initPlugins(defaultPlugins);
+    // init the panel
+    this.getChild('panel').init(this);
+
 }
 Editor.prototype = new (domvisual.DOMElement)();
 
@@ -91,7 +97,9 @@ Editor.prototype.theme = new (visual.Theme)({
 // Editor interface
 ////////////////////
 Editor.prototype.getDocInfo = function () {
-    return this.selectedGroup.docInfo;
+    var sg = this.selectedGroup,
+        docInfo = sg !== undefined ? sg.docInfo : null;
+    return docInfo;
 };
 Editor.prototype.getSelectedGroup = function () {
     return this.selectedGroup;
@@ -275,11 +283,8 @@ Editor.prototype.runGroup = function (factory, type, cb) {
 Editor.prototype.selectGroup = function (group) {
     if (group !== this.selectedGroup) {
         this.selectedGroup = group;
-
         var viewer = this.getChild('viewer');
         viewer.setGroup(group);
-        this.getChild('panel').init(this);
-        this.initPlugins(defaultPlugins);
         if (this.dependencyManagerLoaded) {
             viewer.fullRedraw();
         }

@@ -128,8 +128,6 @@ VisualInfo.prototype.showDetails = function () {
     var children = this.children,
         editor = this.editor,
         viewer = editor.getViewer(),
-        group = viewer.getGroup(),
-        commandChain = group.getCommandChain(),
         configurationSheet,
         hooked = true,
         typeInfo = this.ti,
@@ -191,13 +189,13 @@ VisualInfo.prototype.showDetails = function () {
     this.unhookConfigurationChangeHandlers = function () {
         hooked = false;
         viewer.removeListener('selectionChanged', setConfigurationSheetContent);
-        commandChain.removeListener('command', checkConfigChange);
+        viewer.removeListener('command', checkConfigChange);
         delete that.unhookConfigurationChangeHandlers;
     };
     // add the handlers to detect configuration changes and update the sheet
     // accordingly
     viewer.on('selectionChanged', setConfigurationSheetContent);
-    commandChain.on('command', checkConfigChange);
+    viewer.on('command', checkConfigChange);
     setConfigurationSheetContent();
 };
 
