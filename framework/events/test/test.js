@@ -94,5 +94,15 @@ exports.run = function (test, done) {
     test(assert.strictEqual, ee.getListeners('c').length, 0);
     test(assert.strictEqual, ee._events.c, undefined);
 
+    ee.on('a', l1);
+    ee.on('b', l1);
+    ee.on('c', l1);
+    ee.removeAllListeners();
+    called1 = 0;
+    ee.emit('a');
+    ee.emit('b');
+    ee.emit('c');
+    test(assert.strictEqual, called1, 0);
+
     done();
 };

@@ -140,15 +140,19 @@ EventEmitter.prototype.removeListener = function (event, listener) {
 };
 
 /**
-* Removes all listener for the specified event from the emitter.
+* Removes all listener for the specified event from the emitter. If the event is omitted, removes all listeners of all events.
 * @param {String} event The name of the event.
 * @returns this.
 * @type EventEmitter
 * @memberOf EventEmiter
 */
 EventEmitter.prototype.removeAllListeners = function (event) {
-    if (this._events) {
-        delete this._events[event];
+    if (event !== undefined) {
+        if (this._events) {
+            delete this._events[event];
+        }
+    } else {
+        this._events = {};
     }
     return this;
 };
