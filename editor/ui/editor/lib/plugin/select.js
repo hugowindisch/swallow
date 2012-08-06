@@ -1180,6 +1180,7 @@ function setupObjectMenu(editor) {
             signalChange();
         }
         viewer.on('setGroup', updateTabTitle);
+        viewer.on('setSavePoint', updateTabTitle);
         viewer.on('command', commandExecuted);
         viewer.on('selectionChanged', signalChange);
         updateTabTitle();
