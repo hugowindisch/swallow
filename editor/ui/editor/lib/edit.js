@@ -137,6 +137,7 @@ CommandChain.prototype.setSavePoint = function () {
     } else {
         this.savePoint = null;
     }
+    this.emit('setSavePoint');
 };
 CommandChain.prototype.isOnSavePoint = function () {
     var commands = this.commands,

@@ -279,7 +279,7 @@ exports.definition = {
                 },
                 button: {
                     order: 5,
-                    matrix: [ 56, 0, 0, 0,   0, 32, 0, 0,    0, 0, 1, 0,   300, 5, 0, 1 ],
+                    matrix: [ 56, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   300, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 configurationSheet: {

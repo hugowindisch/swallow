@@ -110,6 +110,10 @@ Editor.prototype.theme = new (visual.Theme)({
     }
 });
 
+function getKey(factory, type) {
+    return factory + '.' + type;
+}
+
 // Editor interface
 ////////////////////
 Editor.prototype.getDocInfo = function () {
@@ -123,8 +127,22 @@ Editor.prototype.getSelectedGroup = function () {
 Editor.prototype.getGroups = function () {
     return this.groups;
 };
+Editor.prototype.hasMoreThanOneGroup = function () {
+    var n = 0;
+    return forEachProperty(this.groups, function () {
+        n += 1;
+        if (n > 1) {
+            return true;
+        }
+        return false;
+    });
+};
+Editor.prototype.getGroup = function (factory, type) {
+    var key = getKey(factory, type);
+    return this.groups[key];
+};
 Editor.prototype.editGroup = function (factory, type) {
-    var key = factory + '.' + type,
+    var key = getKey(factory, type),
         docInfo = { factory: factory, type: type },
         newGroup,
         that = this;
@@ -153,7 +171,7 @@ Editor.prototype.editGroup = function (factory, type) {
 Editor.prototype.loadGroup = function (factory, type, cb) {
     var data = '',
         that = this,
-        key = factory + '.' + type;
+        key = getKey(factory, type);
     http.get({ path: modulePath(factory, type)}, function (res) {
         res.on('data', function (d) {
             data += d;
@@ -199,7 +217,7 @@ Editor.prototype.monitorGroup = function (factory, type) {
     return this;
 };
 Editor.prototype.closeGroup = function (factory, type) {
-    var key = factory + '.' + type,
+    var key = getKey(factory, type),
         group = this.groups[key],
         otherGroup;
     forEachProperty(this.groups, function (g, k) {
@@ -219,7 +237,7 @@ Editor.prototype.saveGroup = function (factory, type, cb) {
     factory = factory || this.selectedGroup.docInfo.factory;
     type = type || this.selectedGroup.docInfo.type;
     var req,
-        key = factory + '.' + type,
+        key = getKey(factory, type),
         group = this.groups[key],
         doc;
 
@@ -245,6 +263,7 @@ Editor.prototype.saveGroup = function (factory, type, cb) {
                 }
             });
             res.on('end', function () {
+                group.getCommandChain().setSavePoint();
                 if (cb) {
                     cb(null);
                 }
@@ -271,7 +290,7 @@ Editor.prototype.saveAllGroups = function () {
 };
 
 Editor.prototype.newGroup = function (factory, type) {
-    var key = factory + '.' + type,
+    var key = getKey(factory, type),
         emptyGroup = {
             description: '',
             privateVisual: true,

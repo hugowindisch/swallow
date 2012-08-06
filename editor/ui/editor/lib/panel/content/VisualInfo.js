@@ -34,13 +34,17 @@ function VisualInfo(config) {
     this.getChild('selectionBox').setVisible(false);
     this.on('mouseover', function () {
         var ti = that.ti;
-        that.getChild('button').setVisible(
-            ti !== undefined &&
-                ti.factory !== 'domvisual' &&
-                ti.factory !== 'baseui'
-        );
+        if (!that.buttonAlwaysVisible()) {
+            that.getChild('button').setVisible(
+                (ti !== undefined &&
+                    ti.factory !== 'domvisual' &&
+                    ti.factory !== 'baseui')
+            );
+        }
     }).on('mouseout', function () {
-        that.getChild('button').setVisible(false);
+        if (!that.buttonAlwaysVisible()) {
+            that.getChild('button').setVisible(false);
+        }
     }).getChild(
         'button'
     ).setVisible(
@@ -48,7 +52,7 @@ function VisualInfo(config) {
     ).on(
         'click',
         function () {
-            that.editor.editGroup(that.ti.factory, that.ti.type);
+            this.fcn();
         }
     );
 }
@@ -60,6 +64,49 @@ VisualInfo.prototype.theme = new (visual.Theme)({
         ]
     }
 });
+VisualInfo.prototype.buttonAlwaysVisible = function () {
+    var ti = this.ti,
+        group = this.editor.getGroup(ti.factory, ti.type);
+    return Boolean(group);
+};
+VisualInfo.prototype.updateButton = function (b) {
+    var ti = this.ti,
+        editor = this.editor,
+        group = editor.getGroup(ti.factory, ti.type),
+        selectedGroup = this.editor.getSelectedGroup(),
+        that = this;
+
+    if (group) {
+        if (group === selectedGroup) {
+            if (group.getCommandChain().isOnSavePoint()) {
+                if (editor.hasMoreThanOneGroup()) {
+                    b.setText('Close').setVisible(true);
+                    b.fcn = function () {
+                        editor.closeGroup(ti.factory, ti.type);
+                    };
+                } else {
+                    b.setVisible(false);
+                }
+            } else {
+                b.setText('Save').setVisible(true);
+                b.fcn = function () {
+                    editor.saveGroup(ti.factory, ti.type);
+                };
+            }
+        } else {
+            b.setText('Edit').setVisible(true);
+            b.fcn = function () {
+                editor.editGroup(ti.factory, ti.type);
+            };
+        }
+    } else {
+        b.setText('Open');
+        b.fcn = function () {
+            editor.editGroup(ti.factory, ti.type);
+        };
+    }
+
+};
 VisualInfo.prototype.setTypeInfo = function (ti) {
     var that = this;
     function loadPreview() {
@@ -101,6 +148,7 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
     this.ti = ti;
     this.children.name.setText(ti.type + (ti.factory === 'domvisual' ? '' : (' (' + ti.factory + ')')));
     this.children.description.setText(ti.description);
+
     // show the preview (normally, I would have to load it)
     loadPreview();
 };
@@ -111,7 +159,23 @@ VisualInfo.prototype.getConfigurationSheet = function () {
     return { typeInfo: {} };
 };
 VisualInfo.prototype.init = function (editor) {
+    var that = this,
+        viewer = editor.getViewer();
     this.editor = editor;
+    // configure the button
+    this.updateButton(this.getChild('button'));
+    function updateOnEdit() {
+        // yuck. at this moment we don't have any notification for being
+        // unhooked from the stage
+        if (!this.connectedToTheStage) {
+            viewer.removeListener('command', updateOnEdit);
+            viewer.removeListener('setSavePoint', updateOnEdit);
+        } else {
+            that.updateButton(that.getChild('button'));
+        }
+    }
+    viewer.on('command', updateOnEdit);
+    viewer.on('setSavePoint', updateOnEdit);
 };
 VisualInfo.prototype.select = function (selected) {
     if (selected !== this.selected) {

@@ -33,24 +33,6 @@ function VisualList(config) {
 }
 VisualList.prototype = new (domvisual.DOMElement)();
 
-/*
-VisualList.prototype.filterFactories = function () {
-    var editor = this.editor,
-        choices = this.children.choices,
-        filteredFactory = this.children.library.getSelectedOption(),
-        alwaysShow = this.alwaysShow,
-        selected = this.selected;
-    forEachProperty(choices.children, function (c) {
-        // skip separators
-        if (c instanceof VisualInfo) {
-            var cti = c.getTypeInfo(),
-                f = cti.factory;
-            c.setVisible(alwaysShow[f] || filteredFactory === f || c === selected);
-        }
-    });
-};
-*/
-
 VisualList.prototype.select = function (vi, apply) {
     var sel = this.selected,
         ret = false,

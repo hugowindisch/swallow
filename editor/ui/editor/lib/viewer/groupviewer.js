@@ -1029,6 +1029,9 @@ GroupViewer.prototype.setGroup = function (group) {
     }
     // hook ourselves
     commandChain.on('command', onCommand);
+    commandChain.on('setSavePoint', function () {
+        that.emit('setSavePoint');
+    });
 
     this.zoomStack = [
         mat4.scale(mat4.identity(), [0.25, 0.25, 1], mat4.create()),

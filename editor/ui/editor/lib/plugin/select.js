@@ -100,7 +100,7 @@ function setupFileMenu(editor) {
         menus = editor.menus;
 
     editOtherTool = new MenuItem(
-        'Edit Other:',
+        'Edit Visual:',
         null,
         function () {
             var groups = editor.getGroups(),
@@ -142,11 +142,12 @@ function setupFileMenu(editor) {
     );
 
     saveOtherTool = new MenuItem(
-        'Save Other:',
+        'Save Visual:',
         null,
         function () {
             var groups = editor.getGroups(),
-                items = [];
+                items = [],
+                selected = editor.getSelectedGroup();
             forEachProperty(groups, function (g) {
                 items.push(new MenuItem(
                     g.docInfo.factory + '.' + g.docInfo.type,
@@ -158,7 +159,8 @@ function setupFileMenu(editor) {
                     null,
                     function () {
                         return !g.getCommandChain().isOnSavePoint();
-                    }
+                    },
+                    g === selected
                 ));
             });
             return items;
@@ -197,7 +199,7 @@ function setupFileMenu(editor) {
         }
     );
     closeOtherTool = new MenuItem(
-        'Close Other:',
+        'Close Visual:',
         null,
         function () {
             var groups = editor.getGroups(),
