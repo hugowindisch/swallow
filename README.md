@@ -22,6 +22,9 @@ http://www.youtube.com/watch?v=m0os24I4PUc
 + Integrated asynchronous testing
 + Built with itself (mastering the framework lets you modify all the tools)
 
+#Release Notes
++ 0.0.4 Adds support for editing multiple documents from the same page (previously, only one visual component could be edited in one editor page, now it is no longer the case). Video: http://www.youtube.com/watch?v=TV7rRGpe5po&feature=youtu.be
+
 #Before you start
 + Make sure you have a recent version of NodeJS (ubuntu: installation with
 chris lea's ppa or from the sources, windows: recent install).
