@@ -23,8 +23,7 @@
 /*jslint regexp: false*/
 
 /**
-* This package provides a way of querying and manipulating the dom by using
-* selectors.
+* This package provides a way of querying the dom by using selectors. No manipualtion functions are provided. domquery takes some selectors in input and returns an array of elements in output.
 *
 * @package domquery
 */
@@ -468,87 +467,14 @@ function parseSelector(s) {
     return tests;
 }
 
-function DomQuery() {
-    this.results = [];
-}
-
-DomQuery.prototype.add = function (elem) {
-    this.results.push(elem);
-};
-
-DomQuery.prototype.getResults = function () {
-    return this.results;
-};
-
-DomQuery.prototype.getLength = function () {
-    return this.results.length;
-};
-
-DomQuery.prototype.forEach = function (f) {
-    forEach(this.results, f);
-    return this;
-};
-
-DomQuery.prototype.setStyle = function (skin, factory, type, style) {
-    var styleData = skin.getTheme(
-            factory,
-            type
-        ).getStyleData(style);
-    if (styleData.jsData) {
-        forEach(this.results, function (elem) {
-            domvisual.styleToCss(elem.style, styleData.jsData);
-        });
-    }
-    return this;
-};
-
-DomQuery.prototype.setMargins = function (left, top, right, bottom) {
-    left = left || 0;
-    top = top || left;
-    right = right || left;
-    bottom = bottom || left;
-
-    forEach(this.results, function (elem) {
-        var s = elem.style;
-        s.marginLeft = left;
-        s.marginRight = right;
-        s.marginTop = top;
-        s.marginBottom = bottom;
-    });
-    return this;
-};
-
-DomQuery.prototype.setPadding = function (left, top, right, bottom) {
-    left = left || 0;
-    top = top || left;
-    right = right || left;
-    bottom = bottom || left;
-    forEach(this.results, function (elem) {
-        var s = elem.style;
-        s.paddingLeft = left;
-        s.paddingRight = right;
-        s.paddingTop = top;
-        s.paddingBottom = bottom;
-    });
-    return this;
-};
-
-DomQuery.prototype.setVisual = function (factory, type, config, optionalWidth, optionalHeight) {
-    forEach(this.results, function (elem) {
-        domvisual.createVisual(elem, factory, type, config, optionalWidth, optionalHeight);
-    });
-
-    return this;
-};
-
 function dq(selector, from) {
     from = from || document.documentElement;
     var tests = parseSelector(selector),
-        res = new DomQuery();
+        res = [];
     function walk(elem) {
         var c;
         if (tests.test(elem)) {
-            res.add(elem);
+            res.push(elem);
         }
         for (c = elem.firstChild; c !== null; c = c.nextSibling) {
             if (c.nodeType === 1) {

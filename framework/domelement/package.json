@@ -1,14 +1,14 @@
 {
-    "name": "domquery",
+    "name": "domelement",
     "version": "0.0.1",
     "dependencies" : {
-        "utils": ">=0.0.1"
+        "utils": ">=0.0.1",
+        "domquery": ">=0.0.1",
+        "domvisual": ">=0.0.1",
+        "visual": ">=0.0.1"
     },
     "engines": {
         "pillow": "*"
-    },
-    "scripts": {
-        "test": "test/test.js"
     },
     "author": "Hugo Windisch <hugo.windisch@gmail.com>",
     "homepage": "http://www.swallowapps.com"

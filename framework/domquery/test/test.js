@@ -48,136 +48,136 @@ exports.run = function (test, done) {
     el.innerHTML = testHtml;
 
     res = domquery('*', el);
-    test(assert, res.getLength());
+    test(assert, res.length);
 
     res = domquery('thens|div', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     res = domquery('thens|*', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     res = domquery('.cl1', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     res = domquery('#id1', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     // attributes
     res = domquery('[anattribute]', el);
-    test(assert.strictEqual, res.getLength(), 3);
+    test(assert.strictEqual, res.length, 3);
 
     res = domquery('[anattribute="anattr"]', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     res = domquery('[anattribute^="aaa"]', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     res = domquery('[anattribute$="ccc"]', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     res = domquery('[anattribute*="bbb"]', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     res = domquery('[attr~="bbb"]', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     res = domquery('[attr|="aaa"]', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     // semicolon stuff
     res = domquery(':root');
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0], document.documentElement);
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0], document.documentElement);
 
     res = domquery('#zoo1:nth-child(0)', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo1');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo1');
 
     res = domquery('#zoo2:nth-child(1)', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo2');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo2');
 
     res = domquery('#zoo3:nth-child(2)', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo3');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo3');
 
     res = domquery('#zoo1:first-child', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo1');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo1');
 
     res = domquery('#zoo3:last-child', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo3');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo3');
 
     res = domquery('#zoo4:only-child', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo4');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo4');
 
     res = domquery('#zoo1:only-child', el);
-    test(assert.strictEqual, res.getLength(), 0);
+    test(assert.strictEqual, res.length, 0);
 
     res = domquery('#zoo4:empty', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo4');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo4');
 
     res = domquery('#zoo3:empty', el);
-    test(assert.strictEqual, res.getLength(), 0);
+    test(assert.strictEqual, res.length, 0);
 
     res = domquery(':link');
-    test(assert, res.getLength());
+    test(assert, res.length);
 
     res = domquery('input', el);
-    test(assert.strictEqual, res.getLength(), 4);
+    test(assert.strictEqual, res.length, 4);
 
     res = domquery(':enabled', el);
-    test(assert.strictEqual, res.getLength(), 3);
+    test(assert.strictEqual, res.length, 3);
 
     res = domquery(':disabled', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     res = domquery(':checked', el);
-    test(assert.strictEqual, res.getLength(), 1);
+    test(assert.strictEqual, res.length, 1);
 
     // relationship stuff
     res = domquery('#zoo #zoo4', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo4');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo4');
 
     res = domquery('#id1 #zoo4', el);
-    test(assert.strictEqual, res.getLength(), 0);
+    test(assert.strictEqual, res.length, 0);
 
     res = domquery('#zoo #zoo3 #zoo4', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo4');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo4');
 
     res = domquery('#zoo > #zoo4', el);
-    test(assert.strictEqual, res.getLength(), 0);
+    test(assert.strictEqual, res.length, 0);
 
     res = domquery('#zoo>#zoo4', el);
-    test(assert.strictEqual, res.getLength(), 0);
+    test(assert.strictEqual, res.length, 0);
 
     res = domquery('#zoo > #zoo3 > #zoo4', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo4');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo4');
 
     res = domquery('#zoo>#zoo3>#zoo4', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo4');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo4');
 
     res = domquery('#zoo1 + #zoo2', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo2');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo2');
 
     res = domquery('#zoo1 + #zoo3', el);
-    test(assert.strictEqual, res.getLength(), 0);
+    test(assert.strictEqual, res.length, 0);
 
     res = domquery('#zoo1 ~ #zoo2', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo2');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo2');
 
     res = domquery('#zoo1 ~ #zoo3', el);
-    test(assert.strictEqual, res.getLength(), 1);
-    test(assert.strictEqual, res.getResults()[0].getAttribute('id').toLowerCase(), 'zoo3');
+    test(assert.strictEqual, res.length, 1);
+    test(assert.strictEqual, res[0].getAttribute('id').toLowerCase(), 'zoo3');
 
     done();
 };

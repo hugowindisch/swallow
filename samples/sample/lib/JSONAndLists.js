@@ -6,7 +6,7 @@ var visual = require('visual'),
     group = require('/samples/lib/groups').groups.JSONAndLists,
     http = require('http'),
     whiskers = require('whiskers'),
-    domquery = require('domquery');
+    domelement = require('domelement');
 
 function JSONAndLists(config) {
 
@@ -43,10 +43,10 @@ JSONAndLists.prototype.setHtml = function (html) {
     setTimeout(function () {
         var el = that.getChild('theStuff').element;
 
-        domquery('.swallow', el
+        domelement('.swallow', el
         ).setVisual('baseui', 'Button', { text: 'hello'});
 
-        domquery('h1', el
+        domelement('h1', el
         ).setStyle(visual.defaultSkin, 'samples', 'JSONAndLists', 'style'
         ).setMargins(40, 40, 40, 40
         ).setPadding(10, 10, 10, 10);
