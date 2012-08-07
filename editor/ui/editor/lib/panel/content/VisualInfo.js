@@ -25,7 +25,9 @@ var visual = require('visual'),
     utils = require('utils'),
     deepCopy = utils.deepCopy,
     groups = require('/editor/lib/definition').definition.groups,
-    ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet;
+    ConfigurationSheet = require('./ConfigurationSheet').ConfigurationSheet,
+    onlyInEditorUrl = 'editor/img/disableinstanciation.png',
+    notOnlyInEditorUrl = 'editor/img/enableinstanciation.png';
 
 function VisualInfo(config) {
     var that = this;
@@ -55,6 +57,17 @@ function VisualInfo(config) {
             this.fcn();
         }
     );
+    this.getChild('instanciate'
+    ).setCursor('pointer'
+    ).on('click', function () {
+        var viewer = that.editor.getViewer(),
+            inEditor = !viewer.getSelectionOnlyInEditor();
+        viewer.setSelectionOnlyInEditor(inEditor);
+        this.updateUrl(inEditor);
+
+    }).setVisible(false).updateUrl = function (inEditor) {
+        this.setUrl(inEditor ? onlyInEditorUrl : notOnlyInEditorUrl);
+    };
 }
 VisualInfo.prototype = new (domvisual.DOMElement)();
 VisualInfo.prototype.theme = new (visual.Theme)({
@@ -201,6 +214,10 @@ VisualInfo.prototype.showDetails = function () {
     this.addChild(configurationSheet, 'configurationSheet');
     configurationSheet.setPosition('configurationSheet');
 
+    this.getChild('instanciate'
+    ).setVisible(true
+    ).updateUrl(viewer.getSelectionOnlyInEditor());
+
     // updates the edited stuff with the sheet's content.
     function updateDataFromConfigurationSheet(newConfig) {
         var editingDefaultAttributes = viewer.getSelectionLength() === 0,
@@ -266,6 +283,8 @@ VisualInfo.prototype.showDetails = function () {
 VisualInfo.prototype.hideDetails = function () {
     var children = this.children,
         configurationSheet = children.configurationSheet;
+
+    this.getChild('instanciate').setVisible(false);
     if (configurationSheet) {
         this.removeChild(configurationSheet);
     }

@@ -891,6 +891,41 @@ GroupViewer.prototype.setSelectionConfig = function (config) {
     });
     group.doCommand(cg);
 };
+/**
+    Flag selected children to be only for preview in the editor.
+*/
+GroupViewer.prototype.getSelectionOnlyInEditor = function () {
+    var ret = null,
+        group = this.group,
+        ch = this.documentData.children;
+    forEachProperty(this.selection, function (pos, name) {
+        var c = ch[name],
+            onlyInEditor;
+        if (c) {
+            onlyInEditor = Boolean(c.onlyInEditor);
+            if (ret === null) {
+                ret = onlyInEditor;
+            } else if (ret !== onlyInEditor) {
+                ret = null;
+                return true;
+            }
+        }
+    });
+    return ret;
+};
+GroupViewer.prototype.setSelectionOnlyInEditor = function (onlyInEditor) {
+    var group = this.group,
+        cg = group.cmdCommandGroup('setSelectionOnlyInEditor', 'Change OnlyInEditor flag'),
+        ch = this.documentData.children;
+    forEachProperty(this.selection, function (pos, name) {
+        var c = ch[name];
+        if (c) {
+            cg.add(group.cmdSetVisualOnlyInEditor(name, onlyInEditor));
+        }
+    });
+    group.doCommand(cg);
+};
+
 GroupViewer.prototype.previewStyleChange = function (localTheme) {
     var visuals = this.children.visuals;
     visuals.setLocalTheme(localTheme);

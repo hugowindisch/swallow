@@ -1330,16 +1330,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.3349008"
-     inkscape:cx="180.23332"
-     inkscape:cy="101.6037"
+     inkscape:zoom="1.4245803"
+     inkscape:cx="-342.72867"
+     inkscape:cy="901.93968"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:window-width="1134"
      inkscape:window-height="968"
-     inkscape:window-x="486"
-     inkscape:window-y="27"
+     inkscape:window-x="399"
+     inkscape:window-y="69"
      inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -2937,7 +2937,7 @@
     </g>
     <g
        id="g6007"
-       transform="translate(251.04981,-733.79542)"
+       transform="translate(375.53337,-756.21318)"
        inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/run.png"
        inkscape:export-xdpi="22.5"
        inkscape:export-ydpi="22.5">
@@ -3000,5 +3000,84 @@
        inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/rbtr.png"
        inkscape:export-xdpi="10.5"
        inkscape:export-ydpi="10.5" />
+    <g
+       id="g4949"
+       transform="translate(-78.827646,-0.9030756)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/disableinstanciation.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         inkscape:export-ydpi="22.5"
+         inkscape:export-xdpi="22.5"
+         inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/run.png"
+         transform="translate(-767.29428,-781.12494)"
+         id="g6007-8">
+        <g
+           id="g5965-8"
+           transform="matrix(0.28022199,0,0,0.28022199,266.76633,572.21518)">
+          <path
+             id="rect4947-2"
+             d="m 200,812.375 0,40 32,0 0,-40 -32,0 z m -30.15625,8.0625 -27.6875,16 20,34.65625 27.6875,-16 -20,-34.65625 z m 92.3125,0 -20,34.65625 27.6875,16 20,-34.65625 -27.6875,-16 z M 120.0625,858.5 l -16,27.71875 34.65625,20 16,-27.71875 -34.65625,-20 z m 191.875,0 -34.65625,20 16,27.71875 34.65625,-20 -16,-27.71875 z M 96,916.375 l 0,32 40,0 0,-32 -40,0 z m 200,0 0,32 40,0 0,-32 -40,0 z m -157.28125,42.125 -34.65625,20 16,27.7188 34.65625,-20.00005 -16,-27.71875 z m 154.5625,0 -16,27.71875 34.65625,20.00005 16,-27.7188 -34.65625,-20 z m -131.125,35.15625 -20,34.62495 27.6875,16 20,-34.625 -27.6875,-15.99995 z m 107.6875,0 -27.6875,15.99995 20,34.625 27.6875,-16 -20,-34.62495 z M 200,1012.375 l 0,40 32,0 0,-40 -32,0 z"
+             style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path5154-7"
+             d="m 296,932.37499 c 0,44.1828 -35.81722,80.00001 -80,80.00001 -44.18278,0 -80,-35.81721 -80,-80.00001 0,-44.1828 35.81722,-80 80,-80 44.18278,0 80,35.8172 80,80 z"
+             style="fill:none;stroke:#000000;stroke-width:17.60000038;stroke-miterlimit:4;stroke-opacity:1" />
+        </g>
+        <rect
+           style="fill:none;stroke:none"
+           id="rect3811-4-4"
+           width="80"
+           height="80"
+           x="287.29428"
+           y="793.48712"
+           ry="12.307693" />
+      </g>
+      <g
+         transform="translate(-360,-1.4179689e-6)"
+         id="g4701-35">
+        <path
+           style="fill:#d40000;stroke:#d40000;stroke-width:6.0999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="m -112,20.362183 64,64"
+           id="path4697-5"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#d40000;stroke:#d40000;stroke-width:6.0999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="m -48,20.362183 -64,64"
+           id="path4699-4"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <g
+       id="g6007-8-6"
+       transform="translate(-742.62384,-783.46907)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/enableinstanciation.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         transform="matrix(0.28022199,0,0,0.28022199,266.76633,572.21518)"
+         id="g5965-8-3">
+        <path
+           inkscape:connector-curvature="0"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           d="m 200,812.375 0,40 32,0 0,-40 -32,0 z m -30.15625,8.0625 -27.6875,16 20,34.65625 27.6875,-16 -20,-34.65625 z m 92.3125,0 -20,34.65625 27.6875,16 20,-34.65625 -27.6875,-16 z M 120.0625,858.5 l -16,27.71875 34.65625,20 16,-27.71875 -34.65625,-20 z m 191.875,0 -34.65625,20 16,27.71875 34.65625,-20 -16,-27.71875 z M 96,916.375 l 0,32 40,0 0,-32 -40,0 z m 200,0 0,32 40,0 0,-32 -40,0 z m -157.28125,42.125 -34.65625,20 16,27.7188 34.65625,-20.00005 -16,-27.71875 z m 154.5625,0 -16,27.71875 34.65625,20.00005 16,-27.7188 -34.65625,-20 z m -131.125,35.15625 -20,34.62495 27.6875,16 20,-34.625 -27.6875,-15.99995 z m 107.6875,0 -27.6875,15.99995 20,34.625 27.6875,-16 -20,-34.62495 z M 200,1012.375 l 0,40 32,0 0,-40 -32,0 z"
+           id="rect4947-2-7" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:17.60000038;stroke-miterlimit:4;stroke-opacity:1"
+           d="m 296,932.37499 c 0,44.1828 -35.81722,80.00001 -80,80.00001 -44.18278,0 -80,-35.81721 -80,-80.00001 0,-44.1828 35.81722,-80 80,-80 44.18278,0 80,35.8172 80,80 z"
+           id="path5154-7-1"
+           inkscape:connector-curvature="0" />
+      </g>
+      <rect
+         ry="12.307693"
+         y="793.48712"
+         x="287.29428"
+         height="80"
+         width="80"
+         id="rect3811-4-4-5"
+         style="fill:none;stroke:none" />
+    </g>
   </g>
 </svg>

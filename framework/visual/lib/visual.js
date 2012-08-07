@@ -906,7 +906,9 @@ Visual.prototype.createChildren = function (groupData) {
         child;
 
     forEachProperty(children, function (it, name) {
-        sortedChildrenNames.push(name);
+        if (!it.onlyInEditor) {
+            sortedChildrenNames.push(name);
+        }
     });
     sortedChildrenNames.sort(function (i1, i2) {
         var pos1 = positions[children[i1].config.position],

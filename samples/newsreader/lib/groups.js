@@ -486,7 +486,24 @@ exports.groups = {
                         "type": "GlobalStyling",
                         "style": "titleBar"
                     }
-                }
+                },
+                "onlyInEditor": false
+            },
+            "content": {
+                "factory": "newsreader",
+                "type": "TopicList",
+                "config": {
+                    "position": "content"
+                },
+                "onlyInEditor": true
+            },
+            "right": {
+                "factory": "newsreader",
+                "type": "TopicText",
+                "config": {
+                    "position": "right"
+                },
+                "onlyInEditor": true
             }
         },
         "positions": {
@@ -515,7 +532,7 @@ exports.groups = {
                         "byteLength": 64
                     }
                 },
-                "order": 0,
+                "order": 3,
                 "snapping": {
                     "left": "%",
                     "right": "%",
@@ -550,7 +567,7 @@ exports.groups = {
                         "byteLength": 64
                     }
                 },
-                "order": 1,
+                "order": 0,
                 "snapping": {
                     "left": "%",
                     "right": "%",
@@ -585,7 +602,7 @@ exports.groups = {
                         "byteLength": 64
                     }
                 },
-                "order": 2,
+                "order": 1,
                 "snapping": {
                     "left": "%",
                     "right": "%",
@@ -620,7 +637,7 @@ exports.groups = {
                         "byteLength": 64
                     }
                 },
-                "order": 3,
+                "order": 2,
                 "snapping": {
                     "left": "px",
                     "right": "px",
@@ -2104,4 +2121,4 @@ exports.TopicText = require('/newsreader/lib/TopicText').TopicText;
 
 exports.TopicList = require('/newsreader/lib/TopicList').TopicList;
 
-exports.TopicList = require('/newsreader/lib/TopicList').TopicList;
+exports.Reader = require('/newsreader/lib/Reader').Reader;

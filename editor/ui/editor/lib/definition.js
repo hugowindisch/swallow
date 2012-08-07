@@ -282,8 +282,13 @@ exports.definition = {
                     matrix: [ 56, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   300, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                configurationSheet: {
+                instanciate: {
                     order: 6,
+                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   336, 30, 0, 1 ],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                configurationSheet: {
+                    order: 7,
                     matrix: [ 360, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'px', height: 'auto' }
                 }
@@ -312,6 +317,14 @@ exports.definition = {
                     config: {
                         position: 'button',
                         text: 'Edit'
+                    }
+                },
+                instanciate: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        position: "instanciate",
+                        url: 'editor/img/enableinstanciation.png'
                     }
                 },
                 description: {

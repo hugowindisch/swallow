@@ -709,6 +709,22 @@ Group.prototype.cmdSetVisualConfig = function (name, config) {
         { model: this, name: name, visualConfig: true }
     );
 };
+Group.prototype.cmdSetVisualOnlyInEditor = function (name, onlyInEditor) {
+    var documentData = this.documentData;
+    function doUndo() {
+        var child = documentData.children[name],
+            old = child.onlyInEditor;
+        child.onlyInEditor = onlyInEditor;
+        onlyInEditor = old;
+    }
+    return new Command(
+        doUndo,
+        doUndo,
+        'cmdSetVisualOnlyInEditor',
+        'Set onlyInEditor ' + name,
+        { model: this, name: name, onlyInEditor: onlyInEditor }
+    );
+};
 Group.prototype.cmdRenameVisual = function (name, newname) {
     var that = this;
     return new Command(
