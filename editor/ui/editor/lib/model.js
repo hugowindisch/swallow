@@ -713,8 +713,12 @@ Group.prototype.cmdSetVisualOnlyInEditor = function (name, onlyInEditor) {
     var documentData = this.documentData;
     function doUndo() {
         var child = documentData.children[name],
-            old = child.onlyInEditor;
-        child.onlyInEditor = onlyInEditor;
+            old = Boolean(child.onlyInEditor);
+        if (onlyInEditor) {
+            child.onlyInEditor = true;
+        } else {
+            delete child.onlyInEditor;
+        }
         onlyInEditor = old;
     }
     return new Command(

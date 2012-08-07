@@ -148,41 +148,6 @@
                 "bottom": "auto",
                 "height": "px"
             }
-        },
-        "topicPlaceHolder": {
-            "matrix": {
-                "0": 304,
-                "1": 0,
-                "2": 0,
-                "3": 0,
-                "4": 0,
-                "5": 80,
-                "6": 0,
-                "7": 0,
-                "8": 0,
-                "9": 0,
-                "10": 1,
-                "11": 0,
-                "12": 8,
-                "13": 360,
-                "14": 0,
-                "15": 1,
-                "byteOffset": 0,
-                "length": 16,
-                "byteLength": 64,
-                "buffer": {
-                    "byteLength": 64
-                }
-            },
-            "order": 3,
-            "snapping": {
-                "left": "px",
-                "right": "px",
-                "width": "auto",
-                "top": "px",
-                "bottom": "auto",
-                "height": "px"
-            }
         }
     },
     "theme": {},

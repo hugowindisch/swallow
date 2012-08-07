@@ -1143,7 +1143,8 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
                 snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
             };
             if (c) {
-                fdd.children[name] = c;
+                fdd.children[name] = deepCopy(c);
+                delete fdd.children[name].onlyInEditor;
             } else {
                 // we want to create a fake preview element
                 fdd.children[name] = {
