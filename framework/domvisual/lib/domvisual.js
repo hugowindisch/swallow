@@ -110,6 +110,7 @@ DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
         // here we should revalidate the hooks for this child
         updateDOMEventHooks(c);
     });
+    return this;
 };
 
 /**
@@ -136,6 +137,7 @@ DOMVisual.prototype.removeChild = function (child) {
         // here we should revalidate the hooks for this child
         updateDOMEventHooks(c);
     });
+    return this;
 };
 
 /**
@@ -231,12 +233,7 @@ DOMVisual.prototype.getDisplayMatrix = function () {
 * the content.
 * Note that even if we are flowed by html, we still can apply our layout
 * rules to our children and ourselves be positioned by our parent
-* (i.e. the swagup layouting is independent of the html layouting)
-* {
-*     inline: true|false, // inline vs block html flowing
-*     autoWidth,      // don't use our dimensions
-*     autoHeight,     // don't use our dimensions
-* }
+* (i.e. the swallow layouting is independent of the html layouting)
 * use null or undefined to disable flow
 * @param {Object} styles extra styles to apply while flowing
 * @param {Boolean} true to size this element normally
@@ -287,7 +284,7 @@ DOMVisual.prototype.notifyDOMChanged = function () {
             // some kind of delay seems to be needed (so that
             // the browser regenerates its content and it becomes possible
             // to measure it correctly...)
-            setTimeout(emitter(v), 20);
+            setTimeout(emitter(v), 200);
             break;
         }
         if (v !== that && !v.htmlFlowing) {
@@ -1139,7 +1136,6 @@ DOMVideo.prototype.setUrl = function (url) {
     this.element.src = url;
     return this;
 };
-
 /**
 * Returns the configuration sheet of this element (allowing the editor to
 * configure it in the panel)

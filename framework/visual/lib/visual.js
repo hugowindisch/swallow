@@ -979,9 +979,9 @@ Visual.prototype.createGroup = function (groupData) {
 *     data2: somestuff,
 *     etc: somestuff
 * }
-* (calling the baseclass, if you need to do so, you can always have a data
-* that is baseclassdata: {} )
-* @api private
+* @param {Object} config A map of name value pairs
+* @type Visual
+* @returns this
 */
 Visual.prototype.setConfiguration = function (config) {
     if (utils.isObject(config)) {
@@ -1139,6 +1139,20 @@ Visual.prototype.getStyleData = function () {
     // FIXME: this would be better if it came from the themes thing
     // (like getDefaultStyleData()).
     return { data: [], jsData: {} };
+};
+
+/**
+* Sets event handlers. This allows to set event handlers through the config, so that these event handlers will start to exist immediately after the constructor of Visual has been called. This can occasionally be useful when constructing visuals by code in circumstances where an event must be caught very early.
+* @param {Object} handlers A map of handlers
+* @type Visual
+* @returns this
+*/
+Visual.prototype.setEventHandlers = function (handlers) {
+    var that = this;
+    forEachProperty(handlers, function (h, n) {
+        that.on(n, h);
+    });
+    return this;
 };
 
 /**

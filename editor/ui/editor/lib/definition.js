@@ -2192,6 +2192,163 @@ exports.definition = {
                 }
             }
         },
+        StyleSheet: {
+            dimensions: [ 360, 80, 0],
+            positions: {
+                selectorsLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   5, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                selectors: {
+                    order: 1,
+                    matrix: [ 240, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   80, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                selectorLabel: {
+                    order: 2,
+                    matrix: [ 60, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   5, 25, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                selector: {
+                    order: 3,
+                    matrix: [ 240, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   80, 25, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                parts: {
+                    order: 4,
+                    matrix: [ 340, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   5, 50, 0, 1],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'px', height: 'auto' }
+                }
+            },
+            children: {
+                selectorsLabel: {
+                    factory: 'baseui',
+                    type: 'Label',
+                    config: {
+                        position: 'selectorsLabel',
+                        text: 'Selectors:'
+                    }
+                },
+                selectors: {
+                    factory: 'domvisual',
+                    type: 'DOMInput',
+                    config: {
+                        position: 'selectors'
+                    }
+                },
+                selectorLabel: {
+                    factory: 'baseui',
+                    type: 'Label',
+                    config: {
+                        position: 'selectorLabel',
+                        text: 'Selector:'
+                    }
+                },
+                selector: {
+                    factory: 'domvisual',
+                    type: 'DOMSelect',
+                    config: {
+                        position: 'selector'
+                    }
+                },
+                parts: {
+                    factory: 'domvisual',
+                    type: 'DOMElement',
+                    config: {
+                        position: 'parts'
+                    }
+                }
+            }
+        },
+        LeftRightTopBottom: {
+            dimensions: [ 360, 160, 0],
+            positions: {
+                title: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 5, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                left: {
+                    order: 0,
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 35, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                right: {
+                    order: 1,
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 65, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                top: {
+                    order: 2,
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 95, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                bottom: {
+                    order: 2,
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 125, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+            },
+            children: {
+                title: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        position: 'title',
+                        bold: true
+                    }
+                },
+                left: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    config: {
+                        label: "Left:",
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 100,
+                        check: true,
+                        position: "left"
+                    }
+                },
+                right: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    config: {
+                        label: "Right:",
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 100,
+                        check: true,
+                        position: "right"
+                    }
+                },
+                top: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    config: {
+                        label: "Top:",
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 100,
+                        check: true,
+                        position: "top"
+                    }
+                },
+                bottom: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    config: {
+                        label: "Bottom:",
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 100,
+                        check: true,
+                        position: "bottom"
+                    }
+                }
+            }
+        },
         Styling: {
             dimensions: [360, 1200, 0],
             positions: {

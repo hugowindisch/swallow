@@ -33,12 +33,18 @@ function ConfigurationSheet(config) {
     // when our (flowed) content is resized, we want to get notified
     // and ask for a resize of ourselves!
     this.on('domchanged', function () {
-        that.requestDimensions(that.getComputedDimensions());
+        that.fitToContent();
     });
 }
 ConfigurationSheet.prototype = new (domvisual.DOMElement)();
 ConfigurationSheet.prototype.getConfigurationSheet = function () {
     return { };
+};
+/**
+    Resizes the container to its content.
+*/
+ConfigurationSheet.prototype.fitToContent = function () {
+    this.requestDimensions(this.getComputedDimensions());
 };
 /**
     Sets the edited visual. This will load the proper controls in the sheet.
@@ -111,6 +117,11 @@ ConfigurationSheet.prototype.setEditedVisual = function (typeInfo, editedData, s
             c.on('change', updateData);
             that.addChild(c, toLoad[i].name);
         }
+        // FIXME: the whole domchanged thing... obviously, if you add or remove flowing elements
+        // there will be a resize...
+        // so calling this should not be necessary...
+        //
+        that.fitToContent();
     }
 
     // returns a function to be called when the controls are loaded

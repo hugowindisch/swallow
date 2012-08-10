@@ -428,3 +428,5 @@ exports.StyleSettingShadow = require('./panel/content/style/feature/StyleSetting
 exports.StyleFeatureSelector = require('./panel/content/style/StyleFeatureSelector').StyleFeatureSelector;
 exports.LabelValueSliderCheck = require('./panel/content/style/LabelValueSliderCheck').LabelValueSliderCheck;
 exports.Panel = require('./panel/Panel').Panel;
+exports.LeftRightTopBottom = require('./panel/content/style/LeftRightTopBottom').LeftRightTopBottom;
+exports.StyleSheet = require('./panel/content/style/StyleSheet').StyleSheet;

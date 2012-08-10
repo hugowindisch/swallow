@@ -75,6 +75,9 @@ LabelValueSliderCheck.prototype.setValue = function (v) {
     this.updateCheck();
     return this;
 };
+LabelValueSliderCheck.prototype.getValue = function () {
+    return this.value;
+};
 LabelValueSliderCheck.prototype.setDefaultValue = function (v) {
     this.defaultValue = v;
     return this;

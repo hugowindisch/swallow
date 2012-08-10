@@ -97,8 +97,8 @@ function leftRightConfig(
         editor.setMatrix(
             [ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  labelWidth + 5, 0, 0, 1]
         );
-        cb(null, cnt);
         cnt.setDimensions([lineWidth, lineHeight + 10, 1]);
+        cb(null, cnt);
     });
 }
 
@@ -138,8 +138,8 @@ function topBottomConfig(
         editor.setMatrix(
             [ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, labelHeight, 0, 1]
         );
-        cb(null, cnt);
         cnt.setDimensions([lineWidth, lineHeight, 1]);
+        cb(null, cnt);
     });
 }
 
@@ -268,13 +268,10 @@ function styleConfig(labelTxt) {
             e = require('editor'); // obviously loaded
 
         function create() {
-            var cnt, label, editor,
+            var cnt, editor,
                 lineWidth = 360, labelHeight = 25,
                 cdim;
-            // create the graphic elements that we need
-            cnt = new (domvisual.DOMElement)({});
-            editor = new (e.Styling)();
-            editor.on('domchanged', function () {
+            function domChanged() {
                 var dim = editor.getComputedDimensions();
                 if (!cdim || cdim[0] !== dim[0] || cdim[1] !== dim[1]) {
                     cdim = dim;
@@ -282,8 +279,16 @@ function styleConfig(labelTxt) {
                         [lineWidth, labelHeight + cdim[1], 1]
                     );
                 }
+            }
+            // create the graphic elements that we need
+            cnt = new (domvisual.DOMElement)({});
+            editor = new (e.Styling)({
+                editor: mainEditor,
+                eventHandlers: {
+                    'domchanged': domChanged
+                }
             });
-            editor.setEditor(mainEditor);
+
             cnt.addChild(editor, 'data');
             editor.on('change', function (data) {
                 cnt.emit('change', data);
@@ -305,6 +310,41 @@ function styleConfig(labelTxt) {
     // (some more thought will probably be needed at some point to clean
     // this up)
     sc.isStyleConfig = true;
+    return sc;
+}
+
+
+/**
+* Returns a style config element (that can be used in getConfigurationSheet to
+* edit a style).
+* @param {String} label The label that should be used.
+* @returns A function that will let the editor create the appropriate input element
+* @memberOf config
+*/
+function styleSheetConfig(labelTxt) {
+    function sc(mainEditor, cb) {
+        // intentionally here
+        var domvisual = require('domvisual'),
+            visual = require('visual'),
+            baseui = require('baseui'),
+            e = require('editor'); // obviously loaded
+
+        function create() {
+            var cnt, label, editor,
+                lineWidth = 360, labelHeight = 25,
+                cdim;
+            // create the graphic elements that we need
+            editor = new (e.StyleSheet)({editor: mainEditor});
+            cb(null, editor);
+        }
+        create();
+    }
+// FIXME: this will not work... how could we make this ugly thing at least
+// work in a generic way...
+    // hack for being able to find stuff that is a style config
+    // (some more thought will probably be needed at some point to clean
+    // this up)
+    //sc.isStyleConfig = true;
     return sc;
 }
 
@@ -372,3 +412,4 @@ exports.booleanConfig = booleanConfig;
 exports.inputConfigFullLine = inputConfigFullLine;
 exports.imageUrlConfig = imageUrlConfig;
 exports.styleConfig = styleConfig;
+exports.styleSheetConfig = styleSheetConfig;

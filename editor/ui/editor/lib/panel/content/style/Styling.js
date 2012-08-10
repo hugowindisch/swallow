@@ -211,6 +211,8 @@ function Styling(config) {
         styleNameName =  styleName.getChild('styleName'),
         deleteBtn = styleName.getChild('deleteBtn'),
         extendBtn = styleName.getChild('extendBtn'),
+        editor = this.editor,
+        viewer = editor.getViewer(),
         that = this;
     styleFeature.on('select', function (featureName) {
         var styleEdit = that.getChild('styleEdit'),
@@ -268,12 +270,47 @@ function Styling(config) {
     deleteBtn.on('pressed', function () {
         that.deleteLocalStyle();
     });
-    // we must react to document changes (because what we do here is special,
-    // we issues style change commands and want to react to them).
+
+    // we can retrieve the style list here and configure the style picker
+    this.children.stylePicker.setStyleList(this.computeNonLocalStyleList());
+    this.updateLocalStyleList();
+    // FIXME: set data is not called when there is no data in the selection (this is kinda
+    // bad and should be fixed but until then this will put adequate defaults.
+    this.updateStyleName();
+    this.updateStylePickers();
+    this.notifyDOMChanged();
+
+    // FIXME: this is quite a hack. we hook ourself on the command chain and
+    // unhook ourself only if we get notified and detect we are no longer
+    // 'hooked to the stage'... It will not break but it is quite ugly.
+    function detectStyleChanges(command, name, message, hint, forEachSubCommand) {
+        var styleChanged = false;
+        function check(name, message, hint) {
+            if (hint && hint.styleChanged) {
+                styleChanged = true;
+            }
+        }
+        if (!that.connectedToTheStage) {
+            // quite a hack!
+            viewer.removeListener('command', detectStyleChanges);
+        } else {
+            if (forEachSubCommand) {
+                forEachSubCommand(check);
+            }
+            check(name, message, hint);
+            if (styleChanged) {
+                that.handleStyleChange();
+            }
+        }
+    }
+    viewer.on('command', detectStyleChanges);
 }
 Styling.prototype = new (domvisual.DOMElement)();
 Styling.prototype.getConfigurationSheet = function () {
     return { };
+};
+Styling.prototype.setEditor = function (editor) {
+    this.editor = editor;
 };
 Styling.prototype.makeExtendedStyle = function (st) {
     var group = this.editor.getViewer().getGroup(),
@@ -464,48 +501,6 @@ Styling.prototype.computeLocalStyleList = function () {
 
 Styling.prototype.updateLocalStyleList = function () {
     this.children.localStylePicker.setStyleList(this.computeLocalStyleList());
-};
-
-
-Styling.prototype.setEditor = function (editor) {
-    var viewer = editor.getViewer(),
-        that = this;
-    this.editor = editor;
-
-    // we can retrieve the style list here and configure the style picker
-    this.children.stylePicker.setStyleList(this.computeNonLocalStyleList());
-    this.updateLocalStyleList();
-    // FIXME: set data is not called when there is no data in the selection (this is kinda
-    // bad and should be fixed but until then this will put adequate defaults.
-    this.updateStyleName();
-    this.updateStylePickers();
-    this.notifyDOMChanged();
-
-    // FIXME: this is quite a hack. we hook ourself on the command chain and
-    // unhook ourself only if we get notified and detect we are no longer
-    // 'hooked to the stage'... It will not break but it is quite ugly.
-    function detectStyleChanges(command, name, message, hint, forEachSubCommand) {
-        var styleChanged = false;
-        function check(name, message, hint) {
-            if (hint && hint.styleChanged) {
-                styleChanged = true;
-            }
-        }
-        if (!that.connectedToTheStage) {
-            // quite a hack!
-            viewer.removeListener('command', detectStyleChanges);
-        } else {
-            if (forEachSubCommand) {
-                forEachSubCommand(check);
-            }
-            check(name, message, hint);
-            if (styleChanged) {
-                that.handleStyleChange();
-            }
-        }
-    }
-    viewer.on('command', detectStyleChanges);
-
 };
 
 Styling.prototype.updateFeatureSelector = function () {
