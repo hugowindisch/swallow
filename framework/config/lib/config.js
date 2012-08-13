@@ -348,6 +348,42 @@ function styleSheetConfig(labelTxt) {
     return sc;
 }
 
+
+/**
+* Returns a style config element (that can be used in getConfigurationSheet to
+* edit a style).
+* @param {String} label The label that should be used.
+* @returns A function that will let the editor create the appropriate input element
+* @memberOf config
+*/
+function formattedTextConfig(labelTxt) {
+    function sc(mainEditor, cb) {
+        // intentionally here
+        var domvisual = require('domvisual'),
+            visual = require('visual'),
+            baseui = require('baseui'),
+            e = require('editor'); // obviously loaded
+
+        function create() {
+            var cnt, label, editor,
+                lineWidth = 360, labelHeight = 25,
+                cdim;
+            // create the graphic elements that we need
+            editor = new (e.FormattedText)({editor: mainEditor, label: labelTxt});
+            cb(null, editor);
+        }
+        create();
+    }
+// FIXME: this will not work... how could we make this ugly thing at least
+// work in a generic way...
+    // hack for being able to find stuff that is a style config
+    // (some more thought will probably be needed at some point to clean
+    // this up)
+    //sc.isStyleConfig = true;
+    return sc;
+}
+
+
 /**
 * Returns an image config element (that can be used in getConfigurationSheet to
 * edit an image).
@@ -413,3 +449,4 @@ exports.inputConfigFullLine = inputConfigFullLine;
 exports.imageUrlConfig = imageUrlConfig;
 exports.styleConfig = styleConfig;
 exports.styleSheetConfig = styleSheetConfig;
+exports.formattedTextConfig = formattedTextConfig;

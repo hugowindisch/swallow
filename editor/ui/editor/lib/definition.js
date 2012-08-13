@@ -2522,6 +2522,165 @@ exports.definition = {
                     }
                 }
             }
+        },
+/*
+    fontWeightLabel: {
+        order: 0,
+        matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 90, 0, 1],
+        snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+    },
+    fontWeightNormal: {
+        order: 0,
+        matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   65, 90, 0, 1],
+        snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+    },
+    fontWeightBold: {
+        order: 0,
+        matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 90, 0, 1],
+        snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+    },
+    fontWeightCheck: {
+        order: 0,
+        matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 90, 0, 1],
+        snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+    },
+*/
+        FormattedText: {
+            dimensions: [340, 170, 0],
+            positions: {
+                label: {
+                    order: 0,
+                    matrix: [ 200, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   5, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                sourceLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   5, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                sourceInline: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   70, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                sourceUrl: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   120, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                encodingLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   5, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                encodingText: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   70, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                encodingHtml: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   120, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                encodingMd: {
+                    order: 0,
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   170, 60, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                textLabel: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   5, 90, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                text: {
+                    order: 0,
+                    matrix: [ 350, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   5, 120, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+            },
+            children: {
+                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        text: "Text:",
+                        position: "label",
+                        bold: true
+                    }
+                },
+                sourceLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        text: "Source:",
+                        position: "sourceLabel"
+                    }
+                },
+                sourceInline: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    config: {
+                        url: 'editor/img/tsinline.png',
+                        position: 'sourceInline'
+                    }
+                },
+                sourceUrl: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    config: {
+                        url: 'editor/img/tsurl.png',
+                        position: 'sourceUrl'
+                    }
+                },
+                encodingLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        text: "Encoding:",
+                        position: "encodingLabel"
+                    }
+                },
+                encodingText: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    config: {
+                        url: 'editor/img/tetext.png',
+                        position: 'encodingText'
+                    }
+                },
+                encodingHtml: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    config: {
+                        url: 'editor/img/tehtml.png',
+                        position: 'encodingHtml'
+                    }
+                },
+                encodingMd: {
+                    factory: 'domvisual',
+                    type: 'DOMImg',
+                    config: {
+                        url: 'editor/img/temd.png',
+                        position: 'encodingMd'
+                    }
+                },
+                textLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        text: "Text:",
+                        position: "textLabel"
+                    }
+                },
+                text: {
+                    factory: "baseui",
+                    type: "Input",
+                    config: {
+                        position: "text"
+                    }
+                }
+            }
         }
     }
 };

@@ -430,3 +430,4 @@ exports.LabelValueSliderCheck = require('./panel/content/style/LabelValueSliderC
 exports.Panel = require('./panel/Panel').Panel;
 exports.LeftRightTopBottom = require('./panel/content/style/LeftRightTopBottom').LeftRightTopBottom;
 exports.StyleSheet = require('./panel/content/style/StyleSheet').StyleSheet;
+exports.FormattedText = require('./panel/content/style/FormattedText').FormattedText;
