@@ -29,7 +29,9 @@
 *
 * @package config
 */
-
+var utils = require('utils'),
+    forEachProperty = utils.forEachProperty,
+    isObject = utils.isObject;
 
 /**
 * loadConstructor
@@ -306,10 +308,15 @@ function styleConfig(labelTxt) {
         }
         create();
     }
-    // hack for being able to find stuff that is a style config
-    // (some more thought will probably be needed at some point to clean
-    // this up)
-    sc.isStyleConfig = true;
+    // this lets the editor identify that this config element has some style
+    // references (names) that must be updated when some styles are removed
+    // or renamed
+    sc.getStylesFromData = function (data) {
+        return { main: data };
+    };
+    sc.updateDataFromStyles = function (data, styles) {
+        return styles.main;
+    };
     return sc;
 }
 
@@ -339,12 +346,30 @@ function styleSheetConfig(labelTxt) {
         }
         create();
     }
-// FIXME: this will not work... how could we make this ugly thing at least
-// work in a generic way...
-    // hack for being able to find stuff that is a style config
-    // (some more thought will probably be needed at some point to clean
-    // this up)
-    //sc.isStyleConfig = true;
+    // this lets the editor identify that this config element has some style
+    // references (names) that must be updated when some styles are removed
+    // or renamed
+    sc.getStylesFromData = function (data) {
+        var res = {};
+        forEachProperty(data, function (d, dname) {
+            if (isObject(d) && d.style) {
+                res[dname] = d.style;
+            }
+        });
+        return res;
+    };
+    sc.updateDataFromStyles = function (data, styles) {
+        forEachProperty(styles, function (s, sname) {
+            if (s === null) {
+                delete data[sname].style;
+            } else {
+                data[sname].style = s;
+            }
+        });
+        return data;
+    };
+
+
     return sc;
 }
 
@@ -374,12 +399,6 @@ function formattedTextConfig(labelTxt) {
         }
         create();
     }
-// FIXME: this will not work... how could we make this ugly thing at least
-// work in a generic way...
-    // hack for being able to find stuff that is a style config
-    // (some more thought will probably be needed at some point to clean
-    // this up)
-    //sc.isStyleConfig = true;
     return sc;
 }
 

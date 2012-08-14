@@ -30,6 +30,7 @@ var glmatrix = require('glmatrix'),
     deepCopy = utils.deepCopy,
     isString = utils.isString,
     isObject = utils.isObject,
+    isFunction = utils.isFunction,
     deepEqual = utils.deepEqual,
     prune = utils.prune,
     ensure = utils.ensure,
@@ -297,8 +298,8 @@ function forEachStyleConfig(visFactory, visType, fcn) {
     var f = require(visFactory),
         sheet = f[visType].prototype.getConfigurationSheet.call(null);
     forEachProperty(sheet, function (prop, propName) {
-        if (prop && prop.isStyleConfig === true) {
-            fcn(propName);
+        if (prop && isFunction(prop.getStylesFromData)) {
+            fcn(prop, propName);
         }
     });
 }
@@ -408,8 +409,12 @@ Group.prototype.pasteSnapshot = function (str, inPlace) {
             newc.config.position = uniqueName;
             // here we must fix local styles that are missing or different
             // by adding them to the document.
-            forEachStyleConfig(newc.factory, newc.type, function (prop) {
-                newc.config[prop] = fixStyle(newc.config[prop]);
+            forEachStyleConfig(newc.factory, newc.type, function (prop, propName) {
+                var styles = prop.getStylesFromData(newc.config[propName]);
+                forEachProperty(styles, function (s, sname) {
+                    styles[sname] = fixStyle(s);
+                });
+                newc.config[propName] = prop.updateDataFromStyles(newc.config[propName], styles);
             });
             cmdGroup.add(that.cmdAddVisual(uniqueName, newc));
         }
@@ -876,18 +881,31 @@ Group.prototype.cmdRemoveStyleAndReferences = function (factory, type, style) {
     forEachProperty(documentData.children, function (c, childName) {
         var config = deepCopy(c.config),
             change = false;
-        forEachStyleConfig(c.factory, c.type, function (prop) {
-            var s = config[prop];
-            if (isString(s)) {
-                if (s === style) {
+
+        forEachStyleConfig(c.factory, c.type, function (prop, propName) {
+            var styles = prop.getStylesFromData(config[propName]),
+                newProp;
+            forEachProperty(styles, function (s, sname) {
+                if (isString(s)) {
+                    if (s === style) {
+                        change = true;
+                        styles[sname] = null;
+                    }
+                } else if (s.factory === factory && s.type === type && s.style === style) {
                     change = true;
-                    delete config[prop];
+                    styles[sname] = null;
                 }
-            } else if (s.factory === factory && s.type === type && s.style === style) {
-                change = true;
-                delete config[prop];
+            });
+            if (change) {
+                newProp = prop.updateDataFromStyles(config[propName], styles);
+                if (newProp === null) {
+                    delete config[propName];
+                } else {
+                    config[propName] = newProp;
+                }
             }
         });
+
         if (change) {
             cmdGroup.add(that.cmdSetVisualConfig(childName, config));
         }
@@ -923,15 +941,28 @@ Group.prototype.cmdRenameStyleAndReferences = function (name, factory, type, new
         // do this in the children too
         forEachProperty(documentData.children, function (c) {
             var config = c.config;
-            forEachStyleConfig(c.factory, c.type, function (prop) {
-                var s = config[prop];
-                if (isString(s)) {
-                    if (s === oldname) {
-                        config[prop] = newname;
+            forEachStyleConfig(c.factory, c.type, function (prop, propName) {
+                var styles = prop.getStylesFromData(config[propName]),
+                    newProp,
+                    change = false;
+                forEachProperty(styles, function (s, sname) {
+                    if (isString(s)) {
+                        if (s === oldname) {
+                            change = true;
+                            styles[sname] = newname;
+                        }
+                    } else if (s.factory === factory && s.type === type && s.style === oldname) {
+                        change = true;
+                        styles[sname] = deepCopy(s);
+                        styles[sname].style = newname;
                     }
-                } else {
-                    if (s.factory === factory && s.type === type && s.style === oldname) {
-                        config[prop].style = newname;
+                });
+                if (change) {
+                    newProp = prop.updateDataFromStyles(config[propName], styles);
+                    if (newProp === null) {
+                        delete config[propName];
+                    } else {
+                        config[propName] = newProp;
                     }
                 }
             });
