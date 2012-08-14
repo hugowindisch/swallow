@@ -166,6 +166,12 @@ StyleSheet.prototype.updateParts = function () {
         }
         return s;
     }
+    function localStyle(s) {
+        if (isObject(s) && s.factory === docInfo.factory && s.type === docInfo.type) {
+            s = s.style;
+        }
+        return s;
+    }
     switch (this.getChild('selector').getSelectedIndex()) {
     case -1:
         // do nothing
@@ -185,6 +191,9 @@ StyleSheet.prototype.updateParts = function () {
             }
             that.emit('change', ssd);
         });
+        if (so && so.style) {
+            c.setData(localStyle(so.style));
+        }
 
         break;
     default:
@@ -244,6 +253,10 @@ StyleSheet.prototype.updateParts = function () {
             }
             that.emit('change', ssd);
         });
+        if (so && so.style) {
+            c.setData(localStyle(so.style));
+        }
+
         break;
     }
     // FIXME: perhaps... we could set things up do this would never have
