@@ -99,13 +99,11 @@ FormattedText.prototype.setText = function (txt) {
         updateText(txt.encoding, txt.text);
     }
 };
-
-FormattedText.prototype.setStyleSheet = function (ss) {
+FormattedText.prototype.updateStyleSheet = function () {
     var that = this,
         skin,
         de;
-    this.ss = ss;
-    forEachProperty(ss, function (prop, propname) {
+    forEachProperty(this.ss, function (prop, propname) {
         if (propname === '') {
             if (prop.style) {
                 that.setStyle(prop.style);
@@ -115,7 +113,7 @@ FormattedText.prototype.setStyleSheet = function (ss) {
             if (prop.style) {
                 // FIXME: THIS DOES NOT WORK, AT LEAST IN THE EDITOR. HOW
                 // DO WE LET EDITED STUFF KNOW THE APPROPRIATE DEFAULT SKIN...
-                skin = visual.defaultSkin;
+                skin = that.skin || visual.defaultSkin;
                 de.setStyle(
                     skin,
                     prop.style.factory,
@@ -136,5 +134,20 @@ FormattedText.prototype.setStyleSheet = function (ss) {
             );
         }
     });
+};
+FormattedText.prototype.setStyleSheet = function (ss) {
+    require('/visual/lib/dirty').setDirty(this, 'style');
+    this.ssChanged = true;
+    this.ss = ss;
+};
+// FIXME: very funky implementation... how to integrate this with the concept
+// of dirty without imposing the domquery and other similar things everywhere.
+// ... some thinking needed on this....
+FormattedText.prototype.update = function (why) {
+    visual.Visual.prototype.update.call(this, why);
+    if (this.ssChanged) {
+        this.updateStyleSheet();
+        delete this.ssChanged;
+    }
 };
 exports.FormattedText = FormattedText;
