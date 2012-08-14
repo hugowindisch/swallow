@@ -52,11 +52,6 @@ DomElement.prototype.setStyle = function (skin, factory, type, style) {
 * Sets some margins
 */
 DomElement.prototype.setMargins = function (left, top, right, bottom) {
-    left = left || 0;
-    top = top || left;
-    right = right || left;
-    bottom = bottom || left;
-
     forEach(this.elements, function (elem) {
         var s = elem.style;
         s.marginLeft = left;
@@ -71,10 +66,6 @@ DomElement.prototype.setMargins = function (left, top, right, bottom) {
 * Sets some padding.
 */
 DomElement.prototype.setPadding = function (left, top, right, bottom) {
-    left = left || 0;
-    top = top || left;
-    right = right || left;
-    bottom = bottom || left;
     forEach(this.elements, function (elem) {
         var s = elem.style;
         s.paddingLeft = left;

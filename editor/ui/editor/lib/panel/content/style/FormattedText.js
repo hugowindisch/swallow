@@ -58,8 +58,10 @@ function FormattedText(config) {
         emitChange();
     });
 
-    this.getChild('text').on('change', function (d) {
-        that.formattedText.text = d;
+    this.getChild('text').on('change', function (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        that.formattedText.text = this.getText();
         emitChange();
     });
 

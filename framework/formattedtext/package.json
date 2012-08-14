@@ -1,0 +1,17 @@
+{
+    "name": "formattedtext",
+    "version": "0.0.1",
+    "main": "./lib/groups",
+    "dependencies": {
+        "visual": ">=0.0.1",
+        "domvisual": ">=0.0.1",
+        "utils": ">=0.0.1",
+        "http": ">=0.0.1",
+        "domquery": ">=0.0.1",
+        "markdown": ">=0.0.1",
+        "domelement": ">=0.0.1"
+    },
+    "engines": {
+        "pillow": "*"
+    }
+}

@@ -42,7 +42,7 @@ VisualList.prototype.select = function (vi, apply) {
         alwaysShow = this.alwaysShow,
         filteredFactory = this.children.library.getSelectedOption(),
         f,
-        editedFactory = docInfo.factory;
+        editedFactory = docInfo ? docInfo.factory : null;
     if (vi !== sel) {
         if (sel) {
             sel.select(false);
@@ -184,7 +184,6 @@ VisualList.prototype.updateVisualList = function () {
         visualList = packageManager.getVisualList(),
         alwaysShow = this.alwaysShow,
         choices = this.children.choices,
-        docInfo = editor.getDocInfo(),
         filteredFactory = this.children.library.getSelectedOption(),
         that = this;
     // remove all children
@@ -235,7 +234,9 @@ VisualList.prototype.init = function (editor) {
     function fullUpdate() {
         var docInfo = editor.getDocInfo();
         that.initFactories();
-        that.children.library.setSelectedOption(docInfo.factory);
+        if (docInfo) {
+            that.children.library.setSelectedOption(docInfo.factory);
+        }
         that.updateVisualList();
         newBoxSelected();
     }

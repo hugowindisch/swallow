@@ -523,83 +523,85 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
             transform;
         // full matrix not yet supported
         if (!htmlFlowing) {
-            // we can either use left & top (if html5 is not supported)
-            // or use matrices but in this case, all scaling will be
-            // removed
-            if (this.isOnlyTranslated()) {
-                style.left = matrix[12] + 'px';
-                style.top = matrix[13] + 'px';
-                style.webkitBackfaceVisibility = null;
-                style.MozTransformOrigin =
-                    style.webkitTransformOrigin =
-                    style.transformOrigin =
-                    null;
-                style.MozTransform =
-                    style.webkitTransform =
-                    style.transform =
-                    null;
-            } else {
-                // we need the whole css3 transform shebang
-                // 3d transform
-                style.left = '0px';
-                style.top = '0px';
-                // note: if there is no 3d, we could (maybe default to the 2d
-                // version)
-                transform = 'matrix(' +
-                    matrix[0] +
-                    ', ' +
-                    matrix[1] +
-                    ', ' +
-                    matrix[4] +
-                    ', ' +
-                    matrix[5] +
-                    ', ' +
-                    matrix[12] +
-                    ', ' +
-                    matrix[13] +
-                    ')';
-                // this also work, and soon enough we will use it!
-                /*transform = 'matrix3d(' +
-                    matrix[0] +
-                    ', ' +
-                    matrix[1] +
-                    ', ' +
-                    matrix[2] +
-                    ', ' +
-                    matrix[3] +
-                    ', ' +
-                    matrix[4] +
-                    ', ' +
-                    matrix[5] +
-                    ', ' +
-                    matrix[6] +
-                    ', ' +
-                    matrix[7] +
-                    ', ' +
-                    matrix[8] +
-                    ', ' +
-                    matrix[9] +
-                    ', ' +
-                    matrix[10] +
-                    ', ' +
-                    matrix[11] +
-                    ', ' +
-                    matrix[12] +
-                    ', ' +
-                    matrix[13] +
-                    ', ' +
-                    matrix[14] +
-                    ', ' +
-                    matrix[15] +
-                    ')'; */
+            if (this.matrix) {
+                // we can either use left & top (if html5 is not supported)
+                // or use matrices but in this case, all scaling will be
+                // removed
+                if (this.isOnlyTranslated()) {
+                    style.left = matrix[12] + 'px';
+                    style.top = matrix[13] + 'px';
+                    style.webkitBackfaceVisibility = null;
+                    style.MozTransformOrigin =
+                        style.webkitTransformOrigin =
+                        style.transformOrigin =
+                        null;
+                    style.MozTransform =
+                        style.webkitTransform =
+                        style.transform =
+                        null;
+                } else {
+                    // we need the whole css3 transform shebang
+                    // 3d transform
+                    style.left = '0px';
+                    style.top = '0px';
+                    // note: if there is no 3d, we could (maybe default to the 2d
+                    // version)
+                    transform = 'matrix(' +
+                        matrix[0] +
+                        ', ' +
+                        matrix[1] +
+                        ', ' +
+                        matrix[4] +
+                        ', ' +
+                        matrix[5] +
+                        ', ' +
+                        matrix[12] +
+                        ', ' +
+                        matrix[13] +
+                        ')';
+                    // this also work, and soon enough we will use it!
+                    /*transform = 'matrix3d(' +
+                        matrix[0] +
+                        ', ' +
+                        matrix[1] +
+                        ', ' +
+                        matrix[2] +
+                        ', ' +
+                        matrix[3] +
+                        ', ' +
+                        matrix[4] +
+                        ', ' +
+                        matrix[5] +
+                        ', ' +
+                        matrix[6] +
+                        ', ' +
+                        matrix[7] +
+                        ', ' +
+                        matrix[8] +
+                        ', ' +
+                        matrix[9] +
+                        ', ' +
+                        matrix[10] +
+                        ', ' +
+                        matrix[11] +
+                        ', ' +
+                        matrix[12] +
+                        ', ' +
+                        matrix[13] +
+                        ', ' +
+                        matrix[14] +
+                        ', ' +
+                        matrix[15] +
+                        ')'; */
 
-                style.MozTransformOrigin =
-                    style.webkitTransformOrigin =
-                    style.transformOrigin = '0 0 0';
-                style.MozTransform =
-                    style.webkitTransform =
-                    style.transform =
-                    transform;
+                    style.MozTransformOrigin =
+                        style.webkitTransformOrigin =
+                        style.transformOrigin = '0 0 0';
+                    style.MozTransform =
+                        style.webkitTransform =
+                        style.transform =
+                        transform;
+                }
             }
         } else {
             style.left = null;

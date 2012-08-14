@@ -34,6 +34,7 @@ var utils = require('utils'),
     isString = utils.isString,
     isObject = utils.isObject,
     isNumber = utils.isNumber,
+    isArray = utils.isArray,
     applyLayout = position.applyLayout,
     setDirty = dirty.setDirty,
     setChildrenDirty = dirty.setChildrenDirty,
@@ -318,8 +319,13 @@ Visual.prototype.getDimensionsAdjustedForContent = function () {
 * @type Visual
 */
 Visual.prototype.setMatrix = function (m4) {
-    this.matrix = m4;
-    setDirty(this, 'matrix');
+    if (!(isObject(m4) || isArray(m4))) {
+        throw new Error('Invalid matrix type ' + typeof(m4));
+    }
+    if (m4 !== this.matrix) {
+        this.matrix = m4;
+        setDirty(this, 'matrix');
+    }
     return this;
 };
 

@@ -1233,9 +1233,7 @@ GroupViewer.prototype.updateAll = function () {
     try {
         children.visuals.createGroup(displayableDocumentData);
     } catch (e) {
-        // FIXME: this is wrong... because... the components we depend
-        // on are not necessarily already loaded...
-        // kinda shitty.
+        console.log('Error while regenerating the view ' + e);
     }
     children.visuals.setMatrix(zoomMat);
     children.visuals.setSkin(displayableDocumentData.theme.getSkin(), true);
