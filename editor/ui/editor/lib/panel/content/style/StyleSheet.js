@@ -204,6 +204,12 @@ StyleSheet.prototype.updateParts = function () {
             setOption(so, 'marginTop', top);
             setOption(so, 'marginBottom', bottom);
             that.emit('change', ssd);
+        }).on('preview', function (left, right, top, bottom) {
+            setOption(so, 'marginLeft', left);
+            setOption(so, 'marginRight', right);
+            setOption(so, 'marginTop', top);
+            setOption(so, 'marginBottom', bottom);
+            that.emit('preview', ssd);
         });
         c = new LeftRightTopBottom({
             title: 'Padding',
@@ -220,6 +226,12 @@ StyleSheet.prototype.updateParts = function () {
             setOption(so, 'paddingTop', top);
             setOption(so, 'paddingBottom', bottom);
             that.emit('change', ssd);
+        }).on('preview', function (left, right, top, bottom) {
+            setOption(so, 'paddingLeft', left);
+            setOption(so, 'paddingRight', right);
+            setOption(so, 'paddingTop', top);
+            setOption(so, 'paddingBottom', bottom);
+            that.emit('preview', ssd);
         });
         c = new Styling({editor: this.editor});
         parts.addChild(c, 'styling');

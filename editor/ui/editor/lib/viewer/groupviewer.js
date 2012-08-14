@@ -892,6 +892,19 @@ GroupViewer.prototype.setSelectionConfig = function (config) {
     group.doCommand(cg);
 };
 /**
+    This will preview a new config
+*/
+GroupViewer.prototype.previewSelectionConfig = function (config) {
+    var visuals = this.getChild('visuals');
+    forEachProperty(this.selection, function (pos, name) {
+        var c = visuals.getChild(name);
+        if (c) {
+            c.setConfiguration(config);
+        }
+    });
+};
+
+/**
     Flag selected children to be only for preview in the editor.
 */
 GroupViewer.prototype.getSelectionOnlyInEditor = function () {

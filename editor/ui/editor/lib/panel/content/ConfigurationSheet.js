@@ -53,7 +53,7 @@ ConfigurationSheet.prototype.fitToContent = function () {
     reload a different kind of typeInfo in the same ConfigurationSheet,
     so maybe we should simply NOT initiate a new load and exit... )
 */
-ConfigurationSheet.prototype.setEditedVisual = function (typeInfo, editedData, saveData, editor) {
+ConfigurationSheet.prototype.setEditedVisual = function (typeInfo, editedData, saveData, previewData, editor) {
     var sheet,
         toLoad = [],
         i,
@@ -87,8 +87,8 @@ ConfigurationSheet.prototype.setEditedVisual = function (typeInfo, editedData, s
         }
     });
 
-    // updates the data
-    function updateData() {
+    // retrieves the new config
+    function getNewConfig() {
         var newConfig = {};
         forEachProperty(sheet, function (it, name) {
             var c;
@@ -97,9 +97,21 @@ ConfigurationSheet.prototype.setEditedVisual = function (typeInfo, editedData, s
                 newConfig[name] = c.getData();
             }
         });
+        return newConfig;
+    }
+
+    // updates the data
+    function updateData() {
         // apply this to the model (and prevent updating the sheet while this happens)
         that.settingConfig = true;
-        saveData(newConfig);
+        saveData(getNewConfig());
+        delete that.settingConfig;
+    }
+    // previews the data
+    function updatePreview() {
+        // apply this to the model (and prevent updating the sheet while this happens)
+        that.settingConfig = true;
+        previewData(getNewConfig());
         delete that.settingConfig;
     }
 
@@ -115,6 +127,7 @@ ConfigurationSheet.prototype.setEditedVisual = function (typeInfo, editedData, s
                 c.setData(data);
             }
             c.on('change', updateData);
+            c.on('preview', updatePreview);
             that.addChild(c, toLoad[i].name);
         }
         // FIXME: the whole domchanged thing... obviously, if you add or remove flowing elements

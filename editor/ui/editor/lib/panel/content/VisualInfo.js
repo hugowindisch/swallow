@@ -233,6 +233,15 @@ VisualInfo.prototype.showDetails = function () {
         }
     }
 
+    // previews the edited stuff with the sheet's content.
+    function previewDataFromConfigurationSheet(newConfig) {
+        var editingDefaultAttributes = viewer.getSelectionLength() === 0,
+            editedData = editingDefaultAttributes ? {} : viewer.getSelectionConfig();
+        if (!editingDefaultAttributes) {
+            viewer.previewSelectionConfig(newConfig);
+        }
+    }
+
     // updates the configuration sheet with the data
     function setConfigurationSheetContent() {
         if (hooked) {
@@ -242,6 +251,7 @@ VisualInfo.prototype.showDetails = function () {
                 deepCopy(that.getTypeInfo()),
                 editedData,
                 updateDataFromConfigurationSheet,
+                previewDataFromConfigurationSheet,
                 editor
             );
         }

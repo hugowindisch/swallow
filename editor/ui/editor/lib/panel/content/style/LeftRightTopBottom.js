@@ -31,10 +31,13 @@ function LeftRightTopBottom(config) {
     function update() {
         that.emit('change', that.getLeft(), that.getRight(), that.getTop(), that.getBottom());
     }
-    this.getChild('left').on('change', update);
-    this.getChild('right').on('change', update);
-    this.getChild('top').on('change', update);
-    this.getChild('bottom').on('change', update);
+    function updatePreview() {
+        that.emit('preview', that.getLeft(), that.getRight(), that.getTop(), that.getBottom());
+    }
+    this.getChild('left').on('change', update).on('preview', updatePreview);
+    this.getChild('right').on('change', update).on('preview', updatePreview);
+    this.getChild('top').on('change', update).on('preview', updatePreview);
+    this.getChild('bottom').on('change', update).on('preview', updatePreview);
 }
 LeftRightTopBottom.prototype = new (domvisual.DOMElement)();
 LeftRightTopBottom.prototype.getConfigurationSheet = function () {
