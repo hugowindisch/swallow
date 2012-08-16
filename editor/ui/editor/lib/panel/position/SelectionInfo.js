@@ -29,7 +29,41 @@ var visual = require('visual'),
     forEach = utils.forEach,
     isNumber = utils.isNumber,
     mat4 = glmatrix.mat4,
-    vec3 = glmatrix.vec3;
+    vec3 = glmatrix.vec3,
+    pi = Math.PI,
+    atan = Math.atan;
+
+/*
+function getYAngle(m) {
+    var z = m[8],
+        x = m[0],
+        ret;
+    if (x !== 0) {
+        ret = atan (z/x);
+    } else if (z !== 0) {
+        ret = atan (pi / 2) - ( x / z )
+
+    } else {
+        ret = 0;
+    }
+    return ret * 180 / pi;
+}
+
+function getXAngle(m) {
+    var z = m[9],
+        y = m[5],
+        ret;
+    if (x !== 0) {
+        ret = atan(z / y);
+    } else if (z !== 0) {
+        ret = atan(pi / 2) - ( y / z )
+
+    } else {
+        ret = 0;
+    }
+    return ret * 180 /pi;
+}*/
+
 
 function SelectionInfo(config) {
     // call the baseclass
@@ -157,6 +191,41 @@ SelectionInfo.prototype.init = function (editor) {
         viewer.setSelectionOpacity(opacity / 100);
 
     });
+    function rotationMatrix(angle, vector) {
+        var transform = mat4.identity(),
+            r = viewer.getSelectionRect(),
+            mid = [
+                (r[0][0] + r[1][0]) / 2,
+                (r[0][1] + r[1][1]) / 2,
+                (r[0][2] + r[1][2]) / 2
+            ];
+        mat4.translate(transform, mid);
+        mat4.rotate(transform, pi * angle / 180, vector);
+        mat4.translate(transform, [-mid[0], -mid[1], -mid[2]]);
+        return transform;
+    }
+
+    function xRotationMatrix(angle) {
+        return rotationMatrix(angle, [1, 0, 0]);
+    }
+    function yRotationMatrix(angle) {
+        return rotationMatrix(angle, [0, 1, 0]);
+    }
+
+    children.xRotation.on('change', function (angle) {
+        viewer.transformSelection(xRotationMatrix(angle));
+    });
+    children.xRotation.on('preview', function (angle) {
+        viewer.previewSelectionTransformation(xRotationMatrix(angle));
+    });
+
+    children.yRotation.on('change', function (angle) {
+        viewer.transformSelection(yRotationMatrix(angle));
+    });
+    children.yRotation.on('preview', function (angle) {
+        viewer.previewSelectionTransformation(yRotationMatrix(angle));
+    });
+
     update(null);
 };
 

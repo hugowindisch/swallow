@@ -1,7 +1,7 @@
 exports.groups = {
     "Help": {
         "description": "",
-        "private": true,
+        "privateVisual": true,
         "privateTheme": true,
         "dimensions": [
             600,
@@ -145,7 +145,7 @@ exports.groups = {
                     "11": 0,
                     "12": 8,
                     "13": 64,
-                    "14": 1,
+                    "14": 0,
                     "15": 1,
                     "byteOffset": 0,
                     "byteLength": 64,
@@ -180,7 +180,7 @@ exports.groups = {
                     "11": 0,
                     "12": 0.000023484230041503906,
                     "13": 7.999992847442627,
-                    "14": 0.3076923191547394,
+                    "14": 0,
                     "15": 1,
                     "byteOffset": 0,
                     "byteLength": 64,
@@ -250,7 +250,7 @@ exports.groups = {
                     "11": 0,
                     "12": 8,
                     "13": 8,
-                    "14": 8,
+                    "14": 0,
                     "15": 1,
                     "byteOffset": 0,
                     "byteLength": 64,
@@ -285,7 +285,7 @@ exports.groups = {
                     "11": 0,
                     "12": 56.00000762939453,
                     "13": 8,
-                    "14": 0.8888888955116272,
+                    "14": 0,
                     "15": 1,
                     "byteOffset": 0,
                     "byteLength": 64,
@@ -320,14 +320,14 @@ exports.groups = {
                     "11": 0,
                     "12": 528,
                     "13": 19.591848373413086,
-                    "14": 16.88888931274414,
+                    "14": 0,
                     "15": 1,
-                    "byteOffset": 0,
                     "byteLength": 64,
-                    "length": 16,
                     "buffer": {
                         "byteLength": 64
-                    }
+                    },
+                    "length": 16,
+                    "byteOffset": 0
                 },
                 "order": 7,
                 "snapping": {
@@ -355,7 +355,7 @@ exports.groups = {
                     "11": 0,
                     "12": 192,
                     "13": 24,
-                    "14": 17.5,
+                    "14": 0,
                     "15": 1,
                     "byteOffset": 0,
                     "byteLength": 64,
@@ -404,4 +404,7 @@ exports.groups = {
 /**
     Exports all visual constructors in the specified module.
 */
+
+exports.Help = require('/helpviewer/lib/Help').Help;
+
 exports.Help = require('/helpviewer/lib/Help').Help;

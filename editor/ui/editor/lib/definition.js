@@ -468,7 +468,7 @@ exports.definition = {
             }
         },
         SelectionInfo: {
-            dimensions: [390, 130, 0],
+            dimensions: [390, 290, 0],
             positions: {
                 nameLabel: {
                     order: 0,
@@ -534,6 +534,31 @@ exports.definition = {
                 h: {
                     order: 14,
                     matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   215, 55, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                threeD: {
+                    order: 14,
+                    matrix: [ 340, 0, 0, 0,   0, 25, 0, 0,    0, 0, 1, 0,   5, 130, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                xRotation: {
+                    order: 14,
+                    matrix: [ 340, 0, 0, 0,   0, 25, 0, 0,    0, 0, 1, 0,   5, 160, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                yRotation: {
+                    order: 14,
+                    matrix: [ 340, 0, 0, 0,   0, 25, 0, 0,    0, 0, 1, 0,   5, 190, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                zDepth: {
+                    order: 14,
+                    matrix: [ 340, 0, 0, 0,   0, 25, 0, 0,    0, 0, 1, 0,   5, 220, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                perspective: {
+                    order: 14,
+                    matrix: [ 340, 0, 0, 0,   0, 25, 0, 0,    0, 0, 1, 0,   5, 250, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -643,7 +668,65 @@ exports.definition = {
                         "value": 100,
                         position: "opacitySlider"
                     }
+                },
+                threeD: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        text: "3D (Experimental):",
+                        bold: true,
+                        position: "threeD"
+                    }
+                },
+                xRotation: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    config: {
+                        label: "X angle:",
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 360,
+                        position: "xRotation",
+                        checkVisible: false
+                    }
+                },
+                yRotation: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    config: {
+                        label: "Y angle:",
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 360,
+                        position: "yRotation",
+                        checkVisible: false
+                    }
+                },
+                zDepth: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    config: {
+                        label: "z Depth:",
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 1000,
+                        position: "zDepth",
+                        checkVisible: false
+                    }
+                },
+                perspective: {
+                    factory: "editor",
+                    type: "LabelValueSliderCheck",
+                    config: {
+                        label: "Fading:",
+                        value: 0,
+                        minValue: 0,
+                        maxValue: 1000,
+                        position: "perspective",
+                        checkVisible: false
+                    }
                 }
+
             }
         },
         ConfigurationSheet: {

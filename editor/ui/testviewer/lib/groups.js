@@ -174,7 +174,7 @@ exports.groups = {
                     "11": 0,
                     "12": 8,
                     "13": 8,
-                    "14": 8,
+                    "14": 0,
                     "15": 1,
                     "byteOffset": 0,
                     "byteLength": 64,
@@ -278,15 +278,15 @@ exports.groups = {
                     "10": 0,
                     "11": 0,
                     "12": 450.1609191894531,
-                    "13": 9.000000953674316,
-                    "14": 18.24242401123047,
+                    "13": 9,
+                    "14": 0,
                     "15": 1,
-                    "byteOffset": 0,
                     "byteLength": 64,
-                    "length": 16,
                     "buffer": {
                         "byteLength": 64
-                    }
+                    },
+                    "length": 16,
+                    "byteOffset": 0
                 },
                 "order": 5,
                 "snapping": {
@@ -314,14 +314,14 @@ exports.groups = {
                     "11": 0,
                     "12": 522.1609497070312,
                     "13": 9,
-                    "14": 145.242431640625,
+                    "14": 0,
                     "15": 1,
-                    "byteOffset": 0,
                     "byteLength": 64,
-                    "length": 16,
                     "buffer": {
                         "byteLength": 64
-                    }
+                    },
+                    "length": 16,
+                    "byteOffset": 0
                 },
                 "order": 6,
                 "snapping": {
@@ -343,4 +343,7 @@ exports.groups = {
 /**
     Exports all visual constructors in the specified module.
 */
+
+exports.TestViewer = require('/testviewer/lib/TestViewer').TestViewer;
+
 exports.TestViewer = require('/testviewer/lib/TestViewer').TestViewer;

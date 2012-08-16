@@ -30,6 +30,7 @@ var visual = require('visual'),
     styleToCss = styles.styleToCss,
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
     keycodes = require('./keycodes'),
+    preferences = require('./browser').getPreferences(),
     Visual = visual.Visual,
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEachProperty,
@@ -515,19 +516,40 @@ DOMVisual.prototype.setStyleDimensionsAdjustment = function (v3) {
 * DOM update (we essentially treat the DOM as an output thing)
 * @api private
 */
+function has3D(mat) {
+    return mat[2] !== 0 ||
+        mat[6] !== 0 ||
+        mat[14] !== 0;
+}
+function onlyTranslate(mat) {
+    return mat[0] === 1 &&
+        mat[1] === 0 &&
+        mat[2] === 0 &&
+
+        mat[4] === 0 &&
+        mat[5] === 1 &&
+        mat[6] === 0 &&
+
+        mat[8] === 0 &&
+        mat[9] === 0 &&
+        mat[10] === 1;
+}
+
 DOMVisual.prototype.updateMatrixRepresentation = function () {
     if (this.element && this.name !== 'stage') {
         var matrix = this.matrix,
             style = this.element.style,
             htmlFlowing = this.htmlFlowing,
-            transform;
+            transform,
+            preferMatrixPositioning = preferences.preferMatrixPositioning,
+            allow3D = preferences.allow3D;
         // full matrix not yet supported
         if (!htmlFlowing) {
-            if (this.matrix) {
+            if (matrix) {
                 // we can either use left & top (if html5 is not supported)
                 // or use matrices but in this case, all scaling will be
                 // removed
-                if (this.isOnlyTranslated()) {
+                if (!preferMatrixPositioning && onlyTranslate(matrix)) {
                     style.left = matrix[12] + 'px';
                     style.top = matrix[13] + 'px';
                     style.webkitBackfaceVisibility = null;
@@ -546,62 +568,63 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
                     style.top = '0px';
                     // note: if there is no 3d, we could (maybe default to the 2d
                     // version)
-                    transform = 'matrix(' +
-                        matrix[0] +
-                        ', ' +
-                        matrix[1] +
-                        ', ' +
-                        matrix[4] +
-                        ', ' +
-                        matrix[5] +
-                        ', ' +
-                        matrix[12] +
-                        ', ' +
-                        matrix[13] +
-                        ')';
-                    // this also work, and soon enough we will use it!
-                    /*transform = 'matrix3d(' +
-                        matrix[0] +
-                        ', ' +
-                        matrix[1] +
-                        ', ' +
-                        matrix[2] +
-                        ', ' +
-                        matrix[3] +
-                        ', ' +
-                        matrix[4] +
-                        ', ' +
-                        matrix[5] +
-                        ', ' +
-                        matrix[6] +
-                        ', ' +
-                        matrix[7] +
-                        ', ' +
-                        matrix[8] +
-                        ', ' +
-                        matrix[9] +
-                        ', ' +
-                        matrix[10] +
-                        ', ' +
-                        matrix[11] +
-                        ', ' +
-                        matrix[12] +
-                        ', ' +
-                        matrix[13] +
-                        ', ' +
-                        matrix[14] +
-                        ', ' +
-                        matrix[15] +
-                        ')'; */
-
-                    style.MozTransformOrigin =
-                        style.webkitTransformOrigin =
-                        style.transformOrigin = '0 0 0';
-                    style.MozTransform =
-                        style.webkitTransform =
-                        style.transform =
-                        transform;
+                    if (!has3D(matrix) || !allow3D) {
+                        transform = 'matrix(' +
+                            matrix[0] +
+                            ', ' +
+                            matrix[1] +
+                            ', ' +
+                            matrix[4] +
+                            ', ' +
+                            matrix[5] +
+                            ', ' +
+                            matrix[12] +
+                            ', ' +
+                            matrix[13] +
+                            ')';
+                    } else {
+                        transform = 'matrix3d(' +
+                            matrix[0] +
+                            ', ' +
+                            matrix[1] +
+                            ', ' +
+                            matrix[2] +
+                            ', ' +
+                            matrix[3] +
+                            ', ' +
+                            matrix[4] +
+                            ', ' +
+                            matrix[5] +
+                            ', ' +
+                            matrix[6] +
+                            ', ' +
+                            matrix[7] +
+                            ', ' +
+                            matrix[8] +
+                            ', ' +
+                            matrix[9] +
+                            ', ' +
+                            matrix[10] +
+                            ', ' +
+                            matrix[11] +
+                            ', ' +
+                            matrix[12] +
+                            ', ' +
+                            matrix[13] +
+                            ', ' +
+                            matrix[14] +
+                            ', ' +
+                            matrix[15] +
+                            ')';
+                    }
                 }
+                style.MozTransformOrigin =
+                    style.webkitTransformOrigin =
+                    style.transformOrigin = '0 0 0';
+                style.MozTransform =
+                    style.webkitTransform =
+                    style.transform =
+                    transform;
             }
         } else {
             style.left = null;
@@ -616,6 +639,12 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
                 style.transform =
                 null;
         }
+        if (allow3D) {
+            // FIXME: HACK for testing perspective stuff.
+            style.MozPerspective =
+                style.webkitPerspective = '500px';
+        }
+
     }
 };
 
@@ -624,30 +653,25 @@ DOMVisual.prototype.updateMatrixRepresentation = function () {
 * @api private
 */
 DOMVisual.prototype.updateTransitionRepresentation = function () {
-    var transition = this.transition,
+    var transition = this.transition || { property: null, duration: null, easingFunction: null },
         style = this.element.style;
 
+
     // transitions FIXME: not sure this should be here
-    if (transition) {
-        style.webkitTransitionProperty =
-            style.mozTransitionProperty =
-            style.transitionProperty =
-            transition.property;
+    style.webkitTransitionProperty =
+        style.MozTransitionProperty =
+        style.transitionProperty =
+        transition.property;
 
-        style.webkitTransitionDuration =
-            style.mozTransitionProperty =
-            style.transitionDuration =
-            transition.duration;
+    style.webkitTransitionDuration =
+        style.MozTransitionDuration =
+        style.transitionDuration =
+        transition.duration + 'ms';
 
-        style.webkitTransitionTimingFunction =
-            style.mozTransitionProperty =
-            style.transitionTimingFunction =
-            transition.easingFunction;
-    } else {
-        style.webkitTransitionProperty = null;
-        style.webkitTransitionDuration = null;
-        style.webkitTransitionTimingFunction = null;
-    }
+    style.webkitTransitionTimingFunction =
+        style.MozTransitionTimingFunction =
+        style.transitionTimingFunction =
+        transition.easingFunction;
 };
 
 /*

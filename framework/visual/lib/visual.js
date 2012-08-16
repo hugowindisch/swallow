@@ -353,15 +353,6 @@ Visual.prototype.getMatrix = function () {
 };
 
 /**
-* Checks that only translation is needed on this visual.
-* @returns true if the transformation matrix only contains translations.
-* @type Boolean
-*/
-Visual.prototype.isOnlyTranslated = function () {
-    matrixIsTranslateOnly(this.matrix);
-};
-
-/**
 * Returns the 'display' matrix. This can be overridden in subclasses
 * that do nothing with the real matrix but and display the element differently.
 * The only known case of this is when an element uses the normal html

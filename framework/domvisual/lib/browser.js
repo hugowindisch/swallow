@@ -20,22 +20,46 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
+var browser,
+    preferences,
+    ua = navigator.userAgent;
+
+// detect the browser
+if (ua.indexOf("AppleWebKit") !== -1) {
+    browser = 'AppleWebKit';
+    preferences = {
+        allow3D: false,
+        preferMatrixPositioning: true
+    };
+} else if (ua.indexOf("MSIE") !== -1) {
+    browser = 'MSIE';
+    preferences = {
+        allow3D: false,
+        preferMatrixPositioning: false
+    };
+} else if (ua.indexOf("Mozilla") !== -1) {
+    browser = 'Mozilla';
+    preferences = {
+        allow3D: true,
+        preferMatrixPositioning: false
+    };
+}
 
 /**
 * mimimalistic browser detection
 * @api private
 */
 function getBrowser() {
-    var ua = navigator.userAgent,
-        browser;
-    if (ua.indexOf("AppleWebKit") !== -1) {
-        browser = 'AppleWebKit';
-    } else if (ua.indexOf("MSIE") !== -1) {
-        browser = 'MSIE';
-    } else if (ua.indexOf("Mozilla") !== -1) {
-        browser = 'Mozilla';
-    }
     return browser;
 }
 
+/**
+* minimalistic feature enable/disable
+* @api private
+*/
+function getPreferences() {
+    return preferences;
+}
+
 exports.getBrowser = getBrowser;
+exports.getPreferences = getPreferences;

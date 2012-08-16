@@ -117,13 +117,7 @@ function GroupViewer(config) {
         };
     // transform handlers
     function transformHandler(transform) {
-        var group = that.group,
-            cg = that.group.cmdCommandGroup('transform', 'Transform a group');
-        // transform the whole selection
-        forEachProperty(that.selection, function (sel, name) {
-            cg.add(group.cmdTransformPosition(name, transform));
-        });
-        group.doCommand(cg);
+        that.transformSelection(transform);
     }
     this.selectionScalingUI.on('transform', transformHandler);
     this.selectionRotationUI.on('transform', transformHandler);
@@ -317,7 +311,7 @@ GroupViewer.prototype.enableBoxSelection = function (
     function mouseMove(evt) {
         evt.preventDefault();
         var mat = visuals.getFullDisplayMatrix(true);
-        endpos = applyGrid(glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]));
+        endpos = applyGrid(glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]));
         matrix = twoPositionsToMatrix(startpos, endpos);
         nmatrix = twoPositionsToNormalizedMatrix(startpos, endpos);
         updateMouseBox(nmatrix);
@@ -851,6 +845,15 @@ GroupViewer.prototype.previewSelectionOpacity = function (opacity) {
             vis.setOpacity(opacity);
         }
     });
+};
+GroupViewer.prototype.transformSelection = function (transform) {
+    var group = this.group,
+        cg = this.group.cmdCommandGroup('transform', 'Transform a group');
+    // transform the whole selection
+    forEachProperty(this.selection, function (sel, name) {
+        cg.add(group.cmdTransformPosition(name, transform));
+    });
+    group.doCommand(cg);
 };
 /**
     This will gather a config object will all similarily defined
