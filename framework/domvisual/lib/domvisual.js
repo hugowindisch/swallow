@@ -26,6 +26,8 @@ var visual = require('visual'),
     position = require('/visual/lib/position'),
     glmatrix = require('glmatrix'),
     config = require('config'),
+    events = require('events'),
+    EventEmitter = events.EventEmitter,
     styles = require('./styles'),
     styleToCss = styles.styleToCss,
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
@@ -61,16 +63,23 @@ function DOMVisual(config, groupData, element) {
     this.connectedToTheStage = false;
     this.disableInteractiveEventHooks = false;
     this.visible = true;
-    // this might not be the best idea, maybe overriding addListener would
-    // be better.
-    this.addListener('newListener', function () {
-        updateDOMEventHooks(that);
-    });
     Visual.call(this, config, groupData);
-
 }
 
 DOMVisual.prototype = new Visual();
+
+/**
+* Overrides the normal way of adding a listener.
+* (note could have been done by adding a 'newListener' listener. BUT: a) we
+* are notified BEFORE the list of listeners is modified and this is bad for us,
+* b) our _events array always exists and this wastes an array when no listeners
+* are hooked)
+* @api private
+*/
+DOMVisual.prototype.addListener = function (evt, handler) {
+    EventEmitter.prototype.addListener.call(this, evt, handler);
+    updateDOMEventHooks(this);
+};
 
 /**
 * Adds a child to a DOMVisual

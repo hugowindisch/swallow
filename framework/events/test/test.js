@@ -29,7 +29,8 @@ exports.run = function (test, done) {
     // EventEmitter.prototype.addListener = function (event, listener) {
     var ee = new events.EventEmitter(),
         called1 = 0,
-        called2 = 0;
+        called2 = 0,
+        nl = 0;
     function l1() {
         called1 += 1;
     }
@@ -103,6 +104,18 @@ exports.run = function (test, done) {
     ee.emit('b');
     ee.emit('c');
     test(assert.strictEqual, called1, 0);
+
+    ee.removeAllListeners();
+    ee.on('newListener', function (evtName, fcn) {
+        nl += 1;
+        test(assert.strictEqual, evtName, 'something');
+        test(assert.strictEqual, fcn(), 'hello!');
+    });
+    test(assert.strictEqual, nl, 0);
+    ee.on('something', function () {
+        return 'hello!';
+    });
+    test(assert.strictEqual, nl, 1);
 
     done();
 };

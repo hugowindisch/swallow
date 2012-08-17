@@ -63,6 +63,9 @@ EventEmitter.prototype.addListener = function (event, listener) {
             this._maxListeners :
             10;
 
+    // we should fire an event for addListener
+    this.emit('newListener', event, listener);
+
     if (!listeners) {
         events[event] = listener;
     } else {
@@ -76,10 +79,6 @@ EventEmitter.prototype.addListener = function (event, listener) {
             listeners.warned = true;
         }
     }
-
-    // we should fire an event for addListener
-    this.emit('newListener', event, listener);
-
     return this;
 };
 
