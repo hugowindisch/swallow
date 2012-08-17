@@ -318,7 +318,7 @@ function backgroundImageToCssString(img) {
                 if (!ret) {
                     ret = css;
                 } else {
-                    ret = ret + ',' + css;
+                    ret = ret + ', ' + css;
                 }
             }
         });

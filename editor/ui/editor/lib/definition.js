@@ -1628,7 +1628,7 @@ exports.definition = {
             }
         },
         StyleSettingBackgroundImage: {
-            dimensions: [340, 380, 1],
+            dimensions: [340, 420, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1640,9 +1640,14 @@ exports.definition = {
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                gradient: {
+                itemList: {
                     order: 2,
-                    matrix: [ 340, 0, 0, 0,  0, 320, 0, 0,  0, 0, 1, 0,  0, 30, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 32, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                gradient: {
+                    order: 3,
+                    matrix: [ 340, 0, 0, 0,  0, 320, 0, 0,  0, 0, 1, 0,  0, 70, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1662,6 +1667,13 @@ exports.definition = {
                     config: {
                         value: true,
                         position: "clear"
+                    }
+                },
+                itemList: {
+                    factory: "editor",
+                    type: "ItemList",
+                    config: {
+                        position: "itemList"
                     }
                 },
                 gradient: {
@@ -2606,28 +2618,55 @@ exports.definition = {
                 }
             }
         },
-/*
-    fontWeightLabel: {
-        order: 0,
-        matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 90, 0, 1],
-        snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-    },
-    fontWeightNormal: {
-        order: 0,
-        matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   65, 90, 0, 1],
-        snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-    },
-    fontWeightBold: {
-        order: 0,
-        matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 90, 0, 1],
-        snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-    },
-    fontWeightCheck: {
-        order: 0,
-        matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 90, 0, 1],
-        snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-    },
-*/
+        Item: {
+            // authoring dimension
+            dimensions: [ 32, 32, 0],
+            positions: {
+                background: {
+                    order: 0,
+                    matrix: [ 32, 0, 0, 0, 0, 32, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+                    snapping: {
+                        left: 'px',
+                        right: 'px',
+                        width: 'auto',
+                        top: 'px',
+                        bottom: 'px',
+                        height: 'auto'
+                    }
+                },
+                deleteBtn: {
+                    order: 1,
+                    matrix: [ 16, 0, 0, 0, 0, 16, 0, 0, 0, 0, 1, 0, 16, 16, 0, 1 ],
+                    snapping: {
+                        left: 'px',
+                        right: 'px',
+                        width: 'auto',
+                        top: 'cpx',
+                        bottom: 'cpx',
+                        height: 'auto'
+                    }
+                }
+            },
+            children: {
+                background: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        position: "background",
+                        url: 'editor/img/bgimage.png'
+                    }
+                },
+                deleteBtn: {
+                    factory: "domvisual",
+                    type: "DOMImg",
+                    config: {
+                        position: "deleteBtn",
+                        url: 'editor/img/removestop.png',
+                        visible: false
+                    }
+                }
+            }
+        },
         FormattedText: {
             dimensions: [340, 170, 0],
             positions: {

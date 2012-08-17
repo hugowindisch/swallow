@@ -61,12 +61,13 @@ function DOMVisual(config, groupData, element) {
     this.connectedToTheStage = false;
     this.disableInteractiveEventHooks = false;
     this.visible = true;
-    Visual.call(this, config, groupData);
     // this might not be the best idea, maybe overriding addListener would
     // be better.
-    this.addListener('addListener', function () {
+    this.addListener('newListener', function () {
         updateDOMEventHooks(that);
     });
+    Visual.call(this, config, groupData);
+
 }
 
 DOMVisual.prototype = new Visual();

@@ -142,9 +142,8 @@ LabelValueSlider.prototype.setLabel = function (txt) {
 };
 
 LabelValueSlider.prototype.setValue = function (v) {
-    if (v) {
-        this.value = v;
-    }
+    v = v || 0;
+    this.value = v;
     this.updateSlider();
     this.updateInput();
     return this;

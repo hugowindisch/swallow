@@ -57,7 +57,7 @@ function EventSource(url, optionalInit) {
     }
 
     this.hooks = {};
-    this.on('addListener', function () {
+    this.on('newListener', function () {
         this.updateHooks();
     });
 }

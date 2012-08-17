@@ -22,6 +22,7 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
+    isArray = utils.isArray,
     deepCopy = utils.deepCopy,
     groups = require('/editor/lib/definition').definition.groups;
 
@@ -31,11 +32,11 @@ function StyleSettingBackgroundImage(config) {
     var children = this.children,
         that = this;
     this.getChild('gradient').on('preview', function (v) {
-        that.styleData = { bgi: v };
+        that.updateData(v);
         that.emit('preview', that.styleData);
     });
     this.getChild('gradient').on('change', function (v) {
-        that.styleData = { bgi: v };
+        that.updateData(v);
         that.emit('change', that.styleData);
     });
     this.getChild('clear').on('click', function () {
@@ -53,26 +54,64 @@ StyleSettingBackgroundImage.prototype.getConfigurationSheet = function () {
 StyleSettingBackgroundImage.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
 };
+StyleSettingBackgroundImage.prototype.getNewGradient = function () {
+    return {
+        stops: [0, 1],
+        colors: [
+            {r: 0, g: 0, b: 0, a: 1},
+            {r: 255, g: 255, b: 255, a: 1}
+        ],
+        type: 'vertical'
+    };
+};
 StyleSettingBackgroundImage.prototype.getDefaultStyleData = function () {
     return {
-        bgi: {
-            stops: [0, 1],
-            colors: [
-                {r: 0, g: 0, b: 0, a: 1},
-                {r: 255, g: 255, b: 255, a: 1}
-            ],
-            type: 'vertical'
-        }
+        bgi: [ this.getNewGradient() ]
     };
 };
 StyleSettingBackgroundImage.prototype.setStyleData = function (st) {
     var sd = this.styleData = deepCopy(st),
-        bgi = sd.bgi;
-    if (!bgi || !bgi.stops || bgi.stops.length < 2) {
-        this.styleData = this.getDefaultStyleData();
+        bgi = sd.bgi,
+        that = this;
+    if (!isArray(bgi)) {
+        bgi = sd.bgi = [sd.bgi];
     }
+    if (!bgi || !bgi[0].stops || bgi[0].stops.length < 2) {
+        sd = this.styleData = this.getDefaultStyleData();
+        bgi = sd.bgi;
+    }
+    this.getChild('itemList').addItems(bgi.length
+    ).on('delete', function (n) {
+        this.deleteItem(n);
+        that.deleteData(n);
+    }).on('select', function (n) {
+        this.selectItem(n);
+        that.selectData(n);
+    }).selectItem(0);
+    this.selectData(0);
 
-    this.getChild('gradient').setValue(this.styleData.bgi);
+};
+
+StyleSettingBackgroundImage.prototype.selectData = function (n) {
+    this.selected = n;
+    var dat = this.styleData.bgi[n];
+    if (!dat) {
+        dat = this.styleData.bgi[n] = this.getNewGradient();
+    }
+    this.getChild('gradient').setValue(dat);
+};
+
+StyleSettingBackgroundImage.prototype.deleteData = function (n) {
+    delete this.styleData.bgi[n];
+    this.selectData(0);
+    this.emit('change', this.styleData);
+};
+
+
+StyleSettingBackgroundImage.prototype.updateData = function (d) {
+    if (this.selected !== undefined) {
+        this.styleData.bgi[this.selected] = d;
+    }
 };
 
 exports.StyleSettingBackgroundImage = StyleSettingBackgroundImage;
