@@ -77,9 +77,12 @@ DOMVisual.prototype = new Visual();
 * @api private
 */
 DOMVisual.prototype.addListener = function (evt, handler) {
-    EventEmitter.prototype.addListener.call(this, evt, handler);
+    var ret = EventEmitter.prototype.addListener.call(this, evt, handler);
     updateDOMEventHooks(this);
+    return ret;
 };
+DOMVisual.prototype.on = DOMVisual.prototype.addListener;
+
 
 /**
 * Adds a child to a DOMVisual
@@ -114,12 +117,19 @@ DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     connectedToTheStage = this.connectedToTheStage;
     disableInteractiveEventHooks = this.disableInteractiveEventHooks;
     visual.forVisualAndAllChildrenDeep(child, function (c) {
-        c.connectedToTheStage = connectedToTheStage;
-        if (disableInteractiveEventHooks) {
-            c.disableInteractiveEventHooks = true;
+        // avoid useless traversal
+        if (c.connectedToTheStage !== connectedToTheStage ||
+            Boolean(c.disableInteractiveEventHooks) !== disableInteractiveEventHooks) {
+            c.connectedToTheStage = connectedToTheStage;
+            if (disableInteractiveEventHooks) {
+                c.disableInteractiveEventHooks = true;
+            }
+            // here we should revalidate the hooks for this child
+            updateDOMEventHooks(c);
+        } else {
+            // stop the traversal, already in synch
+            return true;
         }
-        // here we should revalidate the hooks for this child
-        updateDOMEventHooks(c);
     });
     return this;
 };
@@ -144,9 +154,14 @@ DOMVisual.prototype.removeChild = function (child) {
     var connectedToTheStage = this.connectedToTheStage,
         disableInteractiveEventHooks = this.disableInteractiveEventHooks;
     visual.forVisualAndAllChildrenDeep(child, function (c) {
-        c.connectedToTheStage = false;
-        // here we should revalidate the hooks for this child
-        updateDOMEventHooks(c);
+        if (c.connectedToTheStage) {
+            c.connectedToTheStage = false;
+            // here we should revalidate the hooks for this child
+            updateDOMEventHooks(c);
+        } else {
+            // stop the traversal, already in synch
+            return true;
+        }
     });
     return this;
 };
@@ -174,9 +189,14 @@ DOMVisual.prototype.setDimensions = function (d) {
 DOMVisual.prototype.enableInteractions = function (enable) {
     var disable = !enable;
     visual.forVisualAndAllChildrenDeep(this, function (c) {
-        c.disableInteractiveEventHooks = disable;
-        // here we should revalidate the hooks for this child
-        updateDOMEventHooks(c);
+        if (Boolean(c.disableInteractiveEventHooks) !== disable) {
+            c.disableInteractiveEventHooks = disable;
+            // here we should revalidate the hooks for this child
+            updateDOMEventHooks(c);
+        } else {
+            // stop the traversal, already in synch
+            return true;
+        }
     });
 };
 

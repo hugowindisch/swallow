@@ -55,12 +55,12 @@ var utils = require('utils'),
 * @api private
 */
 function forVisualAndAllChildrenDeep(v, fcn) {
-    fcn(v);
-    if (v.children) {
-        forEachProperty(v.children, function (v) {
-            forVisualAndAllChildrenDeep(v, fcn);
+    if (fcn(v) !== true && v.children) {
+        return forEachProperty(v.children, function (v) {
+            return forVisualAndAllChildrenDeep(v, fcn);
         });
     }
+    return false;
 }
 
 /*
@@ -68,12 +68,14 @@ function forVisualAndAllChildrenDeep(v, fcn) {
 * @api private
 */
 function setContainmentDepth(v, depth) {
-    v.containmentDepth = depth;
-    if (v.children) {
-        forEachProperty(v.children, function (c) {
-            // sets the containment depth of the children
-            setContainmentDepth(c, depth + 1);
-        });
+    if (depth !== v.containmentDepth) {
+        v.containmentDepth = depth;
+        if (v.children) {
+            forEachProperty(v.children, function (c) {
+                // sets the containment depth of the children
+                setContainmentDepth(c, depth + 1);
+            });
+        }
     }
 }
 
