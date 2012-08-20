@@ -2618,6 +2618,53 @@ exports.definition = {
                 }
             }
         },
+////////////////////////////////////////////////////////////////////
+        LabelChoicesCheck: {
+            dimensions: [340, 25, 0],
+            positions: {
+                label: {
+                    order: 0,
+                    matrix: [ 60, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                choices: {
+                    order: 0,
+                    matrix: [ 240, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   65, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                check: {
+                    order: 0,
+                    matrix: [ 24, 0, 0, 0,  0, 22, 0, 0,  0, 0, 1, 0,   316, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+            },
+            children: {
+                label: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        text: "Size:",
+                        position: "label"
+                    }
+                },
+                choices: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    config: {
+                        position: "choices"
+                    }
+                },
+                check: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    config: {
+                        value: true,
+                        position: "check"
+                    }
+                }
+            }
+        },
+////////////////////////////////////////////////////////////////////
         Item: {
             // authoring dimension
             dimensions: [ 32, 32, 0],

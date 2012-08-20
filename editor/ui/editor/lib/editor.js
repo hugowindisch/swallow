@@ -433,3 +433,4 @@ exports.StyleSheet = require('./panel/content/style/StyleSheet').StyleSheet;
 exports.FormattedText = require('./panel/content/style/FormattedText').FormattedText;
 exports.Item = require('./panel/content/style/Item').Item;
 exports.ItemList = require('./panel/content/style/ItemList').ItemList;
+exports.LabelChoicesCheck = require('./panel/content/style/LabelChoicesCheck').LabelChoicesCheck;

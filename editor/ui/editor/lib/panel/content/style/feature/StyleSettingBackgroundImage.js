@@ -76,7 +76,6 @@ StyleSettingBackgroundImage.prototype.setStyleData = function (st) {
     if (bgi && !isArray(bgi)) {
         bgi = sd.bgi = [sd.bgi];
     }
-console.log(bgi);
     if (!bgi || !bgi[0].stops || bgi[0].stops.length < 2) {
         sd = this.styleData = this.getDefaultStyleData();
         bgi = sd.bgi;
