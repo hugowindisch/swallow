@@ -48,7 +48,8 @@ var events = require('events'),
 * @memberOf sse
 */
 function EventSource(url, optionalInit) {
-    var that = this;
+    var that = this,
+        hooks;
     // weird problem with firefox (if I pass an invalid optionalInit)
     if (arguments.length === 2) {
         this.evtSrc = new window.EventSource(url, optionalInit);
@@ -56,9 +57,21 @@ function EventSource(url, optionalInit) {
         this.evtSrc = new window.EventSource(url);
     }
 
-    this.hooks = {};
-    this.on('newListener', function () {
-        this.updateHooks();
+    hooks = this.hooks = {};
+    this.on('newListener', function (eventName, listener) {
+        var evtSrc = that.evtSrc;
+        if (!hooks[eventName]) {
+            hooks[eventName] = function (e) {
+                if (that.listeners(eventName).length > 0) {
+                    that.emit(eventName, e);
+                } else {
+                    evtSrc.removeEventListener(hooks[eventName]);
+                    delete hooks[eventName];
+                }
+
+            };
+        }
+        evtSrc.addEventListener(eventName, hooks[eventName]);
     });
 }
 
@@ -72,37 +85,6 @@ EventSource.prototype = new events.EventEmitter();
 EventSource.prototype.close = function () {
     this.evtSrc.close();
     return this;
-};
-
-/**
-* updateHooks
-* @api private
-*/
-EventSource.prototype.updateHooks = function () {
-    var that = this,
-        evtSrc = that.evtSrc,
-        hooks = that.hooks;
-    // sadly, we need to be chummy chummy with the EventListener to
-    // accomplish what we need
-    forEachProperty(this._events, function (evt, evtName) {
-        // if there are some handlers
-        if (evt && (!isArray(evt) || evt.length > 0)) {
-            if (!hooks[evtName]) {
-                // we want to hook something on the inner source
-                hooks[evtName] = function (e) {
-                    that.emit(evtName, e);
-                    update();
-                };
-                evtSrc.addEventListener(evtName, hooks[evtName]);
-            }
-        } else {
-            if (hooks[evtName]) {
-                evtSrc.removeEventListener(evtName, hooks[evtName]);
-                // we want no event at all on the innersource
-                delete hooks[evtName];
-            }
-        }
-    });
 };
 
 exports.EventSource = EventSource;
