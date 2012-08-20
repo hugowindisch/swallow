@@ -73,9 +73,10 @@ StyleSettingBackgroundImage.prototype.setStyleData = function (st) {
     var sd = this.styleData = deepCopy(st),
         bgi = sd.bgi,
         that = this;
-    if (!isArray(bgi)) {
+    if (bgi && !isArray(bgi)) {
         bgi = sd.bgi = [sd.bgi];
     }
+console.log(bgi);
     if (!bgi || !bgi[0].stops || bgi[0].stops.length < 2) {
         sd = this.styleData = this.getDefaultStyleData();
         bgi = sd.bgi;

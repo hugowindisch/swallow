@@ -247,6 +247,7 @@ ColorPicker.prototype.showRGBA = function () {
     children.hr.setLabel('R:').setMaxValue(255).setValue(this.value.r);
     children.sg.setLabel('G:').setMaxValue(255).setValue(this.value.g);
     children.lb.setLabel('B:').setMaxValue(255).setValue(this.value.b);
+    children.a.setValue(this.value.a);
 
     function updateSliderBackground() {
         var value = that.value,
