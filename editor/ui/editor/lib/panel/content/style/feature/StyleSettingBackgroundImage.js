@@ -45,7 +45,6 @@ function StyleSettingBackgroundImage(config) {
         that.emit('reset', {});
     });
     this.getChild('imageSource').on('change', function (d) {
-        alert(d);
         switch (d) {
         case 'gradient':
             that.showGradient();
@@ -59,43 +58,6 @@ function StyleSettingBackgroundImage(config) {
         that.updateData(s);
         that.emit('change', that.styleData);
     });
-
-    // position
-    function updatePositionData() {
-        var d;
-        if (!that.getChild('positionX').getCheck()) {
-            d = null;
-        }
-        else {
-            d =  {
-                position: [
-                    that.getChild('positionX').getSelectedValue(),
-                    that.getChild('positionY').getSelectedValue()
-                ],
-                offset: [
-                    that.getChild('positionXOffset').getSelectedValue(),
-                    that.getChild('positionYOffset').getSelectedValue()
-                ],
-                value: [
-                    that.getChild('positionXValue').getValue(),
-                    that.getChild('positionYValue').getValue()
-                ]
-            };
-        }
-        if (that.selected !== undefined) {
-            if (!that.styleData.bgp) {
-                that.styleData.bgp = [];
-            }
-            that.styleData.bgp[that.selected] = d;
-            that.emit('change', that.styleData);
-        }
-    }
-    this.getChild('positionX').on('change', updatePositionData);
-    this.getChild('positionY').on('change', updatePositionData);
-    this.getChild('positionXOffset').on('change', updatePositionData);
-    this.getChild('positionYOffset').on('change', updatePositionData);
-    this.getChild('positionXValue').on('change', updatePositionData);
-    this.getChild('positionYValue').on('change', updatePositionData);
 
     // repeat
     function resetRepeatUI() {
@@ -180,7 +142,7 @@ function StyleSettingBackgroundImage(config) {
         }
         return d;
     }
-    function updateSizeData() {
+    function updateSizeData(evtName) {
         var d;
         if (!that.getChild('sizeCheck').getValue()) {
             resetSizeUI();
@@ -202,13 +164,22 @@ function StyleSettingBackgroundImage(config) {
             } else {
                 that.styleData.bgs[that.selected] = d;
             }
-            that.emit('change', that.styleData);
+            that.emit(evtName, that.styleData);
         }
     }
-    this.getChild('sizeXMode').on('change', updateSizeData);
-    this.getChild('sizeXValue').on('change', updateSizeData);
-    this.getChild('sizeYMode').on('change', updateSizeData);
-    this.getChild('sizeYValue').on('change', updateSizeData);
+
+    function changeSizeData() {
+        updateSizeData('change');
+    }
+    function previewSizeData() {
+        updateSizeData('preview');
+    }
+    this.getChild('sizeXMode').on('change', changeSizeData);
+    this.getChild('sizeXValue').on('change', changeSizeData);
+    this.getChild('sizeXValue').on('preview', previewSizeData);
+    this.getChild('sizeYMode').on('change', changeSizeData);
+    this.getChild('sizeYValue').on('change', changeSizeData);
+    this.getChild('sizeYValue').on('preview', previewSizeData);
     this.getChild('sizeCheck').on('change', function (c) {
         var d;
         if (!c) {
@@ -291,11 +262,13 @@ StyleSettingBackgroundImage.prototype.setStyleData = function (st) {
 StyleSettingBackgroundImage.prototype.showGradient = function () {
     this.getChild('image').setVisible(false);
     this.getChild('gradient').setVisible(true);
+    this.getChild('imageSource').setSelectedValue('gradient');
 };
 
 StyleSettingBackgroundImage.prototype.showImage = function () {
     this.getChild('image').setVisible(true);
     this.getChild('gradient').setVisible(false);
+    this.getChild('imageSource').setSelectedValue('url');
 };
 
 StyleSettingBackgroundImage.prototype.selectData = function (n) {
@@ -311,23 +284,13 @@ StyleSettingBackgroundImage.prototype.selectData = function (n) {
         this.showGradient();
         this.getChild('gradient').setValue(dat);
     }
-    // position
-    if (sd.bgp && sd.bgp[n]) {
-        dat = sd.bgp[n];
-        this.getChild('positionX'
-        ).setSelectedValue(dat.position[0]);
-        this.getChild('positionXOffset'
-        ).setSelectedValue(dat.offset[0]);
-        this.getChild('positionXValue'
-        ).setValue(dat.value[0]);
-        this.getChild('positionY'
-        ).setSelectedValue(dat.position[1]);
-        this.getChild('positionYOffset'
-        ).setSelectedValue(dat.offset[1]);
-        this.getChild('positionYValue'
-        ).setValue(dat.value[1]);
-    }
     // size
+    if (!sd.bgs) {
+        sd.bgs = [];
+    }
+    if (!sd.bgs[n]) {
+        sd.bgs[n] = null;
+    }
     if (sd.bgs && sd.bgs[n]) {
         dat = sd.bgs[n];
         this.getChild('sizeXMode'
@@ -338,24 +301,37 @@ StyleSettingBackgroundImage.prototype.selectData = function (n) {
         ).setSelectedValue(dat.size[1]);
         this.getChild('sizeYValue'
         ).setValue(dat.value[1]);
+        this.getChild('sizeCheck').setValue(true);
     } else {
         this.getChild('sizeCheck').setValue(false);
     }
 
     // repeat
+    if (!sd.bgr) {
+        sd.bgr = [];
+    }
+    if (!sd.bgr[n]) {
+        sd.bgr[n] = null;
+    }
     if (sd.bgr && sd.bgr[n]) {
         dat = sd.bgr[n];
         this.getChild('repeatXMode').setSelectedValue(dat.repeat[0]);
         this.getChild('repeatYMode').setSelectedValue(dat.repeat[1]);
+        this.getChild('repeatCheck').setValue(true);
     } else {
         this.getChild('repeatCheck').setValue(false);
     }
 
-    // attachment
 };
 
 StyleSettingBackgroundImage.prototype.deleteData = function (n) {
     delete this.styleData.bgi[n];
+    if (this.styleData.bgr) {
+        delete this.styleData.bgr[n];
+    }
+    if (this.styleData.bgs) {
+        delete this.styleData.bgs[n];
+    }
     this.selectData(0);
     this.emit('change', this.styleData);
 };

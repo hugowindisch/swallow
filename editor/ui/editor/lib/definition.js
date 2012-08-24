@@ -1628,7 +1628,7 @@ exports.definition = {
             }
         },
         StyleSettingBackgroundImage: {
-            dimensions: [340, 980, 1],
+            dimensions: [340, 640, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1645,134 +1645,76 @@ exports.definition = {
                     matrix: [ 340, 0, 0, 0,  0, 32, 0, 0,  0, 0, 1, 0,   0, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                positionLabel: {
-                    order: 2,
-                    matrix: [ 200, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 70, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                positionX: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 100, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                positionXOffset: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 130, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                positionXValue: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 160, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-
-                positionY: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 190, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                positionYOffset: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 220, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                positionYValue: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 250, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-
-                },
                 ///
                 sizeLabel: {
                     order: 3,
-                    matrix: [ 300, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 280, 0, 1],
+                    matrix: [ 300, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 80, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
                 sizeCheck: {
                     order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 280, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 80, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
                 sizeXMode: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 310, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 110, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 sizeXValue: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 340, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 140, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 sizeYMode: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 370, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 170, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 sizeYValue: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 400, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 200, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 ///
                 repeatLabel: {
                     order: 3,
-                    matrix: [ 300, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 430, 0, 1],
+                    matrix: [ 300, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 230, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 repeatCheck: {
                     order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 430, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 230, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 repeatXMode: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 460, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 260, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 repeatYMode: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 490, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 290, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 ///
-                attachmentLabel: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 520, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                attachmentX: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 550, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                attachmentY: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 580, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                ///
-                imageLabel: {
-                    order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 610, 0, 1],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
                 imageSource: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 640, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 320, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
 /////////////////////////////////////
                 gradient: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 320, 0, 0,  0, 0, 1, 0,  0, 670, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 320, 0, 0,  0, 0, 1, 0,  0, 350, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 image: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,  0, 670, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,  0, 350, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1802,124 +1744,6 @@ exports.definition = {
                     }
                 },
 ///////////////
-                positionLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    config: {
-                        text: "Position",
-                        bold: true,
-                        position: "positionLabel"
-                    }
-                },
-                positionX: {
-                    factory: "editor",
-                    type: "LabelChoicesCheck",
-                    config: {
-                        label: "X:",
-                        choices: {
-                            'left': [
-                                'editor/img/left_s.png',
-                                'editor/img/left.png'
-                            ],
-                            'center': [
-                                'editor/img/center_s.png',
-                                'editor/img/center.png'
-                            ],
-                            'right': [
-                                'editor/img/right_s.png',
-                                'editor/img/right.png'
-                            ]
-                        },
-                        position: 'positionX'
-                    }
-                },
-                positionXOffset: {
-                    factory: 'editor',
-                    type: 'LabelChoicesCheck',
-                    config: {
-                        label: "Offset:",
-                        choices: {
-                            'absolute': [
-                                'editor/img/absolute_s.png',
-                                'editor/img/absolute.png'
-                            ],
-                            'percent': [
-                                'editor/img/percent_s.png',
-                                'editor/img/percent.png'
-                            ]
-                        },
-                        checkVisible: false,
-                        position: 'positionXOffset'
-                    }
-                },
-                positionXValue: {
-                    factory: 'editor',
-                    type: 'LabelValueSliderCheck',
-                    config: {
-                        label: 'Value:',
-                        value: 8,
-                        minValue: 0,
-                        maxValue: 100,
-                        check: true,
-                        checkVisible: false,
-                        position: 'positionXValue'
-                    }
-                },
-                positionY: {
-                    factory: "editor",
-                    type: "LabelChoicesCheck",
-                    config: {
-                        label: "Y:",
-                        choices: {
-                            'top': [
-                                'editor/img/top_s.png',
-                                'editor/img/top.png'
-                            ],
-                            'center': [
-                                'editor/img/center_s.png',
-                                'editor/img/center.png'
-                            ],
-                            'bottom': [
-                                'editor/img/bottom_s.png',
-                                'editor/img/bottom.png'
-                            ]
-                        },
-                        checkVisible: false,
-                        position: 'positionY'
-                    }
-                },
-                positionYOffset: {
-                    factory: 'editor',
-                    type: 'LabelChoicesCheck',
-                    config: {
-                        label: "Offset:",
-                        choices: {
-                            'absolute': [
-                                'editor/img/absolute_s.png',
-                                'editor/img/absolute.png'
-                            ],
-                            'percent': [
-                                'editor/img/percent_s.png',
-                                'editor/img/percent.png'
-                            ]
-                        },
-                        checkVisible: false,
-                        position: 'positionYOffset'
-                    }
-                },
-                positionYValue: {
-                    factory: 'editor',
-                    type: 'LabelValueSliderCheck',
-                    config: {
-                        label: 'Value:',
-                        value: 8,
-                        minValue: 0,
-                        maxValue: 100,
-                        check: true,
-                        checkVisible: false,
-                        position: 'positionYValue'
-                    }
-                },
                 ///
                 sizeLabel: {
                     factory: "baseui",
@@ -2097,75 +1921,11 @@ exports.definition = {
                     }
                 },
                 ///
-                attachmentLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    config: {
-                        text: "Attachment",
-                        bold: true,
-                        position: "attachmentLabel"
-                    }
-                },
-                attachmentX: {
-                    factory: 'editor',
-                    type: 'LabelChoicesCheck',
-                    config: {
-                        label: "X:",
-                        choices: {
-                            'absolute': [
-                                'editor/img/scroll_s.png',
-                                'editor/img/scroll.png'
-                            ],
-                            'percent': [
-                                'editor/img/fixed_s.png',
-                                'editor/img/fixed.png'
-                            ],
-                            'auto': [
-                                'editor/img/local_s.png',
-                                'editor/img/local.png'
-                            ]
-                        },
-                        position: 'attachmentX'
-                    }
-                },
-                attachmentY: {
-                    factory: 'editor',
-                    type: 'LabelChoicesCheck',
-                    config: {
-                        label: "Y:",
-                        choices: {
-                            'absolute': [
-                                'editor/img/scroll_s.png',
-                                'editor/img/scroll.png'
-                            ],
-                            'percent': [
-                                'editor/img/fixed_s.png',
-                                'editor/img/fixed.png'
-                            ],
-                            'auto': [
-                                'editor/img/local_s.png',
-                                'editor/img/local.png'
-                            ]
-                        },
-                        checkVisible: false,
-                        position: 'attachmentY'
-                    }
-                },
-                ///
-                imageLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    config: {
-                        text: "Image",
-                        bold: true,
-                        position: "imageLabel"
-                    }
-                },
                 imageSource: {
                     factory: 'editor',
                     type: 'LabelChoicesCheck',
                     config: {
-                        label: "Y:",
+                        label: "Source:",
                         choices: {
                             'url': [
                                 'editor/img/url_s.png',
@@ -2177,6 +1937,7 @@ exports.definition = {
                             ]
                         },
                         checkVisible: false,
+                        boldLabel: true,
                         position: 'imageSource'
                     }
                 },

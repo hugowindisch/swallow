@@ -37,8 +37,11 @@ LabelChoicesCheck.prototype.getConfigurationSheet = function () {
     return {};
 };
 LabelChoicesCheck.prototype.setLabel = function (txt) {
-    this.children.label.setText(txt);
+    this.getChild('label').setText(txt);
     return this;
+};
+LabelChoicesCheck.prototype.setBoldLabel = function (bold) {
+    this.getChild('label').setBold(bold);
 };
 LabelChoicesCheck.prototype.setCheckVisible = function (v) {
     this.getChild('check').setVisible(v);
