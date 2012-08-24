@@ -1159,14 +1159,26 @@ function setupObjectMenu(editor) {
         // updates the document title
         function updateTabTitle() {
             var group = viewer.getGroup(),
+                groups = editor.getGroups(),
                 commandChain,
+                title = '',
+                details = [],
                 docInfo;
 
             if (group) {
                 commandChain = group.getCommandChain();
                 docInfo = group.docInfo;
-                document.title = (commandChain.isOnSavePoint() ? '' : '* ') +
+                title = (commandChain.isOnSavePoint() ? '' : '* ') +
                     'Edit: ' + docInfo.type;
+                forEachProperty(groups, function (g, n) {
+                    if (g.docInfo.factory !== docInfo.factory || g.docInfo.type !== docInfo.type) {
+                        details.push((g.commandChain.isOnSavePoint() ? '' : '*') + g.docInfo.factory + '.' + g.docInfo.type);
+                    }
+                });
+                if (details.length > 0) {
+                    title = title + ' (and ' + details.join(', and ') + ')';
+                }
+                document.title = title;
             }
         }
         // FIXME: this should be done with the normal event thing
