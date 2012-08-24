@@ -101,8 +101,7 @@ function StyleSettingBackgroundImage(config) {
     this.getChild('repeatCheck').on('change', function (c) {
         var d;
         if (!c) {
-            that.getChild('repeatXMode').setSelectedValue(null);
-            that.getChild('repeatYMode').setSelectedValue(null);
+            that.clearRepeatUI();
             d = null;
         } else {
             d = resetRepeatUI();
@@ -183,10 +182,7 @@ function StyleSettingBackgroundImage(config) {
     this.getChild('sizeCheck').on('change', function (c) {
         var d;
         if (!c) {
-            that.getChild('sizeXMode').setSelectedValue(null);
-            that.getChild('sizeYMode').setSelectedValue(null);
-            that.getChild('sizeYValue').setValue(0);
-            that.getChild('sizeXValue').setValue(0);
+            that.clearSizeUI();
             d = null;
         } else {
             d = resetSizeUI();
@@ -220,6 +216,16 @@ StyleSettingBackgroundImage.prototype.getConfigurationSheet = function () {
 };
 StyleSettingBackgroundImage.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
+};
+StyleSettingBackgroundImage.prototype.clearSizeUI = function () {
+    this.getChild('sizeXMode').setSelectedValue(null);
+    this.getChild('sizeYMode').setSelectedValue(null);
+    this.getChild('sizeYValue').setValue(null);
+    this.getChild('sizeXValue').setValue(null);
+};
+StyleSettingBackgroundImage.prototype.clearRepeatUI = function () {
+    this.getChild('repeatXMode').setSelectedValue(null);
+    this.getChild('repeatYMode').setSelectedValue(null);
 };
 StyleSettingBackgroundImage.prototype.getNewGradient = function () {
     return {
@@ -291,6 +297,9 @@ StyleSettingBackgroundImage.prototype.selectData = function (n) {
     if (!sd.bgs[n]) {
         sd.bgs[n] = null;
     }
+    if (sd.bgs.length < sd.bgi.length) {
+        sd.bgs[sd.bgi.length - 1] = null;
+    }
     if (sd.bgs && sd.bgs[n]) {
         dat = sd.bgs[n];
         this.getChild('sizeXMode'
@@ -304,6 +313,7 @@ StyleSettingBackgroundImage.prototype.selectData = function (n) {
         this.getChild('sizeCheck').setValue(true);
     } else {
         this.getChild('sizeCheck').setValue(false);
+        this.clearSizeUI();
     }
 
     // repeat
@@ -320,8 +330,8 @@ StyleSettingBackgroundImage.prototype.selectData = function (n) {
         this.getChild('repeatCheck').setValue(true);
     } else {
         this.getChild('repeatCheck').setValue(false);
+        this.clearRepeatUI();
     }
-
 };
 
 StyleSettingBackgroundImage.prototype.deleteData = function (n) {

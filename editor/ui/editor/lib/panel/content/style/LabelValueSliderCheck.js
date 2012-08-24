@@ -22,11 +22,12 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
+    isNumber = utils.isNumber,
     limitRange = utils.limitRange,
     groups = require('/editor/lib/definition').definition.groups;
 
 function LabelValueSliderCheck(config) {
-    this.defaultValue = 0;
+    this.value = null;
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.LabelValueSliderCheck);
     var children = this.children,
@@ -60,15 +61,17 @@ function LabelValueSliderCheck(config) {
 }
 LabelValueSliderCheck.prototype = new (domvisual.DOMElement)();
 LabelValueSliderCheck.prototype.getConfigurationSheet = function () {
-    return { label: null, value: null, minValue: null, maxValue: null, defaultValue: null, check: null, checkVisible: null };
+    return { label: null, value: null, minValue: null, maxValue: null, check: null, checkVisible: null };
 };
 LabelValueSliderCheck.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
     return this;
 };
 LabelValueSliderCheck.prototype.setValue = function (v) {
-    if (v) {
+    if (isNumber(v)) {
         this.value = v;
+    } else {
+        this.value = null;
     }
     this.updateSlider();
     this.updateInput();
@@ -77,10 +80,6 @@ LabelValueSliderCheck.prototype.setValue = function (v) {
 };
 LabelValueSliderCheck.prototype.getValue = function () {
     return this.value;
-};
-LabelValueSliderCheck.prototype.setDefaultValue = function (v) {
-    this.defaultValue = v;
-    return this;
 };
 LabelValueSliderCheck.prototype.setMinValue = function (v) {
     this.children.slider.setMinValue(v);
@@ -101,7 +100,7 @@ LabelValueSliderCheck.prototype.updateInput = function () {
     this.children.value.setValue(Number(this.value || 0).toFixed(1));
 };
 LabelValueSliderCheck.prototype.updateCheck = function () {
-    this.children.check.setValue(this.value !== undefined);
+    this.children.check.setValue(this.value !== null);
 };
 LabelValueSliderCheck.prototype.setCheckVisible = function (visible) {
     this.children.check.setVisible(visible);

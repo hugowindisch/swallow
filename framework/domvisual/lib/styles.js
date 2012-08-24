@@ -325,11 +325,10 @@ function multiple(v, single) {
     var ret = null;
     if (isArray(v)) {
         forEach(v, function (p) {
-            var css = single(p);
-            if (!ret) {
+            if (ret === null) {
                 ret = single(p);
             } else {
-                ret = ret + '. ' + single(p);
+                ret = ret + ', ' + single(p);
             }
         });
     } else if (v) {
@@ -352,7 +351,7 @@ function backgroundImageToCssString(img) {
 
 function backgroundPositionToCSSString(pos) {
     function single(pos) {
-        var ret = null;
+        var ret = '';
         if (pos) {
             ret = pos.position[0] + ' ' +
                 pos.value[0] +
@@ -361,19 +360,15 @@ function backgroundPositionToCSSString(pos) {
                 pos.value[1] +
                 (pos.offset[1] === 'absolute' ? 'px ' : '% ');
         }
-//console.log(pos);
-//console.log(ret);
         return ret;
     }
-//console.log(multiple(pos, single));
     return multiple(pos, single);
 }
 
 function backgroundSizeToCSSString(size) {
     function single(size) {
-        var ret = null;
+        var ret = '';
         if (size) {
-            ret = '';
             switch (size.size[0]) {
             case 'percent':
                 ret += size.value[0] + '%';
@@ -405,7 +400,7 @@ function backgroundSizeToCSSString(size) {
 
 function backgroundRepeatToCSSString(repeat) {
     function single(repeat) {
-        var ret = null;
+        var ret = '';
         if (repeat) {
             ret = repeat.repeat[0] + ' ' + repeat.repeat[1];
         }
@@ -416,7 +411,7 @@ function backgroundRepeatToCSSString(repeat) {
 
 function backgroundAttachmentToCssString(attachment) {
     function single(att) {
-        var ret = null;
+        var ret = '';
         if (att) {
             ret = att.attachment[0] + ' ' + att.attachment[1];
         }
