@@ -121,7 +121,11 @@ var visual = require('visual'),
         },
         bgi: {
             attributes: {
-                bgi: 'backgroundImage'
+                bgi: 'backgroundImage',
+                bgp: 'backgroundPosition',
+                bgs: 'backgroundSize',
+                bgr: 'backgroundRepeat',
+                bga: 'backgroundAttachment'
             },
             FeatureEditor: require('./feature/StyleSettingBackgroundImage').StyleSettingBackgroundImage,
             config: { label: 'BackgroundImage' }
@@ -227,6 +231,9 @@ function Styling(config) {
                 that.makeExtendedStyle(null);
             }
             styleEdit = new (f.FeatureEditor)(f.config);
+            if (styleEdit.setEditor) {
+                styleEdit.setEditor(editor);
+            }
             styleEdit.setStyleData(styleAttributesToEditorAttributes(
                 attributes,
                 that.editedStyleData.jsData || {}

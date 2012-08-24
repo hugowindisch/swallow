@@ -50,6 +50,7 @@ function ImageOption(options, optionalCheck) {
             if (!c) {
                 that.setSelectedValue(null);
             }
+            that.emit('checkchange', c);
             that.emit('change', that.selected);
         });
     }

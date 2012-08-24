@@ -40,25 +40,48 @@ LabelChoicesCheck.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
     return this;
 };
-LabelChoicesCheck.prototype.setChoices = function (c) {
+LabelChoicesCheck.prototype.setCheckVisible = function (v) {
+    this.getChild('check').setVisible(v);
+    return this;
+};
+LabelChoicesCheck.prototype.setSelectedValue = function (v) {
+    this.imageOption.setSelectedValue(v);
+    return this;
+};
+LabelChoicesCheck.prototype.getSelectedValue = function () {
+    return this.imageOption.getSelectedValue();
+};
+LabelChoicesCheck.prototype.setCheck = function (c) {
+    this.getChild('check').setValue(c);
+    return this;
+};
+LabelChoicesCheck.prototype.getCheck = function () {
+    return this.getChild('check').getValue();
+};
+LabelChoicesCheck.prototype.setChoices = function (ch) {
     var that = this,
-        choices = this.getChild(choices),
+        choices = this.getChild('choices'),
         imageOpt = {};
     choices.removeAllChildren();
-    forEachProperty(choices, function (c, cname) {
-        var img = new domvisual.DOMImg(c[0]);
+    forEachProperty(ch, function (c, cname) {
+        var img = new domvisual.DOMImg({url: c[1]});
         choices.addChild(img, cname);
-        img.setHtmlFlowing({display: 'inline-block', position: 'relative'}, true);
+        img.setHtmlFlowing({display: 'inline-block', position: 'relative'}
+        ).setCursor('pointer');
         imageOpt[cname] = [
             c[0],
             c[1],
             img
         ];
     });
-    this.imageOption = new ImageOption(imageOpt);
+    this.imageOption = new ImageOption(imageOpt, this.getChild('check'));
     this.imageOption.on('change', function (v) {
         that.emit('change', v);
     });
+    this.imageOption.on('checkchange', function (v) {
+        that.emit('checkchange', v);
+    });
+    return this;
 };
 
 

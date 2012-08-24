@@ -22,15 +22,17 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
+    http = require('http'),
     isArray = utils.isArray,
+    isString = utils.isString,
     deepCopy = utils.deepCopy,
     groups = require('/editor/lib/definition').definition.groups;
 
 function StyleSettingBackgroundImage(config) {
-    // call the baseclass
-    domvisual.DOMElement.call(this, config, groups.StyleSettingBackgroundImage);
     var children = this.children,
         that = this;
+    // call the baseclass
+    domvisual.DOMElement.call(this, config, groups.StyleSettingBackgroundImage);
     this.getChild('gradient').on('preview', function (v) {
         that.updateData(v);
         that.emit('preview', that.styleData);
@@ -41,6 +43,200 @@ function StyleSettingBackgroundImage(config) {
     });
     this.getChild('clear').on('click', function () {
         that.emit('reset', {});
+    });
+    this.getChild('imageSource').on('change', function (d) {
+        alert(d);
+        switch (d) {
+        case 'gradient':
+            that.showGradient();
+            break;
+        case 'url':
+            that.showImage();
+            break;
+        }
+    });
+    this.getChild('image').on('change', function (s) {
+        that.updateData(s);
+        that.emit('change', that.styleData);
+    });
+
+    // position
+    function updatePositionData() {
+        var d;
+        if (!that.getChild('positionX').getCheck()) {
+            d = null;
+        }
+        else {
+            d =  {
+                position: [
+                    that.getChild('positionX').getSelectedValue(),
+                    that.getChild('positionY').getSelectedValue()
+                ],
+                offset: [
+                    that.getChild('positionXOffset').getSelectedValue(),
+                    that.getChild('positionYOffset').getSelectedValue()
+                ],
+                value: [
+                    that.getChild('positionXValue').getValue(),
+                    that.getChild('positionYValue').getValue()
+                ]
+            };
+        }
+        if (that.selected !== undefined) {
+            if (!that.styleData.bgp) {
+                that.styleData.bgp = [];
+            }
+            that.styleData.bgp[that.selected] = d;
+            that.emit('change', that.styleData);
+        }
+    }
+    this.getChild('positionX').on('change', updatePositionData);
+    this.getChild('positionY').on('change', updatePositionData);
+    this.getChild('positionXOffset').on('change', updatePositionData);
+    this.getChild('positionYOffset').on('change', updatePositionData);
+    this.getChild('positionXValue').on('change', updatePositionData);
+    this.getChild('positionYValue').on('change', updatePositionData);
+
+    // repeat
+    function resetRepeatUI() {
+        var d = {
+                repeat: [ 'repeat', 'repeat' ]
+            },
+            c;
+        c = that.getChild('repeatXMode');
+        if (!c.getSelectedValue()) {
+            c.setSelectedValue(d.repeat[0]);
+        }
+        c = that.getChild('repeatYMode');
+        if (!c.getSelectedValue()) {
+            c.setSelectedValue(d.repeat[0]);
+        }
+        return d;
+    }
+
+    function updateRepeatData() {
+        var d;
+        if (!that.getChild('repeatCheck').getValue()) {
+            resetRepeatUI();
+            that.getChild('repeatCheck').setValue(true);
+        }
+        if (that.selected !== undefined) {
+            d = {
+                repeat: [
+                    that.getChild('repeatXMode').getSelectedValue(),
+                    that.getChild('repeatYMode').getSelectedValue()
+                ]
+            };
+            if (!that.styleData.bgr) {
+                that.styleData.bgr = [];
+            }
+            that.styleData.bgr[that.selected] = d;
+            that.emit('change', that.styleData);
+        }
+    }
+    this.getChild('repeatXMode').on('change', updateRepeatData);
+    this.getChild('repeatYMode').on('change', updateRepeatData);
+    this.getChild('repeatCheck').on('change', function (c) {
+        var d;
+        if (!c) {
+            that.getChild('repeatXMode').setSelectedValue(null);
+            that.getChild('repeatYMode').setSelectedValue(null);
+            d = null;
+        } else {
+            d = resetRepeatUI();
+        }
+        if (that.selected !== undefined) {
+            if (!that.styleData.bgr) {
+                that.styleData.bgr = [];
+            }
+            that.styleData.bgr[that.selected] = d;
+            that.emit('change', that.styleData);
+        }
+    });
+
+    // size
+    // ----
+    function resetSizeUI() {
+        var d = {
+                size: [ 'auto', 'auto' ],
+                value: [ 0, 0]
+            },
+            c;
+        c = that.getChild('sizeXMode');
+        if (!c.getSelectedValue()) {
+            c.setSelectedValue(d.size[0]);
+        }
+        c = that.getChild('sizeYMode');
+        if (!c.getSelectedValue()) {
+            c.setSelectedValue(d.size[0]);
+        }
+        c = that.getChild('sizeXValue');
+        if (!c.getValue()) {
+            c.setValue(d.value[0]);
+        }
+        c = that.getChild('sizeYValue');
+        if (!c.getValue()) {
+            c.setValue(d.value[0]);
+        }
+        return d;
+    }
+    function updateSizeData() {
+        var d;
+        if (!that.getChild('sizeCheck').getValue()) {
+            resetSizeUI();
+            that.getChild('sizeCheck').setValue(true);
+        }
+        if (that.selected !== undefined) {
+            d =  {
+                size: [
+                    that.getChild('sizeXMode').getSelectedValue(),
+                    that.getChild('sizeYMode').getSelectedValue()
+                ],
+                value: [
+                    that.getChild('sizeXValue').getValue(),
+                    that.getChild('sizeYValue').getValue()
+                ]
+            };
+            if (!that.styleData.bgs) {
+                that.styleData.bgs = (d === null ? null : [d]);
+            } else {
+                that.styleData.bgs[that.selected] = d;
+            }
+            that.emit('change', that.styleData);
+        }
+    }
+    this.getChild('sizeXMode').on('change', updateSizeData);
+    this.getChild('sizeXValue').on('change', updateSizeData);
+    this.getChild('sizeYMode').on('change', updateSizeData);
+    this.getChild('sizeYValue').on('change', updateSizeData);
+    this.getChild('sizeCheck').on('change', function (c) {
+        var d;
+        if (!c) {
+            that.getChild('sizeXMode').setSelectedValue(null);
+            that.getChild('sizeYMode').setSelectedValue(null);
+            that.getChild('sizeYValue').setValue(0);
+            that.getChild('sizeXValue').setValue(0);
+            d = null;
+        } else {
+            d = resetSizeUI();
+        }
+        if (that.selected !== undefined) {
+            if (!that.styleData.bgs) {
+                that.styleData.bgs = (d === null ? null : [d]);
+            } else {
+                that.styleData.bgs[that.selected] = d;
+            }
+            that.emit('change', that.styleData);
+        }
+    });
+
+    // itemlist
+    this.getChild('itemList').on('delete', function (n) {
+        this.deleteItem(n);
+        that.deleteData(n);
+    }).on('select', function (n) {
+        this.selectItem(n);
+        that.selectData(n);
     });
 
 }
@@ -69,36 +265,93 @@ StyleSettingBackgroundImage.prototype.getDefaultStyleData = function () {
         bgi: [ this.getNewGradient() ]
     };
 };
+/*
+    bgp: 'backgroundPosition',
+    bgs: 'backgroundSize',
+    bgr: 'backgroundRepeat',
+    bga: 'backgroundAttachment'
+*/
 StyleSettingBackgroundImage.prototype.setStyleData = function (st) {
     var sd = this.styleData = deepCopy(st),
         bgi = sd.bgi,
         that = this;
-    if (bgi && !isArray(bgi)) {
-        bgi = sd.bgi = [sd.bgi];
-    }
-    if (!bgi || !bgi[0].stops || bgi[0].stops.length < 2) {
+    // no style data
+    if (!bgi) {
         sd = this.styleData = this.getDefaultStyleData();
         bgi = sd.bgi;
+    } else if (!isArray(bgi)) {
+        bgi = sd.bgi = [sd.bgi];
     }
     this.getChild('itemList').addItems(bgi.length
-    ).on('delete', function (n) {
-        this.deleteItem(n);
-        that.deleteData(n);
-    }).on('select', function (n) {
-        this.selectItem(n);
-        that.selectData(n);
-    }).selectItem(0);
+    ).selectItem(0);
     this.selectData(0);
 
 };
 
+StyleSettingBackgroundImage.prototype.showGradient = function () {
+    this.getChild('image').setVisible(false);
+    this.getChild('gradient').setVisible(true);
+};
+
+StyleSettingBackgroundImage.prototype.showImage = function () {
+    this.getChild('image').setVisible(true);
+    this.getChild('gradient').setVisible(false);
+};
+
 StyleSettingBackgroundImage.prototype.selectData = function (n) {
     this.selected = n;
-    var dat = this.styleData.bgi[n];
+    var sd = this.styleData,
+        dat = sd.bgi[n];
     if (!dat) {
         dat = this.styleData.bgi[n] = this.getNewGradient();
     }
-    this.getChild('gradient').setValue(dat);
+    if (isString(dat)) {
+        this.showImage();
+    } else {
+        this.showGradient();
+        this.getChild('gradient').setValue(dat);
+    }
+    // position
+    if (sd.bgp && sd.bgp[n]) {
+        dat = sd.bgp[n];
+        this.getChild('positionX'
+        ).setSelectedValue(dat.position[0]);
+        this.getChild('positionXOffset'
+        ).setSelectedValue(dat.offset[0]);
+        this.getChild('positionXValue'
+        ).setValue(dat.value[0]);
+        this.getChild('positionY'
+        ).setSelectedValue(dat.position[1]);
+        this.getChild('positionYOffset'
+        ).setSelectedValue(dat.offset[1]);
+        this.getChild('positionYValue'
+        ).setValue(dat.value[1]);
+    }
+    // size
+    if (sd.bgs && sd.bgs[n]) {
+        dat = sd.bgs[n];
+        this.getChild('sizeXMode'
+        ).setSelectedValue(dat.size[0]);
+        this.getChild('sizeXValue'
+        ).setValue(dat.value[0]);
+        this.getChild('sizeYMode'
+        ).setSelectedValue(dat.size[1]);
+        this.getChild('sizeYValue'
+        ).setValue(dat.value[1]);
+    } else {
+        this.getChild('sizeCheck').setValue(false);
+    }
+
+    // repeat
+    if (sd.bgr && sd.bgr[n]) {
+        dat = sd.bgr[n];
+        this.getChild('repeatXMode').setSelectedValue(dat.repeat[0]);
+        this.getChild('repeatYMode').setSelectedValue(dat.repeat[1]);
+    } else {
+        this.getChild('repeatCheck').setValue(false);
+    }
+
+    // attachment
 };
 
 StyleSettingBackgroundImage.prototype.deleteData = function (n) {
@@ -107,11 +360,33 @@ StyleSettingBackgroundImage.prototype.deleteData = function (n) {
     this.emit('change', this.styleData);
 };
 
-
 StyleSettingBackgroundImage.prototype.updateData = function (d) {
     if (this.selected !== undefined) {
         this.styleData.bgi[this.selected] = d;
     }
+};
+
+StyleSettingBackgroundImage.prototype.setEditor = function (editor) {
+    this.editor = editor;
+    this.loadImageUrls();
+};
+
+StyleSettingBackgroundImage.prototype.loadImageUrls = function () {
+    var docInfo = this.editor.getDocInfo(),
+        data = '',
+        that = this;
+    http.get(
+        '/swallow/package/' + docInfo.factory + '/image',
+        function (res) {
+            res.on('data', function (d) {
+                data += d;
+            });
+            res.on('end', function () {
+                var jsonData = JSON.parse(data);
+                that.getChild('image').setUrls(jsonData);
+            });
+        }
+    );
 };
 
 exports.StyleSettingBackgroundImage = StyleSettingBackgroundImage;

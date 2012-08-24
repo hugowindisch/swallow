@@ -55,6 +55,25 @@ BoxShadow
     spreadRadius
     color
 
+BackgroundPosition
+------------------
+    position[2] (string)
+    offset[2] (string)
+    value[2] (number)
+
+BackgroundSize
+--------------
+    size[2] (string)
+    value[2] (number)
+
+BackgroundRepeat
+----------------
+    repeat[2] string
+
+BackgroundAttachment
+----------------
+    attachment[2] string
+
 Attributes Supported so far
 ===========================
 
@@ -77,9 +96,10 @@ textAlign:                                  String (left, right, center)
 backgroundColor:                            Color
 backgroundImage:                            (currently: ) gradient or array of
                                                 gradients
-backgroundRepeat:                           string or array of strigns
-backgroundOrigin:                           string or array of strings
-backgroundPosition:                         tbd
+backgroundPosition:                         BackgroundPosition
+backgroundSize:                             BackgroundSize
+backgroundRepeat:                           BackgroundRepeat
+backgroundAttachment                        BackgroundAttachment
 
 
 boxShadow:                                  <offset-x>
@@ -301,6 +321,23 @@ function imageUrlToCssString(url) {
     return 'url(' + url + ')';
 }
 
+function multiple(v, single) {
+    var ret = null;
+    if (isArray(v)) {
+        forEach(v, function (p) {
+            var css = single(p);
+            if (!ret) {
+                ret = single(p);
+            } else {
+                ret = ret + '. ' + single(p);
+            }
+        });
+    } else if (v) {
+        ret = single(v);
+    }
+    return ret;
+}
+
 function backgroundImageToCssString(img) {
     function singleImageToCssString(img) {
         if (isString(img)) {
@@ -310,22 +347,82 @@ function backgroundImageToCssString(img) {
         }
         return null;
     }
-    var ret = null;
-    if (isArray(img)) {
-        forEach(img, function (i) {
-            var css = singleImageToCssString(i);
-            if (css) {
-                if (!ret) {
-                    ret = css;
-                } else {
-                    ret = ret + ', ' + css;
-                }
-            }
-        });
-    } else if (img) {
-        ret = singleImageToCssString(img);
+    return multiple(img, singleImageToCssString);
+}
+
+function backgroundPositionToCSSString(pos) {
+    function single(pos) {
+        var ret = null;
+        if (pos) {
+            ret = pos.position[0] + ' ' +
+                pos.value[0] +
+                (pos.offset[0] === 'absolute' ? 'px ' : '% ') +
+                pos.position[1] + ' ' +
+                pos.value[1] +
+                (pos.offset[1] === 'absolute' ? 'px ' : '% ');
+        }
+//console.log(pos);
+//console.log(ret);
+        return ret;
     }
-    return ret;
+//console.log(multiple(pos, single));
+    return multiple(pos, single);
+}
+
+function backgroundSizeToCSSString(size) {
+    function single(size) {
+        var ret = null;
+        if (size) {
+            ret = '';
+            switch (size.size[0]) {
+            case 'percent':
+                ret += size.value[0] + '%';
+                break;
+            case 'absolute':
+                ret += size.value[0] + 'px';
+                break;
+            default:
+                ret += size.size[0];
+                break;
+            }
+            ret += ' ';
+            switch (size.size[1]) {
+            case 'percent':
+                ret += size.value[1] + '%';
+                break;
+            case 'absolute':
+                ret += size.value[1] + 'px';
+                break;
+            default:
+                ret += size.size[1];
+                break;
+            }
+        }
+        return ret;
+    }
+    return multiple(size, single);
+}
+
+function backgroundRepeatToCSSString(repeat) {
+    function single(repeat) {
+        var ret = null;
+        if (repeat) {
+            ret = repeat.repeat[0] + ' ' + repeat.repeat[1];
+        }
+        return ret;
+    }
+    return multiple(repeat, single);
+}
+
+function backgroundAttachmentToCssString(attachment) {
+    function single(att) {
+        var ret = null;
+        if (att) {
+            ret = att.attachment[0] + ' ' + att.attachment[1];
+        }
+        return ret;
+    }
+    return multiple(attachment, single);
 }
 
 function boxShadowToCSSString(v) {
@@ -373,6 +470,10 @@ attributeToCssString = {
     // background
     backgroundColor: colorToCSSString,
     backgroundImage: backgroundImageToCssString,
+    backgroundRepeat: backgroundRepeatToCSSString,
+    backgroundAttachment: backgroundAttachmentToCssString,
+    backgroundPosition: backgroundPositionToCSSString,
+    backgroundSize: backgroundSizeToCSSString,
     // shadow
     boxShadow: boxShadowToCSSString
 };
@@ -459,6 +560,18 @@ attributeToCss = {
     },
     backgroundImage: function (style, value) {
         style.backgroundImage = value;
+    },
+    backgroundRepeat: function (style, value) {
+        style.backgroundRepeat = value;
+    },
+    backgroundAttachment: function (style, value) {
+        style.backgroundAttachment = value;
+    },
+    backgroundPosition: function (style, value) {
+        style.backgroundPosition = value;
+    },
+    backgroundSize: function (style, value) {
+        style.backgroundSize = value;
     },
     // shadow
     boxShadow: function (style, value) {

@@ -535,7 +535,7 @@ GroupViewer.prototype.regenerateGrid = function () {
         //ctx.fillRect(1,1,2,2);
         children.decorations.setStyleAttributes({
             backgroundImage: grid.toDataURL(),
-            backgroundRepeat: 'repeat'
+            backgroundRepeat: { repeat: [ 'repeat', 'repeat' ] }
         });
     } else {
         children.decorations.setStyleAttributes({
