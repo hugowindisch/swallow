@@ -419,7 +419,7 @@ exports.definition = {
                 },
                 library: {
                     order: 1,
-                    matrix: [ 240, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   75, 10, 0, 1 ],
+                    matrix: [ 240, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   75, 10, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 unsetContent: {

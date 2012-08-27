@@ -165,7 +165,7 @@ VisualList.prototype.addVisualInfo = function (factory, type) {
         f = require(factory);
         if (f) {
             T = f[type];
-            if (T && (T.prototype instanceof visual.Visual) && (!T.prototype.privateVisual || docInfo === null || (factory === docInfo.factory))) {
+            if (T && (T.prototype instanceof visual.Visual)) {
                 c = new VisualInfo({ typeInfo: {factory: factory, type: type}});
                 c.init(that.editor);
                 c.setHtmlFlowing({position: 'relative'}, true);
@@ -270,7 +270,7 @@ VisualList.prototype.initFactories = function () {
         alwaysShow = this.alwaysShow || {};
 
     forEachProperty(visualList, function (json, factory) {
-        if (json.visuals) {
+        if (json.visuals && factory !== 'domvisual') {
             forEach(json.visuals, function (type) {
                 factArray.push(factory);
                 return true;
