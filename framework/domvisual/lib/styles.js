@@ -577,12 +577,6 @@ attributeToCss = {
     }
 };
 
-function clearStyle(style) {
-    forEachProperty(attributeToCss, function (fcn, prop) {
-        fcn(style, null);
-    });
-}
-
 function styleToCss(style, jsData) {
     forEachProperty(attributeToCss, function (fcn, prop) {
         var dat = jsData[prop];
@@ -620,7 +614,6 @@ function getStyleDimensionAdjustment(jsData) {
     return null;
 }
 
-exports.clearStyle = clearStyle;
 exports.styleToCss = styleToCss;
 exports.getStyleDimensionAdjustment = getStyleDimensionAdjustment;
 exports.hasTextAttributes = hasTextAttributes;
