@@ -341,7 +341,7 @@ Group.prototype.pasteSnapshot = function (str, inPlace) {
     function rndOffset() {
         return Math.round(Math.random() * 8) * 4 - 16;
     }
-    forEachProperty(clipboardData, function (p, n) {
+    forEachProperty(clipboardData.positions, function (p, n) {
         // min order
         if (minorder === undefined || p.order < minorder) {
             minorder = p.order;
