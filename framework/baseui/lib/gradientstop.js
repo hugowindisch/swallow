@@ -127,10 +127,10 @@ function GradientStop(config) {
     });
     this.getChild('color').on('click', function () {
         that.emit('select');
-    });
+    }).setCursor('pointer');
     this.getChild('remove').on('click', function () {
         that.emit('remove', this);
-    });
+    }).setCursor('pointer');
 }
 
 GradientStop.prototype = new (domvisual.DOMElement)();

@@ -37,7 +37,7 @@ function LayerInfo(config) {
             viewer.addToSelection(name, !evt.ctrlKey);
         }
         viewer.updateSelectionControlBox();
-    });
+    }).setCursor('pointer');
     this.children.enableSelection.on('click', function (evt) {
         var group = that.viewer.getGroup(),
             name = that.contentName,

@@ -100,7 +100,8 @@ function Slider(config) {
             that.emit('change', that.getValue(), false);
         });
         setKnobValue(evt);
-    });
+    }).setCursor('pointer');
+    this.getChild('knob').setCursor('move');
 }
 
 Slider.prototype = new (domvisual.DOMElement)();

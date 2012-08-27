@@ -122,6 +122,9 @@ VisualInfo.prototype.updateButton = function (b) {
 };
 VisualInfo.prototype.setTypeInfo = function (ti) {
     var that = this;
+    function select() {
+        that.emit('select');
+    }
     function loadPreview() {
         var factory,
             Constr,
@@ -145,21 +148,23 @@ VisualInfo.prototype.setTypeInfo = function (ti) {
                 that.addChild(preview, 'preview');
                 // description
                 if (Constr.prototype.getDescription) {
-                    that.children.description.setText(Constr.prototype.getDescription());
+                    that.children.description.on('click', select
+                    ).setCursor('pointer').setText(Constr.prototype.getDescription());
                 }
                 // click
                 previewClickBox = new domvisual.DOMElement({});
                 that.addChild(previewClickBox, 'clickBox');
                 previewClickBox.setPosition(
                     'preview'
-                ).on('click', function () {
-                    that.emit('select');
-                }).setCursor('pointer');
+                ).on('click', select).setCursor('pointer');
+
             }
         }
     }
     this.ti = ti;
-    this.children.name.setText(ti.type + (ti.factory === 'domvisual' ? '' : (' (' + ti.factory + ')')));
+    this.children.name.on('click', select
+    ).setCursor('pointer'
+    ).setText(ti.type + (ti.factory === 'domvisual' ? '' : (' (' + ti.factory + ')')));
     this.children.description.setText(ti.description);
 
     // show the preview (normally, I would have to load it)
