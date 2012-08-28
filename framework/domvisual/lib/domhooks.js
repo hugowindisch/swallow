@@ -281,7 +281,7 @@ updateDOMEventHooks = function (v) {
         interactiveEnabled = !v.disableInteractiveEventHooks;
     forEachProperty(hookMap, function (value, key) {
         var listeners = v.getListeners(key);
-        if ((!value.interactive || interactiveEnabled) &&
+        if (enabled && (!value.interactive || interactiveEnabled) &&
                 listeners.length > 0) {
             addDOMHook(v, key, value);
         } else {

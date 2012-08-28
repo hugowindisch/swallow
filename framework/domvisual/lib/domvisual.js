@@ -1214,13 +1214,11 @@ function DOMInput(config) {
     DOMVisual.call(this, config, null, document.createElement('input'));
     var that = this;
     // prevent form submission that we will never use
-// FIXME: this does not always work. Sometimes it prevents (?) change to be
-// fired (even with tab !?!?!)
-/*    this.on('keydown', function (evt) {
+    this.on('keydown', function (evt) {
         if (evt.keyCode === 13) {
             evt.stopPropagation();
         }
-    });*/
+    });
 }
 
 DOMInput.prototype = new DOMVisual();
