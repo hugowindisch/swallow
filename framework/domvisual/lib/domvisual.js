@@ -1122,6 +1122,17 @@ DOMImg.prototype.setUrl = function (url) {
 };
 
 /**
+* Sets the title (tooltip)
+* @param {String} alt. The tooltip text.
+* @type Visual
+* @returns this
+*/
+DOMImg.prototype.setTitle = function (alt) {
+    this.element.title = alt;
+    return this;
+};
+
+/**
 * Returns the dimensions of the inner image (real dimensions)
 * @returns The dimensions of the image.
 * @type vec3

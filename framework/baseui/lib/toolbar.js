@@ -144,7 +144,7 @@ Toolbar.prototype.createItemHtml = function (item, index, numIndex) {
         icon = item.getIcon(),
         c;
     if (icon) {
-        c = new (domvisual.DOMImg)({style: 'tool', url: icon});
+        c = new (domvisual.DOMImg)({style: 'tool', url: icon, title: item.getText()});
         this.addChild(c, name);
         c.setDimensions([32, 32, 1]);
         c.setCursor('pointer');
