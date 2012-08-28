@@ -439,7 +439,20 @@ GroupViewer.prototype.resetScroll = function () {
 };
 
 /**
-    Zoom to a given position.
+    Pushes a given zoom matrix.
+*/
+GroupViewer.prototype.pushZoomMatrix = function (mat) {
+    var zs = this.zoomStack,
+        z = mat[0];
+    while(zs.length > 0 && zs[zs.length - 1][0] > z) {
+        zs.pop();
+    }
+    this.zoomStack.push(mat);
+    this.adjustZoomToGridSize();
+};
+
+/**
+    Zoom to a given position (described by a matrix, in model coordinates)
 */
 GroupViewer.prototype.pushZoom = function (matrix) {
     // if the matrix is too small
@@ -465,8 +478,50 @@ GroupViewer.prototype.pushZoom = function (matrix) {
     mat[12] *= z;
     mat[13] *= z;
     mat[14] *= z;
-    this.zoomStack.push(mat);
-    this.adjustZoomToGridSize();
+    // push the matrix
+    this.pushZoomMatrix(mat);
+};
+
+/**
+    Zoom to page.
+*/
+GroupViewer.prototype.zoomToPage = function () {
+    var mat = mat4.scale(mat4.identity(), this.documentData.dimensions);
+    this.pushZoom(mat);
+};
+
+/**
+    Zoom to content.
+*/
+GroupViewer.prototype.zoomToContent = function () {
+    var documentData = this.documentData,
+        children = documentData.children,
+        positions = documentData.positions,
+        unionr;
+    forEachProperty(positions, function (pos) {
+        var r = getEnclosingRect(pos.matrix);
+        if (!unionr) {
+            unionr = r;
+        } else {
+            unionr = unionRect(r, unionr);
+        }
+    });
+    if (unionr) {
+        this.pushZoom(rectToMatrix(unionr));
+    } else {
+        this.zoomToPage();
+    }
+};
+
+/**
+    Zoom to real size (100%)
+*/
+GroupViewer.prototype.zoom100 = function () {
+    borderPix = this.groupBorderPix;
+    // push the matrix
+    this.pushZoomMatrix(
+        mat4.translate(mat4.identity(), [borderPix - 20, borderPix - 20, 0], mat4.create())
+    );
 };
 
 /**
@@ -1085,9 +1140,9 @@ GroupViewer.prototype.setGroup = function (group) {
     });
 
     this.zoomStack = [
-        mat4.scale(mat4.identity(), [0.25, 0.25, 1], mat4.create()),
-        mat4.translate(mat4.identity(), [borderPix - 20, borderPix - 20, 0], mat4.create())
+        mat4.scale(mat4.identity(), [0.25, 0.25, 1], mat4.create())
     ];
+    this.zoom100();
 };
 
 /**

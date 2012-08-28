@@ -1225,6 +1225,9 @@ function setupObjectMenu(editor) {
 function setupViewMenu(editor) {
     var showGrid,
         showAnchors,
+        zoomPage,
+        zoomAll,
+        zomm100,
         menus = editor.menus,
         viewer = editor.getViewer();
 
@@ -1256,9 +1259,34 @@ function setupViewMenu(editor) {
         }
     );
 
+    zoomPage = new MenuItem(
+        'Zoom to Page',
+        function () {
+            viewer.zoomToPage();
+        }
+    );
+
+    zoomAll = new MenuItem(
+        'Zoom to Content',
+        function () {
+            viewer.zoomToContent();
+        }
+    );
+
+    zomm100 = new MenuItem(
+        'Zoom 100%',
+        function () {
+            viewer.zoom100();
+        }
+    );
+
     menus.view.push(
         showGrid,
-        showAnchors
+        showAnchors,
+        null,
+        zoomPage,
+        zoomAll,
+        zomm100
     );
 }
 
