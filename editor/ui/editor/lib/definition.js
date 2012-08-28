@@ -1152,6 +1152,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_s.png',
+                        title: 'Shadow',
                         position: 's'
                     }
                 },
@@ -1160,6 +1161,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_tl.png',
+                        title: 'Top Left Corner',
                         position: 'tl'
                     }
                 },
@@ -1168,6 +1170,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_t.png',
+                        title: 'Top Border',
                         position: 't'
                     }
                 },
@@ -1176,6 +1179,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_tr.png',
+                        title: 'Top Right Corner',
                         position: 'tr'
                     }
                 },
@@ -1184,6 +1188,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_l.png',
+                        title: 'Left Border',
                         position: 'l'
                     }
                 },
@@ -1192,6 +1197,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_m.png',
+                        title: 'Background Color',
                         position: 'm'
                     }
                 },
@@ -1200,6 +1206,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_r.png',
+                        title: 'Right Border',
                         position: 'r'
                     }
                 },
@@ -1208,6 +1215,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_bl.png',
+                        title: 'Bottom Left Corner',
                         position: 'bl'
                     }
                 },
@@ -1216,6 +1224,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_b.png',
+                        title: 'Bottom Border',
                         position: 'b'
                     }
                 },
@@ -1224,6 +1233,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_br.png',
+                        title: 'Bottom Right Corner',
                         position: 'br'
                     }
                 },
@@ -1232,6 +1242,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_txt.png',
+                        title: 'Text',
                         position: 'txt'
                     }
                 },
@@ -1240,6 +1251,7 @@ exports.definition = {
                     type: 'DOMImg',
                     config: {
                         url: 'editor/img/sp_bgi.png',
+                        title: 'Background Image',
                         position: 'bgi'
                     }
                 }

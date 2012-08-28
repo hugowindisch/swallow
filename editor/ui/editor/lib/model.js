@@ -75,6 +75,25 @@ function Group(documentData, docInfo) {
 Group.prototype.getCommandChain = function () {
     return this.commandChain;
 };
+
+/**
+    Returns a replacer for properly saving the JSON data of this document.
+*/
+Group.prototype.getReplacer = function () {
+    return function (key, value) {
+        var i,
+            ret = value;
+        // make sure matrices are stored as such
+        if (key === 'matrix' && isObject(value)) {
+            ret = [];
+            for (i = 0; i < 16; i += 1) {
+                ret[i] = value[i];
+            }
+        }
+        return ret;
+    };
+};
+
 /**
     Repair any anomalies in the document format.
 */

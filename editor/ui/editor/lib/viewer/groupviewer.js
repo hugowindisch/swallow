@@ -444,7 +444,7 @@ GroupViewer.prototype.resetScroll = function () {
 GroupViewer.prototype.pushZoomMatrix = function (mat) {
     var zs = this.zoomStack,
         z = mat[0];
-    while(zs.length > 0 && zs[zs.length - 1][0] > z) {
+    while (zs.length > 0 && zs[zs.length - 1][0] > z) {
         zs.pop();
     }
     this.zoomStack.push(mat);
@@ -517,7 +517,7 @@ GroupViewer.prototype.zoomToContent = function () {
     Zoom to real size (100%)
 */
 GroupViewer.prototype.zoom100 = function () {
-    borderPix = this.groupBorderPix;
+    var borderPix = this.groupBorderPix;
     // push the matrix
     this.pushZoomMatrix(
         mat4.translate(mat4.identity(), [borderPix - 20, borderPix - 20, 0], mat4.create())

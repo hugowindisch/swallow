@@ -270,7 +270,7 @@ Editor.prototype.saveGroup = function (factory, type, cb) {
             });
         }
     );
-    req.write(JSON.stringify(doc));
+    req.write(JSON.stringify(doc, group.getReplacer()));
     req.end();
 };
 
