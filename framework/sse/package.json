@@ -9,7 +9,7 @@
         "assert": ">=0.0.1"
     },
     "scripts": {
-        "test": "test/test.js"
+        "test": "testviewer test/test.js"
     },
     "engines": {
         "pillow": "*"

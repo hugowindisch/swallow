@@ -4,7 +4,7 @@
     "dependencies": {
     },
     "scripts": {
-        "test": "test/test.js"
+        "test": "testviewer test/test.js"
     },
     "engines": {
         "pillow": "*"

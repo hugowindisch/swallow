@@ -8,7 +8,7 @@
         "pillow": "*"
     },
     "scripts": {
-        "test": "test/test.js"
+        "test": "testviewer test/test.js"
     },
     "author": "Hugo Windisch <hugo.windisch@gmail.com>",
     "homepage": "http://www.swallowapps.com"

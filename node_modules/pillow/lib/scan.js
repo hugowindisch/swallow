@@ -338,7 +338,6 @@ function publishJSFile(
     //filename.split(
     var pillowPath = modulename + filename.slice(modulerootfolder.length, -3),
         isTest = filename.indexOf(modulerootfolder + '/test/') === 0;
-
     // fix windows nonsense
     pillowPath = unWindowsifyPath(pillowPath);
 
@@ -362,7 +361,7 @@ function publishJSFile(
                 modulename: modulename,
                 filepath: pillowPath,
                 code: indented,
-                dependencies: dependencies
+                dependencies: ['require', 'exports', 'module'].concat(dependencies)
             }));
 
         },
@@ -388,20 +387,27 @@ function publishJSFile(
     getMainModulePath
 */
 function getMainModulePath(details) {
-    if (details.json.main) {
-        return details.json.main;
-    }
-    var regExp = new RegExp(details.name + '\\.js$'),
+    var regExp,
         res;
-    details.js.forEach(function (n) {
-        var s;
-        if (regExp.test(n)) {
-            s = n.slice(details.dirname.length + 1, -3);
-            if (!res || s.length < res.length) {
-                res = s;
-            }
+    if (details.json.main) {
+        // tolerate a .js or no .js at the end of the main file
+        if (/\.js$/.test(details.json.main)) {
+            res = details.json.main.slice(0, -3);
+        } else {
+            res = details.json.main;
         }
-    });
+    } else {
+        regExp = new RegExp(details.name + '\\.js$');
+        details.js.forEach(function (n) {
+            var s;
+            if (regExp.test(n)) {
+                s = n.slice(details.dirname.length + 1, -3);
+                if (!res || s.length < res.length) {
+                    res = s;
+                }
+            }
+        });
+    }
     return res;
 }
 
@@ -865,26 +871,76 @@ function findPackageFiles(folder, details, cb) {
 }
 
 /**
+    Finds the files of an ender package.
+*/
+function findEnderPackageFiles(folder, details, cb) {
+    var mainf = details.json.main.slice(2), // skip ./
+        fn = path.join(folder, mainf);
+    // make sure we have what we need
+    if (!details.js) {
+        details.js = [];
+    }
+    if (!details.other) {
+        details.other = [];
+    }
+    if (!details.stats) {
+        details.stats = {};
+    }
+    fs.stat(fn, function (err, stats) {
+        if (err) {
+            return cb(err);
+        }
+        var ffn = unWindowsifyPath(fn);
+        details.stats[ffn] = stats;
+        details.js.push(ffn);
+        stats.details = details;
+        cb(null, details);
+    });
+}
+
+/**
+    Checks if a package has a given keyword.
+*/
+function hasKeyword(json, kw) {
+    var ret = false;
+    if (json.keywords) {
+        json.keywords.forEach(function (w) {
+            if (w === kw) {
+                ret = true;
+            }
+        });
+    }
+    return ret;
+}
+
+/**
     Loads the details of a package: its package.json file and
     the paths of all its contained files (js, other like gifs and jpgs)
 */
 function loadPackageDetails(packageFile, cb) {
     var details = {
-        filename: packageFile.filename,
-        // FIXME: this does not use the package info
-        dirname: path.dirname(packageFile.filename),
-        js: [],
-        other: []
-    };
+            filename: packageFile.filename,
+            // FIXME: this does not use the package info
+            dirname: path.dirname(packageFile.filename),
+            js: [],
+            other: []
+        },
+        json;
     fs.readFile(packageFile.filename, function (err, data) {
         if (err) {
             return cb(err);
         }
         // FIXME: try catch
-        details.json = JSON.parse(data.toString());
-        details.name = details.json.name || path.basename(details.dirname);
-
-        findPackageFiles(details.dirname, details, cb);
+        details.json = json = JSON.parse(data.toString());
+        details.name = json.name || path.basename(details.dirname);
+        if (json.engines && json.engines.pillow) {
+            findPackageFiles(details.dirname, details, cb);
+        } else if (hasKeyword(json, 'ender')) {
+            findEnderPackageFiles(details.dirname, details, cb);
+        } else {
+            // skip this unknown package
+            cb(null, null);
+        }
     });
 }
 
@@ -955,7 +1011,7 @@ function findPackagesFromSingleFolder(rootfolder, cb) {
                     );
                 }, cb);
             },
-            // for files that are js
+            // for files that are package.json
             function (stats, cb) {
                 var found = [], results = {};
                 // process all files
@@ -1001,8 +1057,7 @@ function findPackagesFromSingleFolder(rootfolder, cb) {
                         }
                         // map all the results
                         detailArray.forEach(function (d) {
-                            // only keep packages that we support.
-                            if (d.json.engines.pillow) {
+                            if (d) {
                                 results[d.name] = d;
                             }
                         });

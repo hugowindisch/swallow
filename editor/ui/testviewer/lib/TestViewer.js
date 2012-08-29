@@ -396,6 +396,12 @@ TestViewer.prototype.runPackageTests = function (
     cb
 ) {
     this.log('Running test script for package ' + packName + ' ...', 'div');
+    testscript = testscript.split(' ');
+    if (testscript[0] !== 'testviewer') {
+        return cb(new Error('unsupported test command ' + testscript[0] + ' use "test": "testviewer test/yourtest.js"'));
+    }
+    testscript.shift();
+    testscript = testscript.join(' ');
     testscript = testscript.split('.');
     testscript.pop();
     testscript = testscript.join('.');
