@@ -4,6 +4,7 @@
     "dependencies" : {
         "utils": ">=0.0.1"
     },
+    "testDependencies": [ "assert" ],
     "engines": {
         "pillow": "*"
     },

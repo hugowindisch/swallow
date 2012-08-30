@@ -2,8 +2,8 @@
     "name": "url",
     "version": "0.0.1",
     "dependencies": {
-        "assert": ">=0.0.1"
     },
+    "testDependencies": [ "assert" ],
     "scripts": {
         "test": "testviewer test/test.js"
     },

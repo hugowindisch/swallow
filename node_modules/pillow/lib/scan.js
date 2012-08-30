@@ -258,16 +258,24 @@ function getMostRecent(stats, regexp) {
     Returns a package map that contains a package an all its recursive
     dependencies.
 */
-function getPackageDependencies(packageMap, packageName) {
+function getPackageDependencies(packageMap, packageName, includeTestDeps) {
     function gd(res, name) {
         var p = packageMap[name],
             dep;
         if (p) {
             res[name] = p;
+            // normal dependencies
             dep = p.json.dependencies;
             if (dep) {
                 Object.keys(dep).forEach(function (k) {
                     // FIXME we should validate versions
+                    gd(res, k);
+                });
+            }
+            // test dependencies
+            dep = p.json.testDependencies;
+            if (includeTestDeps && dep) {
+                dep.forEach(function (k) {
                     gd(res, k);
                 });
             }
@@ -612,7 +620,7 @@ function makePublishedPackage(
             details.stats,
             new RegExp("(\\.js$|" + detName + "\\.json)")
         ),
-        deps = getPackageDependencies(packageMap, detName),
+        deps = getPackageDependencies(packageMap, detName, false),
         depsFileMap = getFileMap(deps),
         cssFileMap = options.css ? filterStats(depsFileMap, /\.css$/) : {},
         cssMostRecentDate =
@@ -683,6 +691,8 @@ function makePublishedPackage(
     // generates a test version of the JSFiles
     function makeTestJSFiles(cb) {
         if (options.test) {
+            // get the dependencies extended with testDependencies
+            var deps = getPackageDependencies(packageMap, detName, true);
             checkOlderOrInvalid(
                 path.join(options.dstFolder, detName, detName + '.test.js'),
                 mostRecentJSDate,
