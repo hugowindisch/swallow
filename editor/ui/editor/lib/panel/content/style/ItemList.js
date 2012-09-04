@@ -31,14 +31,14 @@ function ItemList(config) {
     domvisual.DOMElement.call(this, config);
 
     // adding the
-    var it = new domvisual.DOMImg({url: 'editor/img/addstop.png'}),
+    var it = new domvisual.DOMImg({url: 'editor/img/addstop.png', title: 'Add Image'}),
         that = this;
     it.setDimensions([32, 32, 0]);
     it.setHtmlFlowing({position: 'relative', display: 'inline-block'}, true);
     this.addChild(it, 'addMore');
     it.on('click', function () {
         that.addItem({});
-    });
+    }).setCursor('pointer');
 }
 
 ItemList.createPreview = function () {

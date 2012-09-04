@@ -156,7 +156,7 @@ GradientEditor.prototype.setValue = function (v) {
         });
 
         // add a + button
-        plus = new domvisual.DOMImg({url: 'editor/img/addstop.png'});
+        plus = new domvisual.DOMImg({url: 'editor/img/addstop.png', title: 'Add Stop'});
         stops.addChild(plus, 'plus');
         plus.setHtmlFlowing(
             {position: 'relative'},
@@ -172,7 +172,7 @@ GradientEditor.prototype.setValue = function (v) {
                 stops.numChildren - 1
             ));
             that.updateControlVisibility();
-        });
+        }).setCursor('pointer');
         this.updateControlVisibility();
     }
     return this;

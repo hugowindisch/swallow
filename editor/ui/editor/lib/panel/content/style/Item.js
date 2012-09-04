@@ -35,7 +35,7 @@ function Item(config) {
     }).setCursor('pointer');
     this.getChild('deleteBtn').on('click', function () {
         that.emit('delete');
-    }).setCursor('pointer');
+    }).setCursor('crosshair');
 }
 
 Item.prototype = new (domvisual.DOMElement)();

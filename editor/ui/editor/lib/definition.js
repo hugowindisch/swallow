@@ -2982,7 +2982,8 @@ exports.definition = {
                     type: "DOMImg",
                     config: {
                         position: "background",
-                        url: 'editor/img/bgimage.png'
+                        url: 'editor/img/bgimage.png',
+                        title: 'Select Image'
                     }
                 },
                 deleteBtn: {
@@ -2991,7 +2992,8 @@ exports.definition = {
                     config: {
                         position: "deleteBtn",
                         url: 'editor/img/removestop.png',
-                        visible: false
+                        visible: false,
+                        title: 'Delete Image'
                     }
                 }
             }

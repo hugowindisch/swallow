@@ -99,7 +99,8 @@ var visual = require('visual'),
                 type: "DOMImg",
                 config: {
                     position: "remove",
-                    url: "editor/img/removestop.png"
+                    url: "editor/img/removestop.png",
+                    title: 'Remove Stop'
                 }
             },
             selection: {
