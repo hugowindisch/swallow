@@ -320,7 +320,7 @@ function publishAsset(
         getExt = /\.(\w+)$/,
         m = getExt.exec(filename);
 
-    if (m && assetExt[m[1]]) {
+    if (m && assetExt[m[1].toLowerCase()]) {
         copyFileIfOutdated(filename, dstfolder, cb);
     } else {
         // nothing to do
@@ -859,7 +859,7 @@ function findPackageFiles(folder, details, cb) {
                             } else {
                                 matches = getExt.exec(file.filename);
                                 if (matches &&
-                                        assetExt[matches[1]] !== undefined) {
+                                        assetExt[matches[1].toLowerCase()] !== undefined) {
                                     details.stats[ffn] = file.stats;
                                     details.other.push(ffn);
                                 }

@@ -251,10 +251,9 @@ define.pillow = {
         applicationDomain.modules = newmods;
     },
     // load dependencies for the specified package
-    loadDependencies: function (pack, cb, optionalApplicationDomain) {
-        var deps,
-            i,
-            l,
+    loadDependencies: function (deps, optionalApplicationDomain, cb) {
+        var i,
+            l = deps.length,
             loaded = 0,
             loadError = null;
         function onLoaded(err) {
@@ -264,15 +263,12 @@ define.pillow = {
                 // we should probably abort everything, in fact...
                 // (removing script tags or whatever)
             }
-            if (loaded === (l - 3)) {
+            if (loaded === l) {
                 cb(loadError);
             }
         }
-        deps = pack.dependencies;
-        l = deps.length;
-        // 3 because of the require, export, modules ugly thing
-        if (l > 3) {
-            for (i = 3; i < l; i += 1) {
+        if (l > 0) {
+            for (i = 0; i < l; i += 1) {
                 this.loadPackage(
                     deps[i],
                     optionalApplicationDomain,
@@ -344,9 +340,9 @@ define.pillow = {
             script.onload = function () {
                 // we should load the dependencies
                 that.loadDependencies(
-                    pack,
-                    onComplete,
-                    optionalApplicationDomain
+                    pack.dependencies.slice(3),
+                    optionalApplicationDomain,
+                    onComplete
                 );
             };
             script.onerror = function () {
@@ -361,5 +357,29 @@ define.pillow = {
                 throw new Error('Unexpected state');
             }
         }
+    },
+    /**
+    * Loads one or more packages, and returns a require function.
+    * @param {String|Array} packageName The package to load
+    * @param {Function} cb A callback that will receive (err, require).
+    */
+    run: function (packageName, cb) {
+        var t = typeof packageName,
+            that = this,
+            topmost = this.getTopmostDomain(),
+            toLoad;
+        if (t === 'String') {
+            toLoad = [packageName];
+        } else if (t === 'object' && t.length > 0) {
+            toLoad = packageName;
+        } else {
+            return cb(new Error('Invalid packageName ' + packageName));
+        }
+        this.loadDependencies(toLoad, topmost, function (err) {
+            if (err) {
+                return cb(err);
+            }
+            cb(null, that.makeRequire(topmost, ''));
+        });
     }
 };
