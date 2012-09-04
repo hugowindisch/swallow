@@ -257,7 +257,7 @@ Most client side applications display data items that are retrieved from a serve
 To facilitate the whole development process (and avoid same origin conflicts), swallowapps can run as a middleware in your Express, Connect or bare bones NodeJS development server. All swallowapps urls share the same /swallow/ root (to avoid polluting your url namespace).
 
 Here is how swallowapps can run in Express or Connect:
-'''javascript
+```javascript
     var app = require('express').createServer(),
         swallowapps = require('swallowapps'),
         options = {
@@ -267,10 +267,10 @@ Here is how swallowapps can run in Express or Connect:
 
     // Do something with the app
     app.listen(1337);
-'''
+```
 
 Here is how the same results could be achieved in a bare bones NodeJS solution:
-'''javascript
+```javascript
     var http = require('http'),
         swallowapps = require('swallowapps'),
         options = {
@@ -284,7 +284,7 @@ Here is how the same results could be achieved in a bare bones NodeJS solution:
         // does not consume the request.
         mw(req, res);
     }).listen(port, '0.0.0.0');
-'''
+```
 
 In both cases, you will be able to run the Launcher from your own server on the following path: '/swallow/make/launcher.Launcher.html'.
 
