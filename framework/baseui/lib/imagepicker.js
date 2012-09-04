@@ -28,7 +28,8 @@ var visual = require('visual'),
 
 function ImagePicker(config) {
     domvisual.DOMElement.call(this, config);
-    this.setOverflow([ 'auto', 'hidden']);
+    this.setOverflow([ 'hidden', 'auto']);
+    this.setStyle('bg');
 }
 
 ImagePicker.prototype = new (domvisual.DOMElement)();
@@ -42,10 +43,24 @@ ImagePicker.prototype.getDescription = function () {
     return "An image selection box";
 };
 ImagePicker.prototype.theme = new (visual.Theme)({
+    bg: {
+        basedOn: [
+            // take the line styles from here
+            {
+                factory: 'baseui',
+                type: 'Theme',
+                style: 'controlBackground'
+            }
+        ]
+    },
     image: {
         basedOn: [
             // take the line styles from here
-            { factory: 'baseui', type: 'Theme', style: 'imagePickerImage' }
+            {
+                factory: 'baseui',
+                type: 'Theme',
+                style: 'selectionBox'
+            }
         ]
     },
     imageSelected: {
@@ -54,7 +69,7 @@ ImagePicker.prototype.theme = new (visual.Theme)({
             {
                 factory: 'baseui',
                 type: 'Theme',
-                style: 'imagePickerImageSelected'
+                style: 'selectionBoxSelected'
             }
         ]
     }
@@ -113,21 +128,21 @@ ImagePicker.prototype.updateChildren = function () {
         l = urls.length,
         url,
         c,
-        table,
-        row,
+        container,
         cell,
         vert = 40,
         that = this;
     this.cells = [];
     this.removeAllChildren();
-    table = this.addHtmlChild('table', '', null, 'table');
-    row = table.addHtmlChild('tr', '', null, 'row');
+    container = this.addHtmlChild('div', '', null);
 
     function onLoad() {
         var imageDimensions = this.getComputedDimensions();
         this.setHtmlFlowing({
             width: (vert * imageDimensions[0] / imageDimensions[1]) + 'px',
-            height: vert + 'px'
+            height: vert + 'px',
+            display: 'inline-block',
+            whiteSpace: 'nowrap'
         });
     }
     function getOnClick(n) {
@@ -142,17 +157,17 @@ ImagePicker.prototype.updateChildren = function () {
     }
     for (i = 0; i < l; i += 1) {
         url = urls[i];
-        cell = row.addHtmlChild('td', '');
+        cell = new (domvisual.DOMImg)({url: url});
         this.cells.push(cell);
-        cell.setStyle('image');
-        c = new (domvisual.DOMImg)({url: url});
-        c.setDimensions([20, 20, 0]);
-        cell.addChild(c, 'image ' + i);
-        c.once('load', onLoad);
-        c.on('click', getOnClick(i));
-        c.setCursor('pointer');
+        cell.setStyle('image'
+        ).setDimensions([20, 20, 0]
+        ).once('load', onLoad
+        ).on('click', getOnClick(i)
+        ).setCursor('pointer');
+        container.addChild(cell);
     }
     return this;
 };
+
 
 exports.ImagePicker = ImagePicker;

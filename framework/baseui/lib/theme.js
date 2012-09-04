@@ -127,6 +127,43 @@ Theme.prototype.theme = new (require('visual').Theme)({
             { factory: 'baseui', type: 'Theme', style: 'controlBackground' }
         ]
     },
+    // section (bordered section)
+    section: {
+        jsData: {
+            "borderTopWidth": 1,
+            "borderLeftStyle": "solid",
+            "borderLeftWidth": 1,
+            "borderRightStyle": "solid",
+            "borderRightWidth": 1,
+            "borderBottomStyle": "solid",
+            "borderBottomWidth": 1,
+            "borderTopStyle": "solid",
+            "borderLeftColor": {
+                "r": 206,
+                "g": 206,
+                "b": 206,
+                "a": 1
+            },
+            "borderRightColor": {
+                "r": 206,
+                "g": 206,
+                "b": 206,
+                "a": 1
+            },
+            "borderBottomColor": {
+                "r": 206,
+                "g": 206,
+                "b": 206,
+                "a": 1
+            },
+            "borderTopColor": {
+                "r": 206,
+                "g": 206,
+                "b": 206,
+                "a": 1
+            }
+        }
+    },
     // window background (the darker part of a window, for controls etc)
     windowBackground: {
         jsData: {
@@ -142,6 +179,79 @@ Theme.prototype.theme = new (require('visual').Theme)({
     windowDarkerForeground: {
         jsData: {
             backgroundColor: { r: 245, g: 245, b: 245, a: 1 }
+        }
+    },
+    // image picker
+    selectionBox: {
+        jsData: {
+            "borderTopWidth": 2,
+            "borderLeftStyle": "dotted",
+            "borderLeftWidth": 2,
+            "borderRightStyle": "dotted",
+            "borderRightWidth": 2,
+            "borderBottomStyle": "dotted",
+            "borderBottomWidth": 2,
+            "borderTopStyle": "dotted",
+            "borderLeftColor": {
+                "r": 106,
+                "g": 106,
+                "b": 106,
+                "a": 0
+            },
+            "borderRightColor": {
+                "r": 106,
+                "g": 106,
+                "b": 106,
+                "a": 0
+            },
+            "borderBottomColor": {
+                "r": 106,
+                "g": 106,
+                "b": 106,
+                "a": 0
+            },
+            "borderTopColor": {
+                "r": 106,
+                "g": 106,
+                "b": 106,
+                "a": 0
+            }
+        }
+    },
+    selectionBoxSelected: {
+        jsData: {
+            "borderTopWidth": 2,
+            "borderLeftStyle": "dotted",
+            "borderLeftWidth": 2,
+            "borderRightStyle": "dotted",
+            "borderRightWidth": 2,
+            "borderBottomStyle": "dotted",
+            "borderBottomWidth": 2,
+            "borderTopStyle": "dotted",
+            "borderLeftColor": {
+                "r": 106,
+                "g": 106,
+                "b": 106,
+                "a": 1
+            },
+            "borderRightColor": {
+                "r": 106,
+                "g": 106,
+                "b": 106,
+                "a": 1
+            },
+            "borderBottomColor": {
+                "r": 106,
+                "g": 106,
+                "b": 106,
+                "a": 1
+            },
+            "borderTopColor": {
+                "r": 106,
+                "g": 106,
+                "b": 106,
+                "a": 1
+            }
         }
     },
     //////////////////////////////////////
@@ -216,15 +326,6 @@ Theme.prototype.theme = new (require('visual').Theme)({
     },
     contractedFolder: {
         data: [ 'baseui_theme_controlFont', 'baseui_theme_textColor', 'baseui_theme_bgImgContractedFolder', 'baseui_theme_bold' ],
-        privateStyle: true
-    },
-    // image picker
-    imagePickerImage: {
-        data: [ 'baseui_theme_outlineTransparent' ],
-        privateStyle: true
-    },
-    imagePickerImageSelected: {
-        data: [ 'baseui_theme_outlineColor' ],
         privateStyle: true
     }
 });

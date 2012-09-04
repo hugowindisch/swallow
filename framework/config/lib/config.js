@@ -429,8 +429,8 @@ function imageUrlConfig(label) {
                         'baseui',
                         'ImagePicker',
                         { urls: jsonData },
-                        390,
-                        100,
+                        360,
+                        200,
                         25,
                         function (err, ctrl) {
                             if (err) {

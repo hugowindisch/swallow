@@ -324,7 +324,8 @@ exports.definition = {
                     type: "DOMImg",
                     config: {
                         position: "instanciate",
-                        url: 'editor/img/enableinstanciation.png'
+                        url: 'editor/img/enableinstanciation.png',
+                        title: 'Instanciate'
                     }
                 },
                 description: {
@@ -1721,12 +1722,12 @@ exports.definition = {
 /////////////////////////////////////
                 gradient: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 320, 0, 0,  0, 0, 1, 0,  0, 350, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 300, 0, 0,  0, 0, 1, 0,  0, 350, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 image: {
                     order: 3,
-                    matrix: [ 340, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,  0, 350, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 300, 0, 0,  0, 0, 1, 0,  0, 350, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
