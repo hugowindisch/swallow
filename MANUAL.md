@@ -11,7 +11,7 @@ The framework consists of:
 
 - custom packages (visual, domvisual, config, utils) that implement apis that are specific to swallowapps and that let you create or use visual components.
 
-- optional packages (baseui, domquery, doxhtml, sse) that implement other useful apis and extensions. You can also add your own extensions by adding more packages or porting NodeJS packages.
+- optional packages (baseui, domquery, doxhtml, sse) that implement other useful apis and extensions. You can also add your own extensions by adding more packages or porting NodeJS packages. You can also use ender packages (like bonzo or qwery).
 
 # Getting Started
 Here I will provide programming examples for the most useful programming features.
@@ -19,9 +19,9 @@ Here I will provide programming examples for the most useful programming feature
 ##How do I start?
 From the Launcher, you can create a new package, then create a new module in that package. Package names should start with a lowercase letter. Visual module names should start with an uppercase letter.
 
-The package you created has a package.json file. It is a commonJS package. It is located in work/packages/yourpackagename.
+The packages that you create are described by a package.json file. For a given package named 'yourpackagename' this file will be located in work/packages/yourpackagename.
 
-The module you created is a Javascript file and a CommonJS module (it can require() packages and modules, and be require()d by other packages and modules). It is located in work/packages/yourpackagename/lib.
+The modules that you create consist in a javascript file and a vis file located in work/packages/yourpackagename/lib.
 
 ##Where is the code?
 Swallowapps generates a small javascript module for each new visual element that you create.
@@ -356,6 +356,8 @@ You are free to add any package that you want in work/packages. Swallowapps pack
     }
 }
 ```
+
+Ender packages are also supported. For more details consult [the pillow documentation](https://github.com/hugowindisch/pillow "Pillow").
 
 
 #More Advanced Features

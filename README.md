@@ -21,6 +21,8 @@ http://www.youtube.com/watch?v=m0os24I4PUc
 + Integrated code validation (JSLint)
 + Integrated asynchronous testing
 + Built with itself (mastering the framework lets you modify all the tools)
++ Built on top of [pillow](https://github.com/hugowindisch/pillow "Pillow"), a client side package loader
++ Easy to extend and integrate (Ender packages are supported and many node packages should be easy to support by adding the pillow engine in the package definition file)
 
 #Release Notes
 + 0.0.4 Adds support for editing multiple documents from the same page (previously, only one visual component could be edited in one editor page, now it is no longer the case). Video: http://www.youtube.com/watch?v=TV7rRGpe5po&feature=youtu.be
