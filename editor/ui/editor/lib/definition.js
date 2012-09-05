@@ -456,7 +456,9 @@ exports.definition = {
                     type: "DOMImg",
                     config: {
                         url: 'editor/img/plugin/unsetcontent.png',
-                        position: 'unsetContent'
+                        position: 'unsetContent',
+                        cursor: 'pointer',
+                        title: 'Unset Content'
                     }
                 },
                 choices: {
