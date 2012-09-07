@@ -1159,7 +1159,7 @@ DOMImg.prototype.getNaturalDimensions = function () {
 */
 DOMImg.prototype.getConfigurationSheet = function () {
     return {
-        "class": null,
+        "title": require('config').inputConfigFullLine('Title (tooltip)'),
         "url": require('config').imageUrlConfig('Image'),
         "style": null //require('config').styleConfig('Style:')
     };
