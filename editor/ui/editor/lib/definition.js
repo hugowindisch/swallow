@@ -1065,6 +1065,7 @@ exports.definition = {
                     type: "DOMImg",
                     config: {
                         url: 'editor/img/enableView.png',
+                        title: 'Enable Viewing',
                         position: "enableView"
                     }
                 },
@@ -1073,6 +1074,7 @@ exports.definition = {
                     type: "DOMImg",
                     config: {
                         url: 'editor/img/enableSelect.png',
+                        title: 'Enable Selection',
                         position: "enableSelection"
                     }
                 }
