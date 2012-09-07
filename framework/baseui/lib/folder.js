@@ -105,6 +105,7 @@ Folder.prototype.updateChildren = function () {
         o.setVisible(false);
         tc.on('click', function () {
             that.toggleExpansion();
+            that.emit('expand', that.expanded);
         });
         tc.setCursor('pointer');
     }

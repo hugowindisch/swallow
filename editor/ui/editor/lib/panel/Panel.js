@@ -19,6 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
+/*globals window */
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('/editor/lib/definition').definition.groups,
@@ -42,15 +43,25 @@ Panel.prototype.init = function (editor) {
         si = new SelectionInfo({}),
         siFolder = new (baseui.Folder)({ internal: si, text: 'Position' }),
         vl = new VisualList({}),
-        vlFolder = new (baseui.Folder)({ internal: vl, text: 'Content' });
+        vlFolder = new (baseui.Folder)({ internal: vl, text: 'Content' }),
+        ls = window.localStorage;
+
     liFolder.setHtmlFlowing({});
     ciFolder.setHtmlFlowing({});
     vlFolder.setHtmlFlowing({});
     siFolder.setHtmlFlowing({});
-    ciFolder.setExpanded(false);
-    liFolder.setExpanded(false);
-    siFolder.setExpanded(false);
-    vlFolder.setExpanded(true);
+    ciFolder.on('expand', function (state) {
+        ls.panelComponent = state;
+    }).setExpanded(ls.panelComponent || false);
+    liFolder.on('expand', function (state) {
+        ls.panelLayering = state;
+    }).setExpanded(ls.panelLayering || false);
+    siFolder.on('expand', function (state) {
+        ls.panelPosition = state;
+    }).setExpanded(ls.panelPosition || false);
+    vlFolder.on('expand', function (state) {
+        ls.panelContent = state;
+    }).setExpanded(ls.panelContent || true);
 
     this.removeAllChildren();
     this.addChild(ciFolder);
