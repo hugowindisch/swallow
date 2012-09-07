@@ -47,7 +47,7 @@ From the console:
 (mkdir work, then:)
 
 swallowapps -work=./work
-(or if you did not install with -g, node swallowapps/editor/server/lib/editsrver.js -work=./work)
+(or if you did not install with -g, node swallowapps/editor/server/lib/editsrvr.js -work=./work)
 
 Then, open Chrome or Firefox at localhost:1337. This will start the launcher. From the launcher, you can select existing modules to edit, or create new ones.
 
