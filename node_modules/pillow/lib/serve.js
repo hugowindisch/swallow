@@ -39,13 +39,16 @@ function getMiddleWare(urls, options) {
         function setUnHandled() {
             handled = false;
         }
+        function getOptions() {
+            return typeof options === 'function' ? options(req, res) : options;
+        }
 
         for (i = 0; i < l && !handled; i += 1) {
             h = urls[i];
             m = h.filter.exec(pathname);
             if (m) {
                 handled = true;
-                h.handler(req, res, { options: options, match: m, next: setUnHandled });
+                h.handler(req, res, { options: getOptions(), match: m, next: setUnHandled });
             }
         }
         if (!handled && next) {

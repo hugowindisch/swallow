@@ -200,10 +200,12 @@ exports.run = function () {
 };
 
 exports.getMiddleWare = function (options) {
-    options = fixOptions(options || {});
-    // Make sure we have the directory structure that we need before
-    // we start.
-    createWorkingFolders(options);
+    if (typeof options !== 'function') {
+        options = fixOptions(options || {});
+        // Make sure we have the directory structure that we need before
+        // we start.
+        createWorkingFolders(options);
+    }
     // return the middleware
     return pillow.getMiddleWare(getUrls(true), options);
 };
