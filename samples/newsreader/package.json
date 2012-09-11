@@ -11,5 +11,8 @@
     },
     "engines": {
         "pillow": "*"
-    }
+    },
+    "keywords": [
+        "pillow", "swallowapps", "visual"
+    ]
 }

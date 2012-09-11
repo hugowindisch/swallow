@@ -32,6 +32,15 @@ var pillow = require('pillow'),
         json: 'application/json'
     };
 
+function arrayToMap(a) {
+    var o = {};
+    if (a) {
+        a.forEach(function (v, k) {
+            o[v] = true;
+        });
+    }
+    return o;
+}
 
 function servePackageList(req, res, cxt) {
     var match = cxt.match,
@@ -57,6 +66,7 @@ function servePackageList(req, res, cxt) {
                 var pack = packages[k],
                     json = pack.json,
                     deps = json.dependencies,
+                    kw = arrayToMap(json.keywords),
                     found = {},
                     vis = [];
 
@@ -75,7 +85,7 @@ function servePackageList(req, res, cxt) {
                 });
                 // we must support 'still empty' packages and this is
                 // an ugly way to determine that
-                if (vis.length > 0 || (deps && deps.visual && deps.domvisual && deps.glmatrix)) {
+                if (vis.length > 0 || (kw.visual && kw.pillow && kw.swallow)) {
                     json.visuals = vis;
                 }
 
