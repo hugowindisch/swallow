@@ -544,17 +544,19 @@ GroupViewer.prototype.zoom100 = function () {
     Adjust the zoom to the current grid.
 */
 GroupViewer.prototype.adjustZoomToGridSize = GroupViewer.prototype.fullRedraw = function () {
-    var gridSize = this.group.documentData.gridSize,
-        zoomStack = this.zoomStack,
-        zoom = zoomStack[zoomStack.length - 1],
-        z = Math.round(zoom[0] * gridSize) / gridSize;
+    if (this.group) {
+        var gridSize = this.group.documentData.gridSize,
+            zoomStack = this.zoomStack,
+            zoom = zoomStack[zoomStack.length - 1],
+            z = Math.round(zoom[0] * gridSize) / gridSize;
 
-    zoom[0] = z;
-    zoom[5] = z;
-    zoom[10] = z;
-    this.updateAll();
-    this.resetScroll();
-    this.regenerateGrid();
+        zoom[0] = z;
+        zoom[5] = z;
+        zoom[10] = z;
+        this.updateAll();
+        this.resetScroll();
+        this.regenerateGrid();
+    }
 };
 
 /**

@@ -1223,7 +1223,8 @@ function setupObjectMenu(editor) {
 
 }
 function setupViewMenu(editor) {
-    var showGrid,
+    var ls = window.localStorage,
+        showGrid,
         showAnchors,
         showOutlines,
         zoomPage,
@@ -1236,7 +1237,9 @@ function setupViewMenu(editor) {
     showGrid = new MenuItem(
         'Show Grid',
         function () {
-            viewer.setShowGrid(!viewer.getShowGrid());
+            var v = !viewer.getShowGrid();
+            ls.showGrid = v;
+            viewer.setShowGrid(v);
         },
         null,
         null,
@@ -1246,10 +1249,17 @@ function setupViewMenu(editor) {
             return viewer.getShowGrid();
         }
     );
+console.log(ls.showGrid);
+console.log(ls.showAnchors);
+console.log(ls.showOutlines);
+console.log(viewer);
+    viewer.setShowGrid(ls.showGrid === undefined ? true : ls.showGrid === 'true');
     showAnchors = new MenuItem(
         'Show Anchors',
         function () {
-            viewer.setShowAnchors(!viewer.getShowAnchors());
+            var v = !viewer.getShowAnchors();
+            ls.showAnchors = v;
+            viewer.setShowAnchors(v);
         },
         null,
         null,
@@ -1259,9 +1269,12 @@ function setupViewMenu(editor) {
             return viewer.getShowAnchors();
         }
     );
+    viewer.setShowAnchors(ls.showAnchors === undefined ? true : ls.showAnchors === 'true');
     showOutlines = new MenuItem(
         'Show Outlines',
         function () {
+            var v = !viewer.getShowOutlines();
+            ls.showOutlines = v;
             viewer.setShowOutlines(!viewer.getShowOutlines());
         },
         null,
@@ -1272,6 +1285,7 @@ function setupViewMenu(editor) {
             return viewer.getShowOutlines();
         }
     );
+    viewer.setShowOutlines(ls.showOutlines === undefined ? true : ls.showOutlines === 'true');
 
     zoomPage = new MenuItem(
         'Zoom to Page',

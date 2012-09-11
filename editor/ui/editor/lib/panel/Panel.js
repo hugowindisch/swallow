@@ -52,16 +52,16 @@ Panel.prototype.init = function (editor) {
     siFolder.setHtmlFlowing({});
     ciFolder.on('expand', function (state) {
         ls.panelComponent = state;
-    }).setExpanded(ls.panelComponent || false);
+    }).setExpanded(ls.panelComponent === 'true');
     liFolder.on('expand', function (state) {
         ls.panelLayering = state;
-    }).setExpanded(ls.panelLayering || false);
+    }).setExpanded(ls.panelLayering === 'true');
     siFolder.on('expand', function (state) {
         ls.panelPosition = state;
-    }).setExpanded(ls.panelPosition || false);
+    }).setExpanded(ls.panelPosition === 'true');
     vlFolder.on('expand', function (state) {
         ls.panelContent = state;
-    }).setExpanded(ls.panelContent || true);
+    }).setExpanded(ls.panelContent === undefined ? true : (ls.panelContent === 'true'));
 
     this.removeAllChildren();
     this.addChild(ciFolder);
