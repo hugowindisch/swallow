@@ -1225,6 +1225,7 @@ function setupObjectMenu(editor) {
 function setupViewMenu(editor) {
     var showGrid,
         showAnchors,
+        showOutlines,
         zoomPage,
         zoomAll,
         zomm100,
@@ -1258,6 +1259,19 @@ function setupViewMenu(editor) {
             return viewer.getShowAnchors();
         }
     );
+    showOutlines = new MenuItem(
+        'Show Outlines',
+        function () {
+            viewer.setShowOutlines(!viewer.getShowOutlines());
+        },
+        null,
+        null,
+        'editor/img/plugin/showoutlines.png',
+        true,
+        function () {
+            return viewer.getShowOutlines();
+        }
+    );
 
     zoomPage = new MenuItem(
         'Zoom to Page',
@@ -1283,6 +1297,7 @@ function setupViewMenu(editor) {
     menus.view.push(
         showGrid,
         showAnchors,
+        showOutlines,
         null,
         zoomPage,
         zoomAll,

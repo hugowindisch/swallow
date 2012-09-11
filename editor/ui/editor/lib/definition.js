@@ -85,11 +85,6 @@ exports.definition = {
         GroupViewer: {
             dimensions: [ 440, 480, 0],
             positions: {
-                editArea: {
-                    order: 0,
-                    matrix: [ 440, 0, 0, 0,   0, 480, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
-                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', height: 'auto', bottom: 'px' }
-                },
                 grid: {
                     order: 1,
                     matrix: [ 200, 0, 0, 0,   0, 200, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
@@ -107,6 +102,13 @@ exports.definition = {
                     type: "DOMElement",
                     config: {
                         "style": { factory: 'editor', type: 'GroupViewer', style: 'page' },
+                        position: null
+                    }
+                },
+                outlines: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    config: {
                         position: null
                     }
                 },

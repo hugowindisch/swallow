@@ -209,6 +209,15 @@ GroupViewer.prototype.setShowAnchors = function (show) {
 GroupViewer.prototype.getShowAnchors = function () {
     return this.showAnchors;
 };
+GroupViewer.prototype.getShowOutlines = function () {
+    return this.showOutlines;
+};
+GroupViewer.prototype.setShowOutlines = function (show) {
+    if (this.showOutlines !== show) {
+        this.showOutlines = show;
+        this.adjustZoomToGridSize();
+    }
+};
 
 /**
     Shows / hides the selection control box.
@@ -372,10 +381,12 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
     var documentData = this.documentData,
         children = this.children,
         visuals = children.visuals.children || {},
+        outlines = children.outlines.children || {},
         zoomMat = this.zoomMat,
         selRect;
     forEachProperty(this.selection, function (s, n) {
         var vis = visuals[n],
+            ol = outlines[n],
             pos,
             res,
             newpos = {},
@@ -383,11 +394,16 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
         pos = documentData.positions[n];
         if (pos) {
             // graphic element
-            if (vis) {
+            if (vis || ol) {
                 newpos.type = pos.type;
                 newpos.snapping = pos.snapping;
                 newpos.matrix = mat4.multiply(transform, pos.matrix, mat4.create());
-                vis.setPosition(new (visual.Position)(newpos.matrix, newpos.snapping, newpos.opacity));
+                if (vis) {
+                    vis.setPosition(new (visual.Position)(newpos.matrix, newpos.snapping, newpos.opacity));
+                }
+                if (ol) {
+                    ol.setPosition(new (visual.Position)(newpos.matrix, newpos.snapping, newpos.opacity));
+                }
             }
         }
     });
@@ -799,9 +815,6 @@ GroupViewer.prototype.getSelectedName = function () {
     });
     return ret;
 };
-GroupViewer.prototype.getSelectedVisual = function () {
-    return this.getChildren().visuals.getChild(this.getSelectedName());
-};
 GroupViewer.prototype.getSelectedPosition = function () {
     var documentData = this.documentData;
     return documentData.positions[this.getSelectedName()];
@@ -1191,11 +1204,13 @@ GroupViewer.prototype.updateLayoutAnchors = function () {
 /**
     This will filter the documentData to make it displayable in the editor.
 */
-GroupViewer.prototype.getDisplayableDocumentData = function () {
+GroupViewer.prototype.getDisplayableDocumentData = function (wireframe) {
     var documentData = this.documentData,
         positions = documentData.positions,
         children = documentData.children,
         theme = this.getPreviewTheme(),
+        borderStyle = 'dotted',
+        borderColor = { r: 0, g: 0, b: 0, a: 0.5 },
         fdd = {
             dimensions: documentData.dimensions,
             children: {},
@@ -1213,7 +1228,29 @@ GroupViewer.prototype.getDisplayableDocumentData = function () {
                 matrix: pos.matrix,
                 snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
             };
-            if (c) {
+            if (wireframe) {
+                fdd.children[name] = {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    config: {
+                        position: name,
+                        styleAttributes: {
+                            borderTopWidth: 1,
+                            borderTopStyle: borderStyle,
+                            borderTopColor: borderColor,
+                            borderRightWidth: 1,
+                            borderRightStyle: borderStyle,
+                            borderRightColor: borderColor,
+                            borderBottomWidth: 1,
+                            borderBottomStyle: borderStyle,
+                            borderBottomColor: borderColor,
+                            borderLeftWidth: 1,
+                            borderLeftStyle: borderStyle,
+                            borderLeftColor: borderColor
+                        }
+                    }
+                };
+            } else if (c) {
                 fdd.children[name] = deepCopy(c);
                 delete fdd.children[name].onlyInEditor;
             } else {
@@ -1298,7 +1335,6 @@ GroupViewer.prototype.updateAll = function () {
 
     // regenerate content
     children.visuals.removeAllChildren();
-    //children.decorations.removeAllChildren();
     children.visuals.theme = displayableDocumentData.theme;
     children.visuals.setPosition(null);
     try {
@@ -1313,6 +1349,18 @@ GroupViewer.prototype.updateAll = function () {
         // Sets the preview mode
         c.enableInteractions(false);
     });
+    // regenerate outlines (wireframe)
+    children.outlines.removeAllChildren();
+    children.outlines.setPosition(null);
+    if (this.showOutlines) {
+        try {
+            children.outlines.createGroup(this.getDisplayableDocumentData(true));
+        } catch (e2) {
+            console.log('Error while regenerating the view ' + e2);
+        }
+        children.outlines.setMatrix(zoomMat);
+    }
+
     // decorations
     children.decorations.setPosition(null);
     children.decorations.setDimensions(extendedDimensions);

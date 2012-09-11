@@ -1445,15 +1445,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.5212087"
-     inkscape:cx="-746.06958"
-     inkscape:cy="641.34465"
+     inkscape:zoom="4.0567175"
+     inkscape:cx="841.36347"
+     inkscape:cy="1125.1063"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g9591"
      showgrid="true"
-     inkscape:window-width="1134"
+     inkscape:window-width="1280"
      inkscape:window-height="968"
-     inkscape:window-x="399"
+     inkscape:window-x="253"
      inkscape:window-y="69"
      inkscape:window-maximized="0"
      showguides="true"
@@ -3222,6 +3222,54 @@
          id="path10557"
          style="fill:url(#linearGradient10593);fill-opacity:1;fill-rule:nonzero;stroke:none"
          sodipodi:type="arc" />
+    </g>
+    <g
+       id="g9595"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/showoutlines.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         transform="translate(0.57142639,3.4999962)"
+         id="g9591">
+        <g
+           id="g9608"
+           inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/showoutlines.png"
+           inkscape:export-xdpi="22.5"
+           inkscape:export-ydpi="22.5">
+          <rect
+             transform="translate(-0.57142639,-3.4999962)"
+             inkscape:export-ydpi="22.5"
+             inkscape:export-xdpi="22.5"
+             inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/originalartwork/rect4213-1-0.png"
+             style="fill:none;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:3, 3;stroke-dashoffset:0"
+             id="rect3811-9-0-5-78"
+             width="80"
+             height="80"
+             x="784"
+             y="-123.63782"
+             ry="12.307693" />
+          <rect
+             inkscape:export-ydpi="22.5"
+             inkscape:export-xdpi="22.5"
+             ry="0"
+             y="-114.63781"
+             x="792"
+             height="47.142853"
+             width="47.142853"
+             id="rect4213-1"
+             style="fill:none;stroke:#4d4d4d;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0" />
+          <rect
+             inkscape:export-ydpi="22.5"
+             inkscape:export-xdpi="22.5"
+             ry="0"
+             y="-106.78067"
+             x="807.71429"
+             height="47.142853"
+             width="47.142853"
+             id="rect4213-1-0"
+             style="fill:none;stroke:#4d4d4d;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0" />
+        </g>
+      </g>
     </g>
   </g>
 </svg>
