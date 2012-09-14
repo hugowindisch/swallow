@@ -1249,10 +1249,6 @@ function setupViewMenu(editor) {
             return viewer.getShowGrid();
         }
     );
-console.log(ls.showGrid);
-console.log(ls.showAnchors);
-console.log(ls.showOutlines);
-console.log(viewer);
     viewer.setShowGrid(ls.showGrid === undefined ? true : ls.showGrid === 'true');
     showAnchors = new MenuItem(
         'Show Anchors',

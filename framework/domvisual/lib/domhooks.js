@@ -188,6 +188,11 @@ hookMap = {
             return vis.element;
         }
     },
+    drop: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
+    },
     transitionend: {
         domEvent: ({
             'AppleWebKit': 'webkitTransitionEnd',

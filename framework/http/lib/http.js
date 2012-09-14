@@ -179,7 +179,7 @@ ClientRequest.prototype = new (events.EventEmitter)();
 * @type ClientRequest
 */
 ClientRequest.prototype.write = function (chunk) {
-    if (this.toSend === null) {
+    if (this.toSend === null || (typeof chunk !== 'string')) {
         this.toSend = chunk;
     } else {
         this.toSend += chunk;

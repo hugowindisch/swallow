@@ -31,6 +31,7 @@ var pillow = require('pillow'),
     servepackage = require('./services/servepackage'),
     servepackagelist = require('./services/servepackagelist'),
     serveimagelist = require('./services/serveimagelist'),
+    serveassets = require('./services/serveassets'),
     servevisualcomponent = require('./services/servevisualcomponent'),
     servehelp = require('./services/servehelp'),
     servetests = require('./services/servetests'),
@@ -125,6 +126,10 @@ function getUrls(forMiddleWare) {
     urls.push({
         filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9]+)\/image$/,
         handler: serveimagelist.serveImageList
+    });
+    urls.push({
+        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9]+)\/uploadassets$/,
+        handler: serveassets.serveUploadAssets
     });
     urls.push({
         filter: /^\/swallow\/events$/,

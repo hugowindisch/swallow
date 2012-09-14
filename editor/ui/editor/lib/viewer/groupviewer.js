@@ -19,7 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
-
+/*globals FormData */
 var visual = require('visual'),
     domvisual = require('domvisual'),
     getEnclosingRect = visual.getEnclosingRect,
@@ -138,6 +138,31 @@ function GroupViewer(config) {
         group.doCommand(cg);
     });
     this.children.grid.setVisible(false);
+    this.on('drop', function (evt) {
+        var formData = new FormData(),
+            http = require('http'),
+            req;
+        forEach(event.dataTransfer.files, function (file) {
+            formData.append(file.name, file);
+        });
+        req = http.request(
+            {
+                method: 'POST',
+                path: '/swallow/package/' + that.group.docInfo.factory + '/uploadassets'
+            },
+            function (res) {
+                res.on('error', function (e) {
+//                    cb(e);
+                });
+                res.on('end', function () {
+//                    cb(null);
+                });
+            }
+        );
+        req.end(formData);
+        evt.stopPropagation();
+        evt.preventDefault();
+    });
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
 
@@ -797,14 +822,6 @@ GroupViewer.prototype.getSelectionLength = function () {
     });
     return n;
 };
-
-/*GroupViewer.prototype.getSelectionSignature = function () {
-    var s = '';
-    forEachProperty(this.selection, function (s, n) {
-        s = s + n + ',';
-    });
-    return s;
-};*/
 
 GroupViewer.prototype.selectionIsEmpty = function () {
     return this.getSelectionLength() === 0;
