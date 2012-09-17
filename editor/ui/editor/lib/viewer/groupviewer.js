@@ -142,7 +142,7 @@ function GroupViewer(config) {
         var formData = new FormData(),
             http = require('http'),
             req;
-        forEach(event.dataTransfer.files, function (file) {
+        forEach(evt.dataTransfer.files, function (file) {
             formData.append(file.name, file);
         });
         req = http.request(

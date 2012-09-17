@@ -20,10 +20,11 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
-
+/*globals FormData */
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
+    forEach = utils.forEach,
     config = require('config'),
     group = {
         // authoring dimension
@@ -74,7 +75,8 @@ var visual = require('visual'),
 
 function UploadImagePicker(config) {
     var that = this,
-        fileupload;
+        fileupload,
+        picker;
 
     this.uploadUrl = '';
 
@@ -88,12 +90,40 @@ function UploadImagePicker(config) {
         '</form>';
         //+ '<iframe name="avoidPageChange" ></iframe>';
 
-    this.getChild('picker').on('change', function (e) {
-        that.emit('change', e);
-    });
-
     this.getChild('upload').addHtmlChild('div', fileupload, null, 'fileupload');
 
+
+    picker = this.getChild('picker');
+    picker.on('change', function (e) {
+        that.emit('change', e);
+    }).on('drop', function (evt) {
+        var formData = new FormData(),
+            http = require('http'),
+            req;
+        forEach(evt.dataTransfer.files, function (file) {
+            formData.append(file.name, file);
+        });
+        req = http.request(
+            {
+                method: 'POST',
+                path: that.uploadUrl
+            },
+            function (res) {
+                res.on('error', function (e) {
+                });
+                res.on('end', function () {
+                    // maybe here, we should initiate the reload
+                    // of the whole image thing?
+                    that.download();
+                });
+            }
+        );
+        req.end(formData);
+        evt.stopPropagation();
+        evt.preventDefault();
+    });
+
+    //this.download();
 }
 
 UploadImagePicker.prototype = new (domvisual.DOMElement)();
@@ -119,6 +149,26 @@ UploadImagePicker.prototype.setUploadUrl = function (url) {
 UploadImagePicker.prototype.getUploadUrl = function () {
     return this.uploadUrl;
 };
+UploadImagePicker.prototype.setDownloadUrl = function (url) {
+    this.downloadUrl = url;
+};
+UploadImagePicker.prototype.download = function () {
+    var http = require('http'),
+        that = this,
+        data = '';
 
+    http.get(
+        { path: this.downloadUrl },
+        function (res) {
+            res.on('data', function (d) {
+                data += d;
+            });
+            res.on('end', function () {
+                var jsonData = JSON.parse(data);
+                that.setUrls(jsonData);
 
+            });
+        }
+    );
+};
 exports.UploadImagePicker = UploadImagePicker;
