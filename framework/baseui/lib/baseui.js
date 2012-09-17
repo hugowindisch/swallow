@@ -50,3 +50,4 @@ exports.CheckBox = require('./checkbox').CheckBox;
 exports.ImageViewer = require('./imageviewer').ImageViewer;
 exports.GradientEditor = require('./gradienteditor').GradientEditor;
 exports.GradientStop = require('./gradientstop').GradientStop;
+exports.UploadImagePicker = require('./uploadimagepicker').UploadImagePicker;

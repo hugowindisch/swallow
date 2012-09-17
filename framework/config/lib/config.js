@@ -427,8 +427,11 @@ function imageUrlConfig(label) {
                     topBottomConfig(
                         label,
                         'baseui',
-                        'ImagePicker',
-                        { urls: jsonData },
+                        'UploadImagePicker',
+                        {
+                            urls: jsonData,
+                            uploadUrl: '/swallow/package/' + editorInfo.factory + '/uploadassets'
+                        },
                         360,
                         200,
                         25,
