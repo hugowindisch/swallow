@@ -152,10 +152,11 @@ UploadImagePicker.prototype.getUploadUrl = function () {
 UploadImagePicker.prototype.setDownloadUrl = function (url) {
     this.downloadUrl = url;
 };
-UploadImagePicker.prototype.download = function () {
+UploadImagePicker.prototype.download = function (cb) {
     var http = require('http'),
         that = this,
         data = '';
+    cb = cb || function () {};
 
     http.get(
         { path: this.downloadUrl },
@@ -166,7 +167,10 @@ UploadImagePicker.prototype.download = function () {
             res.on('end', function () {
                 var jsonData = JSON.parse(data);
                 that.setUrls(jsonData);
-
+                cb(null);
+            });
+            res.on('error', function (e) {
+                cb(e);
             });
         }
     );
