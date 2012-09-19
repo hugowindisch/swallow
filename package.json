@@ -1,13 +1,14 @@
 {
     "name": "swallowapps",
-    "version": "0.0.55555",
+    "version": "0.0.6",
     "dependencies": {
     },
     "bundleDependencies": [
         "async",
         "jqtpl",
         "wrench",
-        "pillow"
+        "pillow",
+        "formidable"
     ],
     "bin": {
         "swallowapps": "./editor/server/bin/server.js"
