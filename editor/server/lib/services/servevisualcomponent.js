@@ -83,49 +83,53 @@ function generateVisualComponentHtml(
     });
 }
 
+function makeAndGenerateHtml(options, factory, type, monitor, minify, cb) {
+    var htmlBuf,
+        extendedOptions = apply(
+            {
+                extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
+                    if (factory === details.name) {
+                        htmlBuf = generateVisualComponentHtml(
+                            opt,
+                            details,
+                            packageMap,
+                            deps,
+                            cssFileMap,
+                            type,
+                            type,
+                            monitor
+                        );
+                    }
+                    cb(null);
+                }
+            },
+            options
+        );
+    pillow.makePackage(
+        extendedOptions,
+        factory,
+        function (err) {
+            if (err) {
+                return cb(err);
+            }
+            return cb(null, htmlBuf);
+        }
+    );
+
+}
+
 function serveVisualComponent(forEdit, monitor) {
     return function (req, res, cxt) {
-        var options = cxt.options,
-            match = cxt.match,
-            factory = match[1],
-            type = match[2],
-            extendedOptions = apply(
-                {
-                    extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
-                        if (factory === details.name) {
-                            var htmlBuf = generateVisualComponentHtml(
-                                opt,
-                                details,
-                                packageMap,
-                                deps,
-                                cssFileMap,
-                                type,
-                                type,
-                                monitor
-                            );
-                            // now we are ready to return this
-                            res.writeHead(200);
-                            res.write(htmlBuf);
-                            // we intentionally don't call res.end here
-                            // ee call it when makePackage returns
-                        }
-                        cb(null);
-                    }
-                },
-                options
-            );
-        pillow.makePackage(
-            extendedOptions,
-            factory,
-            function (err) {
-                if (err) {
-                    res.writeHead(404);
-                    console.log(err);
-                }
-                // res.end is done here
-                res.end();
+        makeAndGenerateHtml(cxt.options, cxt.match[1], cxt.match[2], monitor, false, function (err, buf) {
+            if (err) {
+                res.writeHead(404);
+                console.log(err);
+                return;
             }
-        );
+            res.writeHead(200);
+            res.write(buf);
+            res.end();
+        });
     };
 }
 
@@ -248,3 +252,4 @@ exports.serveVisualComponent = serveVisualComponent;
 exports.publishVisualComponent = publishVisualComponent;
 exports.monitor = monitor;
 exports.redirectToMonitored = redirectToMonitored;
+exports.makeAndGenerateHtml = makeAndGenerateHtml;
