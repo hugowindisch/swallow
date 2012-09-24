@@ -83,11 +83,11 @@ function getUrls(forMiddleWare) {
         });
     }
     urls.push({
-        filter: /^\/swallow\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.html$/,
+        filter: /^\/swallow\/make\/([a-z][a-zA-Z0-9_]+)\.([A-Z][a-zA-Z0-9]+)\.html$/,
         handler: servevisualcomponent.serveVisualComponent(false, false)
     });
     urls.push({
-        filter: /^\/swallow\/make\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)\.mon$/,
+        filter: /^\/swallow\/make\/([a-z][a-zA-Z0-9_]+)\.([A-Z][a-zA-Z0-9]+)\.mon$/,
         handler: servevisualcomponent.serveVisualComponent(false, true)
     });
     urls.push({
@@ -95,12 +95,12 @@ function getUrls(forMiddleWare) {
         handler: pillow.makeAndServe
     });
     urls.push({
-        filter: /^\/swallow\/publish\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
+        filter: /^\/swallow\/publish\/([a-z][a-zA-Z0-9_]+)\.([A-Z][a-zA-Z0-9]+)$/,
         handler: servevisualcomponent.publishVisualComponent
     });
     // sets the currently monitored application
     urls.push({
-        filter: /^\/swallow\/monitor\/([a-z][a-zA-Z0-9]+)\.([A-Z][a-zA-Z0-9]+)$/,
+        filter: /^\/swallow\/monitor\/([a-z][a-zA-Z0-9_]+)\.([A-Z][a-zA-Z0-9]+)$/,
         handler: servevisualcomponent.monitor
     });
     urls.push({
@@ -116,19 +116,19 @@ function getUrls(forMiddleWare) {
         handler: servepackagelist.servePackageList
     });
     urls.push({
-        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9]+)\/visual\/([A-Z][a-zA-Z0-9]+)$/,
+        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9_]+)\/visual\/([A-Z][a-zA-Z0-9]+)$/,
         handler: servevisual.serveVisual
     });
     urls.push({
-        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9]+)$/,
+        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9_]+)$/,
         handler: servepackage.servePackage
     });
     urls.push({
-        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9]+)\/image$/,
+        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9_]+)\/image$/,
         handler: serveimagelist.serveImageList
     });
     urls.push({
-        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9]+)\/uploadassets$/,
+        filter: /^\/swallow\/package\/([a-z][a-zA-Z0-9_]+)\/uploadassets$/,
         handler: serveassets.serveUploadAssets
     });
     urls.push({
