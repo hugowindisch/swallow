@@ -117,6 +117,7 @@ function ClientRequest(options) {
     this.options = options;
     this.toSend = null;
     this.request = new XMLHttpRequest();
+    this.request.withCredentials = true;
     try {
         this.request.open(
             options.method,
