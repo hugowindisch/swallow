@@ -191,7 +191,7 @@ function savePackageJSON(packages, pack, allVis, cb) {
             addDep(pName);
             // styles in the config
             Object.keys(config).forEach(function (k) {
-                if (k === 'style') {
+                if (k === 'style' && config[k]) {
                     var pName = config[k].factory;
                     if (pName) {
                         addDep(pName);
