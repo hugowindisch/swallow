@@ -277,6 +277,28 @@ function saveVisual(options, packageName, constructorName, json, cb) {
         }
     });
 }
+// save and make visual
+function saveAndMakeVisual(options, packageName, constructorName, json, cb) {
+    var makeAndGenerateHtml = require('./servevisualcomponent').makeAndGenerateHtml;
+    saveVisual(options, packageName, constructorName, json, function (err) {
+        if (err) {
+            return cb(err);
+        }
+        makeAndGenerateHtml(options, packageName, constructorName, false, false, function (err, buf) {
+            if (err) {
+                return cb(err);
+            } else {
+                // we need to write the packageName.constructorName.html file
+                fs.writeFile(
+                    path.join(options.dstFolder, packageName + '.' + constructorName + '.html'),
+                    buf,
+                    'utf8',
+                    cb
+                );
+            }
+        });
+    });
+}
 // deletes a visual
 function deleteVisual(options, packageName, constructorName, cb) {
     // save it
@@ -371,7 +393,8 @@ function serveVisual(req, res, cxt) {
         match = cxt.match,
         packageName = match[1],
         constructorName = match[2],
-        postData;
+        postData,
+        sV = options.saveAndMake ? saveAndMakeVisual : saveVisual;
 
     function ret404(err) {
         res.writeHead(404);
@@ -409,7 +432,7 @@ function serveVisual(req, res, cxt) {
             postData += data;
         });
         req.on('end', function () {
-            saveVisual(options, packageName, constructorName, postData, function (err) {
+            sV(options, packageName, constructorName, postData, function (err) {
                 if (err) {
                     ret404(err);
                 } else {
@@ -421,7 +444,7 @@ function serveVisual(req, res, cxt) {
         });
         break;
     case 'PUT':
-        saveVisual(options, packageName, constructorName, JSON.stringify(createNewVisual()), function (err) {
+        sV(options, packageName, constructorName, JSON.stringify(createNewVisual()), function (err) {
             if (err) {
                 ret404(err);
             } else {
