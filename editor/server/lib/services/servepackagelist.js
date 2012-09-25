@@ -85,7 +85,7 @@ function servePackageList(req, res, cxt) {
                 });
                 // we must support 'still empty' packages and this is
                 // an ugly way to determine that
-                if (vis.length > 0 || (kw.visual && kw.pillow && kw.swallow)) {
+                if (vis.length > 0 || (kw.visual && kw.pillow && kw.swallowapps)) {
                     json.visuals = vis;
                 }
 
