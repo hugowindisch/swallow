@@ -199,7 +199,7 @@ Visual.prototype.enableScaling = function (enable) {
         this.scalingEnabled = enable;
         var parent = this.parent;
         if (parent) {
-            applyLayout(parent.dimensions, parent.layout, this);
+            parent.applyLayout(this);
         }
     }
     return this;
@@ -431,7 +431,7 @@ Visual.prototype.setPosition = function (position) {
         this.position = position;
         var parent = this.parent;
         if (parent && position !== null) {
-            applyLayout(parent.dimensions, parent.layout, this);
+            parent.applyLayout(this);
         }
     }
     return this;
@@ -507,10 +507,18 @@ Visual.prototype.getNaturalDimensions = function () {
 * the positioning of their children (relative to their dimensions) by
 * themselves.
 */
-Visual.prototype.applyLayout = function () {
+Visual.prototype.applyLayout = function (children) {
     var dimensions = this.dimensions,
         layout = this.layout;
-    forEachProperty(this.children, function (c) {
+    // support applying the layout to a subset of children
+    if (!children) {
+        children = this.children;
+    } else if (isObject(children)) {
+        children = [children];
+    } else if (!isArray(children)) {
+        children = [];
+    }
+    forEachProperty(children, function (c) {
         applyLayout(dimensions, layout, c);
     });
     return this;
@@ -565,7 +573,7 @@ Visual.prototype.addChild = function (child, name, atOptionalOrder) {
     this.numChildren += 1;
     setContainmentDepth(child, this.containmentDepth + 1);
     // immediately redimension this child
-    applyLayout(this.dimensions, this.layout, child);
+    this.applyLayout(child);
     return this;
 };
 

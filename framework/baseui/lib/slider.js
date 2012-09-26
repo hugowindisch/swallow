@@ -170,9 +170,9 @@ Slider.prototype.getConfigurationSheet = function () {
     };
 };
 
-Slider.prototype.applyLayout = function () {
-    domvisual.DOMElement.prototype.applyLayout.call(this);
-    if (this.children) {
+Slider.prototype.applyLayout = function (optionalChildren) {
+    domvisual.DOMElement.prototype.applyLayout.call(this, optionalChildren);
+    if (this.children && this.children.knob) {
         var children = this.children,
             knob = children.knob,
             knobw = knob.dimensions[0],
