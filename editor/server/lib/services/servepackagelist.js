@@ -44,7 +44,17 @@ function arrayToMap(a) {
 
 function servePackageList(req, res, cxt) {
     var match = cxt.match,
-        options = cxt.options;
+        options = cxt.options,
+        filterPackageList = {},
+        filterPackages = false;
+
+    // package filtering
+    if (options.filterPackageList) {
+        options.filterPackageList.forEach(function (v) {
+            filterPackages = true;
+            filterPackageList[v] = true;
+        });
+    }
 
     function ret404(err) {
         res.writeHead(404);
@@ -63,32 +73,34 @@ function servePackageList(req, res, cxt) {
                 // find all the visuals in the package
                 ret = {};
             Object.keys(packages).forEach(function (k) {
-                var pack = packages[k],
-                    json = pack.json,
-                    deps = json.dependencies,
-                    kw = arrayToMap(json.keywords),
-                    found = {},
-                    vis = [];
+                // if we want to filter the package list, apply the filter
+                if (!filterPackages || filterPackageList[k]) {
+                    var pack = packages[k],
+                        json = pack.json,
+                        deps = json.dependencies,
+                        kw = arrayToMap(json.keywords),
+                        found = {},
+                        vis = [];
 
-                ret[k] = json;
-                // is it a visual package
-                pack.other.forEach(function (p) {
-                    var m = re.exec(p),
-                        type;
-                    if (m) {
-                        type = m[1];
-                        if (!found[type]) {
-                            found[type] = true;
-                            vis.push(m[1]);
+                    ret[k] = json;
+                    // is it a visual package
+                    pack.other.forEach(function (p) {
+                        var m = re.exec(p),
+                            type;
+                        if (m) {
+                            type = m[1];
+                            if (!found[type]) {
+                                found[type] = true;
+                                vis.push(m[1]);
+                            }
                         }
+                    });
+                    // we must support 'still empty' packages and this is
+                    // an ugly way to determine that
+                    if (vis.length > 0 || (kw.visual && kw.pillow && kw.swallowapps)) {
+                        json.visuals = vis;
                     }
-                });
-                // we must support 'still empty' packages and this is
-                // an ugly way to determine that
-                if (vis.length > 0 || (kw.visual && kw.pillow && kw.swallowapps)) {
-                    json.visuals = vis;
                 }
-
             });
             res.writeHead('200', {'Content-Type': mimeType.json});
             res.write(JSON.stringify(ret, null, 4));
