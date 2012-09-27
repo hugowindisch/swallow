@@ -214,10 +214,15 @@ VisualList.prototype.updateVisualList = function () {
 VisualList.prototype.init = function (editor) {
     var viewer = editor.getViewer(),
         container = this.parent,
-        that = this;
+        that = this,
+        editorConfig = editor.getEditorConfig();
     this.editor = editor;
-    this.alwaysShow = { domvisual: true };
-
+    this.alwaysShow = {};
+    if (editorConfig.alwaysShowPackage) {
+        forEach(editorConfig.alwaysShowPackage, function (show) {
+            that.alwaysShow[show] = true;
+        });
+    }
     // a new box has been selected
     function newBoxSelected() {
         var typeInfo;
@@ -270,7 +275,7 @@ VisualList.prototype.initFactories = function () {
         alwaysShow = this.alwaysShow || {};
 
     forEachProperty(visualList, function (json, factory) {
-        if (json.visuals && factory !== 'domvisual') {
+        if (json.visuals && !alwaysShow[factory]) {
             forEach(json.visuals, function (type) {
                 factArray.push(factory);
                 return true;

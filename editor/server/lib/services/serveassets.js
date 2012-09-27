@@ -1,5 +1,5 @@
 /**
-    servehelp.js
+    serveassets.js
 
     The SwallowApps Editor, an interactive application builder for creating
     html applications.

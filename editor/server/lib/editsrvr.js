@@ -36,6 +36,7 @@ var pillow = require('pillow'),
     servehelp = require('./services/servehelp'),
     servetests = require('./services/servetests'),
     ssevents = require('./services/ssevents'),
+    serveconfig = require('./services/serveconfig'),
     swallowroot = path.join(__dirname, '../../..'),
     work = path.join(swallowroot, 'work');
 
@@ -154,6 +155,10 @@ function getUrls(forMiddleWare) {
     urls.push({
         filter: /^\/swallow\/testevent\/([a-z][a-zA-Z0-9]+)$/,
         handler: servetests.serveTestEvent
+    });
+    urls.push({
+        filter: /^\/swallow\/editconfig$/,
+        handler: serveconfig.serveEditConfig
     });
     return urls;
 }

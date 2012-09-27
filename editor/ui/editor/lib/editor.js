@@ -74,10 +74,6 @@ function Editor(config) {
             that.getChild('viewer').fullRedraw();
         }
     });
-    // init the plugins
-    this.initPlugins(defaultPlugins);
-    // init the panel
-    this.getChild('panel').init(this);
     function loadLocation() {
         var factory, type;
         if (window.location.hash) {
@@ -93,8 +89,22 @@ function Editor(config) {
         // and do the update automatically
         visual.update();
     }
-    // poll the location
-    setInterval(loadLocation, 200);
+
+    // once the config is loaded, init the plugins and the panel
+    this.loadConfig(function (err, config) {
+        if (!err) {
+            that.editorConfig = config;
+        } else {
+            that.editorConfig = {};
+        }
+        // init the plugins
+        that.initPlugins(defaultPlugins);
+        // init the panel
+        that.getChild('panel').init(that);
+        // poll the location
+        setInterval(loadLocation, 200);
+    });
+
 }
 Editor.prototype = new (domvisual.DOMElement)();
 Editor.prototype.theme = new (visual.Theme)({
@@ -116,6 +126,23 @@ function getKey(factory, type) {
 
 // Editor interface
 ////////////////////
+Editor.prototype.loadConfig = function (cb) {
+    var data = '';
+    http.get({ path: '/swallow/editconfig'}, function (res) {
+        res.on('data', function (d) {
+            data += d;
+        });
+        res.on('end', function () {
+            cb(null, JSON.parse(data));
+        });
+        res.on('error', function (e) {
+            cb(e);
+        });
+    });
+};
+Editor.prototype.getEditorConfig = function () {
+    return this.editorConfig;
+};
 Editor.prototype.getDocInfo = function () {
     var sg = this.selectedGroup,
         docInfo = sg !== undefined ? sg.docInfo : null;
