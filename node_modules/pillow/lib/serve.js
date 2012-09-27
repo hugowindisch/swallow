@@ -35,6 +35,7 @@ function getMiddleWare(urls, options) {
             h,
             parsedUrl = url.parse(req.url),
             pathname = parsedUrl.pathname,
+            o,
             handled = false;
         function setUnHandled() {
             handled = false;
@@ -48,7 +49,11 @@ function getMiddleWare(urls, options) {
             m = h.filter.exec(pathname);
             if (m) {
                 handled = true;
-                h.handler(req, res, { options: getOptions(), match: m, next: setUnHandled });
+                o = getOptions();
+                // allow the disabling of the whole middleware
+                if (!o.pass) {
+                    h.handler(req, res, { options: o, match: m, next: setUnHandled });
+                }
             }
         }
         if (!handled && next) {
