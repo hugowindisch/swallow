@@ -51,3 +51,5 @@ exports.ImageViewer = require('./imageviewer').ImageViewer;
 exports.GradientEditor = require('./gradienteditor').GradientEditor;
 exports.GradientStop = require('./gradientstop').GradientStop;
 exports.UploadImagePicker = require('./uploadimagepicker').UploadImagePicker;
+exports.ListBox = require('./listbox').ListBox;
+exports.FontPicker = require('./fontpicker').FontPicker;

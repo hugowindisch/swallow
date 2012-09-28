@@ -79,10 +79,10 @@ function StyleSettingText(config) {
         that.emit('preview', that.styleData);
     });
     children.fontFamily.on('change', function (evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
+//        evt.preventDefault();
+//        evt.stopPropagation();
         children.fontFamilyCheck.setValue(true);
-        that.styleData.family = this.getValue();
+        that.styleData.family = this.getSelectedItem();
         that.emit('change', that.styleData);
     });
     children.fontFamilyCheck.on('change', function (v) {
@@ -123,13 +123,17 @@ StyleSettingText.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
 };
 StyleSettingText.prototype.setStyleData = function (st) {
-    var children = this.children;
+    var children = this.children,
+        genericFamilies = [ 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace' ];
     this.styleData = apply({}, st);
 
     this.fontWeight.setSelectedValue(this.styleData.weight);
     this.textAlign.setSelectedValue(this.styleData.align);
     children.fontSize.setValue(this.styleData.size);
-    children.fontFamily.setValue(this.styleData.family || '');
+
+    children.fontFamily.setItems(genericFamilies);
+    children.fontFamily.setSelectedItem(this.styleData.family);
+
     children.fontFamilyCheck.setValue(this.styleData.family !== undefined);
     children.color.setValue(st.color || { r: 0, g: 0, b: 0, a: 1});
 

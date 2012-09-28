@@ -1,5 +1,5 @@
 /**
-    imagepicker.js
+    fontpicker.js
     Copyright (C) 2012 Hugo Windisch
 
     Permission is hereby granted, free of charge, to any person obtaining a
@@ -25,23 +25,26 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
     ListBox = require('./listbox').ListBox,
+    Label = require('./label').Label,
     isFunction = utils.isFunction;
 
-function ImagePicker(config) {
-    ListBox.call(this, config);
+function FontPicker(config) {
+    domvisual.DOMElement.call(this, config);
+    this.setOverflow([ 'hidden', 'auto']);
+    this.setStyle('bg');
 }
 
-ImagePicker.prototype = new ListBox();
+FontPicker.prototype = new ListBox();
 
-ImagePicker.prototype.getActiveTheme = visual.getGetActiveTheme(
+FontPicker.prototype.getActiveTheme = visual.getGetActiveTheme(
     'baseui',
-    'ImagePicker'
+    'FontPicker'
 );
 
-ImagePicker.prototype.getDescription = function () {
+FontPicker.prototype.getDescription = function () {
     return "An image selection box";
 };
-ImagePicker.prototype.theme = new (visual.Theme)({
+FontPicker.prototype.theme = new (visual.Theme)({
     bg: {
         basedOn: [
             // take the line styles from here
@@ -74,46 +77,23 @@ ImagePicker.prototype.theme = new (visual.Theme)({
     }
 });
 
-ImagePicker.prototype.setUrls = function (urls) {
-    this.setItems(urls);
-    return this;
-};
+FontPicker.prototype.createViewer = function (item) {
+    var cell;
+    cell = new domvisual.DOMElement({innerText: item});
+    cell.setHtmlFlowing({
+        width: this.dimensions[0] + 'px',
+        height: 25 + 'px',
+        display: 'block',
+        whiteSpace: 'nowrap'
+    });
 
-ImagePicker.prototype.setSelectedUrl = function (url) {
-    this.setSelectedItem(url);
-    return this;
-};
-ImagePicker.prototype.getSelectedUrl = function () {
-    return this.getSelectedItem();
-};
-
-ImagePicker.prototype.getConfigurationSheet = function () {
-    return { urls: {} };
-};
-
-ImagePicker.prototype.createViewer = function (item) {
-    var vert = 40, cell;
-    function onLoad() {
-        var imageDimensions = this.getComputedDimensions();
-        this.setHtmlFlowing({
-            width: (vert * imageDimensions[0] / imageDimensions[1]) + 'px',
-            height: vert + 'px',
-            display: 'inline-block',
-            whiteSpace: 'nowrap'
-        });
-    }
-
-    cell = new (domvisual.DOMImg)({url: item});
-    cell.setDimensions([20, 20, 0]
-    ).once('load', onLoad);
-
+    cell.setStyleAttributes({fontFamily: item});
     cell.showSelectionBox = function (selected) {
         this.setStyle(selected ? 'imageSelected' : 'image');
         return this;
     };
-
     return cell;
 };
 
 
-exports.ImagePicker = ImagePicker;
+exports.FontPicker = FontPicker;

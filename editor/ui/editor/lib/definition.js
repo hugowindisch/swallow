@@ -1978,7 +1978,7 @@ exports.definition = {
             }
         },
         StyleSettingText: {
-            dimensions: [340, 360, 1],
+            dimensions: [340, 400, 1],
             positions: {
                 label: {
                     order: 0,
@@ -1997,7 +1997,7 @@ exports.definition = {
                 },
                 fontFamily: {
                     order: 0,
-                    matrix: [ 120, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   65, 30, 0, 1],
+                    matrix: [ 240, 0, 0, 0,  0, 100, 0, 0,  0, 0, 1, 0,   65, 30, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 fontFamilyCheck: {
@@ -2007,74 +2007,74 @@ exports.definition = {
                 },
                 fontSize: {
                     order: 0,
-                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 60, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 135, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 fontWeightLabel: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 90, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 165, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 fontWeightNormal: {
                     order: 0,
-                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   65, 90, 0, 1],
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   65, 165, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 fontWeightBold: {
                     order: 0,
-                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 90, 0, 1],
+                    matrix: [ 47, 0, 0, 0,  0, 20, 0, 0,  0, 0, 1, 0,   115, 165, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 fontWeightCheck: {
                     order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 90, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 165, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
                 textAlignLabel: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 120, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 195, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 textAlignLeft: {
                     order: 0,
-                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   65, 120, 0, 1],
+                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   65, 195, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 textAlignRight: {
                     order: 0,
-                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   95, 120, 0, 1],
+                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   95, 195, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 textAlignCenter: {
                     order: 0,
-                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   135, 120, 0, 1],
+                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   135, 195, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 textAlignJustify: {
                     order: 0,
-                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   165, 120, 0, 1],
+                    matrix: [ 23, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   165, 195, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
                 textAlignCheck: {
                     order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 120, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 195, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 colorLabel: {
                     order: 0,
-                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 150, 0, 1],
+                    matrix: [ 60, 0, 0, 0,  0, 25, 0, 0,  0, 0, 1, 0,   0, 225, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 colorCheck: {
                     order: 0,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 150, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   316, 225, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 color: {
                     order: 0,
-                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 180, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 160, 0, 0,  0, 0, 1, 0,   0, 250, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -2106,7 +2106,7 @@ exports.definition = {
                 },
                 fontFamily: {
                     factory: "baseui",
-                    type: "Input",
+                    type: "FontPicker",
                     config: {
                         position: "fontFamily"
                     }
