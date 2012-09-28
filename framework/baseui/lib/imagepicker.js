@@ -24,6 +24,7 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
+    ListBox = require('./listbox').ListBox,
     isFunction = utils.isFunction;
 
 function ImagePicker(config) {
@@ -32,7 +33,7 @@ function ImagePicker(config) {
     this.setStyle('bg');
 }
 
-ImagePicker.prototype = new (domvisual.DOMElement)();
+ImagePicker.prototype = new ListBox();
 
 ImagePicker.prototype.getActiveTheme = visual.getGetActiveTheme(
     'baseui',
@@ -76,66 +77,24 @@ ImagePicker.prototype.theme = new (visual.Theme)({
 });
 
 ImagePicker.prototype.setUrls = function (urls) {
-    if (this.imageUrls !== urls) {
-        this.imageUrls = urls;
-        this.selected = null;
-        this.updateChildren();
-    }
+    this.setItems(urls);
     return this;
 };
 
 ImagePicker.prototype.setSelectedUrl = function (url) {
-    var i,
-        imageUrls = this.imageUrls,
-        l = imageUrls.length,
-        sel = null;
-    for (i = 0; i < l; i += 1) {
-        if (imageUrls[i] === url) {
-            sel = i;
-            break;
-        }
-    }
-    this.select(sel);
+    this.setSelectedItem(url);
     return this;
 };
-ImagePicker.prototype.getSelectedUrl = function (url) {
-    if (this.selected !== null) {
-        return this.imageUrls[this.selected];
-    }
-    return null;
+ImagePicker.prototype.getSelectedUrl = function () {
+    return this.getSelectedItem();
 };
 
 ImagePicker.prototype.getConfigurationSheet = function () {
     return { urls: {} };
 };
 
-ImagePicker.prototype.select = function (n) {
-    if (this.selected !== n) {
-        if (this.selected !== null) {
-            this.cells[this.selected].setStyle('image');
-        }
-        this.selected = n;
-        if (this.selected !== null) {
-            this.cells[this.selected].setStyle('imageSelected');
-        }
-    }
-    return this;
-};
-
-ImagePicker.prototype.updateChildren = function () {
-    var urls = this.imageUrls,
-        i,
-        l = urls.length,
-        url,
-        c,
-        container,
-        cell,
-        vert = 40,
-        that = this;
-    this.cells = [];
-    this.removeAllChildren();
-    container = this.addHtmlChild('div', '', null);
-
+ImagePicker.prototype.createViewer = function (item) {
+    var vert = 40, cell;
     function onLoad() {
         var imageDimensions = this.getComputedDimensions();
         this.setHtmlFlowing({
@@ -145,28 +104,17 @@ ImagePicker.prototype.updateChildren = function () {
             whiteSpace: 'nowrap'
         });
     }
-    function getOnClick(n) {
-        return function () {
-            if (that.selected !== n) {
-                that.select(n);
-            } else {
-                that.select(null);
-            }
-            that.emit('change', that.getSelectedUrl());
-        };
-    }
-    for (i = 0; i < l; i += 1) {
-        url = urls[i];
-        cell = new (domvisual.DOMImg)({url: url});
-        this.cells.push(cell);
-        cell.setStyle('image'
-        ).setDimensions([20, 20, 0]
-        ).once('load', onLoad
-        ).on('click', getOnClick(i)
-        ).setCursor('pointer');
-        container.addChild(cell);
-    }
-    return this;
+
+    cell = new (domvisual.DOMImg)({url: item});
+    cell.setDimensions([20, 20, 0]
+    ).once('load', onLoad);
+
+    cell.showSelectionBox = function (selected) {
+        this.setStyle(selected ? 'imageSelected' : 'image');
+        return this;
+    };
+
+    return cell;
 };
 
 
