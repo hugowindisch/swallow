@@ -215,11 +215,11 @@ VisualList.prototype.init = function (editor) {
     var viewer = editor.getViewer(),
         container = this.parent,
         that = this,
-        editorConfig = editor.getEditorConfig();
+        editConfig = editor.getEditConfig();
     this.editor = editor;
     this.alwaysShow = {};
-    if (editorConfig.alwaysShowPackage) {
-        forEach(editorConfig.alwaysShowPackage, function (show) {
+    if (editConfig.alwaysShowPackage) {
+        forEach(editConfig.alwaysShowPackage, function (show) {
             that.alwaysShow[show] = true;
         });
     }

@@ -93,9 +93,9 @@ function Editor(config) {
     // once the config is loaded, init the plugins and the panel
     this.loadConfig(function (err, config) {
         if (!err) {
-            that.editorConfig = config;
+            that.editConfig = config;
         } else {
-            that.editorConfig = {};
+            that.editConfig = {};
         }
         // init the plugins
         that.initPlugins(defaultPlugins);
@@ -140,8 +140,8 @@ Editor.prototype.loadConfig = function (cb) {
         });
     });
 };
-Editor.prototype.getEditorConfig = function () {
-    return this.editorConfig;
+Editor.prototype.getEditConfig = function () {
+    return this.editConfig;
 };
 Editor.prototype.getDocInfo = function () {
     var sg = this.selectedGroup,

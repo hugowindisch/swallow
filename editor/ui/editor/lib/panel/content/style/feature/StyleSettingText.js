@@ -24,7 +24,8 @@ var visual = require('visual'),
     groups = require('/editor/lib/definition').definition.groups,
     ImageOption = require('/editor/lib/panel/ImageOption').ImageOption,
     utils = require('utils'),
-    apply = utils.apply;
+    apply = utils.apply,
+    genericFamilies = [ 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace' ];
 
 function StyleSettingText(config) {
     // call the baseclass
@@ -122,16 +123,20 @@ StyleSettingText.prototype.getConfigurationSheet = function () {
 StyleSettingText.prototype.setLabel = function (txt) {
     this.children.label.setText(txt);
 };
+StyleSettingText.prototype.setEditor = function (editor) {
+    this.editor = editor;
+};
+
 StyleSettingText.prototype.setStyleData = function (st) {
     var children = this.children,
-        genericFamilies = [ 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace' ];
+        families = this.editor.editConfig.fonts || genericFamilies;
     this.styleData = apply({}, st);
 
     this.fontWeight.setSelectedValue(this.styleData.weight);
     this.textAlign.setSelectedValue(this.styleData.align);
     children.fontSize.setValue(this.styleData.size);
 
-    children.fontFamily.setItems(genericFamilies);
+    children.fontFamily.setItems(families);
     children.fontFamily.setSelectedItem(this.styleData.family);
 
     children.fontFamilyCheck.setValue(this.styleData.family !== undefined);
