@@ -79,7 +79,8 @@ function generateVisualComponentHtml(
         jquery: options.jquery ? path.basename(options.jquery) : null,
         monitor: monitor,
         icon: icon,
-        title: title
+        title: title,
+        fonts: options.fonts || []
     });
 }
 

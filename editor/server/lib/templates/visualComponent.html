@@ -7,13 +7,16 @@
     <meta name="viewport" content = "width = device-width, initial-scale = 1, user-scalable = no" />
     <meta name="apple-touch-fullscreen" content="yes" />
 {{each css}}    <link rel="stylesheet" type="text/css" href="${$value}">
-
-
 {{/each}}
-{{if icon}}
-                <link rel="icon" href="${icon}">
-                <link rel="apple-touch-icon" href="${icon}"/>
-{{/if}}
+{{if icon}}    <link rel="icon" href="${icon}">
+    <link rel="apple-touch-icon" href="${icon}"/>{{/if}}
+    <style>
+{{each fonts}}        @font-face {
+            font-family: ${$value.family};
+            src: url('${$value.url}');
+        }
+{{/each}}
+    </style>
     <script src = "pillow.js"></script>
 {{each dependencies}}    <script src = "${$value}"></script>
 {{/each}}
@@ -21,12 +24,10 @@
         window.onload = function () {
             var pillow = define.pillow,
                 require = pillow.makeRequire(pillow.createApplicationDomain(), '');
-
 {{if jquery}}
             pillow.supportJQuery(require);
 {{/if}}
             new (require('${factory}').${type})().runFullScreen();
-
 {{if monitor}}
             // monitoring will reload the app on any change
             (function () {
