@@ -220,6 +220,8 @@ exports.getMiddleWare = function (options) {
     return pillow.getMiddleWare(getUrls(true), options);
 };
 
+exports.makeAndGenerateHtml = servevisualcomponent.makeAndGenerateHtml;
+
 // allow this file to be executed directly
 if (process.argv[1] === __filename) {
     exports.run();
