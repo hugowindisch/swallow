@@ -320,6 +320,75 @@ function styleConfig(labelTxt) {
     return sc;
 }
 
+/**
+* Returns a style config element (that can be used in getConfigurationSheet to
+* edit a style).
+* @param {String} label The label that should be used.
+* @returns A function that will let the editor create the appropriate input element
+* @memberOf config
+*/
+function skinningConfig(labelTxt, styles) {
+    function sc(mainEditor, cb) {
+        // intentionally here
+        var domvisual = require('domvisual'),
+            visual = require('visual'),
+            baseui = require('baseui'),
+            e = require('editor'); // obviously loaded
+
+        function create() {
+            var cnt, editor,
+                lineWidth = 360, labelHeight = 25,
+                cdim;
+            function domChanged() {
+                var dim = editor.getComputedDimensions();
+                if (!cdim || cdim[0] !== dim[0] || cdim[1] !== dim[1]) {
+                    cdim = dim;
+                    cnt.requestDimensions(
+                        [lineWidth, labelHeight + cdim[1], 1]
+                    );
+                }
+            }
+            // create the graphic elements that we need
+            cnt = new (domvisual.DOMElement)({});
+            editor = new (e.Skinning)({
+                editor: mainEditor,
+                eventHandlers: {
+                    'domchanged': domChanged
+                }
+            });
+
+            cnt.addChild(editor, 'data');
+            editor.on('change', function (data) {
+                cnt.emit('change', data);
+            });
+            cnt.setData = function (txt) {
+                //editor.setThemeToSkin(txt);
+            };
+            cnt.getData = function () {
+                // NOTE: this is because the skinning config does not really
+                // affect the component directly...
+                return null; //editor.getData();
+            };
+            editor.setMatrix(
+                [ 1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  5, labelHeight, 0, 1]
+            );
+            editor.setStyleList(styles);
+            cb(null, cnt);
+        }
+        create();
+    }
+    // this lets the editor identify that this config element has some style
+    // references (names) that must be updated when some styles are removed
+    // or renamed
+    sc.getStylesFromData = function (data) {
+        return { main: data };
+    };
+    sc.updateDataFromStyles = function (data, styles) {
+        return styles.main;
+    };
+    return sc;
+}
+
 
 /**
 * Returns a style config element (that can be used in getConfigurationSheet to
@@ -456,5 +525,6 @@ exports.booleanConfig = booleanConfig;
 exports.inputConfigFullLine = inputConfigFullLine;
 exports.imageUrlConfig = imageUrlConfig;
 exports.styleConfig = styleConfig;
+exports.skinningConfig = skinningConfig;
 exports.styleSheetConfig = styleSheetConfig;
 exports.formattedTextConfig = formattedTextConfig;

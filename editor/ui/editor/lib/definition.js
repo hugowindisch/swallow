@@ -2795,6 +2795,42 @@ exports.definition = {
                 }
             }
         },
+        Skinning: {
+            dimensions: [360, 1200, 0],
+            positions: {
+                stylePicker : {
+                    order: 4,
+                    matrix: [ 340, 0, 0, 0,   0, 20, 0, 0,   0, 0, 1, 0,   10, 700, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleHeading: {
+                    order: 1,
+                    matrix: [ 360, 0, 0, 0,  0, 200, 0, 0,  0, 0, 1, 0,   0, 0, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                styleEdit : {
+                    order: 2,
+                    matrix: [ 340, 0, 0, 0,  0, 10, 0, 0,  0, 0, 1, 0,   5, 140, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                }
+            },
+            children: {
+                stylingHeading : {
+                    factory: 'editor',
+                    type: 'StylingHeading',
+                    config: {
+                        position: null
+                    }
+                },
+                stylePicker: {
+                    factory: 'editor',
+                    type: 'StylePicker',
+                    config: {
+                        position: null
+                    }
+                }
+            }
+        },
         EmptyPosition: {
             dimensions: [100, 100, 0],
             positions: {

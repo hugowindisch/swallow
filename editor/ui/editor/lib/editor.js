@@ -442,6 +442,7 @@ exports.RotationBox = require('./viewer/RotationBox').RotationBox;
 exports.Layering = require('./panel/layering/Layering').Layering;
 exports.LayerInfo = require('./panel/layering/LayerInfo').LayerInfo;
 exports.Styling = require('./panel/content/style/Styling').Styling;
+exports.Skinning = require('./panel/content/style/Skinning').Skinning;
 exports.StylingHeading = require('./panel/content/style/StylingHeading').StylingHeading;
 exports.StyleName = require('./panel/content/style/StyleName').StyleName;
 exports.StyleInfo = require('./panel/content/style/StyleInfo').StyleInfo;
