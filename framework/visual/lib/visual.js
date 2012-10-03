@@ -322,7 +322,7 @@ Visual.prototype.getDimensionsAdjustedForContent = function () {
 */
 Visual.prototype.setMatrix = function (m4) {
     if (!(isObject(m4) || isArray(m4))) {
-        throw new Error('Invalid matrix type ' + typeof(m4));
+        throw new Error('Invalid matrix type ' + (typeof m4));
     }
     if (m4 !== this.matrix) {
         this.matrix = m4;
@@ -1205,6 +1205,25 @@ function getGetActiveTheme(factoryName, typeName) {
 }
 
 /**
+* Returns a style list from a theme
+*/
+function getStyleListFromTheme(t, packageName, className) {
+    var ret = [],
+        utils = require('utils'),
+        forEachProperty = utils.forEachProperty;
+
+    forEachProperty(t.themeData, function (d, k) {
+        ret.push({
+            factory: packageName,
+            type: className,
+            style: k
+        });
+    });
+    return ret;
+}
+
+
+/**
 * Creates a prototype for a subclass of a visual element.
 * @param {String} Base the baseclass
 * @param {Object} groupData the editor data for this component.
@@ -1229,6 +1248,9 @@ function inheritVisual(Base, groupData, factoryName, typeName) {
     proto.privateVisual = groupData.privateVisual;
     proto.getDescription = function () {
         return groupData.description;
+    };
+    proto.getStyleListFromTheme = function () {
+        return getStyleListFromTheme(proto.theme, factoryName, typeName);
     };
     // for legacy reasons, we support not providing the typenames
     // in this case, skinning will not work
