@@ -1583,3 +1583,4 @@ exports.styleToCss = styleToCss;
 exports.hasTextAttributes = styles.hasTextAttributes;
 exports.makeKeyString = keycodes.makeKeyString;
 exports.decorateVk = keycodes.decorateVk;
+exports.getStage = getStage;
