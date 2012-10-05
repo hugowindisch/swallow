@@ -96,7 +96,9 @@ jqtpl.template(
 // FIXME: maybe there is a normal (non convoluted) way of dealing with
 // the drain thing (I think that there is a problem if you neglect the
 // return code from write and the drain event)
+// FIXME: This whole thing sucks... (streaming everything would be better)
 function safeWrite(stream, d, end) {
+/*
     if (stream.queued) {
         stream.queued.push({d: d, end: end});
     } else if (stream.write(d)) {
@@ -115,6 +117,23 @@ function safeWrite(stream, d, end) {
                 safeWrite(stream, b.d, b.end);
             });
         });
+    }
+*/
+    if (!stream.absurdBuf) {
+        stream.absurdBuf = d;
+    } else {
+        stream.absurdBuf += d;
+    }
+    if (end) {
+        var absurdBuf = stream.absurdBuf;
+        delete stream.absurdBuf;
+        if (stream.write(absurdBuf)) {
+            stream.end();
+        } else {
+            stream.once('drain', function () {
+                stream.end();
+            });
+        }
     }
 }
 

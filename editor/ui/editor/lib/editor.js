@@ -55,6 +55,10 @@ function Editor(config) {
     var that = this,
         toLoad;
 
+    /// hack for allowing components to disable some animations when
+    // running in the editor (seems like the less evil way of doing it as
+    // I write it but... quite ugly anyway)
+    domvisual.getStage().isSwallowEditor = true;
     // keep track of the loaded groups
     this.groups = {
     };
