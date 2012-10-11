@@ -24,6 +24,8 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
+    forEachProperty = utils.forEachProperty,
+    forEach = utils.forEach,
     isFunction = utils.isFunction;
 
 function ListBox(config) {
@@ -107,7 +109,7 @@ ListBox.prototype.createViewer = function (item) {
 ListBox.prototype.setItems = function (items, createViewer) {
     if (this.items !== items) {
         this.items = items;
-        this.selected = null;
+        this.selected = {};
         if (createViewer) {
             this.createViewer = createViewer;
         } else {
@@ -118,24 +120,56 @@ ListBox.prototype.setItems = function (items, createViewer) {
     return this;
 };
 
-ListBox.prototype.setSelectedItem = function (item) {
-    var i,
-        items = this.items,
-        l = items.length,
-        sel = null;
-    for (i = 0; i < l; i += 1) {
-        if (items[i] === item) {
-            sel = i;
-            break;
+ListBox.prototype.findItem = function (item) {
+    var ret = null;
+    forEach(this.items, function (v, n) {
+        if (v === item) {
+            ret = n;
+            return true;
         }
-    }
-    this.select(sel);
+    });
+    return ret;
+};
+ListBox.prototype.setSelectedItem = function (item) {
+    this.select(this.findItem(item));
     return this;
 };
 
+ListBox.prototype.setMultipleSelection = function (enable) {
+    if (enable) {
+        this.multipleSelection = enable;
+    } else {
+        delete this.multipleSelection;
+    }
+};
+ListBox.prototype.clearSelection = function () {
+    var that = this;
+    forEachProperty(this.selected, function (v, k) {
+        that.cells[k].showSelectionBox(false);
+    });
+    this.selected = {};
+    return this;
+};
+ListBox.prototype.setSelection = function (sel) {
+    var that = this;
+    this.clearSelection();
+    forEach(sel, function (s) {
+        that.select(that.findItem(s));
+    });
+    return this;
+};
+ListBox.prototype.getSelection = function () {
+    var ret = [],
+        that = this;
+    forEachProperty(this.selected, function (v, k) {
+        ret.push(that.items[k]);
+    });
+    return ret;
+};
 ListBox.prototype.getSelectedItem = function () {
-    if (this.selected !== null) {
-        return this.items[this.selected];
+    var sel = this.getSelection();
+    if (sel.length === 1) {
+        return sel[0];
     }
     return null;
 };
@@ -145,14 +179,18 @@ ListBox.prototype.getConfigurationSheet = function () {
 };
 
 ListBox.prototype.select = function (n) {
-    if (this.selected !== n) {
-        if (this.selected !== null) {
-            this.cells[this.selected].showSelectionBox(false);
+    var that = this;
+    if (this.selected[n]) {
+        delete this.selected[n];
+        this.cells[n].showSelectionBox(false);
+    } else {
+        // no multiple selection? clear any possible selection
+        if (!this.multipleSelection) {
+            that.clearSelection();
         }
-        this.selected = n;
-        if (this.selected !== null) {
-            this.cells[this.selected].showSelectionBox(true);
-        }
+        // select the new thing
+        this.selected[n] = true;
+        this.cells[n].showSelectionBox(true);
     }
     return this;
 };
@@ -172,11 +210,7 @@ ListBox.prototype.updateChildren = function () {
 
     function getOnClick(n) {
         return function () {
-            if (that.selected !== n) {
-                that.select(n);
-            } else {
-                that.select(null);
-            }
+            that.select(n);
             that.emit('change', that.getSelectedItem());
         };
     }

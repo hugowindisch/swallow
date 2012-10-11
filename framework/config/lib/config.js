@@ -519,11 +519,61 @@ function imageUrlConfig(label) {
     };
 }
 
+/**
+* Returns an image config element (that can be used in getConfigurationSheet to
+* edit an image).
+* @param {String} label The label that should be used.
+* @returns A function that will let the editor create the appropriate input element
+* @memberOf config
+*/
+function imageUrlArrayConfig(label) {
+    return function (editor, cb) {
+        var editorInfo = editor.getDocInfo();
+
+        topBottomConfig(
+            label,
+            'baseui',
+            'UploadImagePicker',
+            {
+                uploadUrl: '/swallow/package/' + editorInfo.factory + '/uploadassets',
+                downloadUrl: '/swallow/package/' + editorInfo.factory + '/image',
+                multipleSelection: true
+            },
+            360,
+            200,
+            25,
+            function (err, ctrl) {
+                var picker = ctrl.children.data;
+                if (err) {
+                    return cb(err);
+                }
+                // we should setup the editor that we got,
+                // to add set data and get data and notification
+                ctrl.setData = function (txt) {
+                    picker.setSelection(txt);
+                };
+                ctrl.getData = function () {
+                    return picker.getSelection();
+                };
+                picker.on('change', function (sel) {
+                    ctrl.emit('change', sel);
+                });
+                // download
+                picker.download(function (err) {
+                    cb(err, ctrl);
+                });
+            }
+        );
+    };
+}
+
+
 exports.leftRightConfig = leftRightConfig;
 exports.inputConfig = inputConfig;
 exports.booleanConfig = booleanConfig;
 exports.inputConfigFullLine = inputConfigFullLine;
 exports.imageUrlConfig = imageUrlConfig;
+exports.imageUrlArrayConfig = imageUrlArrayConfig;
 exports.styleConfig = styleConfig;
 exports.skinningConfig = skinningConfig;
 exports.styleSheetConfig = styleSheetConfig;

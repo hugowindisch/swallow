@@ -135,9 +135,20 @@ UploadImagePicker.prototype.getDescription = function () {
 UploadImagePicker.prototype.setUrls = function (urls) {
     return this.getChild('picker').setUrls(urls);
 };
-
+UploadImagePicker.prototype.setMultipleSelection = function (ms) {
+    this.getChild('picker').setMultipleSelection(ms);
+    return this;
+};
+UploadImagePicker.prototype.getSelection = function () {
+    return this.getChild('picker').getSelection();
+};
+UploadImagePicker.prototype.setSelection = function (s) {
+    this.getChild('picker').setSelection(s);
+    return this;
+};
 UploadImagePicker.prototype.setSelectedUrl = function (url) {
-    return this.getChild('picker').setSelectedUrl(url);
+    this.getChild('picker').setSelectedUrl(url);
+    return this;
 };
 UploadImagePicker.prototype.getSelectedUrl = function (url) {
     return this.getChild('picker').getSelectedUrl(url);
