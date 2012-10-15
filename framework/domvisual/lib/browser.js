@@ -29,7 +29,7 @@ if (ua.indexOf("AppleWebKit") !== -1) {
     browser = 'AppleWebKit';
     preferences = {
         allow3D: false,
-        preferMatrixPositioning: true
+        preferMatrixPositioning: false
     };
 } else if (ua.indexOf("MSIE") !== -1) {
     browser = 'MSIE';

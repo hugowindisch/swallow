@@ -198,6 +198,7 @@ DOMVisual.prototype.enableInteractions = function (enable) {
             return true;
         }
     });
+    return this;
 };
 
 /**
@@ -231,6 +232,7 @@ DOMVisual.prototype.clearClass = function (cssClassName) {
         delete this.cssClasses[cssClassName];
         setDirty(this, 'style');
     }
+    return this;
 };
 
 /*
@@ -415,6 +417,7 @@ DOMVisual.prototype.clearTransition = function () {
     // remove the transition
     delete this.transition;
     this.updateTransitionRepresentation();
+    return this;
 };
 
 /**
