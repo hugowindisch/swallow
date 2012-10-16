@@ -1022,10 +1022,9 @@ exports.createVisual = createVisual;
 function getStage() {
     var topMost;
     if (!theStage) {
-        topMost = document.createElement('div');
-        document.getElementsByTagName('body')[0].appendChild(topMost);
+        topMost = document.getElementsByTagName('body')[0];
+        topMost.style.margin = '0px';
         theStage = createStage(topMost);
-
     }
     return theStage;
 }
