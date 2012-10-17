@@ -574,6 +574,7 @@ Visual.prototype.addChild = function (child, name, atOptionalOrder) {
     setContainmentDepth(child, this.containmentDepth + 1);
     // immediately redimension this child
     this.applyLayout(child);
+    child.emit('added');
     return this;
 };
 
@@ -641,6 +642,7 @@ Visual.prototype.removeChild = function (child, unsafeBreakContainer) {
             }
         });
     }
+    child.emit('removed');
     return this;
 };
 
