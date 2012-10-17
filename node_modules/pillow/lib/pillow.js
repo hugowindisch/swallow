@@ -292,7 +292,6 @@ define.pillow = {
         optionalApplicationDomain = optionalApplicationDomain ||
             this.getTopmostDomain();
         var script,
-            body,
             that = this,
             // this will only find a loaded package
             loadedPack = this.findPackage(
@@ -330,8 +329,7 @@ define.pillow = {
             pack = this.ensurePackage(packageName);
             pack.loading = [cb];
             script = document.createElement('script');
-            body = document.getElementsByTagName('body')[0];
-            body.appendChild(script);
+            document.documentElement.appendChild(script);
             script.src = packageName +
                 '/' +
                 packageName +
