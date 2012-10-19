@@ -935,7 +935,6 @@ function createStage(inElement) {
         );
     }
 
-    inElement.innerHTML = '';
     inElement.style.overflow = 'hidden';
     viz.setLayout(
         {
