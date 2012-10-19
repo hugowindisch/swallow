@@ -180,7 +180,7 @@ VisualList.prototype.addVisualInfo = function (factory, type) {
 
 VisualList.prototype.updateVisualList = function () {
     var editor = this.editor,
-        packageManager = editor.getDependencyManager(),
+        packageManager = editor.getViewer().getDependencyManager(),
         visualList = packageManager.getVisualList(),
         alwaysShow = this.alwaysShow,
         choices = this.children.choices,
@@ -247,7 +247,7 @@ VisualList.prototype.init = function (editor) {
     }
 
     // change in the dependency manager
-    editor.getDependencyManager().on('change', function (visualList, packages, typeInfo) {
+    editor.getViewer().getDependencyManager().on('change', function (visualList, packages, typeInfo) {
         var docInfo = editor.getDocInfo();
         if (!typeInfo || docInfo === null || typeInfo.factory !== docInfo.factory || typeInfo.type !== docInfo.type) {
             fullUpdate();
@@ -269,7 +269,7 @@ VisualList.prototype.init = function (editor) {
 
 VisualList.prototype.initFactories = function () {
     var editor = this.editor,
-        packageManager = editor.getDependencyManager(),
+        packageManager = editor.getViewer().getDependencyManager(),
         visualList = packageManager.getVisualList(),
         factArray = [],
         alwaysShow = this.alwaysShow || {};

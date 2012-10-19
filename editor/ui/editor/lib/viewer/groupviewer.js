@@ -37,6 +37,7 @@ var visual = require('visual'),
     mat4 = glmatrix.mat4,
     EmptyPosition = require('./EmptyPosition').EmptyPosition,
     convertScaleToSize = visual.convertScaleToSize,
+    DependencyManager = require('depmanager').DependencyManager,
     apply = utils.apply;
 
 /**
@@ -70,6 +71,17 @@ function encloses(r1, r2) {
 
 function GroupViewer(config) {
     var that = this;
+    // create the dependency manager
+    this.dependencyManager = new DependencyManager();
+    this.dependencyManager.loadVisualList();
+    this.dependencyManager.on('change', function (visualList, packages, typeInfo) {
+        var group = that.group;
+        that.dependencyManagerLoaded = true;
+        if (group && group.docInfo && (!typeInfo || group.docInfo.factory !== typeInfo.factory || group.docInfo.type !== typeInfo.type)) {
+            that.fullRedraw();
+        }
+    });
+
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.GroupViewer);
     // empty box by default
@@ -178,6 +190,13 @@ GroupViewer.prototype.theme = new (visual.Theme)({
         ]
     }
 });
+
+/**
+    Set the dependency manager.
+*/
+GroupViewer.prototype.getDependencyManager = function () {
+    return this.dependencyManager;
+};
 
 /**
     Toogle from the scale box to the rotation box, to whatever box we may
@@ -569,7 +588,7 @@ GroupViewer.prototype.zoom100 = function () {
     Adjust the zoom to the current grid.
 */
 GroupViewer.prototype.adjustZoomToGridSize = GroupViewer.prototype.fullRedraw = function () {
-    if (this.group) {
+    if (this.group && this.dependencyManagerLoaded) {
         var gridSize = this.group.documentData.gridSize,
             zoomStack = this.zoomStack,
             zoom = zoomStack[zoomStack.length - 1],
@@ -1320,7 +1339,7 @@ To display something in model coordinates in the visuals layer, there is nothing
 
 */
 GroupViewer.prototype.updateAll = function () {
-    if (!this.documentData) {
+    if (!this.documentData || !this.dependencyManagerLoaded) {
         return;
     }
     var documentData = this.documentData,

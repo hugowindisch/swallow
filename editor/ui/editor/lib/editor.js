@@ -41,7 +41,6 @@ var visual = require('visual'),
     forEach = utils.forEach,
     groups = require('./definition').definition.groups,
     MenuItem = baseui.MenuItem,
-    DependencyManager = require('depmanager').DependencyManager,
     defaultPlugins = [
         require('./plugin/select').setup
     ];
@@ -62,22 +61,9 @@ function Editor(config) {
     // keep track of the loaded groups
     this.groups = {
     };
-    // create the dependency manager
-    this.dependencyManager = new DependencyManager();
-    this.dependencyManager.loadVisualList();
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Editor);
     this.setStyle('background').setOverflow('hidden');
-    // FIXME
-    // a bit sideways... maybe the groupviewer should hook itself directly
-    // to the editor
-    this.dependencyManager.on('change', function (visualList, packages, typeInfo) {
-        var di = that.getDocInfo();
-        that.dependencyManagerLoaded = true;
-        if (di && (!typeInfo || typeInfo.factory !== di.factory || typeInfo.type !== di.type)) {
-            that.getChild('viewer').fullRedraw();
-        }
-    });
     function loadLocation() {
         var factory, type;
         if (window.location.hash) {
@@ -352,9 +338,7 @@ Editor.prototype.selectGroup = function (group) {
         this.selectedGroup = group;
         var viewer = this.getChild('viewer');
         viewer.setGroup(group);
-        if (this.dependencyManagerLoaded) {
-            viewer.fullRedraw();
-        }
+        viewer.fullRedraw();
     }
 };
 
@@ -423,13 +407,6 @@ Editor.prototype.getViewer = function () {
 */
 Editor.prototype.getToolbox = function () {
     return this.children.toolbox;
-};
-
-/**
-    Returns the dependency manager.
-*/
-Editor.prototype.getDependencyManager = function () {
-    return this.dependencyManager;
 };
 
 exports.Editor = Editor;

@@ -319,7 +319,7 @@ Styling.prototype.computeNonLocalStyleList = function () {
         docInfo = editor.getDocInfo(),
         factory = docInfo.factory,
         type = docInfo.type,
-        sl = editor.getDependencyManager().getStyleList(),
+        sl = editor.getViewer().getDependencyManager().getStyleList(),
         filteredSl = [];
 
     // here we must remove the local styles from the stylelist
