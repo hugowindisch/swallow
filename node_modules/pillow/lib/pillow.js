@@ -329,7 +329,7 @@ define.pillow = {
             pack = this.ensurePackage(packageName);
             pack.loading = [cb];
             script = document.createElement('script');
-            document.documentElement.appendChild(script);
+            document.getElementsByTagName('head')[0].appendChild(script);
             script.src = packageName +
                 '/' +
                 packageName +
