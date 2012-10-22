@@ -188,9 +188,11 @@ ListBox.prototype.select = function (n) {
         if (!this.multipleSelection) {
             that.clearSelection();
         }
-        // select the new thing
-        this.selected[n] = true;
-        this.cells[n].showSelectionBox(true);
+        if (n !== undefined && n !== null) {
+            // select the new thing
+            this.selected[n] = true;
+            this.cells[n].showSelectionBox(true);
+        }
     }
     return this;
 };
