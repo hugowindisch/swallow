@@ -429,7 +429,8 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
         visuals = children.visuals.children || {},
         outlines = children.outlines.children || {},
         zoomMat = this.zoomMat,
-        selRect;
+        selRect,
+        ipe;
     forEachProperty(this.selection, function (s, n) {
         var vis = visuals[n],
             ol = outlines[n],
@@ -454,6 +455,9 @@ GroupViewer.prototype.previewSelectionTransformation = function (transform) {
         }
     });
     this.showLayoutAnchors(false);
+    // hide the inplace editor
+    this.previewTransformInplaceEdit(transform);
+
     // update previews
     this.emit('previewSelectionRect', this.getSelectionRect(transform));
 
@@ -956,7 +960,8 @@ GroupViewer.prototype.previewSelectionOpacity = function (opacity) {
 };
 GroupViewer.prototype.transformSelection = function (transform) {
     var group = this.group,
-        cg = this.group.cmdCommandGroup('transform', 'Transform a group');
+        cg = this.group.cmdCommandGroup('transform', 'Transform a group'),
+        ipe;
     // transform the whole selection
     forEachProperty(this.selection, function (sel, name) {
         cg.add(group.cmdTransformPosition(name, transform));
@@ -1199,23 +1204,46 @@ GroupViewer.prototype.setGroup = function (group) {
 };
 
 ////////////////////////// experimental
-
-GroupViewer.prototype.updateInplaceEdit = function () {
-    var ed,
-        group = this.group,
-        documentData = group.documentData,
-        zoomMat = mat4.create(this.zoomStack[this.zoomStack.length - 1]),
+GroupViewer.prototype.getInplaceEditTransformation = function (matrix) {
+    var zoomMat = mat4.create(this.zoomStack[this.zoomStack.length - 1]),
         zoomMatNoTranslate = mat4.create(zoomMat),
-        selName = this.getSelectedName(),
         borderPix = this.groupBorderPix,
+        res;
+    // compute the appropriate matrix
+    zoomMatNoTranslate[12] = 0;
+    zoomMatNoTranslate[13] = 0;
+    zoomMatNoTranslate[14] = 0;
+    res = convertScaleToSize(matrix);
+    res.matrix[12] += borderPix;
+    res.matrix[13] += borderPix;
+    mat4.multiply(zoomMatNoTranslate, res.matrix, res.matrix);
+    return res;
+};
+GroupViewer.prototype.previewTransformInplaceEdit = function (transform) {
+    var ipe = this.getChild('inplaceEditor'),
+        group,
+        documentData,
+        mat,
+        res;
+    if (ipe && this.inplaceEditName) {
+        group = this.group;
+        documentData = group.documentData;
+        mat = documentData.positions[this.inplaceEditName].matrix;
+        res = this.getInplaceEditTransformation(mat4.multiply(transform, mat, mat4.create()));
+        ipe.setMatrix(res.matrix);
+        ipe.setDimensions(res.dimensions);
+    }
+};
+GroupViewer.prototype.updateInplaceEdit = function () {
+    var group = this.group,
+        documentData = group.documentData,
+        selName = this.getSelectedName(),
         typeInfo,
         factory,
         Constr,
         that = this,
         ipe = this.getChild('inplaceEditor'),
-        res,
-        mat,
-        tMat;
+        res;
     if (this.getSelectionLength() !== 1) {
         // we have an inplace editor
         if (ipe) {
@@ -1229,14 +1257,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
             delete this.inplaceEditName;
         }
         // compute the appropriate matrix
-        zoomMatNoTranslate[12] = 0;
-        zoomMatNoTranslate[13] = 0;
-        zoomMatNoTranslate[14] = 0;
-        mat = mat4.create(documentData.positions[selName].matrix);
-        res = convertScaleToSize(mat);
-        res.matrix[12] += borderPix;
-        res.matrix[13] += borderPix;
-        mat4.multiply(zoomMatNoTranslate, res.matrix, res.matrix);
+        res = this.getInplaceEditTransformation(documentData.positions[selName].matrix);
         // if we still have an inplace editor at this point, we should
         // make sure that it has the appropriate matrix
         if (ipe) {

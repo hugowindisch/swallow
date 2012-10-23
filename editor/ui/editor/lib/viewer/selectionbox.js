@@ -307,7 +307,7 @@ SelectionBox.prototype.theme = new (visual.Theme)({
             backgroundColor: {
                 r: 200,
                 g: 200,
-                b: 255,
+                b: 200,
                 a: 0.75
             }
         }
