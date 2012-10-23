@@ -40,6 +40,44 @@ function SelectionBox(config) {
     this.contentMatrix[5] = this.dimensions[1];
     this.contentMatrix[10] = this.dimensions[2];
 
+    function makeDragHandler(box) {
+        box.setCursor('pointer'
+        ).on('mousedown', function (evt) {
+            var moved = false,
+                matrix = that.contentMatrix,
+                rect = that.contentRect,
+                mat = that.getFDM(),
+                startpos = that.snapPositionToGrid(mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]));
+
+            evt.preventDefault();
+            evt.stopPropagation();
+            function getMat(evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+                var endpos = that.snapPositionToGrid(mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1])),
+                    delta = vec3.subtract(endpos, startpos, vec3.create()),
+                    newmat = mat4.translate(mat4.identity(), delta);
+                return newmat;
+            }
+            box.on('mousemovec', function (evt) {
+                var newMat = getMat(evt);
+                moved = true;
+                that.updateRepresentation(mat4.multiply(newMat, matrix, mat4.create()));
+                that.emit('preview', newMat);
+
+            });
+            box.once('mouseupc', function (evt) {
+                if (moved) {
+                    that.emit('transform', getMat(evt));
+                } else {
+                    that.emit('toggle');
+                }
+                box.removeAllListeners('mousemovec');
+            });
+
+        });
+    }
+
     function makeHandler(box, fcn) {
         box.setCursor('move');
         box.on('mousedown', function (evt) {
@@ -256,8 +294,25 @@ function SelectionBox(config) {
         return getRectTransform(rect, tr);
     });
 
+    makeDragHandler(this.getChild('topDrag'));
+    makeDragHandler(this.getChild('rightDrag'));
+    makeDragHandler(this.getChild('bottomDrag'));
+    makeDragHandler(this.getChild('leftDrag'));
+
 }
 SelectionBox.prototype = new (domvisual.DOMElement)();
+SelectionBox.prototype.theme = new (visual.Theme)({
+    dragManipulator: {
+        jsData: {
+            backgroundColor: {
+                r: 200,
+                g: 200,
+                b: 255,
+                a: 0.75
+            }
+        }
+    }
+});
 SelectionBox.prototype.setContentRectAndMatrix = function (rect, matrix) {
     this.contentMatrix = matrix;
     this.contentRect = rect;

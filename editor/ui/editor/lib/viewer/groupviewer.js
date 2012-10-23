@@ -138,6 +138,9 @@ function GroupViewer(config) {
         that.previewSelectionTransformation(transform);
     }
     this.selectionScalingUI.on('preview', previewHandler);
+    this.selectionScalingUI.on('toggle', function () {
+        that.toggleSelectionControlBoxMode();
+    });
     this.selectionRotationUI.on('preview', previewHandler);
     // anchor handlers
     this.layoutAnchors.on('anchor', function (anchor) {
@@ -272,7 +275,6 @@ GroupViewer.prototype.showSelectionControlBox = function (visible) {
     selectionControlBox.setVisible(visible);
     return ret;
 };
-
 
 /**
     Shows / hides layout anchors
@@ -1196,6 +1198,70 @@ GroupViewer.prototype.setGroup = function (group) {
     this.zoom100();
 };
 
+////////////////////////// experimental
+
+GroupViewer.prototype.updateInplaceEdit = function () {
+    var ed,
+        group = this.group,
+        documentData = group.documentData,
+        zoomMat = mat4.create(this.zoomStack[this.zoomStack.length - 1]),
+        zoomMatNoTranslate = mat4.create(zoomMat),
+        selName = this.getSelectedName(),
+        borderPix = this.groupBorderPix,
+        typeInfo,
+        factory,
+        Constr,
+        that = this,
+        ipe = this.getChild('inplaceEditor'),
+        res,
+        mat,
+        tMat;
+    if (this.getSelectionLength() !== 1) {
+        // we have an inplace editor
+        if (ipe) {
+            this.removeChild(ipe);
+        }
+    } else {
+        // should we remove the current in place editor (and update the model?)
+        if (ipe && this.inplaceEditName !== selName) {
+            this.removeChild(ipe);
+            ipe = null;
+            delete this.inplaceEditName;
+        }
+        // compute the appropriate matrix
+        zoomMatNoTranslate[12] = 0;
+        zoomMatNoTranslate[13] = 0;
+        zoomMatNoTranslate[14] = 0;
+        mat = mat4.create(documentData.positions[selName].matrix);
+        res = convertScaleToSize(mat);
+        res.matrix[12] += borderPix;
+        res.matrix[13] += borderPix;
+        mat4.multiply(zoomMatNoTranslate, res.matrix, res.matrix);
+        // if we still have an inplace editor at this point, we should
+        // make sure that it has the appropriate matrix
+        if (ipe) {
+            ipe.setMatrix(res.matrix);
+            ipe.setDimensions(res.dimensions);
+        } else {
+            typeInfo = documentData.children[selName];
+            if (typeInfo) {
+                factory = require(typeInfo.factory);
+                Constr = factory[typeInfo.type];
+                // is this type inplace editable?
+                if (Constr.getInplaceEditor) {
+                    // create the inplace editor
+                    ipe = Constr.getInplaceEditor();
+                    this.addChild(ipe, 'inplaceEditor');
+                    ipe.setMatrix(res.matrix);
+                    ipe.setDimensions(res.dimensions);
+                    ipe.setStyleAttributes({ backgroundColor: { r: 255, g: 0, b: 0, a: 0.3 }});
+                    this.inplaceEditName = selName;
+                }
+            }
+        }
+    }
+};
+
 /**
     Updates the representation of the selection box.
 */
@@ -1217,6 +1283,9 @@ GroupViewer.prototype.updateSelectionControlBox = function () {
     }
 
     this.updateLayoutAnchors();
+
+    this.updateInplaceEdit();
+
     this.emit('updateSelectionControlBox', unionr);
 };
 
@@ -1407,6 +1476,5 @@ GroupViewer.prototype.updateAll = function () {
     // selection control box
     this.updateSelectionControlBox();
 };
-
 
 exports.GroupViewer = GroupViewer;

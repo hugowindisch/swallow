@@ -81,7 +81,8 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
         ymid = (ymin + ymax) / 2,
         small = 30,
         big = 40,
-        offset = 30,
+        offset = 50,
+        offsetMid = 36,
         d,
         d2,
         sb,
@@ -265,14 +266,14 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
     });
 
     sb = new SnapButton({snapping: anchors.height});
-    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmid - 9, ymin + 4, 0, 1]);
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmid - 9, ymin + 4 - offsetMid, 0, 1]);
     this.addChild(sb, 'sbHeight');
     sb.on('change', function (snapping) {
         that.emit('anchor', { height: snapping, top: 'auto', bottom: 'snap' });
     });
 
     sb = new SnapButton({snapping: anchors.height});
-    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmid - 9, ymax - 20, 0, 1]);
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmid - 9, ymax - 20 + offsetMid, 0, 1]);
     this.addChild(sb, 'sbHeightB');
     sb.on('change', function (snapping) {
         that.emit('anchor', { height: snapping, bottom: 'auto', top: 'snap' });
@@ -280,14 +281,14 @@ LayoutAnchors.prototype.setContentRect = function (cr) {
 
 
     sb = new SnapButton({snapping: anchors.width});
-    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmin + 4, ymid - 9, 0, 1]);
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmin + 4 - offsetMid, ymid - 9, 0, 1]);
     this.addChild(sb, 'sbWidth');
     sb.on('change', function (snapping) {
         that.emit('anchor', { width: snapping, left: 'auto', right: 'snap' });
     });
 
     sb = new SnapButton({snapping: anchors.width});
-    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmax - 20, ymid - 9, 0, 1]);
+    sb.setMatrix([1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  xmax - 20 + offsetMid, ymid - 9, 0, 1]);
     this.addChild(sb, 'sbWidthR');
     sb.on('change', function (snapping) {
         that.emit('anchor', { width: snapping, right: 'auto', left: 'snap' });
