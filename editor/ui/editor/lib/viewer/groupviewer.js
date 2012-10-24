@@ -1056,9 +1056,15 @@ GroupViewer.prototype.setSelectionOnlyInEditor = function (onlyInEditor) {
 };
 
 GroupViewer.prototype.previewStyleChange = function (localTheme) {
-    var visuals = this.children.visuals;
-    visuals.setLocalTheme(localTheme);
-    visuals.setSkin(localTheme.skin, true);
+    var ipe = this.getChild('inplaceEditor');
+    this.getChild('visuals'
+    ).setLocalTheme(localTheme
+    ).setSkin(localTheme.skin, true);
+
+    if (ipe) {
+        ipe.setLocalTheme(localTheme
+        ).setSkin(localTheme.skin, true);
+    }
 };
 GroupViewer.prototype.getPositionRect = function (name) {
     var pos = this.documentData.positions[name],
@@ -1245,6 +1251,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
         that = this,
         ipe = this.getChild('inplaceEditor'),
         name,
+        theme,
         res;
     function remove() {
         var config,
@@ -1282,6 +1289,8 @@ GroupViewer.prototype.updateInplaceEdit = function () {
             ipe.setDimensions(res.dimensions);
             typeInfo = documentData.children[that.inplaceEditName];
             ipe.updateEditor(typeInfo.config);
+            theme = this.getPreviewTheme();
+            ipe.setLocalTheme(theme).setSkin(theme.skin);
         } else {
             typeInfo = documentData.children[selName];
             if (typeInfo) {
@@ -1297,7 +1306,8 @@ GroupViewer.prototype.updateInplaceEdit = function () {
                     // FIXME
                     //ipe.setSkin(this.getPreviewTheme().getSkin());
                     // not sure this is ok
-                    ipe.setLocalTheme(this.getPreviewTheme());
+                    theme = this.getPreviewTheme();
+                    ipe.setLocalTheme(theme).setSkin(theme.skin);
                     ipe.init(typeInfo.config);
                     this.inplaceEditName = selName;
                 }
