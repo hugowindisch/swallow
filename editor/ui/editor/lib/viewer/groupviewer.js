@@ -1264,6 +1264,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
             that.removeChild(ipe);
             name = that.inplaceEditName;
             delete that.inplaceEditName;
+            that.getChild('visuals').getChild(name).setVisible(true);
             // if the config is different from the one we already have
             if (ipe.updateConfiguration(newConfig)) {
                 group.doCommand(group.cmdSetVisualConfig(name, newConfig));
@@ -1291,6 +1292,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
             ipe.updateEditor(typeInfo.config);
             theme = this.getPreviewTheme();
             ipe.setLocalTheme(theme).setSkin(theme.skin);
+            this.getChild('visuals').getChild(this.inplaceEditName).setVisible(false);
         } else {
             typeInfo = documentData.children[selName];
             if (typeInfo) {
@@ -1310,6 +1312,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
                     ipe.setLocalTheme(theme).setSkin(theme.skin);
                     ipe.init(typeInfo.config);
                     this.inplaceEditName = selName;
+                    this.getChild('visuals').getChild(that.inplaceEditName).setVisible(false);
                 }
             }
         }
