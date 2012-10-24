@@ -1241,18 +1241,35 @@ GroupViewer.prototype.updateInplaceEdit = function () {
         typeInfo,
         factory,
         Constr,
+        config,
         that = this,
         ipe = this.getChild('inplaceEditor'),
+        name,
         res;
+    function remove() {
+        var config,
+            newConfig,
+            ipe = that.getChild('inplaceEditor'),
+            typeInfo;
+        if (ipe) {
+            typeInfo = documentData.children[that.inplaceEditName];
+            newConfig = deepCopy(typeInfo.config);
+            that.removeChild(ipe);
+            name = that.inplaceEditName;
+            delete that.inplaceEditName;
+            // if the config is different from the one we already have
+            if (ipe.updateConfiguration(newConfig)) {
+                group.doCommand(group.cmdSetVisualConfig(name, newConfig));
+            }
+        }
+    }
     if (this.getSelectionLength() !== 1) {
         // we have an inplace editor
-        if (ipe) {
-            this.removeChild(ipe);
-        }
+        remove();
     } else {
         // should we remove the current in place editor (and update the model?)
         if (ipe && this.inplaceEditName !== selName) {
-            this.removeChild(ipe);
+            remove();
             ipe = null;
             delete this.inplaceEditName;
         }
@@ -1263,6 +1280,8 @@ GroupViewer.prototype.updateInplaceEdit = function () {
         if (ipe) {
             ipe.setMatrix(res.matrix);
             ipe.setDimensions(res.dimensions);
+            typeInfo = documentData.children[that.inplaceEditName];
+            ipe.updateEditor(typeInfo.config);
         } else {
             typeInfo = documentData.children[selName];
             if (typeInfo) {
@@ -1275,7 +1294,11 @@ GroupViewer.prototype.updateInplaceEdit = function () {
                     this.addChild(ipe, 'inplaceEditor');
                     ipe.setMatrix(res.matrix);
                     ipe.setDimensions(res.dimensions);
-                    ipe.setStyleAttributes({ backgroundColor: { r: 255, g: 0, b: 0, a: 0.3 }});
+                    // FIXME
+                    //ipe.setSkin(this.getPreviewTheme().getSkin());
+                    // not sure this is ok
+                    ipe.setLocalTheme(this.getPreviewTheme());
+                    ipe.init(typeInfo.config);
                     this.inplaceEditName = selName;
                 }
             }

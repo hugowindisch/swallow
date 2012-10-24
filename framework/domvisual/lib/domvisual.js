@@ -1070,6 +1070,34 @@ DOMElement.createPreview = function () {
 };
 
 /**
+* Creates an inplace editor
+* @returns The visual to display as a preview.
+* @type Visual
+*/
+
+DOMElement.getInplaceEditor = function () {
+    var ret = new DOMElement();
+    ret.element.contentEditable = true;
+    ret.init = function (config) {
+        this.setInnerText(config.innerText);
+        this.setStyle(config.style);
+        return this;
+    };
+    ret.updateEditor = function (config) {
+        this.setStyle(config.style);
+    };
+    ret.updateConfiguration = function (config) {
+        var newText = this.element.innerText;
+        if (newText !== config.innerText) {
+            config.innerText = newText;
+            return true;
+        }
+        return false;
+    };
+    return ret;
+};
+
+/**
 * Returns the configuration sheet of this element (allowing the editor to
 * configure it in the panel)
 * @returns The configuration sheet for this element.
@@ -1078,7 +1106,6 @@ DOMElement.createPreview = function () {
 DOMElement.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
-        "innerText": require('config').inputConfigFullLine('Text'),
         "style": require('config').styleConfig('Style:')
     };
 };

@@ -251,6 +251,7 @@ function deepEqual(o1, o2) {
     function de(o1, o2) {
         switch (typeOf(o1)) {
         case 'object':
+            return eqo(o1, o2);
         case 'array':
             return eqa(o1, o2);
         default:
