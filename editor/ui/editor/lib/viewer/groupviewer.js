@@ -1257,16 +1257,29 @@ GroupViewer.prototype.updateInplaceEdit = function () {
         var config,
             newConfig,
             ipe = that.getChild('inplaceEditor'),
+            normalChild,
             typeInfo;
         if (ipe) {
-            typeInfo = documentData.children[that.inplaceEditName];
-            newConfig = deepCopy(typeInfo.config);
-            that.removeChild(ipe);
+            // update the group if it still exists
             name = that.inplaceEditName;
+            typeInfo = documentData.children[name];
+            if (typeInfo) {
+                newConfig = deepCopy(typeInfo.config);
+                // if the config did not change, nullify it
+                if (!ipe.updateConfiguration(newConfig)) {
+                    newConfig = null;
+                }
+            }
+            // remove the child
+            that.removeChild(ipe);
             delete that.inplaceEditName;
-            that.getChild('visuals').getChild(name).setVisible(true);
-            // if the config is different from the one we already have
-            if (ipe.updateConfiguration(newConfig)) {
+            // re show the 'normal' child if it exists
+            normalChild = that.getChild('visuals').getChild(name);
+            if (normalChild) {
+                normalChild.setVisible(true);
+            }
+            // update the model if needed (non null new config)
+            if (newConfig) {
                 group.doCommand(group.cmdSetVisualConfig(name, newConfig));
             }
         }
