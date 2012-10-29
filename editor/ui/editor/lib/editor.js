@@ -61,6 +61,9 @@ function Editor(config) {
     // keep track of the loaded groups
     this.groups = {
     };
+    // keep track of the groups being loaded
+    this.loadingGroups = {
+    };
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.Editor);
     this.setStyle('background').setOverflow('hidden');
@@ -167,21 +170,25 @@ Editor.prototype.editGroup = function (factory, type) {
     if (this.groups[key]) {
         this.selectGroup(this.groups[key]);
     } else {
-        this.loadGroup(factory, type, function (err, jsonData) {
-            if (!err) {
-                try {
-                    that.groups[key] =
-                        newGroup =
-                        new (require('./model').Group)(jsonData, docInfo);
-                    that.selectGroup(newGroup);
-                } catch (e) {
-                    err = e;
+        if (!this.loadingGroups[key]) {
+            this.loadingGroups[key] = true;
+            this.loadGroup(factory, type, function (err, jsonData) {
+                delete that.loadingGroups[key];
+                if (!err) {
+                    try {
+                        that.groups[key] =
+                            newGroup =
+                            new (require('./model').Group)(jsonData, docInfo);
+                        that.selectGroup(newGroup);
+                    } catch (e) {
+                        err = e;
+                    }
                 }
-            }
-            if (err) {
-                alert(err);
-            }
-        });
+                if (err) {
+                    alert(err);
+                }
+            });
+        }
     }
     return this;
 };
