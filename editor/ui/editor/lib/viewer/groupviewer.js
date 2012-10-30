@@ -1254,6 +1254,12 @@ GroupViewer.prototype.updateInplaceEdit = function () {
         name,
         theme,
         res;
+    // we prevent reentry (that is possible because we can update the config
+    // of a component from here, and trigger a redraw)
+    if (this.inUpdateInplaceEdit) {
+        return;
+    }
+    this.inUpdateInplaceEdit = true;
     function remove() {
         var config,
             newConfig,
@@ -1293,7 +1299,6 @@ GroupViewer.prototype.updateInplaceEdit = function () {
         if (ipe && this.inplaceEditName !== selName) {
             remove();
             ipe = null;
-            delete this.inplaceEditName;
         }
         // compute the appropriate matrix
         res = this.getInplaceEditTransformation(documentData.positions[selName].matrix);
@@ -1331,6 +1336,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
             }
         }
     }
+    delete this.inUpdateInplaceEdit;
 };
 
 /**

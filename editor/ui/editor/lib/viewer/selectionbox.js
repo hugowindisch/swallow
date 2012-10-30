@@ -309,7 +309,7 @@ SelectionBox.prototype.theme = new (visual.Theme)({
                 r: 200,
                 g: 200,
                 b: 200,
-                a: 0.75
+                a: 0.5
             }
         }
     }
