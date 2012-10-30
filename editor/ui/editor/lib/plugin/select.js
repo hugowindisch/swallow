@@ -47,46 +47,6 @@ function getDocumentData(viewer) {
     }
     return dd;
 }
-function getTransform(viewer, xl, constrain, selectionRect) {
-    var translate = vec3.create(xl),
-        abs = Math.abs,
-        min = Math.min,
-        srt = [
-            vec3.add(selectionRect[0], translate, vec3.create()),
-            vec3.add(selectionRect[1], translate, vec3.create())
-        ],
-        srSnapped = [
-            viewer.snapPositionToGrid(vec3.create(srt[0])),
-            viewer.snapPositionToGrid(vec3.create(srt[1]))
-        ],
-        d1,
-        d2,
-        i;
-    // grids (snapping)
-    for (i = 0; i < 2; i += 1) {
-        d1 = srt[0][i] - srSnapped[0][i];
-        d2 = srt[1][i] - srSnapped[1][i];
-        if (abs(d1) <= abs(d2)) {
-            translate[i] -= d1;
-        } else {
-            translate[i] -= d2;
-        }
-    }
-
-    // constrains
-    if (constrain) {
-        if (abs(translate[0]) > abs(translate[1])) {
-            translate[1] = 0;
-        } else {
-            translate[0] = 0;
-        }
-    }
-    return mat4.translate(
-        mat4.identity(),
-        translate
-    );
-}
-
 
 function setupFileMenu(editor) {
     var viewer = editor.getViewer(),
@@ -333,8 +293,7 @@ function setupToolMenu(editor) {
                         }
                         if (!draggingWait) {
                             viewer.previewSelectionTransformation(
-                                getTransform(
-                                    viewer,
+                                viewer.getSnappedTransform(
                                     [mat[0], mat[5], mat[10]],
                                     evt.ctrlKey,
                                     selectionRect
@@ -360,8 +319,7 @@ function setupToolMenu(editor) {
                         } else {
                             group = viewer.getGroup();
                             // we want to move the selection.
-                            transform = getTransform(
-                                viewer,
+                            transform = viewer.getSnappedTransform(
                                 [mat[0], mat[5], mat[10]],
                                 evt.ctrlKey,
                                 selectionRect
@@ -1003,8 +961,7 @@ function setupObjectMenu(editor) {
                 selection,
                 cmdGroup;
             // we want to move the selection.
-            transform = getTransform(
-                viewer,
+            transform = viewer.getSnappedTransform(
                 [0, -group.documentData.gridSize, 0],
                 false,
                 selectionRect
@@ -1033,8 +990,7 @@ function setupObjectMenu(editor) {
                 selection,
                 cmdGroup;
             // we want to move the selection.
-            transform = getTransform(
-                viewer,
+            transform = viewer.getSnappedTransform(
                 [0, group.documentData.gridSize, 0],
                 false,
                 selectionRect
@@ -1063,8 +1019,7 @@ function setupObjectMenu(editor) {
                 selection,
                 cmdGroup;
             // we want to move the selection.
-            transform = getTransform(
-                viewer,
+            transform = viewer.getSnappedTransform(
                 [-group.documentData.gridSize, 0, 0],
                 false,
                 selectionRect
@@ -1093,8 +1048,7 @@ function setupObjectMenu(editor) {
                 selection,
                 cmdGroup;
             // we want to move the selection.
-            transform = getTransform(
-                viewer,
+            transform = viewer.getSnappedTransform(
                 [group.documentData.gridSize, 0, 0],
                 false,
                 selectionRect

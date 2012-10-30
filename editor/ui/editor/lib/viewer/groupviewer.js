@@ -119,6 +119,10 @@ function GroupViewer(config) {
         this.selectionScalingUI.transformContentMatrix = function (matrix) {
             return mat4.multiply(that.zoomMat, matrix, mat4.create());
         };
+    this.selectionScalingUI.getSnappedTransform = function (delta, constrain, rect) {
+            return that.getSnappedTransform(delta, constrain, rect);
+        };
+
     this.selectionRotationUI.getFDM =
         this.selectionScalingUI.getFDM = function () {
             return that.children.visuals.getFullDisplayMatrix(true);
@@ -683,6 +687,50 @@ GroupViewer.prototype.snapPositionToGrid = function (position) {
     }
     return ret;
 };
+
+/**
+    Snaps a selection rect to a grid with a translation (xl).
+*/
+GroupViewer.prototype.getSnappedTransform = function (xl, constrain, selectionRect) {
+    var translate = vec3.create(xl),
+        abs = Math.abs,
+        min = Math.min,
+        srt = [
+            vec3.add(selectionRect[0], translate, vec3.create()),
+            vec3.add(selectionRect[1], translate, vec3.create())
+        ],
+        srSnapped = [
+            this.snapPositionToGrid(vec3.create(srt[0])),
+            this.snapPositionToGrid(vec3.create(srt[1]))
+        ],
+        d1,
+        d2,
+        i;
+    // grids (snapping)
+    for (i = 0; i < 2; i += 1) {
+        d1 = srt[0][i] - srSnapped[0][i];
+        d2 = srt[1][i] - srSnapped[1][i];
+        if (abs(d1) <= abs(d2)) {
+            translate[i] -= d1;
+        } else {
+            translate[i] -= d2;
+        }
+    }
+
+    // constrains
+    if (constrain) {
+        if (abs(translate[0]) > abs(translate[1])) {
+            translate[1] = 0;
+        } else {
+            translate[0] = 0;
+        }
+    }
+    return mat4.translate(
+        mat4.identity(),
+        translate
+    );
+};
+
 
 /**
     Checks if there is an item under the mouse.

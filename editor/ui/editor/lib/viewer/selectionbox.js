@@ -47,7 +47,7 @@ function SelectionBox(config) {
                 matrix = that.contentMatrix,
                 rect = that.contentRect,
                 mat = that.getFDM(),
-                startpos = that.snapPositionToGrid(mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]));
+                startpos = mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
 
             evt.preventDefault();
             evt.stopPropagation();
@@ -55,10 +55,9 @@ function SelectionBox(config) {
             function getMat(evt) {
                 evt.preventDefault();
                 evt.stopPropagation();
-                var endpos = that.snapPositionToGrid(mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1])),
-                    delta = vec3.subtract(endpos, startpos, vec3.create()),
-                    newmat = mat4.translate(mat4.identity(), delta);
-                return newmat;
+                var endpos = mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]),
+                    delta = vec3.subtract(endpos, startpos, vec3.create());
+                return that.getSnappedTransform(delta, evt.ctrlKey, rect);
             }
             box.on('mousemovec', function (evt) {
                 var newMat = getMat(evt);
