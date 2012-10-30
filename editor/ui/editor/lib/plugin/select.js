@@ -625,7 +625,7 @@ function setupEditMenu(editor) {
             deleteSelected();
         },
         null,
-        new Accelerator('VK_D', true),
+        new Accelerator('VK_DELETE'),
         null,
         selectionNotEmpty
     );

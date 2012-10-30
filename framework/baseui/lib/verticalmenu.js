@@ -327,6 +327,12 @@ VerticalMenu.prototype.createItemHtml = function (
             that.highlightItem(name);
         });
     }
+    // we add the mousedown event everywhere to prevent ugly selection
+    c.on('mousedown', function (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+    });
+
     return numEnabled;
 };
 

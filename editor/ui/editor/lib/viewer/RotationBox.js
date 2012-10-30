@@ -60,6 +60,7 @@ function RotationBox(config) {
                 endpos,
                 endAngle;
             // prevent crap from happening
+            this.blurFocusedElement();
             evt.preventDefault();
             evt.stopPropagation();
             that.setVisible(false);

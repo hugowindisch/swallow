@@ -388,6 +388,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         var mat = visuals.getFullDisplayMatrix(true),
             evtPos = [evt.pageX, evt.pageY, 0];
 
+        this.blurFocusedElement();
         prevCursor = that.setCursor('crosshair');
         startpos = applyGrid(glmatrix.mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 0]));
         endpos = startpos;

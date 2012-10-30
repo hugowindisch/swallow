@@ -46,8 +46,9 @@ function HorizontalMenu(config) {
     // set a key handler for accelerators
     this.on('keydown', function (evt) {
         var accel;
-        // accelerators
-        if (that.accelerators) {
+        // accelerators (note: we only apply them when no text box is
+        // focused, preventing from eating normal keys in edit boxes)
+        if (that.accelerators && this.nothingFocused()) {
             accel = that.accelerators[evt.decoratedVk];
             if (accel) {
                 if (accel()) {
@@ -309,7 +310,10 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
     c.setHtmlFlowing({ /*height: height,*/ display: 'inline-block' });
     c.setCursor('pointer');
     // to this child we want to add a handler
-    c.on('mousedown', function () {
+    c.on('mousedown', function (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        this.blurFocusedElement();
         if (that.highlighted && that.highlighted.name === name) {
             that.highlightItem(null);
 

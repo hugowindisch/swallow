@@ -51,6 +51,7 @@ function SelectionBox(config) {
 
             evt.preventDefault();
             evt.stopPropagation();
+            this.blurFocusedElement();
             function getMat(evt) {
                 evt.preventDefault();
                 evt.stopPropagation();

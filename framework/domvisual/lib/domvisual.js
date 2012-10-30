@@ -1039,6 +1039,24 @@ DOMVisual.prototype.runFullScreen = function () {
     return this;
 };
 
+//
+// Note: I don't want to go to far with the focus thing for now. In the browser,
+// it is limited to some elements (like input elements, etc.). Ideally, we would
+// probably want to 'integrate' with this... but... not super clear how to do
+// that.
+
+DOMVisual.prototype.focus = function () {
+    this.element.focus();
+    return this;
+};
+DOMVisual.prototype.blurFocusedElement = function () {
+    document.activeElement.blur();
+    return this;
+};
+DOMVisual.prototype.nothingFocused = function () {
+    return document.activeElement.nodeName === 'BODY';
+};
+
 /**
 * Constructs a DOMElement.
 * @param {Object} config The configuration if any.
