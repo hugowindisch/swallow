@@ -1240,7 +1240,6 @@ GroupViewer.prototype.setGroup = function (group) {
     this.zoom100();
 };
 
-////////////////////////// experimental
 GroupViewer.prototype.getInplaceEditTransformation = function (matrix) {
     var zoomMat = mat4.create(this.zoomStack[this.zoomStack.length - 1]),
         zoomMatNoTranslate = mat4.create(zoomMat),
@@ -1256,6 +1255,7 @@ GroupViewer.prototype.getInplaceEditTransformation = function (matrix) {
     mat4.multiply(zoomMatNoTranslate, res.matrix, res.matrix);
     return res;
 };
+
 GroupViewer.prototype.previewTransformInplaceEdit = function (transform) {
     var ipe = this.getChild('inplaceEditor'),
         group,
@@ -1271,6 +1271,7 @@ GroupViewer.prototype.previewTransformInplaceEdit = function (transform) {
         ipe.setDimensions(res.dimensions);
     }
 };
+
 GroupViewer.prototype.updateInplaceEdit = function () {
     var group = this.group,
         documentData = group.documentData,
@@ -1281,7 +1282,6 @@ GroupViewer.prototype.updateInplaceEdit = function () {
         config,
         that = this,
         ipe = this.getChild('inplaceEditor'),
-        name,
         theme,
         res;
     // we prevent reentry (that is possible because we can update the config
@@ -1290,17 +1290,30 @@ GroupViewer.prototype.updateInplaceEdit = function () {
         return;
     }
     this.inUpdateInplaceEdit = true;
+    function inplaceEditorMatchesSelection() {
+        var name = that.inplaceEditName,
+            selName = that.getSelectedName(),
+            typeInfo = documentData.children[name],
+            ipe = that.getChild('inplaceEditor'),
+            ipeTI;
+        if (that.getSelectionLength() === 1 && selName === name && ipe && typeInfo) {
+            ipeTI = ipe.typeInfo;
+            return typeInfo.factory === ipeTI.factory && typeInfo.type === ipeTI.type;
+        }
+        return false;
+    }
     function remove() {
         var config,
             newConfig,
             ipe = that.getChild('inplaceEditor'),
             normalChild,
+            name,
             typeInfo;
         if (ipe) {
             // update the group if it still exists
             name = that.inplaceEditName;
             typeInfo = documentData.children[name];
-            if (typeInfo) {
+            if (typeInfo && typeInfo.factory === ipe.typeInfo.factory && typeInfo.type === ipe.typeInfo.type) {
                 newConfig = deepCopy(typeInfo.config);
                 // if the config did not change, nullify it
                 if (!ipe.updateConfiguration(newConfig)) {
@@ -1321,15 +1334,13 @@ GroupViewer.prototype.updateInplaceEdit = function () {
             }
         }
     }
-    if (this.getSelectionLength() !== 1) {
+
+    if (!inplaceEditorMatchesSelection()) {
         // we have an inplace editor
         remove();
-    } else {
-        // should we remove the current in place editor (and update the model?)
-        if (ipe && this.inplaceEditName !== selName) {
-            remove();
-            ipe = null;
-        }
+        ipe = null;
+    }
+    if (this.getSelectionLength() === 1) {
         // compute the appropriate matrix
         res = this.getInplaceEditTransformation(documentData.positions[selName].matrix);
         // if we still have an inplace editor at this point, we should
@@ -1360,6 +1371,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
                     theme = this.getPreviewTheme();
                     ipe.setLocalTheme(theme).setSkin(theme.skin);
                     ipe.init(typeInfo.config);
+                    ipe.typeInfo = typeInfo;
                     this.inplaceEditName = selName;
                     this.getChild('visuals').getChild(that.inplaceEditName).setVisible(false);
                 }
