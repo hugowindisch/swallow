@@ -41,18 +41,6 @@ var visual = require('visual'),
                     bottom: 'px',
                     height: 'auto'
                 }
-            },
-            upload: {
-                order: 1,
-                matrix: [ 400, 0, 0, 0, 0, 25, 0, 0, 0, 0, 1, 0, 0, 175, 0, 1 ],
-                snapping: {
-                    left: 'px',
-                    right: 'px',
-                    width: 'auto',
-                    top: 'auto',
-                    bottom: 'px',
-                    height: 'px'
-                }
             }
         },
         children: {
@@ -61,13 +49,6 @@ var visual = require('visual'),
                 type: "ImagePicker",
                 config: {
                     position: "picker"
-                }
-            },
-            upload: {
-                factory: "domvisual",
-                type: "DOMElement",
-                config: {
-                    position: "upload"
                 }
             }
         }
@@ -82,17 +63,6 @@ function UploadImagePicker(config) {
 
     domvisual.DOMElement.call(this, config, group);
     // add some hooks:
-    fileupload = '<form method="POST" enctype="multipart/form-data" action="' +
-        this.uploadUrl +
-        '" target = "_blank">' +
-        '<INPUT TYPE=FILE NAME="upfile">' +
-        '<INPUT TYPE=SUBMIT VALUE="Submit">' +
-        '</form>';
-        //+ '<iframe name="avoidPageChange" ></iframe>';
-
-    this.getChild('upload').addHtmlChild('div', fileupload, null, 'fileupload');
-
-
     picker = this.getChild('picker');
     picker.on('change', function (e) {
         that.emit('change', e);
@@ -121,6 +91,10 @@ function UploadImagePicker(config) {
         req.end(formData);
         evt.stopPropagation();
         evt.preventDefault();
+    }).on('dragover', function (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
     });
 
     //this.download();

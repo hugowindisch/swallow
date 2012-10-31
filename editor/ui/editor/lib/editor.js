@@ -19,7 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
-/*globals window */
+/*globals window, FormData */
 // this is the top level editor
 
 /**
@@ -98,6 +98,36 @@ function Editor(config) {
         setInterval(loadLocation, 200);
     });
 
+    // drop supported for the whole page.
+    this.on('drop', function (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        var formData = new FormData(),
+            http = require('http'),
+            req;
+        forEach(evt.dataTransfer.files, function (file) {
+            formData.append(file.name, file);
+        });
+        req = http.request(
+            {
+                method: 'POST',
+                path: '/swallow/package/' + that.getDocInfo().factory + '/uploadassets'
+            },
+            function (res) {
+                res.on('error', function (e) {
+//                    cb(e);
+                });
+                res.on('end', function () {
+//                    cb(null);
+                });
+            }
+        );
+        req.end(formData);
+    }).on('dragover', function (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+    });
 }
 Editor.prototype = new (domvisual.DOMElement)();
 Editor.prototype.theme = new (visual.Theme)({

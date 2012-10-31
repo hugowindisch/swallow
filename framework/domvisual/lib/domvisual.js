@@ -1206,7 +1206,7 @@ DOMImg.prototype.getNaturalDimensions = function () {
 DOMImg.prototype.getConfigurationSheet = function () {
     return {
         "title": require('config').inputConfigFullLine('Title (tooltip)'),
-        "url": require('config').imageUrlConfig('Image'),
+        "url": require('config').imageUrlConfig('Image (you can also drop images here)'),
         "style": null //require('config').styleConfig('Style:')
     };
 };

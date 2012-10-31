@@ -193,6 +193,11 @@ hookMap = {
             return vis.element;
         }
     },
+    dragover: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
+    },
     transitionend: {
         domEvent: ({
             'AppleWebKit': 'webkitTransitionEnd',

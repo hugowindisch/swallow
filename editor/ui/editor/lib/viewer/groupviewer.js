@@ -164,31 +164,6 @@ function GroupViewer(config) {
         group.doCommand(cg);
     });
     this.children.grid.setVisible(false);
-    this.on('drop', function (evt) {
-        var formData = new FormData(),
-            http = require('http'),
-            req;
-        forEach(evt.dataTransfer.files, function (file) {
-            formData.append(file.name, file);
-        });
-        req = http.request(
-            {
-                method: 'POST',
-                path: '/swallow/package/' + that.group.docInfo.factory + '/uploadassets'
-            },
-            function (res) {
-                res.on('error', function (e) {
-//                    cb(e);
-                });
-                res.on('end', function () {
-//                    cb(null);
-                });
-            }
-        );
-        req.end(formData);
-        evt.stopPropagation();
-        evt.preventDefault();
-    });
 }
 GroupViewer.prototype = new (domvisual.DOMElement)();
 
