@@ -47,6 +47,46 @@ function RotationBox(config) {
         return a;
     }
 
+    // FIXME: this code is duplicated from selectionbox -- begin
+    function makeDragHandler(box) {
+        box.setCursor('pointer'
+        ).on('mousedown', function (evt) {
+            var moved = false,
+                matrix = that.contentMatrix,
+                rect = that.contentRect,
+                mat = that.getFDM(),
+                startpos = mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]);
+
+            evt.preventDefault();
+            evt.stopPropagation();
+            this.blurFocusedElement();
+            function getMat(evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+                var endpos = mat4.multiplyVec3(mat, [evt.pageX, evt.pageY, 1]),
+                    delta = vec3.subtract(endpos, startpos, vec3.create());
+                return that.getSnappedTransform(delta, evt.ctrlKey, rect);
+            }
+            box.on('mousemovec', function (evt) {
+                var newMat = getMat(evt);
+                moved = true;
+                that.updateRepresentation(mat4.multiply(newMat, matrix, mat4.create()));
+                that.emit('preview', newMat);
+
+            });
+            box.once('mouseupc', function (evt) {
+                if (moved) {
+                    that.emit('transform', getMat(evt));
+                } else {
+                    that.emit('toggle');
+                }
+                box.removeAllListeners('mousemovec');
+            });
+
+        });
+    }
+    // -- end
+
     function makeHandler(box) {
         box.setCursor('move');
         box.on('mousedown', function (evt) {
@@ -98,6 +138,11 @@ function RotationBox(config) {
     makeHandler(children.bottomLeft);
     makeHandler(children.bottomRight);
 
+    makeDragHandler(this.getChild('topDrag'));
+    makeDragHandler(this.getChild('rightDrag'));
+    makeDragHandler(this.getChild('bottomDrag'));
+    makeDragHandler(this.getChild('leftDrag'));
+
     // set a default content matrix (this is not really needed in real
     // use cases)
     this.contentMatrix = mat4.create(this.matrix);
@@ -107,8 +152,22 @@ function RotationBox(config) {
 
 }
 RotationBox.prototype = new (domvisual.DOMElement)();
+RotationBox.prototype.theme = new (visual.Theme)({
+    dragManipulator: {
+        jsData: {
+            backgroundColor: {
+                r: 200,
+                g: 200,
+                b: 200,
+                a: 0.5
+            }
+        }
+    }
+});
+
 RotationBox.prototype.setContentRectAndMatrix = function (rect, matrix) {
     this.contentMatrix = matrix;
+    this.contentRect = rect;
     this.updateRepresentation(this.contentMatrix);
 };
 // hack (for the fact that we are not transfomed the same way as the content we manipulate)

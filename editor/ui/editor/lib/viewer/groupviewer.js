@@ -131,6 +131,10 @@ function GroupViewer(config) {
         this.selectionScalingUI.snapPositionToGrid = function (pos) {
             return that.snapPositionToGrid(pos);
         };
+    this.selectionRotationUI.getSnappedTransform = function (delta, constrain, rect) {
+            return that.getSnappedTransform(delta, constrain, rect);
+        };
+
     // transform handlers
     function transformHandler(transform) {
         that.transformSelection(transform);
@@ -146,6 +150,9 @@ function GroupViewer(config) {
         that.toggleSelectionControlBoxMode();
     });
     this.selectionRotationUI.on('preview', previewHandler);
+    this.selectionRotationUI.on('toggle', function () {
+        that.toggleSelectionControlBoxMode();
+    });
     // anchor handlers
     this.layoutAnchors.on('anchor', function (anchor) {
         var group = that.group,

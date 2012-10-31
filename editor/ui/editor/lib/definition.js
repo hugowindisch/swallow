@@ -401,23 +401,44 @@ exports.definition = {
                     matrix: [ 400, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   0, 0, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', height: 'auto', bottom: 'px' }
                 },
-                topLeft: {
+                topDrag: {
                     order: 1,
+                    matrix: [ 400, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   0, -10, 0, 1 ],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', height: 'px', bottom: 'auto' }
+                },
+                rightDrag: {
+                    order: 2,
+                    matrix: [ 10, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   400, 0, 0, 1 ],
+                    snapping: { left: 'auto', right: 'px', width: 'px', top: 'px', height: 'auto', bottom: 'px' }
+                },
+                bottomDrag: {
+                    order: 3,
+                    matrix: [ 400, 0, 0, 0,   0, 10, 0, 0,    0, 0, 1, 0,   0, 400, 0, 1 ],
+                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'auto', height: 'px', bottom: 'px' }
+                },
+                leftDrag: {
+                    order: 4,
+                    matrix: [ 10, 0, 0, 0,   0, 400, 0, 0,    0, 0, 1, 0,   -10, 0, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', height: 'auto', bottom: 'px' }
+                },
+
+                topLeft: {
+                    order: 5,
                     matrix: [ 16, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   -16, -16, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', height: 'px', bottom: 'auto' }
                 },
                 topRight: {
-                    order: 2,
+                    order: 6,
                     matrix: [ 16, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   400, -16, 0, 1 ],
                     snapping: { left: 'auto', right: 'px', width: 'px', top: 'px', height: 'px', bottom: 'auto' }
                 },
                 bottomLeft: {
-                    order: 2,
+                    order: 7,
                     matrix: [ 16, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   -16, 400, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'auto', height: 'px', bottom: 'px' }
                 },
                 bottomRight: {
-                    order: 3,
+                    order: 8,
                     matrix: [ 16, 0, 0, 0,   0, 16, 0, 0,    0, 0, 1, 0,   400, 400, 0, 1 ],
                     snapping: { left: 'auto', right: 'px', width: 'px', top: 'auto', height: 'px', bottom: 'px' }
                 }
@@ -429,6 +450,38 @@ exports.definition = {
                     config: {
                         "class": [ "editor_SelectionBox_selectionArea" ],
                         position: "selectionArea"
+                    }
+                },
+                topDrag: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    config: {
+                        position: "topDrag",
+                        style: "dragManipulator"
+                    }
+                },
+                rightDrag: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    config: {
+                        position: "rightDrag",
+                        style: "dragManipulator"
+                    }
+                },
+                bottomDrag: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    config: {
+                        position: "bottomDrag",
+                        style: "dragManipulator"
+                    }
+                },
+                leftDrag: {
+                    factory: "domvisual",
+                    type: "DOMElement",
+                    config: {
+                        position: "leftDrag",
+                        style: "dragManipulator"
                     }
                 },
                 topLeft: {
