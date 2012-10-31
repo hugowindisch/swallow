@@ -290,7 +290,6 @@ function styleConfig(labelTxt) {
                     'domchanged': domChanged
                 }
             });
-
             cnt.addChild(editor, 'data');
             editor.on('change', function (data) {
                 cnt.emit('change', data);
