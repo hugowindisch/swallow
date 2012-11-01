@@ -390,6 +390,7 @@ Editor.prototype.initPlugins = function (plugins) {
             edit: [],
             tool: [],
             object: [],
+            text: [],
             view: [],
             run: [],
             help: []
@@ -416,6 +417,7 @@ Editor.prototype.initPlugins = function (plugins) {
         new MenuItem("Edit", null, menus.edit),
         new MenuItem("Tool", null, menus.tool),
         new MenuItem("Object", null, menus.object),
+        new MenuItem("Text", null, menus.text),
         new MenuItem("View", null, menus.view),
         new MenuItem("Run", null, menus.run),
         new MenuItem("Help", null, menus.help)

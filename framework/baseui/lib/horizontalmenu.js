@@ -313,7 +313,6 @@ HorizontalMenu.prototype.createItemHtml = function (item, index, numIndex) {
     c.on('mousedown', function (evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        this.blurFocusedElement();
         if (that.highlighted && that.highlighted.name === name) {
             that.highlightItem(null);
 

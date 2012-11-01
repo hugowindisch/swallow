@@ -1176,6 +1176,55 @@ function setupObjectMenu(editor) {
     );
 
 }
+
+function setupTextMenu(editor) {
+    var menus = editor.menus;
+
+    function contentEditable() {
+        return document.activeElement.contentEditable === 'true';
+    }
+    function makeTool(label, command, option, icon) {
+        return new MenuItem(
+            label,
+            function () {
+                var ae = document.activeElement;
+                if (ae.contentEditable) {
+                    document.execCommand(command, false, option);
+                }
+            },
+            null,
+            null,
+            null,
+            contentEditable
+        );
+    }
+
+    menus.text.push(
+        makeTool('Unformat', 'removeFormat'),
+        null,
+        makeTool('Bold', 'bold'),
+        makeTool('Italic', 'italic'),
+        makeTool('Underline', 'underline'),
+        null,
+        makeTool('Center', 'justifyCenter'),
+        makeTool('Left', 'justifyLeft'),
+        makeTool('Right', 'justifyRight'),
+        makeTool('Full', 'justifyFull'),
+        null,
+        makeTool('Huge Font', 'fontSize', '8'),
+        makeTool('Big Font', 'fontSize', '6'),
+        makeTool('Normal Font', 'fontSize', '4'),
+        makeTool('Small Font', 'fontSize', '2'),
+        null,
+        makeTool('Bulleted List', 'insertUnorderedList'),
+        makeTool('Numbered List', 'insertOrderedList'),
+        null,
+        makeTool('Indent', 'indent'),
+        makeTool('Outdent', 'outdent')
+    );
+}
+
+
 function setupViewMenu(editor) {
     var ls = window.localStorage,
         showGrid,
@@ -1401,6 +1450,7 @@ exports.setup = function (editor) {
     setupToolMenu(editor);
     setupEditMenu(editor);
     setupObjectMenu(editor);
+    setupTextMenu(editor);
     setupViewMenu(editor);
     setupRunMenu(editor);
     setupHelpMenu(editor);
