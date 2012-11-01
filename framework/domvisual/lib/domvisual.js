@@ -467,7 +467,9 @@ DOMVisual.prototype.addTextChild = function (tag, text, config, name) {
 */
 DOMVisual.prototype.setInnerHTML = function (html) {
     this.removeAllChildren();
-    this.element.innerHTML = html;
+    if (html !== null && html !== undefined) {
+        this.element.innerHTML = html;
+    }
     setDirty(this, 'matrix', 'dimensions', 'style');
     return this;
 };
@@ -1097,7 +1099,7 @@ DOMElement.getInplaceEditor = function () {
     var ret = new DOMElement();
     ret.element.contentEditable = true;
     ret.init = function (config) {
-        this.setInnerText(config.innerText);
+        this.setInnerHTML(config.innerHTML);
         this.setStyle(config.style);
         return this;
     };
@@ -1105,9 +1107,9 @@ DOMElement.getInplaceEditor = function () {
         this.setStyle(config.style);
     };
     ret.updateConfiguration = function (config) {
-        var newText = this.element.innerText;
-        if (newText !== config.innerText) {
-            config.innerText = newText;
+        var newText = this.element.innerHTML;
+        if (newText !== config.innerHTML) {
+            config.innerHTML = newText;
             return true;
         }
         return false;
