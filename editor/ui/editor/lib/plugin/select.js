@@ -261,20 +261,20 @@ function setupToolMenu(editor) {
                 selectionControlBoxVisibility;
 
             function select(evt, nmat) {
-                viewer.selectByMatrix(nmat, !evt.shiftKey, evt.ctrlKey, !evt.ctrlKey);
+                viewer.selectByMatrix(nmat, !evt.shiftKey, evt.shiftKey, !evt.shiftKey);
                 viewer.updateSelectionControlBox();
             }
 
             viewer.enableBoxSelection(
                 function (mat, nmat, startpos, endpos, evt) {
                     toggleControlBoxModeWhenFinished = true;
-                    if (!evt.ctrlKey && !viewer.itemAtPositionIsSelected(startpos)) {
+                    if (!evt.shiftKey && !viewer.itemAtPositionIsSelected(startpos)) {
                         toggleControlBoxModeWhenFinished = false;
                         select(evt, nmat);
                         viewer.resetSelectionControlBoxMode();
                     }
                     selectionRect = viewer.getSelectionRect();
-                    if (!evt.ctrlKey && viewer.itemAtPositionIsSelected([mat[12], mat[13], mat[14]])) {
+                    if (!evt.shiftKey && viewer.itemAtPositionIsSelected([mat[12], mat[13], mat[14]])) {
                         dragging = true;
                         draggingWait = true;
                         viewer.setCursor('move');
