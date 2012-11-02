@@ -1239,7 +1239,21 @@ GroupViewer.prototype.setGroup = function (group) {
     ];
     this.zoom100();
 };
-
+GroupViewer.prototype.commitPendingChanges = function () {
+    var group = this.group,
+        name = this.inplaceEditName,
+        newConfig;
+    // this should commit some of the changes
+    this.blurFocusedElement();
+    // if we have an inplace editor, we must also do something
+    if (name) {
+        newConfig = this.getInplaceEditorConfig();
+        // update the model if needed (non null new config)
+        if (newConfig) {
+            group.doCommand(group.cmdSetVisualConfig(name, newConfig));
+        }
+    }
+};
 GroupViewer.prototype.getInplaceEditTransformation = function (matrix) {
     var zoomMat = mat4.create(this.zoomStack[this.zoomStack.length - 1]),
         zoomMatNoTranslate = mat4.create(zoomMat),
@@ -1271,7 +1285,29 @@ GroupViewer.prototype.previewTransformInplaceEdit = function (transform) {
         ipe.setDimensions(res.dimensions);
     }
 };
+GroupViewer.prototype.getInplaceEditorConfig = function () {
+    var group = this.group,
+        name = this.inplaceEditName,
+        documentData = group.documentData,
+        ipe = this.getChild('inplaceEditor'),
+        newConfig = null,
+        typeInfo;
 
+    if (ipe) {
+        typeInfo = documentData.children[name];
+        if (typeInfo && typeInfo.factory === ipe.typeInfo.factory && typeInfo.type === ipe.typeInfo.type) {
+            newConfig = deepCopy(typeInfo.config);
+            // if the config did not change, nullify it
+            if (!ipe.updateConfiguration(newConfig)) {
+                newConfig = null;
+            }
+        }
+    }
+    return newConfig;
+};
+GroupViewer.prototype.inplaceEditorVisible = function () {
+    return Boolean(this.getChild('inplaceEditor'));
+};
 GroupViewer.prototype.updateInplaceEdit = function () {
     var group = this.group,
         documentData = group.documentData,
@@ -1303,23 +1339,13 @@ GroupViewer.prototype.updateInplaceEdit = function () {
         return false;
     }
     function remove() {
-        var config,
-            newConfig,
+        var newConfig,
             ipe = that.getChild('inplaceEditor'),
             normalChild,
-            name,
-            typeInfo;
+            name = that.inplaceEditName;
         if (ipe) {
             // update the group if it still exists
-            name = that.inplaceEditName;
-            typeInfo = documentData.children[name];
-            if (typeInfo && typeInfo.factory === ipe.typeInfo.factory && typeInfo.type === ipe.typeInfo.type) {
-                newConfig = deepCopy(typeInfo.config);
-                // if the config did not change, nullify it
-                if (!ipe.updateConfiguration(newConfig)) {
-                    newConfig = null;
-                }
-            }
+            newConfig = that.getInplaceEditorConfig();
             // remove the child
             that.removeChild(ipe);
             delete that.inplaceEditName;
@@ -1332,6 +1358,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
             if (newConfig) {
                 group.doCommand(group.cmdSetVisualConfig(name, newConfig));
             }
+            that.emit('inplaceEditChanged');
         }
     }
 
@@ -1374,6 +1401,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
                     ipe.typeInfo = typeInfo;
                     this.inplaceEditName = selName;
                     this.getChild('visuals').getChild(that.inplaceEditName).setVisible(false);
+                    that.emit('inplaceEditChanged');
                 }
             }
         }

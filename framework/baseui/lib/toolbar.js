@@ -147,7 +147,6 @@ Toolbar.prototype.createItemHtml = function (item, index, numIndex) {
         c = new (domvisual.DOMImg)({style: 'tool', url: icon, title: item.getText()});
         this.addChild(c, name);
         c.setDimensions([32, 32, 1]);
-        c.setCursor('pointer');
         c.setHtmlFlowing({});
         // keep a reference to the item
         c.item = item;
@@ -189,8 +188,10 @@ Toolbar.prototype.configureItem = function (c) {
     // grayed
     if (!item.getEnabled()) {
         c.setStyle('grayedTool');
+        c.setCursor(null);
     } else {
         c.setStyle(getStyle());
+        c.setCursor('pointer');
         c.on('mousedown', mouseDown);
         c.unhookHandlers = unhookHandlers;
     }

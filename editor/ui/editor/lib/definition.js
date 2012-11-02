@@ -35,12 +35,12 @@ exports.definition = {
                 },
                 tools: {
                     order: 0,
-                    matrix: [ 386, 0, 0, 0,   0, 64, 0, 0,    0, 0, 1, 0,   5, 29, 0, 1 ],
+                    matrix: [ 386, 0, 0, 0,   0, 94, 0, 0,    0, 0, 1, 0,   5, 29, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', height: 'px', bottom: 'auto' }
                 },
                 panel: {
                     order: 1,
-                    matrix: [ 390, 0, 0, 0,   0, 302, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    matrix: [ 390, 0, 0, 0,   0, 270, 0, 0,    0, 0, 1, 0,   5, 112, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', height: 'auto', bottom: 'px' }
                 },
                 viewer: {

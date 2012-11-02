@@ -295,6 +295,8 @@ Editor.prototype.saveGroup = function (factory, type, cb) {
         group = this.groups[key],
         doc;
 
+    // make sure that anything being edited is committed
+    this.getViewer().commitPendingChanges();
     // prevent problems
     if (!group) {
         if (cb) {

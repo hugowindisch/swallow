@@ -26,6 +26,7 @@ var baseui = require('baseui'),
     vec3 = glmatrix.vec3,
     mat4 = glmatrix.mat4,
     forEachProperty = utils.forEachProperty,
+    forEach = utils.forEach,
     deepCopy = utils.deepCopy,
     Accelerator = baseui.Accelerator,
     MenuItem = baseui.MenuItem,
@@ -1180,8 +1181,9 @@ function setupObjectMenu(editor) {
 function setupTextMenu(editor) {
     var menus = editor.menus;
 
+
     function contentEditable() {
-        return document.activeElement.contentEditable === 'true';
+        return editor.getViewer().inplaceEditorVisible();
     }
     function makeTool(label, command, option, icon) {
         return new MenuItem(
@@ -1194,33 +1196,40 @@ function setupTextMenu(editor) {
             },
             null,
             null,
-            null,
+            icon,
             contentEditable
         );
     }
+    editor.getViewer().on('inplaceEditChanged', function () {
+        forEach(menus.text, function (m) {
+            if (m) {
+                m.emit('change');
+            }
+        });
+    });
 
     menus.text.push(
         makeTool('Unformat', 'removeFormat'),
         null,
-        makeTool('Bold', 'bold'),
-        makeTool('Italic', 'italic'),
-        makeTool('Underline', 'underline'),
+        makeTool('Bold', 'bold', null, 'editor/img/plugin/bold.png'),
+        makeTool('Italic', 'italic', null, 'editor/img/plugin/italic.png'),
+        makeTool('Underline', 'underline', null, 'editor/img/plugin/underline.png'),
         null,
-        makeTool('Center', 'justifyCenter'),
-        makeTool('Left', 'justifyLeft'),
-        makeTool('Right', 'justifyRight'),
-        makeTool('Full', 'justifyFull'),
+        makeTool('Center', 'justifyCenter', null, 'editor/img/plugin/center.png'),
+        makeTool('Left Justify', 'justifyLeft', null, 'editor/img/plugin/leftjustify.png'),
+        makeTool('Right Justify', 'justifyRight', null, 'editor/img/plugin/rightjustify.png'),
+        makeTool('Full Justify', 'justifyFull', null, 'editor/img/plugin/fulljustify.png'),
         null,
         makeTool('Huge Font', 'fontSize', '8'),
         makeTool('Big Font', 'fontSize', '6'),
         makeTool('Normal Font', 'fontSize', '4'),
         makeTool('Small Font', 'fontSize', '2'),
         null,
-        makeTool('Bulleted List', 'insertUnorderedList'),
-        makeTool('Numbered List', 'insertOrderedList'),
+        makeTool('Bulleted List', 'insertUnorderedList', null, 'editor/img/plugin/bulletedlist.png'),
+        makeTool('Numbered List', 'insertOrderedList', null, 'editor/img/plugin/numberedlist.png'),
         null,
-        makeTool('Indent', 'indent'),
-        makeTool('Outdent', 'outdent')
+        makeTool('Indent', 'indent', null, 'editor/img/plugin/indent.png'),
+        makeTool('Outdent', 'outdent', null, 'editor/img/plugin/outdent.png')
     );
 }
 

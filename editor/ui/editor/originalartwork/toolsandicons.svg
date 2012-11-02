@@ -1437,6 +1437,44 @@
        y1="392.36218"
        x2="-680"
        y2="392.36218" />
+    <filter
+       inkscape:collect="always"
+       id="filter8719"
+       x="-0.10530293"
+       width="1.2106059"
+       y="-0.088207367"
+       height="1.1764147">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5785156"
+         id="feGaussianBlur8721" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter8719-4"
+       x="-0.10530293"
+       width="1.2106059"
+       y="-0.088207364"
+       height="1.1764147">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5785156"
+         id="feGaussianBlur8721-5" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter8719-4-3"
+       x="-0.10530293"
+       width="1.2106059"
+       y="-0.088207364"
+       height="1.1764147">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5785156"
+         id="feGaussianBlur8721-5-4" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1445,16 +1483,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.0567175"
-     inkscape:cx="841.36347"
-     inkscape:cy="1125.1063"
+     inkscape:zoom="0.35585936"
+     inkscape:cx="1240.5102"
+     inkscape:cy="567.06752"
      inkscape:document-units="px"
-     inkscape:current-layer="g9591"
+     inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:window-width="1280"
      inkscape:window-height="968"
-     inkscape:window-x="253"
-     inkscape:window-y="69"
+     inkscape:window-x="171"
+     inkscape:window-y="13"
      inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -3223,53 +3261,530 @@
          style="fill:url(#linearGradient10593);fill-opacity:1;fill-rule:nonzero;stroke:none"
          sodipodi:type="arc" />
     </g>
+    <rect
+       ry="12.307693"
+       y="204.00504"
+       x="591.71429"
+       height="80"
+       width="80"
+       id="rect3811-9-0-5-78"
+       style="fill:none;stroke:none"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/originalartwork/rect4213-1-0.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5" />
+    <rect
+       style="fill:none;stroke:#4d4d4d;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0"
+       id="rect4213-1"
+       width="47.142853"
+       height="47.142853"
+       x="600.28571"
+       y="216.50504"
+       ry="0"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5" />
+    <rect
+       style="fill:none;stroke:#4d4d4d;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0"
+       id="rect4213-1-0"
+       width="47.142853"
+       height="47.142853"
+       x="616"
+       y="224.36218"
+       ry="0"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5" />
     <g
-       id="g9595"
-       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/showoutlines.png"
+       id="g8985"
+       transform="translate(-121,-240)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/leftjustify.png"
        inkscape:export-xdpi="22.5"
        inkscape:export-ydpi="22.5">
       <g
-         transform="translate(0.57142639,3.4999962)"
-         id="g9591">
-        <g
-           id="g9608"
-           inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/showoutlines.png"
-           inkscape:export-xdpi="22.5"
-           inkscape:export-ydpi="22.5">
-          <rect
-             transform="translate(-0.57142639,-3.4999962)"
-             inkscape:export-ydpi="22.5"
-             inkscape:export-xdpi="22.5"
-             inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/originalartwork/rect4213-1-0.png"
-             style="fill:none;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:3, 3;stroke-dashoffset:0"
-             id="rect3811-9-0-5-78"
-             width="80"
-             height="80"
-             x="784"
-             y="-123.63782"
-             ry="12.307693" />
-          <rect
-             inkscape:export-ydpi="22.5"
-             inkscape:export-xdpi="22.5"
-             ry="0"
-             y="-114.63781"
-             x="792"
-             height="47.142853"
-             width="47.142853"
-             id="rect4213-1"
-             style="fill:none;stroke:#4d4d4d;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0" />
-          <rect
-             inkscape:export-ydpi="22.5"
-             inkscape:export-xdpi="22.5"
-             ry="0"
-             y="-106.78067"
-             x="807.71429"
-             height="47.142853"
-             width="47.142853"
-             id="rect4213-1-0"
-             style="fill:none;stroke:#4d4d4d;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3, 3;stroke-dashoffset:0" />
-        </g>
+         transform="matrix(0.8,0,0,0.8,929,-901.52756)"
+         id="g3980-8">
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-82-6"
+           width="70"
+           height="10"
+           x="200"
+           y="1322.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-0"
+           width="40"
+           height="10"
+           x="200"
+           y="1342.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-1-7-2"
+           width="65"
+           height="10"
+           x="200"
+           y="1362.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-8-5-2"
+           width="50"
+           height="10"
+           x="200"
+           y="1382.3622" />
       </g>
+      <rect
+         ry="12.307693"
+         y="145.36218"
+         x="1077"
+         height="80"
+         width="80"
+         id="rect3811-6-7"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g8993"
+       transform="translate(-289,-323)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/fulljustify.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         transform="matrix(0.8,0,0,0.8,1033,-834.52756)"
+         id="g3998">
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865"
+           width="70"
+           height="10"
+           x="420"
+           y="1332.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9"
+           width="70"
+           height="10"
+           x="420"
+           y="1352.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-1"
+           width="70"
+           height="10"
+           x="420"
+           y="1372.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-8"
+           width="70"
+           height="10"
+           x="420"
+           y="1392.3622" />
+      </g>
+      <rect
+         ry="12.307693"
+         y="219.36218"
+         x="1357"
+         height="80"
+         width="80"
+         id="rect3811-6-7-8"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g9001"
+       transform="translate(-133,-409)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/center.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         transform="matrix(0.8,0,0,0.8,1089,-740.52756)"
+         id="g3986">
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-82-5"
+           width="70"
+           height="10"
+           x="290"
+           y="1322.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-1"
+           width="40"
+           height="10"
+           x="305"
+           y="1342.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-1-7-0"
+           width="65"
+           height="10"
+           x="292.5"
+           y="1362.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-8-5-5"
+           width="50"
+           height="10"
+           x="300"
+           y="1382.3622" />
+      </g>
+      <rect
+         ry="12.307693"
+         y="305.36218"
+         x="1309"
+         height="80"
+         width="80"
+         id="rect3811-6-7-9"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g9009"
+       transform="translate(301,-385)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/rightjustify.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         transform="matrix(0.8,0,0,0.8,791,-844.52756)"
+         id="g3992">
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-82-9"
+           width="70"
+           height="10"
+           x="265"
+           y="1412.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-9"
+           width="40"
+           height="10"
+           x="295"
+           y="1432.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-1-7-06"
+           width="65"
+           height="10"
+           x="270"
+           y="1452.3622" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-8-5-1"
+           width="50"
+           height="10"
+           x="285"
+           y="1472.3622" />
+      </g>
+      <rect
+         ry="12.307693"
+         y="273.36218"
+         x="991"
+         height="80"
+         width="80"
+         id="rect3811-6-7-5"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g9063"
+       transform="translate(-177,-379)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/bold.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <text
+         sodipodi:linespacing="125%"
+         id="text8666-9"
+         y="452.83679"
+         x="1394.6172"
+         style="font-size:60px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           style="font-weight:bold"
+           y="452.83679"
+           x="1394.6172"
+           id="tspan8668-4"
+           sodipodi:role="line">B</tspan></text>
+      <rect
+         ry="12.307693"
+         y="391.36218"
+         x="1377"
+         height="80"
+         width="80"
+         id="rect3811-6-7-3"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g9068"
+       transform="translate(-72.590135,-474.69872)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/underline.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         transform="translate(-71.409865,-13.301282)"
+         id="g8849">
+        <text
+           xml:space="preserve"
+           style="font-size:60px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+           x="1464"
+           y="540.36218"
+           id="text8666-9-2-1"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan8668-4-6-4"
+             x="1464"
+             y="540.36218"
+             style="font-style:normal;font-weight:normal;-inkscape-font-specification:Arial">u</tspan></text>
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect8789-7"
+           width="27.180326"
+           height="3.7158458"
+           x="1466.8197"
+           y="544.36218" />
+      </g>
+      <rect
+         ry="12.307693"
+         y="475.36218"
+         x="1369"
+         height="80"
+         width="80"
+         id="rect3811-6-7-2"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g9075"
+       transform="translate(-72.079102,-578.47461)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/originalartwork/italic.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <text
+         sodipodi:linespacing="125%"
+         id="text8666-9-2"
+         y="630.83679"
+         x="1472.0791"
+         style="font-size:60px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           style="font-style:italic;font-weight:normal;-inkscape-font-specification:Arial Italic"
+           y="630.83679"
+           x="1472.0791"
+           id="tspan8668-4-6"
+           sodipodi:role="line">i</tspan></text>
+      <rect
+         ry="12.307693"
+         y="569.36218"
+         x="1441"
+         height="80"
+         width="80"
+         id="rect3811-6-7-26"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g10236"
+       transform="translate(-92.775879,-261.46875)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/numberedlist.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         transform="translate(8.8505859,7.3125)"
+         id="g10221">
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-82-9-0-2-8"
+           width="36"
+           height="12"
+           x="1083.9253"
+           y="426.51843" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-9-2-20-8"
+           width="36"
+           height="12"
+           x="1083.9253"
+           y="450.51843" />
+        <text
+           xml:space="preserve"
+           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:133.00000429%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial Bold"
+           x="1059.9253"
+           y="438.51843"
+           id="text7791"
+           sodipodi:linespacing="133%"><tspan
+             sodipodi:role="line"
+             id="tspan7793"
+             x="1059.9253"
+             y="438.51843">1.</tspan><tspan
+             sodipodi:role="line"
+             x="1059.9253"
+             y="462.45844"
+             id="tspan7799">2.</tspan></text>
+      </g>
+      <rect
+         ry="12.307693"
+         y="411.36218"
+         x="1059"
+         height="80"
+         width="80"
+         id="rect3811-6-7-58"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g10228"
+       transform="translate(-90.5,-256.99994)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/bulletedlist.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         transform="translate(12.5,14.999999)"
+         id="g10215">
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-82-9-0-2-8-1"
+           width="36"
+           height="12"
+           x="1238"
+           y="414.36212" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-9-2-20-8-5"
+           width="36"
+           height="12"
+           x="1238"
+           y="438.36212" />
+        <path
+           sodipodi:type="arc"
+           style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="path7843"
+           sodipodi:cx="1260"
+           sodipodi:cy="552.36218"
+           sodipodi:rx="4"
+           sodipodi:ry="4"
+           d="m 1264,552.36218 c 0,2.20914 -1.7909,4 -4,4 -2.2091,0 -4,-1.79086 -4,-4 0,-2.20914 1.7909,-4 4,-4 2.2091,0 4,1.79086 4,4 z"
+           transform="matrix(1.5,0,0,1.5,-670,-408.18115)" />
+        <path
+           sodipodi:type="arc"
+           style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="path7843-2"
+           sodipodi:cx="1260"
+           sodipodi:cy="552.36218"
+           sodipodi:rx="4"
+           sodipodi:ry="4"
+           d="m 1264,552.36218 c 0,2.20914 -1.7909,4 -4,4 -2.2091,0 -4,-1.79086 -4,-4 0,-2.20914 1.7909,-4 4,-4 2.2091,0 4,1.79086 4,4 z"
+           transform="matrix(1.5,0,0,1.5,-670,-384.18115)" />
+      </g>
+      <rect
+         ry="12.307693"
+         y="407.36212"
+         x="1216.5"
+         height="80"
+         width="80"
+         id="rect3811-6-7-56"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g9053"
+       transform="translate(26.25,-448.99997)"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/outdent.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         transform="translate(5.75,-9.0000305)"
+         id="g9045">
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-82-9-0-2"
+           width="56"
+           height="8"
+           x="1072"
+           y="462.36218" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-9-2-20"
+           width="32"
+           height="8"
+           x="1096"
+           y="478.36218" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-9-2-2-5"
+           width="32"
+           height="8"
+           x="1096"
+           y="494.36224" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-9-2-2-9-9"
+           width="32"
+           height="8"
+           x="1096"
+           y="510.36224" />
+        <path
+           style="fill:none;stroke:#0000ff;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="m 1080,478.36223 -8,8 8,8"
+           id="path12743-3"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#0000ff;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="m 1088,486.36223 -16,0"
+           id="path12745-1"
+           inkscape:connector-curvature="0" />
+      </g>
+      <rect
+         ry="12.307693"
+         y="441.36218"
+         x="1065"
+         height="80"
+         width="80"
+         id="rect3811-6-7-6"
+         style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g9035"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/indent.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <g
+         id="g12747"
+         transform="translate(-412.25,203)">
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-82-9-0"
+           width="56"
+           height="8"
+           x="1400"
+           y="-187.63785" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-9-2"
+           width="32"
+           height="8"
+           x="1424"
+           y="-171.63785" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-9-2-2"
+           width="32"
+           height="8"
+           x="1424"
+           y="-155.63782" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect3865-9-5-9-2-2-9"
+           width="32"
+           height="8"
+           x="1424"
+           y="-139.63782" />
+        <path
+           style="fill:none;stroke:#0000ff;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="m 1408,-171.63782 8,8 -8,8"
+           id="path12743"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#0000ff;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="m 1400,-163.63782 16,0"
+           id="path12745"
+           inkscape:connector-curvature="0" />
+      </g>
+      <rect
+         ry="12.307693"
+         y="3.3621626"
+         x="975"
+         height="80"
+         width="80"
+         id="rect3811-6-7-88"
+         style="fill:none;stroke:none" />
     </g>
   </g>
 </svg>
