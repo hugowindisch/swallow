@@ -496,9 +496,20 @@ GroupViewer.prototype.resetScroll = function () {
 */
 GroupViewer.prototype.pushZoomMatrix = function (mat) {
     var zs = this.zoomStack,
-        z = mat[0];
+        z = mat[0],
+        popped = false,
+        scroll,
+        topm;
     while (zs.length > 0 && zs[zs.length - 1][0] > z) {
         zs.pop();
+        popped = true;
+    }
+    // keep the current scroll
+    if (!popped) {
+        topm = zs[zs.length - 1];
+        scroll = this.getScroll();
+        topm[12] = scroll[0];
+        topm[13] = scroll[1];
     }
     this.zoomStack.push(mat);
     this.adjustZoomToGridSize();
@@ -575,6 +586,28 @@ GroupViewer.prototype.zoom100 = function () {
     this.pushZoomMatrix(
         mat4.translate(mat4.identity(), [borderPix - 20, borderPix - 20, 0], mat4.create())
     );
+};
+
+/**
+    Zoom in.
+*/
+GroupViewer.prototype.zoomIn = function () {
+    var scaling = 2,
+        scroll = this.getScroll(),
+        dim = this.dimensions,
+        borderPix = this.groupBorderPix,
+        zoomMat = this.zoomStack[this.zoomStack.length - 1],
+        z = zoomMat[0],
+        mat = mat4.identity();
+
+    mat[0] = z * scaling;
+    mat[5] = z * scaling;
+    mat[10] = z * scaling;
+    mat[12] = scaling * (scroll[0] + dim[0] / 2 - dim[0] / (scaling * 2));
+    mat[13] = scaling * (scroll[1] + dim[1] / 2 - dim[1] / (scaling * 2));
+    mat[14] = 0;
+
+    this.pushZoomMatrix(mat);
 };
 
 /**

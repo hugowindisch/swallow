@@ -353,6 +353,18 @@ DOMVisual.prototype.setScroll = function (v3) {
 };
 
 /**
+* Returns the current scrool value.
+* @type Array
+* @returns the current scroll value as an array.
+*/
+DOMVisual.prototype.getScroll = function () {
+    var element = this.element;
+    // force update
+    dirty.update();
+    return [ element.scrollLeft, element.scrollTop, 0];
+};
+
+/**
 * Sets the visibility of this eleemnt.
 * @param {Boolean} visible The visibility
 * @returns this (for chaining calls).

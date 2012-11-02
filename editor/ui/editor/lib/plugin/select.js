@@ -226,8 +226,12 @@ function setupToolMenu(editor) {
         selectedTool,
         selectTool,
         drawTool,
-        zoomInTool,
-        zoomOutTool,
+        zoomToRectangleTool,
+        zoomPage,
+        zoomAll,
+        zoom100,
+        zoomIn,
+        zoomOut,
         menus = editor.menus;
 
     // this implements the modality of tools
@@ -400,8 +404,8 @@ function setupToolMenu(editor) {
         }
     );
     // zoom in tool (magnifier)
-    zoomInTool = new MenuItem(
-        'Zoom In',
+    zoomToRectangleTool = new MenuItem(
+        'Zoom To Rectangle',
         function () {
             var prevSel = selectedTool;
             setModal(this);
@@ -425,25 +429,57 @@ function setupToolMenu(editor) {
             return selectedTool === this;
         }
     );
-    // zoom out tool (magnifier -)
-    zoomOutTool = new MenuItem(
+
+    zoomPage = new MenuItem(
+        'Zoom to Page',
+        function () {
+            viewer.zoomToPage();
+        }
+    );
+
+    zoomAll = new MenuItem(
+        'Zoom to Content',
+        function () {
+            viewer.zoomToContent();
+        }
+    );
+
+    zoom100 = new MenuItem(
+        'Zoom 100%',
+        function () {
+            viewer.zoom100();
+        }
+    );
+    zoomIn = new MenuItem(
+        'Zoom In',
+        function () {
+            viewer.zoomIn();
+        },
+        null,
+        new Accelerator('VK_EQUAL')
+    );
+    zoomOut = new MenuItem(
         'Zoom Out',
         function () {
             viewer.popZoom();
         },
         null,
-        null,
-        'editor/img/plugin/zoomout.png',
-        true
+        new Accelerator('VK_SUBTRACT'),
+        'editor/img/plugin/zoomout.png'
     );
+
 
     selectTool.action();
     menus.tool.push(
         selectTool,
         drawTool,
-        zoomInTool,
+        zoomToRectangleTool,
         null,
-        zoomOutTool
+        zoomPage,
+        zoomAll,
+        zoom100,
+        zoomIn,
+        zoomOut
     );
 }
 
@@ -1239,9 +1275,6 @@ function setupViewMenu(editor) {
         showGrid,
         showAnchors,
         showOutlines,
-        zoomPage,
-        zoomAll,
-        zomm100,
         menus = editor.menus,
         viewer = editor.getViewer();
 
@@ -1295,35 +1328,10 @@ function setupViewMenu(editor) {
     );
     viewer.setShowOutlines(ls.showOutlines === undefined ? true : ls.showOutlines === 'true');
 
-    zoomPage = new MenuItem(
-        'Zoom to Page',
-        function () {
-            viewer.zoomToPage();
-        }
-    );
-
-    zoomAll = new MenuItem(
-        'Zoom to Content',
-        function () {
-            viewer.zoomToContent();
-        }
-    );
-
-    zomm100 = new MenuItem(
-        'Zoom 100%',
-        function () {
-            viewer.zoom100();
-        }
-    );
-
     menus.view.push(
         showGrid,
         showAnchors,
-        showOutlines,
-        null,
-        zoomPage,
-        zoomAll,
-        zomm100
+        showOutlines
     );
 }
 

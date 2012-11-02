@@ -89,8 +89,11 @@ var utils = require('utils'),
         '87': 'VK_W',
         '88': 'VK_X',
         '89': 'VK_Y',
-        '90': 'VK_Z'
+        '90': 'VK_Z',
+        '187': 'VK_EQUAL',
+        '189': 'VK_SUBTRACT'
     },
+
     vkToText = {
         'VK_CANCEL': 'Cancel',
         'VK_HELP': 'Help',
@@ -157,7 +160,9 @@ var utils = require('utils'),
         'VK_W': 'W',
         'VK_X': 'X',
         'VK_Y': 'Y',
-        'VK_Z': 'Z'
+        'VK_Z': 'Z',
+        'VK_EQUAL': '=',
+        'VK_SUBTRACT': '-'
     };
 
 function addS(s, s2) {
