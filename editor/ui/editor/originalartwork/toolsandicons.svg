@@ -1437,44 +1437,6 @@
        y1="392.36218"
        x2="-680"
        y2="392.36218" />
-    <filter
-       inkscape:collect="always"
-       id="filter8719"
-       x="-0.10530293"
-       width="1.2106059"
-       y="-0.088207367"
-       height="1.1764147">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="1.5785156"
-         id="feGaussianBlur8721" />
-    </filter>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter8719-4"
-       x="-0.10530293"
-       width="1.2106059"
-       y="-0.088207364"
-       height="1.1764147">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="1.5785156"
-         id="feGaussianBlur8721-5" />
-    </filter>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter8719-4-3"
-       x="-0.10530293"
-       width="1.2106059"
-       y="-0.088207364"
-       height="1.1764147">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="1.5785156"
-         id="feGaussianBlur8721-5-4" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1483,16 +1445,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35585936"
-     inkscape:cx="1240.5102"
-     inkscape:cy="567.06752"
+     inkscape:zoom="1.9874866"
+     inkscape:cx="137.69485"
+     inkscape:cy="1027.0912"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:window-width="1280"
      inkscape:window-height="968"
      inkscape:window-x="171"
-     inkscape:window-y="13"
+     inkscape:window-y="24"
      inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -3785,6 +3747,42 @@
          width="80"
          id="rect3811-6-7-88"
          style="fill:none;stroke:none" />
+    </g>
+    <g
+       id="g5466"
+       inkscape:export-filename="/home/hugo/source/hugo/swallow/editor/ui/editor/img/plugin/zoomrect.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <rect
+         ry="12.307693"
+         y="-89.253036"
+         x="42.384781"
+         height="80"
+         width="80"
+         id="rect3811-9-2"
+         style="fill:none;stroke:none" />
+      <g
+         id="g5462">
+        <path
+           sodipodi:type="arc"
+           style="fill:none;stroke:#000000;stroke-width:12.80000019;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="path3010-1-4"
+           sodipodi:cx="-88"
+           sodipodi:cy="92.362183"
+           sodipodi:rx="32"
+           sodipodi:ry="32"
+           d="m -56,92.362183 a 32,32 0 1 1 -64,0 32,32 0 1 1 64,0 z"
+           transform="matrix(0.44194174,-0.44194174,0.44194174,0.44194174,74.07217,-135.34739)" />
+        <rect
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke-width:15;stroke-miterlimit:4;stroke-dasharray:none"
+           id="rect3008-5-8-7"
+           width="8"
+           height="24"
+           x="89.081993"
+           y="38.398243"
+           ry="0"
+           transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
+      </g>
     </g>
   </g>
 </svg>

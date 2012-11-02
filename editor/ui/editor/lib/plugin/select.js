@@ -423,7 +423,7 @@ function setupToolMenu(editor) {
         },
         null,
         null,
-        'editor/img/plugin/zoomin.png',
+        'editor/img/plugin/zoomrect.png',
         true,
         function () {
             return selectedTool === this;
@@ -456,7 +456,8 @@ function setupToolMenu(editor) {
             viewer.zoomIn();
         },
         null,
-        new Accelerator('VK_EQUAL')
+        new Accelerator('VK_EQUAL'),
+        'editor/img/plugin/zoomin.png'
     );
     zoomOut = new MenuItem(
         'Zoom Out',
