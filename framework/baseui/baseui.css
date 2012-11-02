@@ -119,7 +119,7 @@
 }
 .baseui_theme_transparency {
     filter:alpha(opacity=50);
-    opacity:0.5;
+    opacity:0.1;
 }
 .baseui_theme_bgImgExpandedFolder {
     background-image: url("img/folderexpanded.png");
