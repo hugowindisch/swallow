@@ -1012,7 +1012,7 @@ Visual.prototype.setConfiguration = function (config) {
 * @api private
 */
 Visual.prototype.getSetFunctionName = function (name) {
-    return 'set' + name[0].toUpperCase() + name.slice(1);
+    return 'set' + name.slice(0, 1).toUpperCase() + name.slice(1);
 };
 
 /**
@@ -1020,7 +1020,7 @@ Visual.prototype.getSetFunctionName = function (name) {
 * @api private
 */
 Visual.prototype.getGetFunctionName = function (name) {
-    return 'get' + name[0].toUpperCase() + name.slice(1);
+    return 'get' + name.slice(0, 1).toUpperCase() + name.slice(1);
 };
 
 /**

@@ -488,7 +488,7 @@ function imageUrlConfig(label) {
             'UploadImagePicker',
             {
                 uploadUrl: '/swallow/package/' + editorInfo.factory + '/uploadassets',
-                downloadUrl: '/swallow/package/' + editorInfo.factory + '/image',
+                downloadUrl: '/swallow/package/' + editorInfo.factory + '/image'
             },
             360,
             200,
