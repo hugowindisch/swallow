@@ -115,7 +115,7 @@ function Styling(config) {
     });
 
     // we can retrieve the style list here and configure the style picker
-    this.children.stylePicker.setStyleList(this.computeNonLocalStyleList());
+    stylePicker.setStyleList(this.computeNonLocalStyleList());
     this.updateLocalStyleList();
     // FIXME: set data is not called when there is no data in the selection (this is kinda
     // bad and should be fixed but until then this will put adequate defaults.
@@ -324,7 +324,8 @@ Styling.prototype.computeNonLocalStyleList = function () {
 
     // here we must remove the local styles from the stylelist
     forEach(sl, function (s) {
-        if (s.factory !== factory || s.type !== type) {
+        //if (s.factory == factory || s.type !== type) {
+        if (s.factory === factory && s.type !== type) {
             filteredSl.push(s);
         }
     });

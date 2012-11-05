@@ -141,10 +141,11 @@ Button.createPreview = function () {
 
 Button.prototype.getConfigurationSheet = function () {
     return {
-        text: config.inputConfig('Text')
+        text: config.inputConfig('Text'),
+        dummy: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Button.prototype.theme, 'baseui', 'Button'))
     };
 };
-
+Button.prototype.setDummy = function () {};
 Button.prototype.setText = function (text) {
     this.children.text.removeAllChildren();
     this.children.text.addTextChild('div', text, null, 'text');

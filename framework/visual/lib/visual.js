@@ -1281,3 +1281,4 @@ exports.loadPackage = loadPackage;
 exports.vec3IsEqual = vec3IsEqual;
 exports.inheritVisual = inheritVisual;
 exports.getGetActiveTheme = getGetActiveTheme;
+exports.getStyleListFromTheme = getStyleListFromTheme;
