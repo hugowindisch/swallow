@@ -122,6 +122,8 @@ var utils = require('utils'),
     isObject = utils.isObject,
     browser = require('./browser').getBrowser(),
     gradientToCssString,
+    colorToCSSString,
+    nullStyle = '',
     textAttributes = {
         fontFamily: true,
         fontSize: true,
@@ -235,7 +237,7 @@ function rgbaToHsla(rgba) {
     };
 }
 
-function colorToCSSString(c) {
+function colorToCSSStringWebkitAndMozilla(c) {
     if (c.r !== undefined) {
         // rgba
         return 'rgba(' +
@@ -261,6 +263,37 @@ function colorToCSSString(c) {
 
     }
 }
+function colorToCSSStringMSIE(c) {
+    if (c.r !== undefined) {
+        // rgba
+        return 'rgb(' +
+            round(c.r) +
+            ',' +
+            round(c.g) +
+            ',' +
+            round(c.b) +
+            ')';
+    } else {
+        // hsla
+        return 'hsl(' +
+            round(c.h) +
+            ',' +
+            round(c.s) +
+            '%,' +
+            round(c.l) +
+            ')';
+
+    }
+}
+
+colorToCSSString = ({
+    'AppleWebKit': colorToCSSStringWebkitAndMozilla,
+    'Mozilla': colorToCSSStringWebkitAndMozilla,
+    'MSIE': colorToCSSStringMSIE
+})[browser] ||
+    function () {
+        return nullStyle;
+    };
 
 function gradientToCSSStringMozilla(gradient) {
     var angle = (gradient.type === 'horizontal') ? 0 : -90,
@@ -314,7 +347,7 @@ gradientToCssString = ({
     'Mozilla': gradientToCSSStringMozilla
 })[browser] ||
     function () {
-        return null;
+        return nullStyle;
     };
 
 function imageUrlToCssString(url) {
@@ -580,10 +613,14 @@ attributeToCss = {
 function styleToCss(style, jsData) {
     forEachProperty(attributeToCss, function (fcn, prop) {
         var dat = jsData[prop];
-        if (dat !== undefined) {
-            fcn(style, attributeToCssString[prop](dat));
-        } else {
-            fcn(style, null);
+        try {
+            if (dat !== undefined) {
+                fcn(style, attributeToCssString[prop](dat));
+            } else {
+                fcn(style, nullStyle);
+            }
+        } catch (e) {
+            // IE FUCKING PICKY
         }
     });
 }
@@ -615,5 +652,6 @@ function getStyleDimensionAdjustment(jsData) {
 }
 
 exports.styleToCss = styleToCss;
+exports.nullStyle = nullStyle;
 exports.getStyleDimensionAdjustment = getStyleDimensionAdjustment;
 exports.hasTextAttributes = hasTextAttributes;

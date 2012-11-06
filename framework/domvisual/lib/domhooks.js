@@ -243,17 +243,34 @@ function enforceDOMHooks(v) {
     return ret;
 }
 
+/**
+    IE compatibility
+*/
+function addEventListener(element, event, hook, capture) {
+    if (element.addEventListener) {
+        element.addEventListener(event, hook, capture);
+    } else if (element.attachEvent) {
+        element.attachEvent('on' + event, hook);
+    }
+}
+function removeEventListener(element, event, hook, capture) {
+    if (element.removeEventListener) {
+        element.removeEventListener(event, hook, capture);
+    } else if (element.attachEvent) {
+        element.detachEvent('on' + event, hook);
+    }
+}
+
 /*
 * Unhooks a dom handler.
 * @api private
 */
 function removeDOMHook(v, event, hook) {
-    var hooks = v.domHooks,
-        element;
+    var hooks = v.domHooks;
     // we must be unhooked from keydown
     if (hooks && hooks[event]) {
-        element = hook.getDOMElement(v);
-        element.removeEventListener(
+        removeEventListener(
+            hook.getDOMElement(v),
             hook.domEvent ? hook.domEvent : event,
             hooks[event],
             hook.capture === true
@@ -272,7 +289,8 @@ function addDOMHook(v, event, hook) {
         hooks[event] = {
             handleEvent: createHandler(event, v, hook.filterEvent)
         };
-        hook.getDOMElement(v).addEventListener(
+        addEventListener(
+            hook.getDOMElement(v),
             hook.domEvent ? hook.domEvent : event,
             hooks[event],
             hook.capture === true

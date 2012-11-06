@@ -29,6 +29,7 @@ var visual = require('visual'),
     events = require('events'),
     EventEmitter = events.EventEmitter,
     styles = require('./styles'),
+    nullStyle = styles.nullStyle,
     styleToCss = styles.styleToCss,
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
     keycodes = require('./keycodes'),
@@ -879,7 +880,7 @@ DOMVisual.prototype.updateDone = function () {
                 style.overflow = childrenClipping;
             }
         } else {
-            style.overflow = null;
+            style.overflow = nullStyle;
         }
         if (this.scroll) {
             element.scrollLeft = this.scroll[0];
