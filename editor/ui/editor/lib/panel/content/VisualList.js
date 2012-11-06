@@ -192,7 +192,9 @@ VisualList.prototype.updateVisualList = function () {
     forEachProperty(visualList, function (json, factory) {
         if (alwaysShow[factory] && json.visuals) {
             forEach(json.visuals, function (type) {
-                that.addVisualInfo(factory, type);
+                if (!that.hide[factory] || !that.hide[factory][type]) {
+                    that.addVisualInfo(factory, type);
+                }
             });
         }
     });
@@ -205,7 +207,9 @@ VisualList.prototype.updateVisualList = function () {
     forEachProperty(visualList, function (json, factory) {
         if (!alwaysShow[factory] && filteredFactory === factory && json.visuals) {
             forEach(json.visuals, function (type) {
-                that.addVisualInfo(factory, type);
+                if (!that.hide[factory] || !that.hide[factory][type]) {
+                    that.addVisualInfo(factory, type);
+                }
             });
         }
     });
@@ -218,6 +222,21 @@ VisualList.prototype.init = function (editor) {
         editConfig = editor.getEditConfig();
     this.editor = editor;
     this.alwaysShow = {};
+    that.hide = {};
+    // FIXME: tb removed at some point... I needed to hide some of the visuals
+    // to users for nko (to keep everything more simple and minimalistic)
+    // this is how I very savagely implemented it, by passing something to
+    // the edit config.
+    if (editConfig.hide) {
+        forEach(editConfig.hide, function (info) {
+            if (!that.hide[info.factory]) {
+                that.hide[info.factory] = { };
+            }
+            that.hide[info.factory][info.type] = true;
+        });
+    }
+    // from the config, force some packages to be always visible (for
+    // simpler access to components)
     if (editConfig.alwaysShowPackage) {
         forEach(editConfig.alwaysShowPackage, function (show) {
             that.alwaysShow[show] = true;
