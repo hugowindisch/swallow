@@ -114,12 +114,6 @@ Group.prototype.normalizeDocument = function () {
     if (!d.theme) {
         d.theme = {};
     }
-    if (!d.overflowX) {
-        d.overflowX = 'visible';
-    }
-    if (!d.overflowY) {
-        d.overflowY = 'visible';
-    }
     this.normalizeDocumentSkin();
 };
 /**
@@ -809,36 +803,20 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
 Group.prototype.cmdSetComponentProperties = function (
     dimensions,
     description,
-    priv,
-    gridSize,
-    privateStyles,
-    overflowX,
-    overflowY
+    gridSize
 ) {
     var that = this;
     function doUndo() {
         var documentData = that.documentData,
             dim = documentData.dimensions,
             descr = documentData.description,
-            gs = documentData.gridSize,
-            prv = documentData.privateVisual,
-            prvStyles = documentData.privateStyles,
-            ofx = documentData.overflowX,
-            ofy = documentData.overflowY;
+            gs = documentData.gridSize;
         documentData.dimensions = dimensions;
         documentData.description = description;
-        documentData.privateVisual = priv;
-        documentData.privateStyles = privateStyles;
         documentData.gridSize = gridSize;
-        documentData.overflowX = overflowX;
-        documentData.overflowY = overflowY;
         dimensions = dim;
         description = descr;
-        priv = prv;
-        privateStyles = prvStyles;
         gridSize = gs;
-        overflowX = ofx;
-        overflowY = ofy;
     }
     return new Command(
         doUndo,

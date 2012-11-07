@@ -337,11 +337,6 @@ exports.definition = {
                     matrix: [ 56, 0, 0, 0,   0, 24, 0, 0,    0, 0, 1, 0,   300, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
                 },
-                instanciate: {
-                    order: 6,
-                    matrix: [ 20, 0, 0, 0,   0, 20, 0, 0,    0, 0, 1, 0,   336, 30, 0, 1 ],
-                    snapping: { left: 'px', right: 'px', width: 'auto', top: 'px', bottom: 'auto', height: 'px' }
-                },
                 configurationSheet: {
                     order: 7,
                     matrix: [ 360, 0, 0, 0,   0, 1, 0, 0,    0, 0, 1, 0,   0, 55, 0, 1 ],
@@ -372,15 +367,6 @@ exports.definition = {
                     config: {
                         position: 'button',
                         text: 'Edit'
-                    }
-                },
-                instanciate: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    config: {
-                        position: "instanciate",
-                        url: 'editor/img/enableinstanciation.png',
-                        title: 'Instanciate'
                     }
                 },
                 description: {
@@ -837,7 +823,6 @@ exports.definition = {
                         checkVisible: false
                     }
                 }
-
             }
         },
         ConfigurationSheet: {
@@ -846,7 +831,7 @@ exports.definition = {
             children: {}
         },
         ComponentInfo: {
-            dimensions: [ 360, 230, 0],
+            dimensions: [ 360, 120, 0],
             positions: {
                 wLabel: {
                     order: 0,
@@ -879,85 +864,14 @@ exports.definition = {
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
-                overflowXLabel : {
-                    order: 3,
-                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                overflowXVisible: {
-                    order: 3,
-                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   75, 55, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                overflowXHidden: {
-                    order: 3,
-                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   105, 55, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                overflowXAuto: {
-                    order: 3,
-                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   135, 55, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                overflowXScroll: {
-                    order: 3,
-                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   165, 55, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                overflowYLabel : {
-                    order: 3,
-                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 85, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                overflowYVisible: {
-                    order: 3,
-                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   75, 85, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                overflowYHidden: {
-                    order: 3,
-                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   105, 85, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                overflowYAuto: {
-                    order: 3,
-                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   135, 85, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                overflowYScroll: {
-                    order: 3,
-                    matrix: [ 28, 0, 0, 0,   0, 28, 0, 0,    0, 0, 1, 0,   165, 85, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-
                 descriptionLabel: {
                     order: 4,
-                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 115, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                privateLabel: {
-                    order: 5,
-                    matrix: [ 200, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   25, 165, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                privateStylesLabel: {
-                    order: 5,
-                    matrix: [ 200, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   25, 190, 0, 1 ],
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
                     order: 6,
-                    matrix: [ 355, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 140, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                privateCheck: {
-                    order: 7,
-                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 160, 0, 1 ],
-                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
-                },
-                privateStylesCheck: {
-                    order: 7,
-                    matrix: [ 15, 0, 0, 0,   0, 15, 0, 0,    0, 0, 1, 0,   5, 185, 0, 1 ],
+                    matrix: [ 355, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -994,22 +908,6 @@ exports.definition = {
                         position: "descriptionLabel"
                     }
                 },
-                privateLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    config: {
-                        "text": "private component",
-                        position: "privateLabel"
-                    }
-                },
-                privateStylesLabel: {
-                    factory: "baseui",
-                    type: "Label",
-                    config: {
-                        "text": "private styles",
-                        position: "privateStylesLabel"
-                    }
-                },
                 w: {
                     factory: "baseui",
                     type: "Input",
@@ -1040,102 +938,6 @@ exports.definition = {
                     config: {
                         "text": "",
                         position: "description"
-                    }
-                },
-                privateCheck: {
-                    factory: "domvisual",
-                    type: "DOMInput",
-                    config: {
-                        "type": "checkbox",
-                        position: "privateCheck"
-                    }
-                },
-                privateStylesCheck: {
-                    factory: "domvisual",
-                    type: "DOMInput",
-                    config: {
-                        "type": "checkbox",
-                        position: "privateStylesCheck"
-                    }
-                },
-                overflowXLabel : {
-                    factory: "baseui",
-                    type: "Label",
-                    config: {
-                        "text": "xoverflow:",
-                        position: "overflowXLabel"
-                    }
-                },
-                overflowXVisible: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    config: {
-                        url: 'editor/img/ofxvisible.png',
-                        position: "overflowXVisible"
-                    }
-                },
-                overflowXHidden: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    config: {
-                        url: 'editor/img/ofxhidden.png',
-                        position: "overflowXHidden"
-                    }
-                },
-                overflowXAuto: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    config: {
-                        url: 'editor/img/ofxauto.png',
-                        position: "overflowXAuto"
-                    }
-                },
-                overflowXScroll: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    config: {
-                        url: 'editor/img/ofxscroll.png',
-                        position: "overflowXScroll"
-                    }
-                },
-                overflowYLabel : {
-                    factory: "baseui",
-                    type: "Label",
-                    config: {
-                        "text": "yoverflow:",
-                        position: "overflowYLabel"
-                    }
-                },
-                overflowYVisible: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    config: {
-                        url: 'editor/img/ofyvisible.png',
-                        position: "overflowYVisible"
-                    }
-                },
-                overflowYHidden: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    config: {
-                        url: 'editor/img/ofyhidden.png',
-                        position: "overflowYHidden"
-                    }
-                },
-                overflowYAuto: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    config: {
-                        url: 'editor/img/ofyauto.png',
-                        position: "overflowYAuto"
-                    }
-                },
-                overflowYScroll: {
-                    factory: "domvisual",
-                    type: "DOMImg",
-                    config: {
-                        url: 'editor/img/ofyscroll.png',
-                        position: "overflowYScroll"
                     }
                 }
             }
