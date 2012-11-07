@@ -43,13 +43,13 @@ var visual = require('visual'),
             },
             text: {
                 order: 1,
-                matrix: [ 380, 0, 0, 0, 0, 16, 0, 0, 0, 0, 1, 0, 10, 92, 0, 1 ],
+                matrix: [ 390, 0, 0, 0, 0, 190, 0, 0, 0, 0, 1, 0, 5, 5, 0, 1 ],
                 snapping: {
                     left: 'px',
                     right: 'px',
                     width: 'auto',
-                    top: 'cpx',
-                    bottom: 'cpx',
+                    top: 'px',
+                    bottom: 'px',
                     height: 'auto'
                 }
             }
@@ -147,9 +147,48 @@ Button.prototype.getConfigurationSheet = function () {
 };
 Button.prototype.setDummy = function () {};
 Button.prototype.setText = function (text) {
-    this.children.text.removeAllChildren();
-    this.children.text.addTextChild('div', text, null, 'text');
+    var txtChild = new domvisual.DOMElement();
+    txtChild.setInnerText(text);
+
+    this.getChild('text'
+    ).removeAllChildren(
+    ).addChild(txtChild, 'text');
+
+
+    this.updateCenteredText();
     return this;
 };
+
+Button.prototype.applyLayout = function (children) {
+    domvisual.DOMElement.prototype.applyLayout.call(this, children);
+    this.updateCenteredText();
+
+    return this;
+};
+
+Button.prototype.updateCenteredText = function () {
+    var that = this;
+    // this is semi a joke... how to correctly get the expected
+    // computed dimensions is +/- a mystery
+    if (!this.to) {
+        this.to = setTimeout(
+            function () {
+                if (that.children && that.children.text && that.children.text.children && that.children.text.children.text) {
+                    var label = that.getChild('text'),
+                        text = label.getChild('text'),
+                        textDim = text.getComputedDimensions(),
+                        dim = label.dimensions;
+                    // Position the thing
+                    text.setDimensions([dim[0], textDim[1], 0]);
+                    text.setTranslationMatrix([0, (dim[1] - textDim[1]) / 2, 0]);
+                }
+                visual.update();
+                delete that.to;
+            },
+            10
+        );
+    }
+};
+
 
 exports.Button = Button;
