@@ -167,7 +167,7 @@ VisualList.prototype.addVisualInfo = function (factory, type) {
             T = f[type];
             if (T && (T.prototype instanceof visual.Visual)) {
                 c = new VisualInfo({ typeInfo: {factory: factory, type: type}});
-                c.init(that.editor);
+                c.init(that.editor, that.preventEdit);
                 c.setHtmlFlowing({position: 'relative'}, true);
                 choices.addChild(c);
                 c.on('select', onClick);
@@ -223,6 +223,7 @@ VisualList.prototype.init = function (editor) {
     this.editor = editor;
     this.alwaysShow = {};
     that.hide = {};
+    this.preventEdit = { baseui: true, domvisual: true};
     // FIXME: tb removed at some point... I needed to hide some of the visuals
     // to users for nko (to keep everything more simple and minimalistic)
     // this is how I very savagely implemented it, by passing something to
@@ -233,6 +234,11 @@ VisualList.prototype.init = function (editor) {
                 that.hide[info.factory] = { };
             }
             that.hide[info.factory][info.type] = true;
+        });
+    }
+    if (editConfig.preventEdit) {
+        forEach(editConfig.preventEdit, function (p) {
+            that.preventEdit[p] = true;
         });
     }
     // from the config, force some packages to be always visible (for

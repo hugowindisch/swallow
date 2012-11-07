@@ -43,7 +43,7 @@ var visual = require('visual'),
             },
             text: {
                 order: 1,
-                matrix: [ 390, 0, 0, 0, 0, 190, 0, 0, 0, 0, 1, 0, 5, 5, 0, 1 ],
+                matrix: [ 400, 0, 0, 0, 0, 200, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
                 snapping: {
                     left: 'px',
                     right: 'px',
@@ -165,6 +165,12 @@ Button.prototype.applyLayout = function (children) {
 
     return this;
 };
+Button.prototype.setVisible = function (v) {
+    domvisual.DOMElement.prototype.setVisible.call(this, v);
+    this.updateCenteredText();
+
+    return this;
+};
 
 Button.prototype.updateCenteredText = function () {
     var that = this;
@@ -185,7 +191,7 @@ Button.prototype.updateCenteredText = function () {
                 visual.update();
                 delete that.to;
             },
-            10
+            5
         );
     }
 };

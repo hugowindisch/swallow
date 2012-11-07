@@ -29,6 +29,7 @@ var visual = require('visual'),
 
 function VisualInfo(config) {
     var that = this;
+    that.preventEdit = {};
     // call the baseclass
     domvisual.DOMElement.call(this, config, groups.VisualInfo);
     this.getChild('selectionBox').setVisible(false);
@@ -36,9 +37,7 @@ function VisualInfo(config) {
         var ti = that.ti;
         if (!that.buttonAlwaysVisible()) {
             that.getChild('button').setVisible(
-                (ti !== undefined &&
-                    ti.factory !== 'domvisual' &&
-                    ti.factory !== 'baseui')
+                (ti !== undefined && !that.preventEdit[ti.factory])
             );
         }
     }).on('mouseout', function () {
@@ -163,10 +162,11 @@ VisualInfo.prototype.getTypeInfo = function () {
 VisualInfo.prototype.getConfigurationSheet = function () {
     return { typeInfo: {} };
 };
-VisualInfo.prototype.init = function (editor) {
+VisualInfo.prototype.init = function (editor, preventEdit) {
     var that = this,
         viewer = editor.getViewer();
     this.editor = editor;
+    this.preventEdit = preventEdit;
     // configure the button
     this.updateButton(this.getChild('button'));
     function updateOnEdit() {
