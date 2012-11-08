@@ -188,23 +188,40 @@ function setupFileMenu(editor) {
         }
     );
 
+    function fixTypeName(tn) {
+        if (tn.length > 0) {
+            tn = tn.slice(0, 1).toUpperCase() + tn.slice(1);
+            tn.replace(/\W/, '');
+        }
+        return tn;
+    }
+    function fixFactoryName(tn) {
+        if (tn.length > 0) {
+            tn = tn.slice(0, 1).toLowerCase() + tn.slice(1);
+            tn.replace(/\W/, '');
+        }
+        return tn;
+    }
+
     newTool = new MenuItem(
         'New...',
         function () {
             // FIXME, very crude
-            var result = window.prompt('name', ''),
+            var result = window.prompt('Please enter the name of a new group to create (ex: Page2)', ''),
                 sres = result.split('.'),
                 factory,
                 type;
-            if (sres.length > 1) {
+            if (sres.length === 2) {
                 factory = sres[0];
                 type = sres[1];
-            } else if (result.length > 0) {
+                editor.newGroup(fixFactoryName(factory), fixTypeName(type));
+            } else if (sres.length === 1) {
                 type = sres[0];
                 factory = editor.getSelectedGroup().docInfo.factory;
+                editor.newGroup(fixFactoryName(factory), fixTypeName(type));
+            } else {
+                alert('Invalid group name ' + result);
             }
-            // create
-            editor.newGroup(factory, type);
         }
     );
     menus.file.push(
