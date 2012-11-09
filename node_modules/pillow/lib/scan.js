@@ -974,6 +974,23 @@ function loadPackageDetails(packageFile, cb) {
 }
 
 /**
+    Checks the nomake thing
+*/
+function checkNoMake(options, packageName) {
+    var ret = false;
+    if (options.nomake) {
+        if (!options.nomakeFast) {
+            options.nomakeFast = {};
+            options.nomake.forEach(function (o) {
+                options.nomakeFast[o] = true;
+            });
+        }
+        ret = (options.nomakeFast[packageName] === true);
+    }
+    return ret;
+}
+
+/**
     Processes a package.json file that has been loaded with its "details".
 */
 function processPackageDetails(options, details, packageMap, cb) {
@@ -981,9 +998,8 @@ function processPackageDetails(options, details, packageMap, cb) {
         // we should use the package.name for the packagename
         packagename = details.name,
         publishdir = path.join(options.dstFolder, packagename);
-
     // do nothing if the package is in the nomake list
-    if (options.nomake && options.nomake[packagename]) {
+    if (checkNoMake(options, packagename)) {
         return cb(null);
     }
 
@@ -1137,7 +1153,6 @@ function makeAll(options, cb) {
         processMultiplePackageDetails(options, packages, cb);
     });
 }
-
 /**
     This function regenerates a single package.
     note: srcFolder can be a string or an array of strings
@@ -1147,7 +1162,7 @@ function makePackage(options, packageName, cb) {
     // packages that were excluded.
     // Note that this is the only place where it is really beneficial
     // to enforce the nomake thing.
-    if (options.nomake && options.nomake[packageName]) {
+    if (checkNoMake(options, packageName)) {
         // we don't make it
         return cb(null);
     }

@@ -106,6 +106,12 @@ function makeAndGenerateHtml(options, factory, type, monitor, minify, cb) {
             },
             options
         );
+    // SUPER DUPER HACK
+    // FIXME: because we regenerate the html we NEED the make to happen...
+    // this is fucking ugly (but at least, it is only needed when we
+    // regenerate html on a package)
+    extendedOptions.nomake = [];
+    delete extendedOptions.nomakeFast;
     pillow.makePackage(
         extendedOptions,
         factory,
