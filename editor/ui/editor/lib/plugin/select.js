@@ -1233,7 +1233,8 @@ function setupObjectMenu(editor) {
 }
 
 function setupTextMenu(editor) {
-    var menus = editor.menus;
+    var menus = editor.menus,
+        createLinkTool;
 
 
     function contentEditable() {
@@ -1254,6 +1255,21 @@ function setupTextMenu(editor) {
             contentEditable
         );
     }
+
+    createLinkTool = new MenuItem(
+        'Create Link...',
+        function () {
+            var ae = document.activeElement;
+            if (ae.contentEditable) {
+                document.execCommand('createLink', false, window.prompt('Url', ''));
+            }
+        },
+        null,
+        null,
+        null,
+        contentEditable
+    );
+
     editor.getViewer().on('inplaceEditChanged', function () {
         forEach(menus.text, function (m) {
             if (m) {

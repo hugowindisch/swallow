@@ -1361,6 +1361,12 @@ DOMInput.prototype.getValue = DOMInput.prototype.getText;
 * @returns this.
 * @type String
 */
+
+DOMInput.prototype.setPlaceholder = function (ph) {
+    this.element.placeholder = ph;
+    return this;
+};
+
 DOMInput.prototype.enable = function (enable) {
     this.element.disabled = !enable;
     return this;

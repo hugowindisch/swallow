@@ -883,14 +883,18 @@ Group.prototype.cmdRemoveStyleAndReferences = function (factory, type, style) {
             var styles = prop.getStylesFromData(config[propName]),
                 newProp;
             forEachProperty(styles, function (s, sname) {
-                if (isString(s)) {
-                    if (s === style) {
+                // this is a hack / workaround for nko2012. I don't know
+                // why this case happens.
+                if (s !== null) {
+                    if (isString(s)) {
+                        if (s === style) {
+                            change = true;
+                            styles[sname] = null;
+                        }
+                    } else if (s.factory === factory && s.type === type && s.style === style) {
                         change = true;
                         styles[sname] = null;
                     }
-                } else if (s.factory === factory && s.type === type && s.style === style) {
-                    change = true;
-                    styles[sname] = null;
                 }
             });
             if (change) {

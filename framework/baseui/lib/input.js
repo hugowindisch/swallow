@@ -39,6 +39,15 @@ Input.prototype.getDescription = function () {
     return "A text input component";
 };
 
+Input.prototype.setPassword = function (pw) {
+    if (pw) {
+        this.setType('password');
+    } else {
+        this.setType('text');
+    }
+    return this;
+};
+
 Input.createPreview = function () {
     return new Input({text: 'input'});
 };
@@ -53,7 +62,11 @@ Input.prototype.theme = new (visual.Theme)({
 });
 
 Input.prototype.getConfigurationSheet = function () {
-    return { text: require('config').inputConfig('Text') };
+    return {
+        text: require('config').inputConfig('Text'),
+        placeholder: require('config').inputConfig('Placeholder'),
+        password: require('config').booleanConfig('Password')
+    };
 };
 
 exports.Input = Input;
