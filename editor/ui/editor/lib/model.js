@@ -530,7 +530,7 @@ Group.prototype.cmdClearTransformationPosition = function (name, authoringDimens
             if (!d) {
                 d = convertScaleToSize(m).dimensions;
             }
-            pos.matrix = mat4.create([d[0], 0, 0, 0,   0, d[1], 0, 0,   0, 0, d[2], 0,   m[12], m[13], m[13], 1]);
+            pos.matrix = mat4.create([d[0] || 1, 0, 0, 0,   0, d[1] || 1, 0, 0,   0, 0, d[2] || 1, 0,   m[12], m[13], m[13], 1]);
         },
         function () {
             var documentData = that.documentData,
