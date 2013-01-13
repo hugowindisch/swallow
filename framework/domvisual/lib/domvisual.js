@@ -1291,6 +1291,11 @@ function DOMInput(config) {
             evt.stopPropagation();
         }
     });
+    // FIXME: dummy just for mvvm (because we need to have a hook on
+    // the keyup... the right solution would be : always keep a hook
+    // to key events),
+    this.on('keyup', function () {
+    });
 }
 
 DOMInput.prototype = new DOMVisual();
@@ -1651,3 +1656,4 @@ exports.hasTextAttributes = styles.hasTextAttributes;
 exports.makeKeyString = keycodes.makeKeyString;
 exports.decorateVk = keycodes.decorateVk;
 exports.getStage = getStage;
+exports.globalEvents = require('./globalevents');

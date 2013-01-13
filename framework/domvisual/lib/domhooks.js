@@ -24,6 +24,7 @@
 var utils = require('utils'),
     dirty = require('/visual/lib/dirty'),
     keycodes = require('./keycodes'),
+    globalEvents = require('./globalevents'),
     numToVk = keycodes.numToVk,
     makeKeyString = keycodes.makeKeyString,
     decorateVk = keycodes.decorateVk,
@@ -224,6 +225,7 @@ function createHandler(name, vis, filter) {
             evt = filter(evt);
         }
         vis.emit(name, evt);
+        globalEvents.emit('browserEvent', { name: name, event: evt });
         if (!dirty.isInUpdate()) {
             dirty.update();
         }
