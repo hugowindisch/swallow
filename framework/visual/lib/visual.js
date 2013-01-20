@@ -721,6 +721,18 @@ Visual.prototype.getParent = function () {
 };
 
 /**
+* Returns the topmost element of the hierachy
+* @type Visual
+*/
+Visual.prototype.getTopmost = function () {
+    var el = this;
+    while (el.parent) {
+        el = el.parent;
+    }
+    return el;
+};
+
+/**
 * Removes this visual from its container.
 * @returns the parent of this visual component.
 * @type Visual

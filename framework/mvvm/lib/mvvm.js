@@ -55,8 +55,8 @@ for all bound properties in the view model:
         - update the edited value
 
 Bindings:
-    Each Element could have some bindings (a bindings object)
-        - all bindings would be known centrally (when removed an Element
+    Each visual could have some bindings (a bindings object)
+        - all bindings would be known centrally (when removed an visual
             unregisters its bindings, when inserted, it re registers its
             bindings)
         - the bindings themselves can keep track of dirtyness and stuff
@@ -64,9 +64,9 @@ Bindings:
 
         - how to correctly synch this with events??? any problem here???
 
-        - how to use this for something ELSE than an element (should be easy
+        - how to use this for something ELSE than an visual (should be easy
         because the whole binding mechansim is separated from the
-        Element thing)
+        visual thing)
 
         - monitoring the whole thing (like we should be able to monitor
         an object or subobject for changes under it). This would greatly
@@ -74,94 +74,150 @@ Bindings:
         we want to know that the color itself changed... so we want to somehow
         propagate dirt upwards or I don't know)
 
-NOTE: to expose bindings to the editor, elements will have some name bindings
+NOTE: to expose bindings to the editor, visuals will have some name bindings
 "blabla": [ setViewValue, getViewValue]
 
 The 'object' will be implicit (i.e. the object attached to this thing)
 The 'property' will be a string
 
 */
-"use strict";
+//"use strict";
+/*jslint sloppy: true */
 var utils = require('utils'),
     domvisual = require('domvisual'),
     globalEvents = domvisual.globalEvents,
     forEach = utils.forEach,
-    forEachProperty = utils.forEachProperty;
-// each object
-function BindingMap() {
-    this.bindings = [];
-    this.id = BindingMap.id;
-    BindingMap.id += 1;
-}
-BindingMap.id = 0;
-BindingMap.registry = {};
-BindingMap.prototype.bind = function (
-    object, // the actual model object to monitor
-    propertyName, // the property name inside this object
-    setViewValue, // update the view
-    getViewValue //  (optional) get the value inside the view
-) {
-    this.bindings.push({
-        object: object,
-        popertyName: propertyName,
-        setViewValue: setViewValue,
-        getViewValue: getViewValue || function () {}
-    });
-};
-
-BindingMap.prototype.register = function () {
-    BindingMap.registry[this.id] = this;
-    return this;
-};
-
-BindingMap.prototype.unregister = function () {
-    delete BindingMap.registry[this.id];
-    return this;
-};
-
-BindingMap.prototype.refresh = function () {
-    var modelChange = false;
-    forEach(this.bindings, function (v, i) {
-        var o = v.object,
-            propName = v.propName,
-            val = o[propName],
-            vVal = v.getViewValue();
-        // if the model value changed
-        if (v.val !== val) {
-            // update the view
-            if (vVal !== val) {
-                v.setViewValue(val);
-                v.val = val;
-            }
-        } else if (vVal !== undefined && v.val !== vVal) {
-            // the view value changed
-            o[propName] = vVal;
-            v.val = vVal;
-            modelChange = true;
-        }
-
-    });
-    return modelChange;
-};
-BindingMap.refresh = function () {
-    var reg = BindingMap.registry,
-        modelChange = true;
-    function mc() {
-        modelChange = false;
-        forEachProperty(reg, function (v, k) {
-            if (v.refresh()) {
-                modelChange = true;
-            }
-        });
-    }
-    while (modelChange) {
-        mc();
-    }
-};
+    forEachProperty = utils.forEachProperty,
+    Scope = require('./scope').Scope,
+    BindingMap = require('./map').BindingMap;
 
 // automatically refresh the bindings on browser events
 globalEvents.on('browserEvent', function () {
     BindingMap.refresh();
 });
 
+// keep all MVVM crap under one umbrella
+function MVVM() {
+    this.bindingMap = new BindingMap();
+    this.w = '';
+    // FIXME: this should probably not be done here!
+    this.bindingMap.register();
+}
+
+
+
+// helpers for creating bindings in components
+// MyThing.prototype.setBindings = setBindings(availableBindings);
+// bindings:
+// { type, variable }
+// variable is like a big path
+/*function setBindings(availableBindings) {
+
+// FIXME: probably bad.... can we really bind at this moment???
+
+    return function (bindings) {
+        this.mvvm = new MVVM();
+        var that = this,
+            MVVM = this.mvvm,
+            scope = this.mvvm.scope,
+            bindingMap = MVVM.bindingMap;
+        forEachProperty(bindings, function (v, k) {
+            var res = scope.resolve(v.variable),
+                b = availableBindings[k];
+            bindingMap.bind(
+                res.object,
+                res.variable,
+                function (v) {
+                    return b.setViewValue(that, v);
+                },
+                function () {
+                    b.getViewValue(that);
+                },
+                v
+            );
+        });
+        return this;
+    };
+}
+function getBindings(availableBindinds) {
+    return function () {
+        var ret = [],
+            bindingMap = this.mvvm && this.mvvm.bindingMap;
+        if (bindingMap) {
+            forEach(bindingMap.bindings, function (v) {
+                if (v.bindingInfo) {
+                    ret.push(v.bindingInfo);
+                }
+            });
+        }
+        return ret;
+    };
+}
+*/
+function setMVVMWith(w) {
+    this.mvvm = this.mvvm || new MVVM();
+    this.mvvm.w = w;
+    return this;
+}
+function getMVVMWith() {
+    return this.mvvm && this.mvvm.w;
+}
+function bindMVVM(bindingTypes) {
+    return function (data) {
+        if (!(data instanceof Scope)) {
+            data = new Scope(data);
+            // FIXME called with DATA, this is a top level scope
+            //data.setTopLevel();
+        }
+        this.mvvm = this.mvvm || new MVVM();
+        var mvvm = this.mvvm,
+            map = mvvm.bindingMap,
+            scope = data.resolveScope(this.w),
+            that = this;
+        mvvm.scope = scope;
+
+        map.clear();
+        if (this.bindingInfo) {
+            forEach(this.bindingInfo, function (b, k) {
+                var res = scope.resolve(b.variable),
+                    bt = bindingTypes[b.type];
+                map.bind(
+                    res.object,
+                    res.variable,
+                    function (v) {
+                        return bt.setViewValue(that, v);
+                    },
+                    function () {
+                        return bt.getViewValue(that);
+                    }
+                );
+            });
+        }
+        // always deep
+        this.forEachChild(function (c) {
+            if (c.bindMVVM) {
+                c.bindMVVM(scope);
+            }
+        });
+
+        return this;
+    };
+}
+function setBindingInfo(b) {
+    this.bindingInfo = b;
+    return this;
+}
+function getBindingInfo() {
+    return this.bindingInfo || [];
+}
+MVVM.initialize = function (VisualConstructor, bindingTypes) {
+    VisualConstructor.prototype.setMVVMBindingInfo = setBindingInfo;
+    VisualConstructor.prototype.getMVVMBindingInfo = getBindingInfo;
+    VisualConstructor.prototype.bindMVVM = bindMVVM(bindingTypes);
+    VisualConstructor.prototype.setMVVMWith = setMVVMWith;
+    VisualConstructor.prototype.getMVVMWith = getMVVMWith;
+};
+
+exports.Scope = Scope;
 exports.BindingMap = BindingMap;
+exports.MVVM = MVVM;

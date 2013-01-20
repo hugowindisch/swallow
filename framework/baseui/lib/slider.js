@@ -27,6 +27,17 @@ var visual = require('visual'),
     mat4 = glmatrix.mat4,
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction,
+    mvvm = require('mvvm'),
+    bindingTypes = {
+        "value": {
+            setViewValue: function (instance, v) {
+                return instance.setValue(v);
+            },
+            getViewValue: function (instance) {
+                return instance.getValue();
+            }
+        }
+    },
     group = {
         // authoring dimension
         dimensions: [ 100, 24, 0],
@@ -105,6 +116,7 @@ function Slider(config) {
 }
 
 Slider.prototype = new (domvisual.DOMElement)();
+mvvm.MVVM.initialize(Slider, bindingTypes);
 Slider.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Slider');
 Slider.prototype.getDescription = function () {
     return "An horizontal Slider";

@@ -24,7 +24,18 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
-    isFunction = utils.isFunction;
+    isFunction = utils.isFunction,
+	mvvm = require('mvvm'),
+    bindingTypes = {
+        "text": {
+            setViewValue: function (instance, v) {
+                return instance.setText(v);
+            },
+            getViewValue: function (instance) {
+                return instance.getText();
+            }
+        }
+    };
 
 function Input(config) {
     domvisual.DOMInput.call(this, config);
@@ -32,6 +43,8 @@ function Input(config) {
 }
 
 Input.prototype = new (domvisual.DOMInput)();
+
+mvvm.MVVM.initialize(Input, bindingTypes);
 
 Input.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Input');
 
