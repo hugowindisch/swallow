@@ -97,65 +97,22 @@ globalEvents.on('browserEvent', function () {
 });
 
 // keep all MVVM crap under one umbrella
-function MVVM() {
+function MVVM(vis) {
+    var that = this;
     this.bindingMap = new BindingMap();
     this.w = '';
-    // FIXME: this should probably not be done here!
-    this.bindingMap.register();
-}
 
-
-
-// helpers for creating bindings in components
-// MyThing.prototype.setBindings = setBindings(availableBindings);
-// bindings:
-// { type, variable }
-// variable is like a big path
-/*function setBindings(availableBindings) {
-
-// FIXME: probably bad.... can we really bind at this moment???
-
-    return function (bindings) {
-        this.mvvm = new MVVM();
-        var that = this,
-            MVVM = this.mvvm,
-            scope = this.mvvm.scope,
-            bindingMap = MVVM.bindingMap;
-        forEachProperty(bindings, function (v, k) {
-            var res = scope.resolve(v.variable),
-                b = availableBindings[k];
-            bindingMap.bind(
-                res.object,
-                res.variable,
-                function (v) {
-                    return b.setViewValue(that, v);
-                },
-                function () {
-                    b.getViewValue(that);
-                },
-                v
-            );
-        });
-        return this;
-    };
-}
-function getBindings(availableBindinds) {
-    return function () {
-        var ret = [],
-            bindingMap = this.mvvm && this.mvvm.bindingMap;
-        if (bindingMap) {
-            forEach(bindingMap.bindings, function (v) {
-                if (v.bindingInfo) {
-                    ret.push(v.bindingInfo);
-                }
-            });
+    vis.on('connectedToTheStage', function (c) {
+        if (c) {
+            that.bindingMap.register();
+        } else {
+            that.bindingMap.unregister();
         }
-        return ret;
-    };
+    });
 }
-*/
+
 function setMVVMWith(w) {
-    this.mvvm = this.mvvm || new MVVM();
+    this.mvvm = this.mvvm || new MVVM(this);
     this.mvvm.w = w;
     return this;
 }
@@ -169,7 +126,7 @@ function bindMVVM(bindingTypes) {
             // FIXME called with DATA, this is a top level scope
             //data.setTopLevel();
         }
-        this.mvvm = this.mvvm || new MVVM();
+        this.mvvm = this.mvvm || new MVVM(this);
         var mvvm = this.mvvm,
             map = mvvm.bindingMap,
             scope = data.resolveScope(this.w),
@@ -204,6 +161,7 @@ function bindMVVM(bindingTypes) {
     };
 }
 function setBindingInfo(b) {
+	this.mvvm = this.mvvm || new MVVM(this);
     this.bindingInfo = b;
     return this;
 }

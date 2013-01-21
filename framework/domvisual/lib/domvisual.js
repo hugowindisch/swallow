@@ -122,6 +122,7 @@ DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
         if (c.connectedToTheStage !== connectedToTheStage ||
             Boolean(c.disableInteractiveEventHooks) !== disableInteractiveEventHooks) {
             c.connectedToTheStage = connectedToTheStage;
+            c.emit('connectedToTheStage', connectedToTheStage);
             if (disableInteractiveEventHooks) {
                 c.disableInteractiveEventHooks = true;
             }
@@ -157,6 +158,7 @@ DOMVisual.prototype.removeChild = function (child) {
     visual.forVisualAndAllChildrenDeep(child, function (c) {
         if (c.connectedToTheStage) {
             c.connectedToTheStage = false;
+            c.emit('connectedToTheStage', false);
             // here we should revalidate the hooks for this child
             updateDOMEventHooks(c);
         } else {
