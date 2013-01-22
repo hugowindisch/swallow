@@ -41,7 +41,7 @@ BindingMap.prototype.bind = function (
 ) {
     this.bindings.push({
         object: object,
-        popertyName: propertyName,
+        propertyName: propertyName,
         setViewValue: setViewValue,
         getViewValue: getViewValue || function () {}
     });
@@ -64,7 +64,7 @@ BindingMap.prototype.refreshModel = function () {
     var modelChange = false;
     forEach(this.bindings, function (v, i) {
         var o = v.object,
-            propName = v.propName,
+            propName = v.propertyName,
             vVal = v.getViewValue();
         if (vVal !== undefined && v.val !== vVal) {
             // the view value changed
@@ -78,7 +78,7 @@ BindingMap.prototype.refreshModel = function () {
 BindingMap.prototype.refreshView = function () {
     forEach(this.bindings, function (v, i) {
         var o = v.object,
-            propName = v.propName,
+            propName = v.propertyName,
             val = o[propName],
             vVal = v.getViewValue();
         // if the model value changed
