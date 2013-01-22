@@ -96,21 +96,35 @@ globalEvents.on('browserEvent', function () {
     BindingMap.refresh();
 });
 
+function getMVVMScope(vis) {
+    if (vis.mvvm && vis.mvvm.topScope) {
+        return vis.mvvm.topScope;
+    }
+    while (vis) {
+        if (vis.mvvm && vis.mvvm.scope) {
+            return vis.mvvm.scope;
+        }
+        vis = vis.getParent();
+    }
+    return Scope.globalScope;
+}
+
 // keep all MVVM crap under one umbrella
 function MVVM(vis) {
     var that = this;
-    this.bindingMap = new BindingMap();
     this.w = '';
 
     vis.on('connectedToTheStage', function (c) {
         if (c) {
+            that.bindingMap = new BindingMap();
+            vis.bindMVVM(getMVVMScope(vis));
             that.bindingMap.register();
         } else {
             that.bindingMap.unregister();
+            delete that.bindingMap;
         }
     });
 }
-
 function setMVVMWith(w) {
     this.mvvm = this.mvvm || new MVVM(this);
     this.mvvm.w = w;
@@ -119,18 +133,18 @@ function setMVVMWith(w) {
 function getMVVMWith() {
     return this.mvvm && this.mvvm.w;
 }
+
+function setMVVMData(data) {
+    this.mvvm = this.mvvm || new MVVM(this);
+    this.mvvm.topScope = new Scope(data);
+}
 function bindMVVM(bindingTypes) {
-    return function (data) {
-        if (!(data instanceof Scope)) {
-            data = new Scope(data);
-            // FIXME called with DATA, this is a top level scope
-            //data.setTopLevel();
-        }
+    return function (scope) {
         this.mvvm = this.mvvm || new MVVM(this);
         var mvvm = this.mvvm,
             map = mvvm.bindingMap,
-            scope = data.resolveScope(this.w),
             that = this;
+        scope = scope.resolveScope(this.w);
         mvvm.scope = scope;
 
         map.clear();
@@ -150,13 +164,6 @@ function bindMVVM(bindingTypes) {
                 );
             });
         }
-        // always deep
-        this.forEachChild(function (c) {
-            if (c.bindMVVM) {
-                c.bindMVVM(scope);
-            }
-        });
-
         return this;
     };
 }
@@ -174,6 +181,7 @@ MVVM.initialize = function (VisualConstructor, bindingTypes) {
     VisualConstructor.prototype.bindMVVM = bindMVVM(bindingTypes);
     VisualConstructor.prototype.setMVVMWith = setMVVMWith;
     VisualConstructor.prototype.getMVVMWith = getMVVMWith;
+    VisualConstructor.prototype.setMVVMData = setMVVMData;
 };
 
 exports.Scope = Scope;
