@@ -96,6 +96,32 @@ globalEvents.on('browserEvent', function () {
     BindingMap.refresh();
 });
 
+function bindMVVM(vis, scope) {
+    var mvvm = vis.mvvm,
+        bindingTypes = vis.bindingTypes,
+        map = mvvm.bindingMap;
+    scope = scope.resolveScope(vis.w);
+    mvvm.scope = scope;
+
+    map.clear();
+    if (vis.bindingInfo) {
+        forEach(vis.bindingInfo, function (b, k) {
+            var res = scope.resolve(b.variable),
+                bt = bindingTypes[b.type];
+            map.bind(
+                res.object,
+                res.variable,
+                function (v) {
+                    return bt.setViewValue(vis, v);
+                },
+                function () {
+                    return bt.getViewValue(vis);
+                }
+            );
+        });
+    }
+}
+
 function getMVVMScope(vis) {
     if (vis.mvvm && vis.mvvm.topScope) {
         return vis.mvvm.topScope;
@@ -117,7 +143,7 @@ function MVVM(vis) {
     vis.on('connectedToTheStage', function (c) {
         if (c) {
             that.bindingMap = new BindingMap();
-            vis.bindMVVM(getMVVMScope(vis));
+            bindMVVM(vis, getMVVMScope(vis));
             that.bindingMap.register();
         } else {
             that.bindingMap.unregister();
@@ -138,35 +164,7 @@ function setMVVMData(data) {
     this.mvvm = this.mvvm || new MVVM(this);
     this.mvvm.topScope = new Scope(data);
 }
-function bindMVVM(bindingTypes) {
-    return function (scope) {
-        this.mvvm = this.mvvm || new MVVM(this);
-        var mvvm = this.mvvm,
-            map = mvvm.bindingMap,
-            that = this;
-        scope = scope.resolveScope(this.w);
-        mvvm.scope = scope;
 
-        map.clear();
-        if (this.bindingInfo) {
-            forEach(this.bindingInfo, function (b, k) {
-                var res = scope.resolve(b.variable),
-                    bt = bindingTypes[b.type];
-                map.bind(
-                    res.object,
-                    res.variable,
-                    function (v) {
-                        return bt.setViewValue(that, v);
-                    },
-                    function () {
-                        return bt.getViewValue(that);
-                    }
-                );
-            });
-        }
-        return this;
-    };
-}
 function setBindingInfo(b) {
 	this.mvvm = this.mvvm || new MVVM(this);
     this.bindingInfo = b;
@@ -178,7 +176,7 @@ function getBindingInfo() {
 MVVM.initialize = function (VisualConstructor, bindingTypes) {
     VisualConstructor.prototype.setMVVMBindingInfo = setBindingInfo;
     VisualConstructor.prototype.getMVVMBindingInfo = getBindingInfo;
-    VisualConstructor.prototype.bindMVVM = bindMVVM(bindingTypes);
+    VisualConstructor.prototype.bindingTypes = bindingTypes;
     VisualConstructor.prototype.setMVVMWith = setMVVMWith;
     VisualConstructor.prototype.getMVVMWith = getMVVMWith;
     VisualConstructor.prototype.setMVVMData = setMVVMData;
