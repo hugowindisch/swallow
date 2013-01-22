@@ -145,7 +145,7 @@ function MVVM(vis) {
             that.bindingMap = new BindingMap();
             bindMVVM(vis, getMVVMScope(vis));
             that.bindingMap.register();
-        } else {
+        } else if (that.bindingMap) {
             that.bindingMap.unregister();
             delete that.bindingMap;
         }
