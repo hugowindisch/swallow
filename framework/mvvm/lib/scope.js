@@ -74,7 +74,6 @@ Scope.prototype.resolveScope = function (w) {
             // global scope
             scope = new Scope();
         } else if (rel !== '.') {
- ///////////////////////////// I AM HERE!!!!!!!!!!!!!!!!!!!!!!!!!!
             // resolve to an scope
             scope = scope.retrieveOrCreateChildScope(rel);
         }

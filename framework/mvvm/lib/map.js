@@ -61,19 +61,19 @@ BindingMap.prototype.unregister = function () {
     return this;
 };
 BindingMap.prototype.refreshModel = function () {
-    var modelChange = false;
     forEach(this.bindings, function (v, i) {
         var o = v.object,
             propName = v.propertyName,
             vVal = v.getViewValue();
-        if (vVal !== undefined && v.val !== vVal) {
+        // if the view value changed this view
+        // should refresh the model
+        if (vVal !== undefined && v.vVal !== vVal) {
             // the view value changed
             o[propName] = vVal;
             v.val = vVal;
-            modelChange = true;
+            v.vVal = vVal;
         }
     });
-    return modelChange;
 };
 BindingMap.prototype.refreshView = function () {
     forEach(this.bindings, function (v, i) {
@@ -81,21 +81,23 @@ BindingMap.prototype.refreshView = function () {
             propName = v.propertyName,
             val = o[propName],
             vVal = v.getViewValue();
-        // if the model value changed
+        // if the model value changced
         if (v.val !== val) {
             // update the view
             if (vVal !== val) {
                 v.setViewValue(val);
-                v.val = val;
+                v.vVal = v.getViewValue();
             }
+            v.val = val;
         }
     });
 };
 BindingMap.refresh = function () {
-    var reg = BindingMap.registry;
+    var reg = BindingMap.registry,
+        dirtied = {};
     function refreshModel() {
         forEachProperty(reg, function (v, k) {
-            v.refreshModel();
+            v.refreshModel(dirtied);
         });
     }
     function refreshView() {
