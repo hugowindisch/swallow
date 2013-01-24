@@ -111,12 +111,16 @@ function bindMVVM(vis, scope) {
             map.bind(
                 res.object,
                 res.variable,
-                function (v) {
+                bt.setViewValue ? function (v) {
                     return bt.setViewValue(vis, v);
-                },
-                function () {
+                } : null,
+                bt.getViewValue ? function () {
+                    // FIXME: this should be optional
                     return bt.getViewValue(vis);
-                }
+                } : null,
+                bt.synchronizeList ? function (l) {
+                    return bt.synchronizeList(vis, l);
+                } : null
             );
         });
     }

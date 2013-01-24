@@ -23,6 +23,7 @@
 
 "use strict";
 var utils = require('utils'),
+    isArray = utils.isArray,
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty;
 // each object
@@ -37,13 +38,15 @@ BindingMap.prototype.bind = function (
     object, // the actual model object to monitor
     propertyName, // the property name inside this object
     setViewValue, // update the view
-    getViewValue //  (optional) get the value inside the view
+    getViewValue, //  (optional) get the value inside the view
+    synchronizeList
 ) {
     this.bindings.push({
         object: object,
         propertyName: propertyName,
         setViewValue: setViewValue,
-        getViewValue: getViewValue || function () {}
+        getViewValue: getViewValue,
+        synchronizeList: synchronizeList
     });
 };
 
@@ -62,33 +65,45 @@ BindingMap.prototype.unregister = function () {
 };
 BindingMap.prototype.refreshModel = function () {
     forEach(this.bindings, function (v, i) {
-        var o = v.object,
-            propName = v.propertyName,
-            vVal = v.getViewValue();
-        // if the view value changed this view
-        // should refresh the model
-        if (vVal !== undefined && v.vVal !== vVal) {
-            // the view value changed
-            o[propName] = vVal;
-            v.val = vVal;
-            v.vVal = vVal;
+        if (v.getViewValue) {
+            var o = v.object,
+                propName = v.propertyName,
+                vVal = v.getViewValue();
+            // if the view value changed this view
+            // should refresh the model
+            if (vVal !== undefined && v.vVal !== vVal) {
+                // the view value changed
+                o[propName] = vVal;
+                v.val = vVal;
+                v.vVal = vVal;
+            }
         }
     });
 };
 BindingMap.prototype.refreshView = function () {
     forEach(this.bindings, function (v, i) {
-        var o = v.object,
-            propName = v.propertyName,
-            val = o[propName],
+        var o, propName, val, vVal;
+        if (v.getViewValue && v.setViewValue) {
+            o = v.object;
+            propName = v.propertyName;
+            val = o[propName];
             vVal = v.getViewValue();
-        // if the model value changced
-        if (v.val !== val) {
-            // update the view
-            if (vVal !== val) {
-                v.setViewValue(val);
-                v.vVal = v.getViewValue();
+            // if the model value changced
+            if (v.val !== val) {
+                // update the view
+                if (vVal !== val) {
+                    v.setViewValue(val);
+                    v.vVal = v.getViewValue();
+                }
+                v.val = val;
             }
-            v.val = val;
+        } else if (v.synchronizeList) {
+            o = v.object;
+            propName = v.propertyName;
+            val = o[propName];
+            if (isArray(val)) {
+                v.synchronizeList(val);
+            }
         }
     });
 };
