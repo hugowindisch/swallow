@@ -87,11 +87,10 @@ BindingMap.prototype.refreshView = function () {
             o = v.object;
             propName = v.propertyName;
             val = o[propName];
-            vVal = v.getViewValue();
             // if the model value changced
             if (v.val !== val) {
                 // update the view
-                if (vVal !== val) {
+                if (v.vVal !== val) {
                     v.setViewValue(val);
                     v.vVal = v.getViewValue();
                 }
