@@ -20,6 +20,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
@@ -29,14 +30,7 @@ var visual = require('visual'),
     isFunction = utils.isFunction,
     mvvm = require('mvvm'),
     bindingTypes = {
-        "value": {
-            setViewValue: function (instance, v) {
-                return instance.setValue(v);
-            },
-            getViewValue: function (instance) {
-                return instance.getValue();
-            }
-        }
+        value: mvvm.bidiProp('value')
     },
     group = {
         // authoring dimension

@@ -21,20 +21,14 @@
     IN THE SOFTWARE.
 
 */
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
     isFunction = utils.isFunction,
 	mvvm = require('mvvm'),
     bindingTypes = {
-        "text": {
-            setViewValue: function (instance, v) {
-                return instance.setText(v);
-            },
-            getViewValue: function (instance) {
-                return instance.getText();
-            }
-        }
+        value: mvvm.bidiProp('value')
     };
 
 function Input(config) {

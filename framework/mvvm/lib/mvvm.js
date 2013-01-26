@@ -106,7 +106,7 @@ function bindMVVM(vis, scope) {
     map.clear();
     if (vis.bindingInfo) {
         forEach(vis.bindingInfo, function (b, k) {
-            var res = scope.resolve(b.variable),
+            var res = scope.resolve(b.expression),
                 bt = bindingTypes[b.type];
             map.bind(
                 res.object,
@@ -186,6 +186,20 @@ MVVM.initialize = function (VisualConstructor, bindingTypes) {
     VisualConstructor.prototype.setMVVMData = setMVVMData;
 };
 
+// binding helpers
+// ---------------
+function bidiProp(propertyName) {
+    return {
+        setViewValue: function (instance, v) {
+            return instance[instance.getSetFunctionName(propertyName)].call(instance, v);
+        },
+        getViewValue: function (instance) {
+            return instance[instance.getGetFunctionName(propertyName)].call(instance);
+        }
+    };
+}
+
 exports.Scope = Scope;
 exports.BindingMap = BindingMap;
 exports.MVVM = MVVM;
+exports.bidiProp = bidiProp;
