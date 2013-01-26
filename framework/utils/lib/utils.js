@@ -20,7 +20,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
-
+"use strict";
 /**
 * This package implements various utility functions.
 *
@@ -140,7 +140,8 @@ function forEachSortedProperty(object, f, optionalSortFunction) {
     function cmp(n1, n2) {
         if (n1 > n2) {
             return 1;
-        } else if (n1 < n2) {
+        }
+        if (n1 < n2) {
             return -1;
         }
         return 0;
@@ -361,11 +362,33 @@ function ensured(o) {
         n = String(arguments[i]);
         if (!o.hasOwnProperty(n)) {
             return null;
-        } else {
-            o = o[n];
         }
+        o = o[n];
     }
     return o;
+}
+
+/**
+* transforms each value of the array.
+* @returns arr
+* @type any
+* @memberOf utils
+*/
+function map(arr, fcn) {
+    forEach(arr, function (v, i) {
+        arr[i] = fcn(v);
+    });
+    return arr;
+}
+
+/**
+* removes white space at the begining and end of a string.
+* @returns string
+* @type string
+* @memberOf utils
+*/
+function stripWhite(s) {
+    return (/\s*(\S*)\s*/).exec(String(s))[1];
 }
 
 /**
@@ -408,3 +431,5 @@ exports.keys = keys;
 exports.prune = prune;
 exports.ensure = ensure;
 exports.ensured = ensured;
+exports.map = map;
+exports.stripWhite = stripWhite;

@@ -20,67 +20,6 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
-
-/*
- the goal is to bring knockoutjs-like features to swallow so that
-
-We want to:
--  be able to bind visual object attributes to model variables
-- expose bindings in property sheets
-- load a model from a server (so from the editor, we coud configure our bindings
-setup our url save the thing and tada, zero programming
-- probably have a notion of 'filter' (a way of remapping property names...
-not certain about this one)
-
-- Writing models by hand: this is nice...
-- Writing models by 'instrumenting' a normal object
-
-Monitoring mechanism
-====================
-Options:
-a) observables
---------------
-
-b) something more complicated
------------------------------
-
-. we could use the dirty mechanism (end of event processing) to refresh things
-(how do we NOT refresh something that initiated the change)
-
-Algo:
-for all bound properties in the view model:
-    - if the edited value has changed
-        - update the model value
-    - if the model value is not the same as the edited value
-        - update the edited value
-
-Bindings:
-    Each visual could have some bindings (a bindings object)
-        - all bindings would be known centrally (when removed an visual
-            unregisters its bindings, when inserted, it re registers its
-            bindings)
-        - the bindings themselves can keep track of dirtyness and stuff
-            keeping things in synch
-
-        - how to correctly synch this with events??? any problem here???
-
-        - how to use this for something ELSE than an visual (should be easy
-        because the whole binding mechansim is separated from the
-        visual thing)
-
-        - monitoring the whole thing (like we should be able to monitor
-        an object or subobject for changes under it). This would greatly
-        help in the editor (ex: someone changes the red property of a color
-        we want to know that the color itself changed... so we want to somehow
-        propagate dirt upwards or I don't know)
-
-NOTE: to expose bindings to the editor, visuals will have some name bindings
-"blabla": [ setViewValue, getViewValue]
-
-The 'object' will be implicit (i.e. the object attached to this thing)
-The 'property' will be a string
-
-*/
 //"use strict";
 /*jslint sloppy: true */
 var utils = require('utils'),
@@ -89,6 +28,8 @@ var utils = require('utils'),
     globalEvents = domvisual.globalEvents,
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty,
+    isObject = utils.isObject,
+    controller = require('./controller'),
     Scope = require('./scope').Scope,
     BindingMap = require('./map').BindingMap;
 
@@ -99,14 +40,21 @@ globalEvents.on('browserEvent', function () {
 
 function bindMVVM(vis, scope) {
     var mvvm = vis.mvvm,
-        availableBindings = vis.availableBindings;
+        availableBindings = vis.availableBindings,
+        listValue = mvvm.listValue;
 
     // with is a special binding that we process here
     if (vis.bindingInfo && vis.bindingInfo.with) {
         mvvm.w = vis.bindingInfo.with;
     }
-    // mvvm .w is not already set BECAUSE it is a binding...
-    mvvm.scope = scope.resolveScope(mvvm.w);
+    // special handling of listed elements
+    if (listValue) {
+        // note that these never have a with
+        mvvm.scope = new Scope(isObject(listValue) ? listValue : {}, scope);
+    } else {
+        // normal scoping
+        mvvm.scope = scope.resolveScope(mvvm.w);
+    }
     if (vis.bindingInfo) {
         forEachProperty(vis.bindingInfo, function (b, k) {
             availableBindings[k](vis, mvvm, b);
@@ -228,9 +176,11 @@ function listBinding(createVisualForData) {
                 // the same thing but if it does not the list scanning becomes
                 // ~o(n)
                 vis.forEachChild(function (c, k) {
-                    var v = c.mvvmCachedValue,
+                    // here, the child should always have a scope and
+                    // a cached value and a list
+                    var v = c.mvvm.scope.cachedValue,
                         kk = String(v),
-                        e = {c: c, v: c.mvvmCachedValue },
+                        e = {c: c, v: v },
                         l = children[kk];
                     if (!l) {
                         children[kk] = [e];
@@ -240,6 +190,7 @@ function listBinding(createVisualForData) {
                 });
 //console.log(children);
                 // scan the list
+//console.log('-----------');
                 forEach(l, function (e, i) {
                     var ch,
                         l = children[String(e)];
@@ -261,9 +212,20 @@ function listBinding(createVisualForData) {
                         // not found, we need to add a new one
                         ch = createVisualForData(vis, e);
                         if (ch) {
-                            ch.mvvmCachedValue = e;
+                            // make sure it has mmvm stuff
+                            ch.mvvm = ch.mvvm || new MVVM(ch);
+                            ch.mvvm.listValue = e;
+                            // if e is an object, this thing should have its own scope
                             vis.addChild(ch);
                             vis.setOrderUnsafe(ch, order);
+                            // HERE, ch should have a scope
+                            if (!ch.mvvm.scope) {
+                                throw new Error('Missing scope after insertion');
+                            }
+                            // keep list info FIXME: needs to be in the scope object
+                            ch.mvvm.scope.cachedValue = e;
+                            ch.mvvm.scope.list = l;
+
 //console.log('addChild ' + ch.name + ' ' + order);
                         }
                     }
@@ -293,8 +255,7 @@ function eventBinding(event) {
     //
     return function (vis, mvvm, expression) {
         function listener() {
-            var res = mvvm.scope.resolve(expression);
-            res.object[res.variable]();
+            controller.runController(mvvm.scope, expression);
         }
         vis.on(event, listener);
         mvvm.on('clear', function () {
@@ -310,3 +271,4 @@ exports.bidiPropBinding = bidiPropBinding;
 exports.withBinding = withBinding;
 exports.listBinding = listBinding;
 exports.eventBinding = eventBinding;
+exports.registerController = require('./controller').registerController;

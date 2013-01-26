@@ -32,6 +32,13 @@ function Scope(object, parentScope) {
 }
 Scope.globalScope = new Scope(globalObject);
 
+Scope.prototype.getListScope = function () {
+    var scope = this;
+    while (!scope.list) {
+        scope = scope.parent;
+    }
+    return scope;
+};
 Scope.prototype.getTop = function () {
     var scope = this;
     while (scope.parent) {
