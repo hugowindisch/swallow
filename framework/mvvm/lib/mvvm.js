@@ -199,16 +199,65 @@ function withBinding() {
         // we do nothing here because this is caught earlier
     };
 }
-function listBinding() {
+function listBinding(createVisualForData) {
     return function (vis, mvvm, expression) {
         var res = mvvm.scope.resolve(expression);
-        mvvm.bindinMap.bind(
+        mvvm.bindingMap.bind(
             res.object,
             res.variable,
             null,
             null,
             // here we could do the full list synchronization
             function (l) {
+                var children = [],
+                    order = 0;
+                // FIXME: to speedup things, we could MAP the items.
+                // the degenrated case is when items.toString() all return
+                // the same thing but if it does not the list scanning becomes
+                // ~o(n)
+                vis.forEachChild(function (c, k) {
+                    children.push({c: c, v: c.mvvmCachedValue });
+                });
+                // scan the list
+                forEach(l, function (e, i) {
+                    var ch;
+                    // we want to find the child that checks element e
+                    // this is fucking o(n2) so pretty bad... an observable
+                    // list would be way better!!!!!!!!!
+                    // at least we are greedy
+                    if (!forEach(children, function (c, j) {
+                            if (c.v === e) {
+                                children.splice(j, 1);
+                                if (c.c.order !== order) {
+    //console.log('moveChild ' + c.c.name + ' ' + c.c.order + ' -> ' + order);
+                                    vis.setOrderUnsafe(c.c, order);
+                                }
+                                return true;
+                            }
+                        })
+                            ) {
+                        // not found, we need to add a new one
+                        ch = createVisualForData(vis, e);
+                        if (ch) {
+                            ch.mvvmCachedValue = e;
+                            vis.addChild(ch);
+                            vis.setOrderUnsafe(ch, order);
+//console.log('addChild ' + ch.name + ' ' + order);
+                        }
+                    }
+                    // increase order
+                    order += 1;
+                });
+                // make sure that what we will remove is in order
+                forEach(children, function (c, j) {
+                    vis.setOrderUnsafe(c.c, order);
+                    order += 1;
+                });
+                // remove
+                forEach(children, function (c, j) {
+//console.log('removeChild ' + c.c.name);
+                    c.c.remove();
+                });
             }
         );
     };

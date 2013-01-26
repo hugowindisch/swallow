@@ -21,6 +21,7 @@
     IN THE SOFTWARE.
 */
 /*global define*/
+"use strict";
 var utils = require('utils'),
     events = require('events'),
     glmatrix = require('glmatrix'),
@@ -760,6 +761,19 @@ Visual.prototype.swapOrder = function (d1, d2) {
 };
 
 /**
+* Usable to implement a child reordering function.
+* @api private
+*/
+Visual.prototype.setOrderUnsafe = function (c, n) {
+    var o = this.resolveChild(c);
+    if (o.order !== n) {
+        o.order = n;
+        setDirty(this, 'childrenOrder');
+    }
+    return this;
+};
+
+/**
 * Move the toMove child before the ref child.
 * @param {String} toMove The name of the child to move.
 * @param {String} ref The name of the reference child.
@@ -1209,7 +1223,8 @@ function getGetActiveTheme(factoryName, typeName) {
         var skin = this.skin;
         if (this.hasOwnProperty('theme')) {
             return this.theme;
-        } else if (skin) {
+        }
+        if (skin) {
             return skin.getTheme(factoryName, typeName);
         }
         return this.theme || null;
