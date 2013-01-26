@@ -162,6 +162,10 @@ function withBinding() {
 function listBinding(createVisualForData) {
     return function (vis, mvvm, expression) {
         var res = mvvm.scope.resolve(expression);
+        // create a list if there is nothing
+        if (res.object[res.variable] === undefined) {
+            res.object[res.variable] = [];
+        }
         mvvm.bindingMap.bind(
             res.object,
             res.variable,
