@@ -1,6 +1,6 @@
 /**
     ColorViewer.js
-    Copyright (C) 2012 Hugo Windisch
+    Copyright (C) 2013 Hugo Windisch
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),

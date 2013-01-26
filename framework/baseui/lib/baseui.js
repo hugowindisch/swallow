@@ -54,3 +54,4 @@ exports.UploadImagePicker = require('./uploadimagepicker').UploadImagePicker;
 exports.ListBox = require('./listbox').ListBox;
 exports.FontPicker = require('./fontpicker').FontPicker;
 exports.ColorViewer = require('./colorviewer').ColorViewer;
+exports.ListViewer = require('./listviewer').ListViewer;
