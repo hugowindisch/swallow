@@ -29,6 +29,7 @@
 *
 * @package config
 */
+"use strict";
 var utils = require('utils'),
     forEachProperty = utils.forEachProperty,
     isObject = utils.isObject;
@@ -566,6 +567,18 @@ function imageUrlArrayConfig(label) {
     };
 }
 
+function bindingsConfig(label, availableBindings) {
+    return function bc(mainEditor, cb) {
+        function create() {
+            // create the graphic elements that we need
+            var editor = new (require('./BindingConfig').BindingConfig)(
+                {options: utils.keys(availableBindings), label: label }
+            );
+            cb(null, editor);
+        }
+        create();
+    };
+}
 
 exports.leftRightConfig = leftRightConfig;
 exports.inputConfig = inputConfig;
@@ -577,3 +590,4 @@ exports.styleConfig = styleConfig;
 exports.skinningConfig = skinningConfig;
 exports.styleSheetConfig = styleSheetConfig;
 exports.formattedTextConfig = formattedTextConfig;
+exports.bindingsConfig = bindingsConfig;

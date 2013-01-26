@@ -29,7 +29,7 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction,
     mvvm = require('mvvm'),
-    bindingTypes = {
+    availableBindings = {
         value: mvvm.bidiProp('value')
     },
     group = {
@@ -110,7 +110,7 @@ function Slider(config) {
 }
 
 Slider.prototype = new (domvisual.DOMElement)();
-mvvm.MVVM.initialize(Slider, bindingTypes);
+mvvm.MVVM.initialize(Slider, availableBindings);
 Slider.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Slider');
 Slider.prototype.getDescription = function () {
     return "An horizontal Slider";
@@ -172,7 +172,8 @@ Slider.prototype.getConfigurationSheet = function () {
     return {
         minValue: inputConfig('Min value'),
         maxValue: inputConfig('Max value'),
-        value: inputConfig('Value')
+        value: inputConfig('Value'),
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
     };
 };
 

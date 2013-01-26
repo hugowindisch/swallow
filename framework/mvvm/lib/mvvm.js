@@ -98,16 +98,16 @@ globalEvents.on('browserEvent', function () {
 
 function bindMVVM(vis, scope) {
     var mvvm = vis.mvvm,
-        bindingTypes = vis.bindingTypes,
+        availableBindings = vis.availableBindings,
         map = mvvm.bindingMap;
     scope = scope.resolveScope(vis.w);
     mvvm.scope = scope;
 
     map.clear();
     if (vis.bindingInfo) {
-        forEach(vis.bindingInfo, function (b, k) {
-            var res = scope.resolve(b.expression),
-                bt = bindingTypes[b.type];
+        forEachProperty(vis.bindingInfo, function (b, k) {
+            var res = scope.resolve(b),
+                bt = availableBindings[k];
             map.bind(
                 res.object,
                 res.variable,
@@ -177,10 +177,10 @@ function setBindingInfo(b) {
 function getBindingInfo() {
     return this.bindingInfo || [];
 }
-MVVM.initialize = function (VisualConstructor, bindingTypes) {
+MVVM.initialize = function (VisualConstructor, availableBindings) {
     VisualConstructor.prototype.setMVVMBindingInfo = setBindingInfo;
     VisualConstructor.prototype.getMVVMBindingInfo = getBindingInfo;
-    VisualConstructor.prototype.bindingTypes = bindingTypes;
+    VisualConstructor.prototype.availableBindings = availableBindings;
     VisualConstructor.prototype.setMVVMWith = setMVVMWith;
     VisualConstructor.prototype.getMVVMWith = getMVVMWith;
     VisualConstructor.prototype.setMVVMData = setMVVMData;

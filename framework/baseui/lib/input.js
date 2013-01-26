@@ -27,7 +27,7 @@ var visual = require('visual'),
     utils = require('utils'),
     isFunction = utils.isFunction,
 	mvvm = require('mvvm'),
-    bindingTypes = {
+    availableBindings = {
         value: mvvm.bidiProp('value')
     };
 
@@ -38,7 +38,7 @@ function Input(config) {
 
 Input.prototype = new (domvisual.DOMInput)();
 
-mvvm.MVVM.initialize(Input, bindingTypes);
+mvvm.MVVM.initialize(Input, availableBindings);
 
 Input.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Input');
 
@@ -69,10 +69,12 @@ Input.prototype.theme = new (visual.Theme)({
 });
 
 Input.prototype.getConfigurationSheet = function () {
+    var config = require('config');
     return {
-        text: require('config').inputConfig('Text'),
-        placeholder: require('config').inputConfig('Placeholder'),
-        password: require('config').booleanConfig('Password')
+        text: config.inputConfig('Text'),
+        placeholder: config.inputConfig('Placeholder'),
+        password: config.booleanConfig('Password'),
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
     };
 };
 
