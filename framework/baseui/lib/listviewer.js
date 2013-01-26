@@ -1,5 +1,5 @@
 /**
-    ColorViewer.js
+    ListViewer.js
     Copyright (C) 2013 Hugo Windisch
 
     Permission is hereby granted, free of charge, to any person obtaining a
@@ -22,52 +22,45 @@
 
 */
 "use strict";
-var visual = require('visual'),
-    domvisual = require('domvisual'),
-    config = require('config'),
+
+var domvisual = require('domvisual'),
     mvvm = require('mvvm'),
     availableBindings = {
-        r: mvvm.bidiPropBinding('r'),
-        g: mvvm.bidiPropBinding('g'),
-        b: mvvm.bidiPropBinding('b'),
-        a: mvvm.bidiPropBinding('a')
+        "list": mvvm.listBinding(function (vis, data) {
+            return vis.createChild();
+        })
     };
-
-
-function ColorViewer(config) {
-    this.rgba = { r: 0, g: 0, b: 0, a: 1 };
+function ListViewer(config) {
+    this.Viewer = domvisual.DOMElement;
     domvisual.DOMElement.call(this, config);
-    this.updateBG();
+    this.setOverflow([ 'hidden', 'auto' ]);
 }
-
-ColorViewer.prototype = new (domvisual.DOMElement)();
-
-mvvm.MVVM.initialize(ColorViewer, availableBindings);
-
-ColorViewer.prototype.getConfigurationSheet = function () {
+ListViewer.prototype = new domvisual.DOMElement();
+mvvm.MVVM.initialize(ListViewer, availableBindings);
+ListViewer.prototype.getConfigurationSheet = function () {
     var config = require('config');
     return {
-        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings),
+        factory: config.inputConfig('Factory: '),
+        type: config.inputConfig('Type: '),
     };
 };
+ListViewer.prototype.setFactory = function (V) {
+    this.factory = V;
+    return this;
+};
+ListViewer.prototype.setType = function (V) {
+    this.type = V;
+    return this;
+};
+ListViewer.prototype.createChild = function () {
+    var f = require(this.factory),
+        C = f && f[this.type],
+        r;
+    if (C) {
+        r = new C({htmlFlowing: { position: 'relative'}});
+    }
+    return r;
+};
 
-ColorViewer.prototype.setR = function (v) {
-    this.rgba.r = v;
-    this.updateBG();
-};
-ColorViewer.prototype.setG = function (v) {
-    this.rgba.g = v;
-    this.updateBG();
-};
-ColorViewer.prototype.setB = function (v) {
-    this.rgba.b = v;
-    this.updateBG();
-};
-ColorViewer.prototype.setA = function (v) {
-    this.rgba.a = v;
-    this.updateBG();
-};
-ColorViewer.prototype.updateBG = function () {
-    this.setStyleAttributes({ backgroundColor: this.rgba });
-};
-exports.ColorViewer = ColorViewer;
+exports.ListViewer = ListViewer;
