@@ -209,27 +209,37 @@ function listBinding(createVisualForData) {
             null,
             // here we could do the full list synchronization
             function (l) {
-                var children = [],
+                var children = {},
                     order = 0;
                 // FIXME: to speedup things, we could MAP the items.
                 // the degenrated case is when items.toString() all return
                 // the same thing but if it does not the list scanning becomes
                 // ~o(n)
                 vis.forEachChild(function (c, k) {
-                    children.push({c: c, v: c.mvvmCachedValue });
+                    var v = c.mvvmCachedValue,
+                        kk = String(v),
+                        e = {c: c, v: c.mvvmCachedValue },
+                        l = children[kk];
+                    if (!l) {
+                        children[kk] = [e];
+                    } else {
+                        l.push(e);
+                    }
                 });
+//console.log(children);
                 // scan the list
                 forEach(l, function (e, i) {
-                    var ch;
+                    var ch,
+                        l = children[String(e)];
                     // we want to find the child that checks element e
                     // this is fucking o(n2) so pretty bad... an observable
                     // list would be way better!!!!!!!!!
                     // at least we are greedy
-                    if (!forEach(children, function (c, j) {
+                    if (!l || !forEach(l, function (c, j) {
                             if (c.v === e) {
-                                children.splice(j, 1);
+                                l.splice(j, 1);
                                 if (c.c.order !== order) {
-    //console.log('moveChild ' + c.c.name + ' ' + c.c.order + ' -> ' + order);
+//console.log('moveChild ' + c.c.name + ' ' + c.c.order + ' -> ' + order);
                                     vis.setOrderUnsafe(c.c, order);
                                 }
                                 return true;
@@ -249,14 +259,18 @@ function listBinding(createVisualForData) {
                     order += 1;
                 });
                 // make sure that what we will remove is in order
-                forEach(children, function (c, j) {
-                    vis.setOrderUnsafe(c.c, order);
-                    order += 1;
+                forEachProperty(children, function (l) {
+                    forEach(l, function (c) {
+                        vis.setOrderUnsafe(c.c, order);
+                        order += 1;
+                    });
                 });
                 // remove
-                forEach(children, function (c, j) {
+                forEachProperty(children, function (l) {
+                    forEach(l, function (c) {
 //console.log('removeChild ' + c.c.name);
-                    c.c.remove();
+                        c.c.remove();
+                    });
                 });
             }
         );
