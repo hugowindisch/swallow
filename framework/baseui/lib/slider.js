@@ -30,7 +30,7 @@ var visual = require('visual'),
     isFunction = utils.isFunction,
     mvvm = require('mvvm'),
     availableBindings = {
-        value: mvvm.bidiProp('value')
+        value: mvvm.bidiPropBinding('value')
     },
     group = {
         // authoring dimension

@@ -98,30 +98,18 @@ globalEvents.on('browserEvent', function () {
 
 function bindMVVM(vis, scope) {
     var mvvm = vis.mvvm,
-        availableBindings = vis.availableBindings,
-        map = mvvm.bindingMap;
-    scope = scope.resolveScope(vis.w);
-    mvvm.scope = scope;
+        availableBindings = vis.availableBindings;
 
-    map.clear();
+    // with is a special binding that we process here
+    if (vis.bindingInfo && vis.bindingInfo.with) {
+        mvvm.w = vis.bindingInfo.with;
+    }
+    // mvvm .w is not already set BECAUSE it is a binding...
+    mvvm.scope = scope.resolveScope(mvvm.w);
+    mvvm.bindingMap.clear();
     if (vis.bindingInfo) {
         forEachProperty(vis.bindingInfo, function (b, k) {
-            var res = scope.resolve(b),
-                bt = availableBindings[k];
-            map.bind(
-                res.object,
-                res.variable,
-                bt.setViewValue ? function (v) {
-                    return bt.setViewValue(vis, v);
-                } : null,
-                bt.getViewValue ? function () {
-                    // FIXME: this should be optional
-                    return bt.getViewValue(vis);
-                } : null,
-                bt.synchronizeList ? function (l) {
-                    return bt.synchronizeList(vis, l);
-                } : null
-            );
+            availableBindings[k](vis, mvvm, b);
         });
     }
 }
@@ -155,14 +143,17 @@ function MVVM(vis) {
         }
     });
 }
-function setMVVMWith(w) {
-    this.mvvm = this.mvvm || new MVVM(this);
-    this.mvvm.w = w;
+MVVM.prototype.setWith = function (w) {
+    if (w) {
+        this.w = w;
+    } else {
+        delete this.w;
+    }
     return this;
-}
-function getMVVMWith() {
-    return this.mvvm && this.mvvm.w;
-}
+};
+MVVM.prototype.getWith = function () {
+    return this.w;
+};
 
 function setMVVMData(data) {
     this.mvvm = this.mvvm || new MVVM(this);
@@ -181,25 +172,51 @@ MVVM.initialize = function (VisualConstructor, availableBindings) {
     VisualConstructor.prototype.setMVVMBindingInfo = setBindingInfo;
     VisualConstructor.prototype.getMVVMBindingInfo = getBindingInfo;
     VisualConstructor.prototype.availableBindings = availableBindings;
-    VisualConstructor.prototype.setMVVMWith = setMVVMWith;
-    VisualConstructor.prototype.getMVVMWith = getMVVMWith;
     VisualConstructor.prototype.setMVVMData = setMVVMData;
 };
 
 // binding helpers
 // ---------------
-function bidiProp(propertyName) {
-    return {
-        setViewValue: function (instance, v) {
-            return instance[instance.getSetFunctionName(propertyName)].call(instance, v);
-        },
-        getViewValue: function (instance) {
-            return instance[instance.getGetFunctionName(propertyName)].call(instance);
-        }
+function bidiPropBinding(propertyName) {
+    return function (vis, mvvm, expression) {
+        var res = mvvm.scope.resolve(expression);
+        mvvm.bindingMap.bind(
+            res.object,
+            res.variable,
+            function (v) {
+                return vis[vis.getSetFunctionName(propertyName)].call(vis, v);
+            },
+            function () {
+                // FIXME: this should be optional
+                return vis[vis.getGetFunctionName(propertyName)].call(vis);
+            },
+            null
+        );
+    };
+}
+function withBinding() {
+    return function (vis, mvvm, expression) {
+        // we do nothing here because this is caught earlier
+    };
+}
+function listBinding() {
+    return function (vis, mvvm, expression) {
+        var res = mvvm.scope.resolve(expression);
+        mvvm.bindinMap.bind(
+            res.object,
+            res.variable,
+            null,
+            null,
+            // here we could do the full list synchronization
+            function (l) {
+            }
+        );
     };
 }
 
 exports.Scope = Scope;
 exports.BindingMap = BindingMap;
 exports.MVVM = MVVM;
-exports.bidiProp = bidiProp;
+exports.bidiPropBinding = bidiPropBinding;
+exports.withBinding = withBinding;
+exports.listBinding = listBinding;

@@ -51,16 +51,18 @@ Scope.prototype.retrieveOrCreateChildScope = function (member) {
 };
 // resolves a scope relative to the current scope with a with clause
 Scope.prototype.resolveScope = function (w) {
+    if (w === '') {
+        return this;
+    }
     if (typeof w === 'string') {
         w = w.split('/');
     }
     var p = w,
-        path = [],
         res = {},
         varpath,
         scope = this;
     // resolves a variable
-    forEach(path, function (rel, i) {
+    forEach(p, function (rel, i) {
         if (rel === '..') {
             if (scope.getParent()) {
                 scope = scope.getParent();
@@ -69,7 +71,7 @@ Scope.prototype.resolveScope = function (w) {
                 throw new Error('Invalid path');
             }
         } else if (rel === '') {
-            scope = scope.getTopmost();
+            scope = scope.getTop();
         } else if (rel === '~') {
             // global scope
             scope = new Scope();
