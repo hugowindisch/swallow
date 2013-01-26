@@ -84,6 +84,7 @@ The 'property' will be a string
 //"use strict";
 /*jslint sloppy: true */
 var utils = require('utils'),
+    events = require('events'),
     domvisual = require('domvisual'),
     globalEvents = domvisual.globalEvents,
     forEach = utils.forEach,
@@ -106,7 +107,6 @@ function bindMVVM(vis, scope) {
     }
     // mvvm .w is not already set BECAUSE it is a binding...
     mvvm.scope = scope.resolveScope(mvvm.w);
-    mvvm.bindingMap.clear();
     if (vis.bindingInfo) {
         forEachProperty(vis.bindingInfo, function (b, k) {
             availableBindings[k](vis, mvvm, b);
@@ -139,10 +139,14 @@ function MVVM(vis) {
             that.bindingMap.register();
         } else if (that.bindingMap) {
             that.bindingMap.unregister();
+            // clear the binding map
+            that.bindingMap.clear();
+            that.emit('clear');
             delete that.bindingMap;
         }
     });
 }
+MVVM.prototype = new events.EventEmitter();
 MVVM.prototype.setWith = function (w) {
     if (w) {
         this.w = w;
@@ -184,11 +188,19 @@ function bidiPropBinding(propertyName) {
             res.object,
             res.variable,
             function (v) {
-                return vis[vis.getSetFunctionName(propertyName)].call(vis, v);
+                var fcn = vis[vis.getSetFunctionName(propertyName)];
+                if (fcn) {
+                    return fcn.call(vis, v);
+                }
+                return vis;
             },
             function () {
                 // FIXME: this should be optional
-                return vis[vis.getGetFunctionName(propertyName)].call(vis);
+                var fcn = vis[vis.getGetFunctionName(propertyName)];
+                if (fcn) {
+                    return fcn.call(vis);
+                }
+                return undefined;
             },
             null
         );
@@ -276,6 +288,20 @@ function listBinding(createVisualForData) {
         );
     };
 }
+function eventBinding(event) {
+    // FIXME: the problem with this binding is : when it is REGENERATED!
+    //
+    return function (vis, mvvm, expression) {
+        function listener() {
+            var res = mvvm.scope.resolve(expression);
+            res.object[res.variable]();
+        }
+        vis.on(event, listener);
+        mvvm.on('clear', function () {
+            vis.removeListener(event, listener);
+        });
+    };
+}
 
 exports.Scope = Scope;
 exports.BindingMap = BindingMap;
@@ -283,3 +309,4 @@ exports.MVVM = MVVM;
 exports.bidiPropBinding = bidiPropBinding;
 exports.withBinding = withBinding;
 exports.listBinding = listBinding;
+exports.eventBinding = eventBinding;

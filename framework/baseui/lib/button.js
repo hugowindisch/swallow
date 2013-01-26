@@ -20,11 +20,16 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
-
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
     config = require('config'),
+    mvvm = require('mvvm'),
+    availableBindings = {
+        text: mvvm.bidiPropBinding('text'),
+        click: mvvm.eventBinding('click')
+    },
     group = {
         // authoring dimension
         dimensions: [ 400, 200, 0],
@@ -94,6 +99,8 @@ function Button(config) {
 
 Button.prototype = new (domvisual.DOMElement)();
 
+mvvm.MVVM.initialize(Button, availableBindings);
+
 Button.prototype.getDescription = function () {
     return "A Button";
 };
@@ -142,7 +149,8 @@ Button.createPreview = function () {
 Button.prototype.getConfigurationSheet = function () {
     return {
         text: config.inputConfig('Text'),
-        dummy: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Button.prototype.theme, 'baseui', 'Button'))
+        dummy: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Button.prototype.theme, 'baseui', 'Button')),
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
     };
 };
 Button.prototype.setDummy = function () {};
@@ -150,8 +158,7 @@ Button.prototype.setText = function (text) {
     var txtChild = new domvisual.DOMElement();
     txtChild.setInnerText(text);
 
-    this.getChild('text'
-    ).removeAllChildren(
+    this.getChild('text').removeAllChildren(
     ).addChild(txtChild, 'text');
 
 
