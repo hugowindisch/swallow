@@ -96,7 +96,7 @@ function BindingConfig(config) {
     this.getChild('expression').on('change', function (v) {
         var sel = that.selected;
         if (sel) {
-            if (v) {
+            if (v !== '') {
                 that.data[sel] = v;
                 that.emit('change', that.data);
             } else {
@@ -117,7 +117,15 @@ BindingConfig.prototype.setData = function (data) {
 };
 BindingConfig.prototype.getData = function (data) {
     if (this.selected) {
-        this.data[this.selected] = this.getChild('expression').getText();
+        var expr = this.getChild('expression').getText(),
+            sel = this.selected;
+        if (sel) {    
+            if (expr !== '') {                
+                this.data[sel] = expr;
+            } else {
+                delete this.data[sel];
+            }
+        }
     }
     return this.data;
 };

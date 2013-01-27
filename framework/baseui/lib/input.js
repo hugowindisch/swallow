@@ -27,9 +27,9 @@ var visual = require('visual'),
     utils = require('utils'),
     isFunction = utils.isFunction,
 	mvvm = require('mvvm'),
-    availableBindings = {
+    availableBindings = mvvm.getDefaultBindings({
         value: mvvm.bidiPropBinding('value')
-    };
+    });
 
 function Input(config) {
     domvisual.DOMInput.call(this, config);

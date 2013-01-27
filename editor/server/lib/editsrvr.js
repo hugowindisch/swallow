@@ -179,6 +179,7 @@ function fixOptions(options) {
     fonts.findFonts(options.dstFolder, options.dstFolder);
     options.fonts = fonts.installedFonts;
     options.editConfig =  {
+        alwaysShowPackage: [ 'domvisual' ],
         fonts: fonts.families
     };
     return options;

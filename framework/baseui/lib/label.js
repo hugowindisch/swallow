@@ -24,7 +24,12 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
-    isFunction = utils.isFunction;
+    isFunction = utils.isFunction,
+    mvvm = require('mvvm'),
+    availableBindings = mvvm.getDefaultBindings({
+        text: mvvm.bidiPropBinding('text')
+    });
+    
 
 function Label(config) {
     domvisual.DOMElement.call(this, config);
@@ -35,6 +40,7 @@ Label.createPreview = function () {
 };
 
 Label.prototype = new (domvisual.DOMElement)();
+mvvm.MVVM.initialize(Label, availableBindings);
 
 Label.prototype.getActiveTheme = visual.getGetActiveTheme('baseui', 'Label');
 
@@ -64,10 +70,12 @@ Label.prototype.getText = function () {
 };
 
 Label.prototype.getConfigurationSheet = function () {
+    var config = require('config');
     return {
-        text: require('config').inputConfig('Text'),
+        text: config.inputConfig('Text'),
         textAlign: null,
-        bold: require('config').booleanConfig('Bold')
+        bold: config.booleanConfig('Bold'),
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
     };
 };
 
