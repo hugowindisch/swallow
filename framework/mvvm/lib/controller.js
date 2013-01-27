@@ -84,12 +84,18 @@ exports.runController = runController;
 
 // here we add a bunch of predifined controllers
 registerController('list', {
-    'new': function (scope, expression, factory, type) {
+    'new': function (scope, expression) {
         var res = scope.resolve(expression),
-            arr = res.object[res.variable],
-            C;
+            arr = res.object[res.variable];
         if (isArray(arr)) {
             arr.push({});
+        }
+    },
+    'removeLast': function (scope, expression) {
+        var res = scope.resolve(expression),
+            arr = res.object[res.variable];
+        if (isArray(arr)) {
+            arr.splice(-1, 1);
         }
     },
     remove: function (scope, expression) {
@@ -103,4 +109,8 @@ registerController('list', {
 });
 registerController('log', function (scope, expression, arg) {
     console.log(arg);
+});
+registerController('showJSON', function (scope, expression, arg) {
+    var res = scope.resolve(expression);
+    alert(JSON.stringify(res.object[res.variable], null, 4));
 });

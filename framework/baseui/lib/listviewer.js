@@ -59,8 +59,15 @@ ListViewer.prototype.createChild = function () {
         r;
     if (C) {
         r = new C({htmlFlowing: { position: 'relative'}});
+        r.setHtmlFlowing({ position: 'relative' }, true);
     }
     return r;
 };
-
+ListViewer.prototype.applyLayout = function (children) {
+    var dimensions = this.dimensions;
+    this.forEachChild(function (c) {
+        var cd = c.dimensions;
+        c.setDimensions([dimensions[0], cd[1], cd[2]]);
+    });
+};
 exports.ListViewer = ListViewer;
