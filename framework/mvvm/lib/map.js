@@ -71,11 +71,24 @@ BindingMap.prototype.refreshModel = function () {
                 vVal = v.getViewValue();
             // if the view value changed this view
             // should refresh the model
-            if (vVal !== undefined && v.vVal !== vVal) {
+            if (v.val !== undefined && vVal !== undefined && v.vVal !== vVal) {
                 // the view value changed
                 o[propName] = vVal;
                 v.val = vVal;
                 v.vVal = vVal;
+            }
+        }
+    });
+};
+BindingMap.prototype.refreshListView = function () {
+    forEach(this.bindings, function (v, i) {
+        var o, propName, val, vVal;
+        if (v.synchronizeList) {
+            o = v.object;
+            propName = v.propertyName;
+            val = o[propName];
+            if (isArray(val)) {
+                v.synchronizeList(val);
             }
         }
     });
@@ -96,30 +109,19 @@ BindingMap.prototype.refreshView = function () {
                 }
                 v.val = val;
             }
-        } else if (v.synchronizeList) {
-            o = v.object;
-            propName = v.propertyName;
-            val = o[propName];
-            if (isArray(val)) {
-                v.synchronizeList(val);
-            }
         }
     });
 };
 BindingMap.refresh = function () {
-    var reg = BindingMap.registry,
-        dirtied = {};
-    function refreshModel() {
-        forEachProperty(reg, function (v, k) {
-            v.refreshModel(dirtied);
-        });
-    }
-    function refreshView() {
-        forEachProperty(reg, function (v, k) {
-            v.refreshView();
-        });
-    }
-    refreshModel();
-    refreshView();
+    var reg = BindingMap.registry;
+    forEachProperty(reg, function (v, k) {
+        v.refreshModel();
+    });
+    forEachProperty(reg, function (v, k) {
+        v.refreshListView();
+    });
+    forEachProperty(reg, function (v, k) {
+        v.refreshView();
+    });
 };
 exports.BindingMap = BindingMap;

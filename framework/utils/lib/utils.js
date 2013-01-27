@@ -388,7 +388,10 @@ function map(arr, fcn) {
 * @memberOf utils
 */
 function stripWhite(s) {
-    return (/\s*(\S*)\s*/).exec(String(s))[1];
+    s = String(s);
+    var before = /^(\s*)/.exec(s)[1],
+        after = /(\s*)$/.exec(s)[1];
+    return s.slice(before.length, s.length - after.length);
 }
 
 /**
