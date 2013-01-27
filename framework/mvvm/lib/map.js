@@ -96,16 +96,19 @@ BindingMap.prototype.refreshListView = function () {
 BindingMap.prototype.refreshView = function () {
     forEach(this.bindings, function (v, i) {
         var o, propName, val, vVal;
-        if (v.getViewValue && v.setViewValue) {
+        if (v.setViewValue) {
             o = v.object;
             propName = v.propertyName;
             val = o[propName];
+            if (val === undefined) {
+                val = o[propName] = '';
+            }
             // if the model value changced
             if (v.val !== val) {
                 // update the view
                 if (v.vVal !== val) {
                     v.setViewValue(val);
-                    v.vVal = v.getViewValue();
+                    v.vVal = v.getViewValue ? v.getViewValue() : val;
                 }
                 v.val = val;
             }
