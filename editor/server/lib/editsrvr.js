@@ -21,8 +21,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 /*globals __dirname, __filename */
-/*jslint regexp: false */
-
+/*jslint regexp: false, nomen: false */
 var pillow = require('pillow'),
     jqtpl = require('jqtpl'),
     fs = require('fs'),
@@ -37,6 +36,7 @@ var pillow = require('pillow'),
     servetests = require('./services/servetests'),
     ssevents = require('./services/ssevents'),
     serveconfig = require('./services/serveconfig'),
+    fonts = require('./fonts'),
     swallowroot = path.join(__dirname, '../../..'),
     work = path.join(swallowroot, 'work');
 
@@ -176,6 +176,11 @@ function fixOptions(options) {
         path.join(swallowroot, 'samples'),
         options.newPackages
     ];
+    fonts.findFonts(options.dstFolder, options.dstFolder);
+    options.fonts = fonts.installedFonts;
+    options.editConfig =  {
+        fonts: fonts.families
+    };
     return options;
 }
 
