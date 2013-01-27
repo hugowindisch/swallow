@@ -113,3 +113,8 @@ registerController('showJSON', function (scope, expression, arg) {
     /*globals alert */
     alert(JSON.stringify(res.object[res.variable], null, 4));
 });
+registerController('setValue', function (scope, expression, arg) {
+    var res = scope.resolve(expression);
+    /*globals alert */
+    res.object[res.variable] = arg;
+});

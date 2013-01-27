@@ -268,6 +268,15 @@ function eventBinding(event) {
     };
 }
 
+function getDefaultBindings(extraBindings) {
+    return utils.apply(extraBindings || {}, {
+        position: bidiPropBinding('position'),
+        mouseover: eventBinding('mouseover'),
+        mouseout: eventBinding('mouseout'),
+        'with': withBinding()
+    });
+}
+
 exports.Scope = Scope;
 exports.BindingMap = BindingMap;
 exports.MVVM = MVVM;
@@ -276,3 +285,4 @@ exports.withBinding = withBinding;
 exports.listBinding = listBinding;
 exports.eventBinding = eventBinding;
 exports.registerController = require('./controller').registerController;
+exports.getDefaultBindings = getDefaultBindings;
