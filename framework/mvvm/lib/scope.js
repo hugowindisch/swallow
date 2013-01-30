@@ -87,7 +87,7 @@ Scope.prototype.resolveScope = function (w) {
     return scope;
 };
 Scope.prototype.resolveObject = function () {
-    var rel = this.withObject.split('/'),
+    var rel = this.withObject.split('/').unshift(),
         o = this.object;
     forEach(rel, function (r) {
         var newo = o[rel];
