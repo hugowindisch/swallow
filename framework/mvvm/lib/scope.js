@@ -26,9 +26,13 @@ var globalObject = {},
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty;
 // We have the notion of binding scope
-function Scope(object, parentScope) {
+function Scope(object, withObject, parentScope) {
     this.parent = parentScope;
     this.object = object || globalObject;
+    this.withObject = (this.parent && this.parent.withObject) || '';
+    if (withObject) {
+        this.withObject += ('/' + withObject);
+    }
 }
 Scope.globalScope = new Scope(globalObject);
 
@@ -48,13 +52,6 @@ Scope.prototype.getTop = function () {
 };
 Scope.prototype.getParent = function () {
     return this.parent;
-};
-Scope.prototype.retrieveOrCreateChildScope = function (member) {
-    // note this potentially CREATES a child object
-    if (typeof this.object[member] !== 'object') {
-        this.object[member] = {};
-    }
-    return new Scope(this.object[member], this);
 };
 // resolves a scope relative to the current scope with a with clause
 Scope.prototype.resolveScope = function (w) {
@@ -84,10 +81,22 @@ Scope.prototype.resolveScope = function (w) {
             scope = new Scope();
         } else if (rel !== '.') {
             // resolve to an scope
-            scope = scope.retrieveOrCreateChildScope(rel);
+            scope = new Scope(scope.object, rel, scope);
         }
     });
     return scope;
+};
+Scope.prototype.resolveObject = function () {
+    var rel = this.withObject.split('/'),
+        o = this.object;
+    forEach(rel, function (r) {
+        var newo = o[rel];
+        if (typeof newo !== 'object') {
+            newo = o[rel] = {};
+        }
+        o = newo;
+    });
+    return o;
 };
 // scope navigation with slashes, variable lookup with dots
 Scope.prototype.resolve = function (variable) {
@@ -96,7 +105,7 @@ Scope.prototype.resolve = function (variable) {
         varpath = p.slice(-1)[0].split('.'),
         scope = this.resolveScope(scopePart),
         res = {};
-    res.object = scope.object;
+    res.object = scope.resolveObject();
     forEach(varpath, function (v, j) {
         if (j < (varpath.length - 1)) {
             if (typeof res.object[v] !== 'object') {

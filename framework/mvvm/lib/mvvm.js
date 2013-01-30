@@ -50,7 +50,7 @@ function bindMVVM(vis, scope) {
     // special handling of listed elements
     if (listValue) {
         // note that these never have a with
-        mvvm.scope = new Scope(isObject(listValue) ? listValue : {}, scope);
+        mvvm.scope = new Scope(isObject(listValue) ? listValue : {}, null, scope);
     } else {
         // normal scoping
         mvvm.scope = scope.resolveScope(mvvm.w);
