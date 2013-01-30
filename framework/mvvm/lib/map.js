@@ -35,15 +35,15 @@ function BindingMap() {
 BindingMap.id = 0;
 BindingMap.registry = {};
 BindingMap.prototype.bind = function (
-    object, // the actual model object to monitor
-    propertyName, // the property name inside this object
+    scope, // the actual model object to monitor
+    expression, // the property name inside this object
     setViewValue, // update the view
     getViewValue, //  (optional) get the value inside the view
     synchronizeList
 ) {
     this.bindings.push({
-        object: object,
-        propertyName: propertyName,
+        scope: scope,
+        expression: expression,
         setViewValue: setViewValue,
         getViewValue: getViewValue,
         synchronizeList: synchronizeList
@@ -66,14 +66,16 @@ BindingMap.prototype.unregister = function () {
 BindingMap.prototype.refreshModel = function () {
     forEach(this.bindings, function (v, i) {
         if (v.getViewValue) {
-            var o = v.object,
-                propName = v.propertyName,
-                vVal = v.getViewValue();
+            var scope = v.scope,
+                expression = v.expression,
+                vVal = v.getViewValue(),
+                res;
             // if the view value changed this view
             // should refresh the model
             if (v.val !== undefined && vVal !== undefined && v.vVal !== vVal) {
                 // the view value changed
-                o[propName] = vVal;
+                res = scope.resolve(expression);
+                res.object[res.variable] = vVal;
                 v.val = vVal;
                 v.vVal = vVal;
             }
@@ -82,11 +84,14 @@ BindingMap.prototype.refreshModel = function () {
 };
 BindingMap.prototype.refreshListView = function () {
     forEach(this.bindings, function (v, i) {
-        var o, propName, val, vVal;
+        var scope, propName, val, vVal, res;
         if (v.synchronizeList) {
-            o = v.object;
-            propName = v.propertyName;
-            val = o[propName];
+            scope = v.scope;
+            res = scope.resolve(v.expression);
+            val = res.object[res.variable];
+            if (val === undefined) {
+                val = res.object[res.variable] = [];
+            }
             if (isArray(val)) {
                 v.synchronizeList(val);
             }
@@ -95,13 +100,12 @@ BindingMap.prototype.refreshListView = function () {
 };
 BindingMap.prototype.refreshView = function () {
     forEach(this.bindings, function (v, i) {
-        var o, propName, val, vVal;
+        var o, propName, val, vVal, res;
         if (v.setViewValue) {
-            o = v.object;
-            propName = v.propertyName;
-            val = o[propName];
+            res = v.scope.resolve(v.expression);
+            val = res.object[res.variable];
             if (val === undefined) {
-                val = o[propName] = '';
+                val = res.object[res.variable] = '';
             }
             // if the model value changced
             if (v.val !== val) {

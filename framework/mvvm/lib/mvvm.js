@@ -131,10 +131,9 @@ MVVM.initialize = function (VisualConstructor, availableBindings) {
 // ---------------
 function bidiPropBinding(propertyName) {
     return function (vis, mvvm, expression) {
-        var res = mvvm.scope.resolve(expression);
         mvvm.bindingMap.bind(
-            res.object,
-            res.variable,
+            mvvm.scope,
+            expression,
             function (v) {
                 var fcn = vis[vis.getSetFunctionName(propertyName)];
                 if (fcn) {
@@ -161,14 +160,13 @@ function withBinding() {
 }
 function listBinding(createVisualForData) {
     return function (vis, mvvm, expression) {
-        var res = mvvm.scope.resolve(expression);
         // create a list if there is nothing
-        if (res.object[res.variable] === undefined) {
-            res.object[res.variable] = [];
-        }
+//        if (res.object[res.variable] === undefined) {
+//            res.object[res.variable] = [];
+//        }
         mvvm.bindingMap.bind(
-            res.object,
-            res.variable,
+            mvvm.scope,
+            expression,
             null,
             null,
             // here we could do the full list synchronization
