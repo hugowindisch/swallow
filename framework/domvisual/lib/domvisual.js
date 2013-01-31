@@ -20,6 +20,8 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
+/*globals document */
+"use strict";
 var visual = require('visual'),
     utils = require('utils'),
     dirty = require('/visual/lib/dirty'),
@@ -119,8 +121,7 @@ DOMVisual.prototype.addChild = function (child, name, optionalOrder) {
     disableInteractiveEventHooks = this.disableInteractiveEventHooks;
     visual.forVisualAndAllChildrenDeep(child, function (c) {
         // avoid useless traversal
-        if (c.connectedToTheStage !== connectedToTheStage ||
-            Boolean(c.disableInteractiveEventHooks) !== disableInteractiveEventHooks) {
+        if (c.connectedToTheStage !== connectedToTheStage || Boolean(c.disableInteractiveEventHooks) !== disableInteractiveEventHooks) {
             c.connectedToTheStage = connectedToTheStage;
             c.emit('connectedToTheStage', connectedToTheStage);
             if (disableInteractiveEventHooks) {
@@ -539,6 +540,67 @@ DOMVisual.prototype.setStyleAttributes = function (attr) {
     }
     setDirty(this, 'style');
     return this;
+};
+
+DOMVisual.dragPayload = { };
+DOMVisual.dragId = 0;
+DOMVisual.prototype.setDraggable = function (payload) {
+    this.setElementAttributes({draggable: true});
+    this.on('dragstart', function (evt) {
+        this.element.style.opacity = '0.4';
+        var id = DOMVisual.dragId;
+        DOMVisual.dragId += 1;
+        DOMVisual.dragPayload.id = id;
+        DOMVisual.dragPalload.payload = payload;
+        //evt.dataTransfer.effectAllowed = FIXME
+        forEachProperty(payload, function (v, k) {
+            evt.dataTransfer.setData(k, typeof v === 'string' ? v : id);
+        });
+    });
+    this.on('dragend', function (evt) {
+        this.element.style.opacity = '1'; // FIXME
+    });
+};
+
+
+// accept: { type: effectAllowed (see moz documentation) }
+DOMVisual.prototype.setDropZone = function (accept) {
+    // FIXME: deepcopy accept and change the keys to lowercase
+    this.on('dragover', function (evt) {
+        evt.preventDefault(); // Necessary. Allows us to drop.
+        // adjust this depending on keyboard
+        forEach(evt.dataTransfer.types, function (t) {
+            if (accept[t]) {
+                evt.dataTransfer.dropEffect = 'move'; // FIXME
+            }
+        });
+        return false;
+    });
+
+    /* these... we could simply not support... here
+    this.on('dragenter', function (evt) {
+    });
+    this.on('dragleave', function (evt) {
+    });*/
+
+    this.on('drop', function (evt) {
+        if (evt.stopPropagation) {
+            evt.stopPropagation(); // stops the browser from redirecting.
+        }
+        // here we have our payload
+        var pl = {};
+        forEachProperty(accept, function (v, k) {
+            pl[k] = evt.dataTransfer.getData(k);
+            var id = Number(pl[k]),
+                p = DOMVisual.dragPayload.payload;
+            if (DOMVisual.dragPayload.id === id && p) {
+                pl[k] = p;
+            }
+        });
+        this.emit('dropPayload', pl);
+
+        return false;
+    });
 };
 
 /*

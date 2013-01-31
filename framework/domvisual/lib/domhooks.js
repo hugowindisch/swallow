@@ -20,7 +20,8 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
-/*globals window */
+/*globals window, document */
+"use strict";
 var utils = require('utils'),
     dirty = require('/visual/lib/dirty'),
     keycodes = require('./keycodes'),
@@ -189,6 +190,26 @@ hookMap = {
             return vis.element;
         }
     },
+    dragstart: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
+    },
+    dragend: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
+    },
+    dragenter: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
+    },
+    dragleave: {
+        getDOMElement: function (vis) {
+            return vis.element;
+        }
+    },
     drop: {
         getDOMElement: function (vis) {
             return vis.element;
@@ -273,7 +294,7 @@ function removeDOMHook(v, event, hook) {
     if (hooks && hooks[event]) {
         removeEventListener(
             hook.getDOMElement(v),
-            hook.domEvent ? hook.domEvent : event,
+            hook.domEvent || event,
             hooks[event],
             hook.capture === true
         );
@@ -293,7 +314,7 @@ function addDOMHook(v, event, hook) {
         };
         addEventListener(
             hook.getDOMElement(v),
-            hook.domEvent ? hook.domEvent : event,
+            hook.domEvent || event,
             hooks[event],
             hook.capture === true
         );

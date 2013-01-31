@@ -265,6 +265,41 @@ function eventBinding(event) {
         });
     };
 }
+// maybe the basic drag and drop thing should go in domvisual really
+// like setdraggable, setDropZone
+// anyway I have to support the mappings for the events...
+function draggableBinding() {
+    return function (vis, mvvm, expression) {
+        //vis.setDraggable(// expression //)
+    };
+}
+function dropZoneBinding() {
+// 2 things we need to know: what to accept and what to do
+// when we accept stuff
+    return function (vis, mvvm, expression) {
+        var event = 'dropPayload';
+        function listener(payload) {
+            //controller.runController(mvvm.scope, expression);
+        }
+        vis.on(event, listener);
+        mvvm.on('clear', function () {
+            vis.removeListener(event, listener);
+        });
+    };
+}
+function dragAndDropList() {
+// we need the accept object:
+    return function (vis, mvvm, expression) {
+        var event = 'dropPayload';
+        function listener() {
+            // here we manipulate the list
+        }
+        vis.on(event, listener);
+        mvvm.on('clear', function () {
+            vis.removeListener(event, listener);
+        });
+    };
+}
 
 function getDefaultBindings(extraBindings) {
     return utils.apply(extraBindings || {}, {
