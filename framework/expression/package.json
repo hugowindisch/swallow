@@ -1,0 +1,16 @@
+{
+    "name": "expression",
+    "version": "0.0.1",
+    "main": "./lib/exp",
+    "dependencies": {
+    },
+    "testDependencies": [ "assert" ],
+    "scripts": {
+        "test": "testviewer test/test.js"
+    },
+    "engines": {
+        "pillow": "*"
+    },
+    "author": "Hugo Windisch <hugo.windisch@gmail.com>",
+    "homepage": "http://www.swallowapps.com"
+}
