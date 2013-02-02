@@ -145,24 +145,26 @@ object
         }
     ;
 
-member
-    : e '.' KEYWORD
-        { $$ = { value: $1[$3], object: $1 }; }
+lvalue
+    : KEYWORD
+        { $$ = { value: yy.scope[yytext], prop: yytext, object: yy.scope }}
+    | e '.' KEYWORD
+        { $$ = { value: $1[$3], prop: $3, object: $1 }; }
     | e '[' e ']'
-        { $$ = { value: $1.value[$3], object: $1 }; }
+        { $$ = { value: $1[$3], prop: $3, object: $1 }; }
     ;
 e
     : NUMBER
         {$$ = Number(yytext); }
-    | KEYWORD
-        { $$ = yy.resolve(yytext); }
+    | lvalue
+        { $$ = $1.value }
     | string
         { $$ = yytext.slice(1, -1); }
     | array
         { $$ = $1; }
-    | member '(' ')'
+    | lvalue '(' ')'
         { $$ = $1.value.call($1.object); }
-    | member '(' arglist ')'
+    | lvalue '(' arglist ')'
         { $$ = $1.value.apply($1.object, $3); }
     | e '(' ')'
         { $$ = $1(); }
@@ -170,8 +172,6 @@ e
         { $$ = $1.apply(null, $3); }
     | '(' e ')'
         { $$ = $2; }
-    | member
-        { $$ = $1.value; }
     | object
         { $$ = $1; }
     | e '++'
@@ -228,26 +228,26 @@ e
         { $$ = $1 && $3; }
     | e '||' e
         { $$ = $1 || $3; }
-    | e '=' e
-        { $$ = $1 = $3; }
-    | e '+=' e
-        { $$ = $1 += $3; }
-    | e '-=' e
-        { $$ = $1 -= $3; }
-    | e '*=' e
-        { $$ = $1 *= $3; }
-    | e '/=' e
-        { $$ = $1 /= $3; }
-    | e '%=' e
-        { $$ = $1 %= $3; }
-    | e '<<=' e
-        { $$ = $1 <<= $3; }
-    | e '>>=' e
-        { $$ = $1 >>= $3; }
-    | e '>>>=' e
-        { $$ = $1 >>>= $3; }
-    | e '&=' e
-        { $$ = $1 &= $3; }
-    | e '!=' e
-        { $$ = $1 != $3; }
+    | lvalue '=' e
+        { $$ = $1.object[$1.prop] = $3; }
+    | lvalue '+=' e
+        { $$ = ($1.object[$1.prop] += $3); }
+    | lvalue '-=' e
+        { $$ = ($1.object[$1.prop] -= $3); }
+    | lvalue '*=' e
+        { $$ = ($1.object[$1.prop] *= $3); }
+    | lvalue '/=' e
+        { $$ = ($1.object[$1.prop] /= $3); }
+    | lvalue '%=' e
+        { $$ = ($1.object[$1.prop] %= $3); }
+    | lvalue '<<=' e
+        { $$ = ($1.object[$1.prop] <<= $3); }
+    | lvalue '>>=' e
+        { $$ = ($1.object[$1.prop] >>= $3); }
+    | lvalue '>>>=' e
+        { $$ = ($1.object[$1.prop] >>>= $3); }
+    | lvalue '&=' e
+        { $$ = ($1.object[$1.prop] &= $3); }
+    | lvalue '|=' e
+        { $$ = ($1.object[$1.prop] |= $3); }
     ;

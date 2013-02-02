@@ -37,9 +37,7 @@ var parser = require('expression').parser,
 exports.run = function (test, done) {
 
     parser.yy = {
-        resolve: function (name) {
-            return scope[name];
-        }
+        scope: scope
     };
     test(assert.equal, parser.parse('2'), 2, "2");
     test(assert.equal, parser.parse('-3 + 2'), (-3 + 2), "(-3 + 2)");
@@ -65,6 +63,16 @@ exports.run = function (test, done) {
     test(assert.equal, parser.parse("1 || 123"), 1 || 123, "1 || 123");
     test(assert.equal, parser.parse("0 || 123"), 0 || 123, "0 || 123");
 
+    // assignation tests
+    scope.z = 0;
+    parser.parse('z = 5');
+    test(assert.equal, scope.z, 5);
+
+    parser.parse('z += 3');
+    test(assert.equal, scope.z, 8);
+
+    parser.parse('z *= 2');
+    test(assert.equal, scope.z, 16);
 
     done();
 
