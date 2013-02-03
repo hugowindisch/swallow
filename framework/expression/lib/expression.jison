@@ -1,3 +1,27 @@
+/**
+    expression.jison
+    Copyright (C) 2013 Hugo Windisch
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+    IN THE SOFTWARE.
+*/
+
+
 /* description: Parses end executes mathematical expressions. */
 /*\"([^"\\]|(\\"))*\"         return 'STRING'
 \'([^'\\]|(\\'))*\'         return 'SSTRING'*/
@@ -93,23 +117,23 @@ expressions
 
 arglist
     : e
-        { $$ = [$1]; }
+        { $$ = function () { return [$1()]; }; }
     | arglist ',' e
-        { $$ = $1.slice(); $$.push($3); }
+        { $$ = function () { var a = $1().slice(); a.push($3()); return a; } }
     ;
 
 array
     : '[' ']'
-        { $$ = []; }
+        { $$ = function () { return []; }; }
     | '[' arglist ']'
         { $$ = $2; }
     ;
 
 string
     : STRING
-        { $$ = yytext.slice(1, -1); }
+        { $$ = yy.constant(yytext.slice(1, -1)); }
     | SSTRING
-        { $$ = yytext.slice(1, -1); }
+        { $$ = yy.constant(yytext.slice(1, -1)); }
     ;
 
 objectMember
@@ -128,126 +152,127 @@ objectMembers
 
 object
     : '{' '}'
-        { $$ = {}; }
+        { $$ = function () { return {}; }; }
     | '{' objectMembers '}'
         {
-            $$ = (function () {
+            $$ = function () {
                 var o = {},
                     i,
                     l = $2.length,
                     memb;
                 for (i = 0; i < l; i += 1) {
                     memb = $2[i];
-                    o[memb.name] = memb.value;
+                    o[memb.name()] = memb.value();
                 }
                 return o;
-            }());
+            };
         }
     ;
 
 lvalue
     : KEYWORD
-        { $$ = { value: yy.scope[yytext], prop: yytext, object: yy.scope }}
+        {
+            $$ = { value: yy.resolve(yy.getScope, yytext), prop: yytext, object: yy.getScope }}
     | e '.' KEYWORD
-        { $$ = { value: $1[$3], prop: $3, object: $1 }; }
+        { $$ = { value: yy.resolve($1, $3), prop: $3, object: $1 }; }
     | e '[' e ']'
-        { $$ = { value: $1[$3], prop: $3, object: $1 }; }
+        { $$ = { value: yy.resolve($1, $3), prop: $3, object: $1 }; }
     ;
 e
     : NUMBER
-        {$$ = Number(yytext); }
+        {$$ = yy.constant(Number(yytext)); }
     | lvalue
         { $$ = $1.value }
     | string
-        { $$ = yytext.slice(1, -1); }
+        { $$ = yy.constant(yytext.slice(1, -1)); }
     | array
         { $$ = $1; }
     | lvalue '(' ')'
-        { $$ = $1.value.call($1.object); }
+        { $$ = function () { return $1.value().call($1.object()); }; }
     | lvalue '(' arglist ')'
-        { $$ = $1.value.apply($1.object, $3); }
+        { $$ = function () { return $1.value().apply($1.object(), $3()); }; }
     | e '(' ')'
-        { $$ = $1(); }
+        { $$ = function () { return $1()(); }; }
     | e '(' arglist ')'
-        { $$ = $1.apply(null, $3); }
+        { $$ = function () { return $1().apply(null, $3()); }; }
     | '(' e ')'
         { $$ = $2; }
     | object
         { $$ = $1; }
-    | e '++'
-        { $$ = $1++; }
+    | lvalue '++'
+        { $$ = function () { return $1.object()[$1.prop]++; }; }
     | '-' e
-        { $$ = -$2; }
-    | e '--'
-        { $$ = $1 --; }
+        { $$ = function () { return -$2(); }; }
+    | lvalue '--'
+        { $$ = function () { return $1.object()[$1.prop]--; }; }
     | '!' e
-        { $$ = ! $2; }
+        { $$ = function () { return ! $2(); }; }
     | '~' e
-        { $$ = ~$2; }
+        { $$ = function () { return ~($2()); }; }
     | e '*' e
-        { $$ = $1 * $3; }
+        { $$ = function () { return $1() * $3(); }; }
     | e '/' e
-        { $$ = $1 / $3; }
+        { $$ = function () { return $1() / $3(); }; }
     | e  '%' e
-        { $$ = $1 % $3; }
+        { $$ = function () { return $1() % $3(); }; }
     | e '+' e
-        { $$ = $1 + $3; }
+        { $$ = function () { return $1() + $3(); }; }
     | e '-' e
-        { $$ = $1 - $3; }
+        { $$ = function () { return $1() - $3(); }; }
     | e '<<' e
-        { $$ = $1 << $3; }
+        { $$ = function () { return $1() << $3(); }; }
     | e '>>' e
-        { $$ = $1 >> $3; }
+        { $$ = function () { return $1() >> $3(); }; }
     | e '>>>' e
-        { $$ = $1 >>> $3; }
+        { $$ = function () { return $1() >>> $3(); }; }
     | e '<' e
-        { $$ = $1 < $3; }
+        { $$ = function () { return $1() < $3(); }; }
     | e '<=' e
-        { $$ = $1 <= $3; }
+        { $$ = function () { return $1() <= $3(); }; }
     | e '>' e
-        { $$ = $1 > $3; }
+        { $$ = function () { return $1() > $3(); }; }
     | e '>=' e
-        { $$ = $1 >= $3; }
+        { $$ = function () { return $1() >= $3(); }; }
     | e 'in' e
-        { $$ = $1 in $3; }
+        { $$ = function () { return $1() in $3(); }; }
     | e '==' e
-        { $$ = $1 == $3; }
+        { $$ = function () { return $1() == $3(); }; }
     | e '!=' e
-        { $$ = $1 != $3; }
+        { $$ = function () { return $1() != $3(); }; }
     | e '===' e
-        { $$ = $1 === $3; }
+        { $$ = function () { return $1() === $3(); }; }
     | e '!==' e
-        { $$ = $1 !== $3; }
+        { $$ = function () { return $1() !== $3(); }; }
     | e '&' e
-        { $$ = $1 & $3; }
+        { $$ = function () { return $1() & $3(); }; }
     | e '^' e
-        { $$ = $1 ^ $3; }
+        { $$ = function () { return $1() ^ $3(); }; }
     | e '|' e
-        { $$ = $1 | $3; }
+        { $$ = function () { return $1() | $3(); }; }
     | e '&&' e
-        { $$ = $1 && $3; }
+        { $$ = function () { return $1() && $3(); }; }
     | e '||' e
-        { $$ = $1 || $3; }
+        { $$ = function () { return $1() || $3(); }; }
     | lvalue '=' e
-        { $$ = $1.object[$1.prop] = $3; }
+        { $$ = function () { return $1.object()[$1.prop] = $3(); }; }
     | lvalue '+=' e
-        { $$ = ($1.object[$1.prop] += $3); }
+        { $$ = function () { return $1.object()[$1.prop] += $3(); }; }
     | lvalue '-=' e
-        { $$ = ($1.object[$1.prop] -= $3); }
+        { $$ = function () { return $1.object()[$1.prop] -= $3(); }; }
     | lvalue '*=' e
-        { $$ = ($1.object[$1.prop] *= $3); }
+        { $$ = function () { return $1.object()[$1.prop] *= $3(); }; }
     | lvalue '/=' e
-        { $$ = ($1.object[$1.prop] /= $3); }
+        { $$ = function () { return $1.object()[$1.prop] /= $3(); }; }
     | lvalue '%=' e
-        { $$ = ($1.object[$1.prop] %= $3); }
+        { $$ = function () { return $1.object()[$1.prop] %= $3(); }; }
     | lvalue '<<=' e
-        { $$ = ($1.object[$1.prop] <<= $3); }
+        { $$ = function () { return $1.object()[$1.prop] <<= $3(); }; }
     | lvalue '>>=' e
-        { $$ = ($1.object[$1.prop] >>= $3); }
+        { $$ = function () { return $1.object()[$1.prop] >>= $3(); }; }
     | lvalue '>>>=' e
-        { $$ = ($1.object[$1.prop] >>>= $3); }
+        { $$ = function () { return $1.object()[$1.prop] >>>= $3(); }; }
     | lvalue '&=' e
-        { $$ = ($1.object[$1.prop] &= $3); }
+        { $$ = function () { return $1.object()[$1.prop] &= $3(); }; }
     | lvalue '|=' e
-        { $$ = ($1.object[$1.prop] |= $3); }
+        { $$ = function () { return $1.object()[$1.prop] |= $3(); }; }
     ;

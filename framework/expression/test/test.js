@@ -1,6 +1,6 @@
 /**
     test.js
-    Copyright (C) 2012 Hugo Windisch
+    Copyright (C) 2013 Hugo Windisch
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -22,7 +22,7 @@
 */
 
 "use strict";
-var parser = require('expression').parser,
+var exec = require('expression').exec,
     assert = require('assert'),
     scope = {
         a: 1,
@@ -36,42 +36,39 @@ var parser = require('expression').parser,
 
 exports.run = function (test, done) {
 
-    parser.yy = {
-        scope: scope
-    };
-    test(assert.equal, parser.parse('2'), 2, "2");
-    test(assert.equal, parser.parse('-3 + 2'), (-3 + 2), "(-3 + 2)");
-    test(assert.equal, parser.parse('2 + 2'), (2 + 2), "2 + 2");
-    test(assert.equal, parser.parse('2 + 2 * 3'), (2 + 2 * 3), "2 + 2 * 3");
-    test(assert.equal, parser.parse('(2 + 2) * 3'), ((2 + 2) * 3), "((2 + 2) * 3)");
-    test(assert.equal, parser.parse('"abcd"'), "abcd", "abcd");
-    test(assert.deepEqual, parser.parse('[ 1, 2, 3]'), [ 1, 2, 3], "[1, 2, 3]");
-    test(assert.equal, parser.parse('a'), scope.a, "scope.a");
-    test(assert.equal, parser.parse('d(1, 2)'), scope.d(1, 2), "scope.d(1, 2)");
-    test(assert.equal, parser.parse('o'), scope.o, "scope.o");
-    //parser.parse('o["x"]');
-    test(assert.equal, parser.parse('o.x'), scope.o.x, "scope.o.x");
-    test(assert.equal, parser.parse('o.abc(a)'), scope.o.abc(scope.a), "scope.o.abc(scope.a)");
-    test(assert.deepEqual, parser.parse('{ "a": 1, "b": 2 }'), { a: 1, b: 2 }, "{ a: 1, b: 2 }");
-    //test(assert.equal, parser.parse('a ++'), scope.a++);
-    test(assert.equal, parser.parse('[ 1, 2, 3].length'), [ 1, 2, 3].length, "[ 1, 2, 3].length");
-    test(assert.equal, parser.parse('~3'), ~3, '~3');
-    test(assert.equal, parser.parse('~3 + 4'), ~3 + 4, '~3 + 4');
-    test(assert.equal, parser.parse('~3 + 4 -1 * 2 / 3 % 2'), ~3 + 4 -1 * 2 / 3 % 2, "~3 + 4 -1 * 2 / 3 % 2");
-    test(assert.equal, parser.parse("1 && 123"), 1 && 123, "1 && 123");
-    test(assert.equal, parser.parse("0 && 123"), 0 && 123, "0 && 123");
-    test(assert.equal, parser.parse("1 || 123"), 1 || 123, "1 || 123");
-    test(assert.equal, parser.parse("0 || 123"), 0 || 123, "0 || 123");
+    test(assert.equal, exec('2', scope), 2, "2");
+    test(assert.equal, exec('-3 + 2', scope), (-3 + 2), "(-3 + 2)");
+    test(assert.equal, exec('2 + 2', scope), (2 + 2), "2 + 2");
+    test(assert.equal, exec('2 + 2 * 3', scope), (2 + 2 * 3), "2 + 2 * 3");
+    test(assert.equal, exec('(2 + 2) * 3', scope), ((2 + 2) * 3), "((2 + 2) * 3)");
+    test(assert.equal, exec('"abcd"', scope), "abcd", "abcd");
+    test(assert.deepEqual, exec('[ 1, 2, 3]', scope), [ 1, 2, 3], "[1, 2, 3]");
+    test(assert.equal, exec('a', scope), scope.a, "scope.a");
+    test(assert.equal, exec('d(1, 2)', scope), scope.d(1, 2), "scope.d(1, 2)");
+    test(assert.equal, exec('o', scope), scope.o, "scope.o");
+    //exec('o["x"]');
+    test(assert.equal, exec('o.x', scope), scope.o.x, "scope.o.x");
+    test(assert.equal, exec('o.abc(a)', scope), scope.o.abc(scope.a), "scope.o.abc(scope.a)");
+    test(assert.deepEqual, exec('{ "a": 1, "b": 2 }', scope), { a: 1, b: 2 }, "{ a: 1, b: 2 }");
+    //test(assert.equal, exec('a ++'), scope.a++);
+    test(assert.equal, exec('[ 1, 2, 3].length', scope), [ 1, 2, 3].length, "[ 1, 2, 3].length");
+    test(assert.equal, exec('~3', scope), ~3, '~3');
+    test(assert.equal, exec('~3 + 4', scope), ~3 + 4, '~3 + 4');
+    test(assert.equal, exec('~3 + 4 -1 * 2 / 3 % 2', scope), ~3 + 4 -1 * 2 / 3 % 2, "~3 + 4 -1 * 2 / 3 % 2");
+    test(assert.equal, exec("1 && 123", scope), 1 && 123, "1 && 123");
+    test(assert.equal, exec("0 && 123", scope), 0 && 123, "0 && 123");
+    test(assert.equal, exec("1 || 123", scope), 1 || 123, "1 || 123");
+    test(assert.equal, exec("0 || 123", scope), 0 || 123, "0 || 123");
 
     // assignation tests
     scope.z = 0;
-    parser.parse('z = 5');
+    exec('z = 5', scope);
     test(assert.equal, scope.z, 5);
 
-    parser.parse('z += 3');
+    exec('z += 3', scope);
     test(assert.equal, scope.z, 8);
 
-    parser.parse('z *= 2');
+    exec('z *= 2', scope);
     test(assert.equal, scope.z, 16);
 
     done();
