@@ -33,7 +33,7 @@
 
 \s+                   /* skip whitespace */
 [0-9]+("."[0-9]+)?\b  return 'NUMBER'
-[a-z]+([a-zA-Z0-9]*)  return 'KEYWORD'
+[a-z$_]+([a-zA-Z$_0-9]*)  return 'KEYWORD'
 \"[^"]*\"             return 'STRING'
 \'[^']*\'             return 'SSTRING'
 ">>>="                  return '>>>='
@@ -172,7 +172,7 @@ object
 lvalue
     : KEYWORD
         {
-            $$ = { value: yy.resolve(yy.getScope, yytext), prop: yytext, object: yy.getScope }}
+            $$ = { value: yy.resolveGlobal(yy.getScope, yytext), prop: yytext, object: yy.getScope }}
     | e '.' KEYWORD
         { $$ = { value: yy.resolve($1, $3), prop: $3, object: $1 }; }
     | e '[' e ']'

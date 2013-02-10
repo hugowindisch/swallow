@@ -119,6 +119,18 @@ BindingMap.prototype.refreshView = function () {
         }
     });
 };
+/*
+1. resolve the SCOPES themselves
+
+expressions:
+------------
+(magic globals)
+    $parent.
+    $top.
+    $topmost.
+    + all controllers
+
+*/
 BindingMap.refresh = function () {
     var reg = BindingMap.registry;
     forEachProperty(reg, function (v, k) {

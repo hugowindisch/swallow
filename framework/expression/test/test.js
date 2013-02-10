@@ -76,6 +76,9 @@ exports.run = function (test, done) {
     exec('z *= 2', scope, true);
     test(assert.equal, scope.z, 16);
 
+    // test a globalscope object
+    test(assert.equal, exec('$myscope.z', scope, false, { $myscope: { z : 124 } }), 124, "$myscope.z");
+
     done();
 
 };
