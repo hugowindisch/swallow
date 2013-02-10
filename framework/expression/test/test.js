@@ -60,15 +60,20 @@ exports.run = function (test, done) {
     test(assert.equal, exec("1 || 123", scope), 1 || 123, "1 || 123");
     test(assert.equal, exec("0 || 123", scope), 0 || 123, "0 || 123");
 
-    // assignation tests
+    // assign when assignments are not enabled
     scope.z = 0;
     exec('z = 5', scope);
+    test(assert.notEqual, scope.z, 5);
+
+    // assignation tests
+    scope.z = 0;
+    exec('z = 5', scope, true);
     test(assert.equal, scope.z, 5);
 
-    exec('z += 3', scope);
+    exec('z += 3', scope, true);
     test(assert.equal, scope.z, 8);
 
-    exec('z *= 2', scope);
+    exec('z *= 2', scope, true);
     test(assert.equal, scope.z, 16);
 
     done();

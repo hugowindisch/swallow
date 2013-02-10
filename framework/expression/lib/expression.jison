@@ -254,25 +254,25 @@ e
     | e '||' e
         { $$ = function () { return $1() || $3(); }; }
     | lvalue '=' e
-        { $$ = function () { return $1.object()[$1.prop] = $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] = $3(); }); }
     | lvalue '+=' e
-        { $$ = function () { return $1.object()[$1.prop] += $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] += $3(); }); }
     | lvalue '-=' e
-        { $$ = function () { return $1.object()[$1.prop] -= $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] -= $3(); }); }
     | lvalue '*=' e
-        { $$ = function () { return $1.object()[$1.prop] *= $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] *= $3(); }); }
     | lvalue '/=' e
-        { $$ = function () { return $1.object()[$1.prop] /= $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] /= $3(); }); }
     | lvalue '%=' e
-        { $$ = function () { return $1.object()[$1.prop] %= $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] %= $3(); }); }
     | lvalue '<<=' e
-        { $$ = function () { return $1.object()[$1.prop] <<= $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] <<= $3(); }); }
     | lvalue '>>=' e
-        { $$ = function () { return $1.object()[$1.prop] >>= $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] >>= $3(); }); }
     | lvalue '>>>=' e
-        { $$ = function () { return $1.object()[$1.prop] >>>= $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] >>>= $3(); }); }
     | lvalue '&=' e
-        { $$ = function () { return $1.object()[$1.prop] &= $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] &= $3(); }); }
     | lvalue '|=' e
-        { $$ = function () { return $1.object()[$1.prop] |= $3(); }; }
+        { $$ = yy.assignment(function () { return $1.object()[$1.prop] |= $3(); }); }
     ;

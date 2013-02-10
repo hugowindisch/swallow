@@ -26,7 +26,8 @@ var expression = require('./expression'),
 function parse(expression) {
     var cxt = {
         },
-        parsed;
+        parsed,
+        assignmentsAllowed;
     parser.yy = {};
     parser.yy.getScope = function () {
         return cxt;
@@ -41,15 +42,25 @@ function parse(expression) {
             return c;
         };
     };
+    parser.yy.assignment = function (f) {
+        return function () {
+            if (assignmentsAllowed) {
+                return f();
+            }
+            // throw?
+            return 0;
+        };
+    };
     parsed = parser.parse(expression);
-    return function (scope) {
+    return function (scope, allowAssignments) {
+        assignmentsAllowed = Boolean(allowAssignments);
         cxt = scope;
         return parsed();
     };
 }
 exports.parse = parse;
-exports.exec = function (expression, scope) {
-    return parse(expression)(scope);
+exports.exec = function (expression, scope, allowAssignments) {
+    return parse(expression)(scope, allowAssignments);
 };
 
 /*console.log(parse('2 + 2')({}));
