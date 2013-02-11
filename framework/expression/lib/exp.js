@@ -34,18 +34,24 @@ function parse(expression) {
         return cxt;
     };
     parser.yy.resolve = function (getScope, variable) {
-        return function () {
+        function res() {
             return getScope()[variable];
-        };
+        }
+        res.getScope = getScope;
+        res.variable = variable;
+        return res;
     };
     parser.yy.resolveGlobal = function (getScope, variable) {
-        return function () {
+        function res() {
             var ret = getScope()[variable];
             if (ret === undefined) {
                 ret = globalScope[variable];
             }
             return ret;
-        };
+        }
+        res.getScope = getScope;
+        res.variable = variable;
+        return res;
     };
     parser.yy.constant = function (c) {
         return function () {
@@ -62,12 +68,23 @@ function parse(expression) {
         };
     };
     parsed = parser.parse(expression);
-    return function (scope, allowAssignments, globalScopeObject) {
+    function exec(scope, allowAssignments, globalScopeObject) {
         assignmentsAllowed = Boolean(allowAssignments);
         globalScope = globalScopeObject || {};
         cxt = scope;
         return parsed();
-    };
+    }
+    // allow to deal with lvalues from the outside
+    if (parsed.getScope) {
+        exec.getScope = function (scope, allowAssignments, globalScopeObject) {
+            assignmentsAllowed = Boolean(allowAssignments);
+            globalScope = globalScopeObject || {};
+            cxt = scope;
+            return parsed.getScope();
+        };
+        exec.variable = parsed.variable;
+    }
+    return exec;
 }
 exports.parse = parse;
 exports.exec = function (expression, scope, allowAssignments, globalScopeObject) {

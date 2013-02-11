@@ -23,6 +23,7 @@
 
 "use strict";
 var exec = require('expression').exec,
+    parse = require('expression').parse,
     assert = require('assert'),
     scope = {
         a: 1,
@@ -78,6 +79,16 @@ exports.run = function (test, done) {
 
     // test a globalscope object
     test(assert.equal, exec('$myscope.z', scope, false, { $myscope: { z : 124 } }), 124, "$myscope.z");
+
+    // test that we have an lvalue if we evaluate a variable
+    (function () {
+        var v = parse('z');
+        test(assert.ok, v.getScope, 'lvalue');
+        // we found the right scope for the variable
+        test(assert.equal, v.getScope(scope, false, {}), scope);
+        // we found the right variable name
+        test(assert.equal, v.variable, 'z');
+    }());
 
     done();
 

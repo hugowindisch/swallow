@@ -182,7 +182,7 @@ e
     : NUMBER
         {$$ = yy.constant(Number(yytext)); }
     | lvalue
-        { $$ = $1.value }
+        { $$ = $1.value; }
     | string
         { $$ = yy.constant(yytext.slice(1, -1)); }
     | array

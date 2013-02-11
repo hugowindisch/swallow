@@ -56,7 +56,7 @@ case 16: this.$ = { value: yy.resolve($$[$0-3], $$[$0-1]), prop: $$[$0-1], objec
 break;
 case 17:this.$ = yy.constant(Number(yytext)); 
 break;
-case 18: this.$ = $$[$0].value 
+case 18: this.$ = $$[$0].value; 
 break;
 case 19: this.$ = yy.constant(yytext.slice(1, -1)); 
 break;
