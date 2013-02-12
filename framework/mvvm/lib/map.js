@@ -23,6 +23,7 @@
 
 "use strict";
 var utils = require('utils'),
+    expression = require('expression'),
     isArray = utils.isArray,
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty;
@@ -36,14 +37,14 @@ BindingMap.id = 0;
 BindingMap.registry = {};
 BindingMap.prototype.bind = function (
     scope, // the actual model object to monitor
-    expression, // the property name inside this object
+    expr, // the property name inside this object
     setViewValue, // update the view
     getViewValue, //  (optional) get the value inside the view
     synchronizeList
 ) {
     this.bindings.push({
         scope: scope,
-        expression: expression,
+        compiledExpression: expression.parse(expr),
         setViewValue: setViewValue,
         getViewValue: getViewValue,
         synchronizeList: synchronizeList
@@ -67,15 +68,13 @@ BindingMap.prototype.refreshModel = function () {
     forEach(this.bindings, function (v, i) {
         if (v.getViewValue) {
             var scope = v.scope,
-                expression = v.expression,
-                vVal = v.getViewValue(),
-                res;
+                compiledExpression = v.compiledExpression,
+                vVal = v.getViewValue();
             // if the view value changed this view
             // should refresh the model
             if (v.val !== undefined && vVal !== undefined && v.vVal !== vVal) {
                 // the view value changed
-                res = scope.resolve(expression);
-                res.object[res.variable] = vVal;
+                scope.assign(compiledExpression, vVal);
                 v.val = vVal;
                 v.vVal = vVal;
             }
@@ -84,13 +83,13 @@ BindingMap.prototype.refreshModel = function () {
 };
 BindingMap.prototype.refreshListView = function () {
     forEach(this.bindings, function (v, i) {
-        var scope, propName, val, vVal, res;
+        var scope, propName, val, vVal;
         if (v.synchronizeList) {
             scope = v.scope;
-            res = scope.resolve(v.expression);
-            val = res.object[res.variable];
+            val = scope.evaluate(v.compiledExpression);
             if (val === undefined) {
-                val = res.object[res.variable] = [];
+                val = [];
+                scope.assign(v.compiledExpression, val);
             }
             if (isArray(val)) {
                 v.synchronizeList(val);
@@ -100,12 +99,12 @@ BindingMap.prototype.refreshListView = function () {
 };
 BindingMap.prototype.refreshView = function () {
     forEach(this.bindings, function (v, i) {
-        var o, propName, val, vVal, res;
+        var o, propName, val, vVal;
         if (v.setViewValue) {
-            res = v.scope.resolve(v.expression);
-            val = res.object[res.variable];
+            val = v.scope.evaluate(v.compiledExpression);
             if (val === undefined) {
-                val = res.object[res.variable] = '';
+                val = 0;
+                v.scope.assign(v.compiledExpression, val);
             }
             // if the model value changced
             if (v.val !== val) {

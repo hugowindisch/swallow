@@ -56,65 +56,34 @@ function registerController(name, controller) {
     controllers[name] = controller;
 }
 /*jslint regexp: false*/
-function runController(scope, expression) {
-    var what = /([^:]*)\:([^\(]*)\((.*)\)$/.exec(stripWhite(expression)),
-        expressionPart,
-        controllerPart,
-        controller = controllers,
-        arg;
-    if (what) {
-        expressionPart = what[1];
-        controllerPart = what[2].split('.');
-        arg = what[3] !== '' ? JSON.parse(what[3]) : null;
-
-        // find the controller
-        forEach(controllerPart, function (sub) {
-            controller = controller[sub];
-        });
-
-        // at this point we should have a function
-        controller.call(null, scope, expressionPart, arg);
-    }
-}
 
 exports.registerController = registerController;
-exports.runController = runController;
+exports.controllers = controllers;
+//exports.runController = runController;
 
 // here we add a bunch of predifined controllers
 registerController('list', {
-    'new': function (scope, expression, arg) {
-        var res = scope.resolve(expression),
-            arr = res.object[res.variable];
+    'new': function (arr, arg) {
         if (isArray(arr)) {
             arr.push(arg || {});
         }
     },
-    'removeLast': function (scope, expression) {
-        var res = scope.resolve(expression),
-            arr = res.object[res.variable];
+    'removeLast': function (arr) {
         if (isArray(arr)) {
             arr.splice(-1, 1);
         }
     },
-    remove: function (scope, expression) {
-        var listScope = scope.getListCope(),
-            list;
-        if (listScope) {
-            list = listScope.list;
-            list.slice(list.indexOf(list.cachedValue));
-        }
+    remove: function (arr, arg) {
+        /*if (isArray(arr)) {
+            arr.slice(list.indexOf(arg));
+        }*/
+        //broken
     }
 });
-registerController('log', function (scope, expression, arg) {
+registerController('log', function (arg) {
     console.log(arg);
 });
-registerController('showJSON', function (scope, expression, arg) {
-    var res = scope.resolve(expression);
+registerController('showJSON', function (arg) {
     /*globals alert */
-    alert(JSON.stringify(res.object[res.variable], null, 4));
-});
-registerController('setValue', function (scope, expression, arg) {
-    var res = scope.resolve(expression);
-    /*globals alert */
-    res.object[res.variable] = arg;
+    alert(JSON.stringify(arg, null, 4));
 });

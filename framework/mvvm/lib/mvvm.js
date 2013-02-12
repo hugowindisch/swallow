@@ -25,6 +25,7 @@
 var utils = require('utils'),
     events = require('events'),
     domvisual = require('domvisual'),
+    expression = require('expression'),
     globalEvents = domvisual.globalEvents,
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty,
@@ -255,9 +256,11 @@ function listBinding(createVisualForData) {
 function eventBinding(event) {
     // FIXME: the problem with this binding is : when it is REGENERATED!
     //
-    return function (vis, mvvm, expression) {
+    return function (vis, mvvm, expr) {
+        var parsedExpr = expression.parse(expr);
         function listener() {
-            controller.runController(mvvm.scope, expression);
+            //controller.runController(mvvm.scope, expression);
+            mvvm.scope.evaluate(parsedExpr);
         }
         vis.on(event, listener);
         mvvm.on('clear', function () {
@@ -276,10 +279,12 @@ function draggableBinding() {
 function dropZoneBinding() {
 // 2 things we need to know: what to accept and what to do
 // when we accept stuff
-    return function (vis, mvvm, expression) {
-        var event = 'dropPayload';
+    return function (vis, mvvm, expr) {
+        var event = 'dropPayload',
+            parsedExpr = expression.parse(expr);
         function listener(payload) {
             //controller.runController(mvvm.scope, expression);
+            mvvm.scope.evaluate(parsedExpr);
         }
         vis.on(event, listener);
         mvvm.on('clear', function () {

@@ -21,7 +21,8 @@
     IN THE SOFTWARE.
 */
 "use strict";
-var globalObject = {},
+var controller = require('./controller'),
+    globalObject = {},
     utils = require('utils'),
     forEach = utils.forEach,
     forEachProperty = utils.forEachProperty;
@@ -98,24 +99,24 @@ Scope.prototype.resolveObject = function () {
     });
     return o;
 };
-// scope navigation with slashes, variable lookup with dots
-Scope.prototype.resolve = function (variable) {
-    var p = variable.split('/'),
-        scopePart = p.slice(0, -1),
-        varpath = p.slice(-1)[0].split('.'),
-        scope = this.resolveScope(scopePart),
-        res = {};
-    res.object = scope.resolveObject();
-    forEach(varpath, function (v, j) {
-        if (j < (varpath.length - 1)) {
-            if (typeof res.object[v] !== 'object') {
-                res.object[v] = {};
-            }
-            res.object = res.object[v];
-        } else {
-            res.variable = v;
-        }
-    });
-    return res;
+
+Scope.prototype.evaluate = function (compiledExpression) {
+    var globals = {
+        $parent: this.getParent(),
+        $top: this.getTop(),
+        $cnt: controller.controllers
+    };
+    return compiledExpression(this.resolveObject(), true, globals);
+};
+Scope.prototype.assign = function (compiledExpression, value) {
+    // if the compiledExpression does not have a getScope, it cannot be assigned
+    if (compiledExpression.getScope) {
+        var globals = {
+            $parent: this.getParent(),
+            $top: this.getTop(),
+            $cnt: controller.controllers
+        };
+        compiledExpression.getScope(this.resolveObject(), true, globals)[compiledExpression.variable] = value;
+    }
 };
 exports.Scope = Scope;

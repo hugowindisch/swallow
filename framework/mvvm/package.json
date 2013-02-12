@@ -4,7 +4,8 @@
     "dependencies": {
         "utils": ">=0.0.1",
         "events": ">=0.0.1",
-        "domvisual": ">=0.0.1"
+        "domvisual": ">=0.0.1",
+        "expression": ">=0.0.1"
     },
     "testDependencies": [ "assert" ],
     "engines": {
