@@ -831,7 +831,7 @@ exports.definition = {
             children: {}
         },
         ComponentInfo: {
-            dimensions: [ 360, 120, 0],
+            dimensions: [ 360, 540, 0],
             positions: {
                 wLabel: {
                     order: 0,
@@ -844,34 +844,84 @@ exports.definition = {
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 gridLabel: {
-                    order: 1,
+                    order: 2,
                     matrix: [ 30, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 w: {
-                    order: 2,
+                    order: 3,
                     matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   75, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 h: {
-                    order: 3,
+                    order: 4,
                     matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   215, 5, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 grid: {
-                    order: 3,
+                    order: 5,
                     matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   75, 30, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
 
                 descriptionLabel: {
-                    order: 4,
+                    order: 6,
                     matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 55, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 description: {
-                    order: 6,
+                    order: 7,
                     matrix: [ 355, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 80, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                titleLabel: {
+                    order: 7,
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 105, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                title: {
+                    order: 8,
+                    matrix: [ 180, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   100, 105, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                keywordsLabel: {
+                    order: 9,
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 130, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                keywords: {
+                    order: 10,
+                    matrix: [ 180, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   100, 130, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                iconLabel: {
+                    order: 11,
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 155, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                icon: {
+                    order: 12,
+                    matrix: [ 340, 0, 0, 0,  0, 300, 0, 0,  0, 0, 1, 0,  5, 180, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                hResizeLabel: {
+                    order: 13,
+                    matrix: [ 200, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   30, 485, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                hResizeCheck: {
+                    order: 14,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   5, 485, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                vResizeLabel: {
+                    order: 15,
+                    matrix: [ 200, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   30, 510, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                vResizeCheck: {
+                    order: 16,
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   5, 510, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -939,7 +989,87 @@ exports.definition = {
                         "text": "",
                         position: "description"
                     }
+                },
+                titleLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        "text": "title:",
+                        position: "titleLabel"
+                    }
+                },
+                title: {
+                    factory: "baseui",
+                    type: "Input",
+                    config: {
+                        "text": "",
+                        position: "title"
+                    }
+                },
+                keywordsLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        "text": "keywords:",
+                        position: "keywordsLabel"
+                    }
+                },
+                keywords: {
+                    factory: "baseui",
+                    type: "Input",
+                    config: {
+                        "text": "",
+                        position: "keywords"
+                    }
+                },
+                iconLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        "text": "icon:",
+                        position: "iconLabel"
+                    }
+                },
+                icon: {
+                    factory: "baseui",
+                    type: "ImagePicker",
+                    config: {
+                        position: "icon"
+                    }
+                },
+                hResizeLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        "text": "h resize:",
+                        position: "hResizeLabel"
+                    }
+                },
+                hResizeCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    config: {
+                        value: true,
+                        position: "hResizeCheck"
+                    }
+                },
+                vResizeLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        "text": "v resize:",
+                        position: "vResizeLabel"
+                    }
+                },
+                vResizeCheck: {
+                    factory: "baseui",
+                    type: "CheckBox",
+                    config: {
+                        value: true,
+                        position: "vResizeCheck"
+                    }
                 }
+
             }
         },
         LayerInfo: {
