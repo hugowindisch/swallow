@@ -30,7 +30,7 @@ var controller = require('./controller'),
 function Scope(object, withObject, parentScope) {
     this.parent = parentScope;
     this.object = object || globalObject;
-    this.withObject = (this.parent && this.parent.withObject) || '';
+    this.withObject = (this.parent && this.parent.withObject && this.parent.object === this.object) || '';
     if (withObject) {
         this.withObject += ('/' + withObject);
     }
@@ -88,7 +88,7 @@ Scope.prototype.resolveScope = function (w) {
     return scope;
 };
 Scope.prototype.resolveObject = function () {
-    var rel = this.withObject.split('/').unshift(),
+    var rel = this.withObject.split('/').slice(1),
         o = this.object;
     forEach(rel, function (r) {
         var newo = o[rel];

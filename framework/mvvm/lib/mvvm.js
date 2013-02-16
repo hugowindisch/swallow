@@ -271,6 +271,7 @@ function eventBinding(event) {
 // maybe the basic drag and drop thing should go in domvisual really
 // like setdraggable, setDropZone
 // anyway I have to support the mappings for the events...
+// type: 'jfljlfsds'
 function draggableBinding() {
     return function (vis, mvvm, expression) {
         //vis.setDraggable(// expression //)
@@ -279,6 +280,9 @@ function draggableBinding() {
 function dropZoneBinding() {
 // 2 things we need to know: what to accept and what to do
 // when we accept stuff
+// { accept: [ 'a', 'b', 'c' ], controller: }
+// Maybe we should have 2 simple bindings: dropAccept
+// and dropCopy, dropMove
     return function (vis, mvvm, expr) {
         var event = 'dropPayload',
             parsedExpr = expression.parse(expr);
@@ -294,6 +298,7 @@ function dropZoneBinding() {
 }
 function dragAndDropList() {
 // we need the accept object:
+//
     return function (vis, mvvm, expression) {
         var event = 'dropPayload';
         function listener() {
