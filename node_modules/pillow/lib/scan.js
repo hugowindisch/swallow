@@ -28,6 +28,7 @@
 /*globals __dirname, __filename */
 "use strict";
 var fs = require('fs'),
+    events = require('events'),
     path = require('path'),
     async = require('async'),
     jsmin = require('jsmin'),
@@ -455,10 +456,17 @@ function makeAll(options, cb) {
     });
 }
 /**
-    This function regenerates a single package.
+    This function regenerates a single package. It prevents excessive
+    directory scanning by not rescannign if there are pending scans
+    and rebuilding if there is a pending build for the required packageName
+    with the current options.
+
     note: srcFolder can be a string or an array of strings
 */
 function makePackage(options, packageName, cb) {
+    // keep track of what is currently being built with these options
+    options.currentlyBuilding = options.currentlyBuilding || new events.EventEmitter();
+    options.currentlySearchingPackages = options.currentlySearchingPackages || new events.EventEmitter();
     // even before we try to find the packages, we want to skip
     // packages that were excluded.
     // Note that this is the only place where it is really beneficial
@@ -468,19 +476,43 @@ function makePackage(options, packageName, cb) {
         return cb(null);
     }
 
-    findPackages(options.srcFolder, function (err, packages) {
-        var deps;
-        if (err) {
-            return cb(err);
+    // if we are currently building this package with the same options
+    // well, let's simply wait for the end of the build and return at that
+    // time.
+    options.currentlyBuilding.once(packageName, cb);
+
+    // what to do when the package is built
+    function packageBuilt(err) {
+        // signal the end of the build to all interested users
+        options.currentlyBuilding.emit(packageName, err);
+    }
+    // what to do when the packages are found
+    function packagesFound(err, packages) {
+        options.currentlySearchingPackages.emit('found', err, packages);
+    }
+    // we are the only pending build of this package
+    if (options.currentlyBuilding.listeners(packageName).length === 1) {
+        // we may already be in the process of finding all packages.
+        // again this operation is lengthy and if we are currently doing
+        // it why not simply wait for the results and use them
+        options.currentlySearchingPackages.once('found', function (err, packages) {
+            var deps;
+            if (err) {
+                return packageBuilt(err);
+            }
+            try {
+                deps = getPackageDependencies(packages, packageName);
+            } catch (e) {
+                console.log(e);
+                return packageBuilt(e);
+            }
+            processMultiplePackageDetails(options, deps, packageBuilt);
+        });
+        // there is only one listener? we must initiate the package loading
+        if (options.currentlySearchingPackages.listeners('found').length === 1) {
+            findPackages(options.srcFolder, packagesFound);
         }
-        try {
-            deps = getPackageDependencies(packages, packageName);
-        } catch (e) {
-            console.log(e);
-            return cb(e);
-        }
-        processMultiplePackageDetails(options, deps, cb);
-    });
+    }
 }
 
 /**
