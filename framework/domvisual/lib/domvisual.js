@@ -86,6 +86,18 @@ DOMVisual.prototype.addListener = function (evt, handler) {
 };
 DOMVisual.prototype.on = DOMVisual.prototype.addListener;
 
+/**
+* Enables or disables selection.
+* @param {string} The selection mode (none to disable)
+* @returns this (for chaining calls).
+*/
+DOMVisual.prototype.enableSelect = function (enable) {
+    var style = this.element && this.element.style;
+    if (style) {
+        style.userSelect = style.mozUserSelect = style.webkitUserSelect = enable;
+    }
+    return this;
+};
 
 /**
 * Adds a child to a DOMVisual
@@ -1144,6 +1156,7 @@ DOMVisual.prototype.nothingFocused = function () {
 */
 function DOMElement(config, groupData) {
     DOMVisual.call(this, config, groupData, document.createElement('div'));
+    this.enableSelect('none');
 }
 
 DOMElement.prototype = new DOMVisual();
@@ -1174,6 +1187,7 @@ DOMElement.createPreview = function () {
 
 DOMElement.getInplaceEditor = function () {
     var ret = new DOMElement();
+    ret.enableSelect('text');
     ret.element.contentEditable = true;
     ret.init = function (config) {
         this.setInnerHTML(config.innerHTML);
@@ -1348,6 +1362,7 @@ DOMVideo.prototype.getConfigurationSheet = function () {
 */
 function DOMInput(config) {
     DOMVisual.call(this, config, null, document.createElement('input'));
+    this.enableSelect('text');
     var that = this;
     // prevent form submission that we will never use
     this.on('keydown', function (evt) {
