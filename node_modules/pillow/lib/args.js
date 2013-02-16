@@ -187,5 +187,6 @@ exports.fixOptions = function (options) {
     options.work = options.work || '.';
     options.dstFolder = path.join(options.work, 'generated');
     options.srcFolder = options.srcFolder || [];
+    options.makeRules = require('./make').makeRules;
     return options;
 };

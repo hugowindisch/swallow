@@ -21,6 +21,8 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
+/*jslint nomen: true */
+"use strict";
 
 var http = require('http'),
     scan = require('./scan'),
