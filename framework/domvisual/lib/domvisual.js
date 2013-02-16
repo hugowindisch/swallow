@@ -1186,12 +1186,17 @@ DOMElement.createPreview = function () {
 */
 
 DOMElement.getInplaceEditor = function () {
-    var ret = new DOMElement();
+    var ret = new DOMElement(),
+        transparent = {r: 0, g: 0, b: 0, a: 0};
     ret.enableSelect('text');
     ret.element.contentEditable = true;
     ret.init = function (config) {
         this.setInnerHTML(config.innerHTML);
         this.setStyle(config.style);
+        this.setStyleAttributes({
+            backgroundColor: transparent,
+            backgroundImage: { stops: [0, 1], colors: [ transparent, transparent ], type: 'horizontal' }
+        });
         return this;
     };
     ret.updateEditor = function (config) {

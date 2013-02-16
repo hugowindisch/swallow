@@ -20,6 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 /*globals FormData */
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     getEnclosingRect = visual.getEnclosingRect,
@@ -120,8 +121,8 @@ function GroupViewer(config) {
             return mat4.multiply(that.zoomMat, matrix, mat4.create());
         };
     this.selectionScalingUI.getSnappedTransform = function (delta, constrain, rect) {
-            return that.getSnappedTransform(delta, constrain, rect);
-        };
+        return that.getSnappedTransform(delta, constrain, rect);
+    };
 
     this.selectionRotationUI.getFDM =
         this.selectionScalingUI.getFDM = function () {
@@ -132,8 +133,8 @@ function GroupViewer(config) {
             return that.snapPositionToGrid(pos);
         };
     this.selectionRotationUI.getSnappedTransform = function (delta, constrain, rect) {
-            return that.getSnappedTransform(delta, constrain, rect);
-        };
+        return that.getSnappedTransform(delta, constrain, rect);
+    };
 
     // transform handlers
     function transformHandler(transform) {
@@ -291,6 +292,7 @@ GroupViewer.prototype.enableBoxSelection = function (
         matrix,
         nmatrix,
         prevCursor,
+        mouseDown,
         showMouseBox = true;
 
     function twoPositionsToMatrix(pos1, pos2) {
@@ -369,7 +371,7 @@ GroupViewer.prototype.enableBoxSelection = function (
             selectionEnd(matrix, nmatrix, startpos, endpos, evt);
         }
     }
-    function mouseDown(evt) {
+    mouseDown = function (evt) {
         evt.preventDefault();
         var mat = visuals.getFullDisplayMatrix(true),
             evtPos = [evt.pageX, evt.pageY, 0];
@@ -386,7 +388,7 @@ GroupViewer.prototype.enableBoxSelection = function (
             showMouseBox = selectionStart(matrix, nmatrix, startpos, endpos, evt);
         }
         updateMouseBox(nmatrix);
-    }
+    };
 
     // setup box selection
     if (selectionStart || selection || selectionEnd) {
@@ -884,10 +886,7 @@ GroupViewer.prototype.purgeSelection = function (notify) {
         posn;
     forEachProperty(this.selection, function (p, n) {
         posn = positions[n];
-        if (posn &&
-            posn.enableSelect !== false &&
-            posn.enableDisplay !== false
-        ) {
+        if (posn && posn.enableSelect !== false && posn.enableDisplay !== false) {
             selection[n] = p;
         }
     });
@@ -1121,13 +1120,10 @@ GroupViewer.prototype.setSelectionOnlyInEditor = function (onlyInEditor) {
 
 GroupViewer.prototype.previewStyleChange = function (localTheme) {
     var ipe = this.getChild('inplaceEditor');
-    this.getChild('visuals'
-    ).setLocalTheme(localTheme
-    ).setSkin(localTheme.skin, true);
+    this.getChild('visuals').setLocalTheme(localTheme).setSkin(localTheme.skin, true);
 
     if (ipe) {
-        ipe.setLocalTheme(localTheme
-        ).setSkin(localTheme.skin, true);
+        ipe.setLocalTheme(localTheme).setSkin(localTheme.skin, true);
     }
 };
 GroupViewer.prototype.getPositionRect = function (name) {
@@ -1385,7 +1381,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
             // re show the 'normal' child if it exists
             normalChild = that.getChild('visuals').getChild(name);
             if (normalChild) {
-                normalChild.setVisible(true);
+                normalChild.setStyleAttributes({color: null});
             }
             // update the model if needed (non null new config)
             if (newConfig) {
@@ -1412,7 +1408,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
             ipe.updateEditor(typeInfo.config);
             theme = this.getPreviewTheme();
             ipe.setLocalTheme(theme).setSkin(theme.skin);
-            this.getChild('visuals').getChild(this.inplaceEditName).setVisible(false);
+            this.getChild('visuals').getChild(this.inplaceEditName).setStyleAttributes({color: {r: 0, g: 0, b: 0, a: 0}});
         } else {
             typeInfo = documentData.children[selName];
             if (typeInfo) {
@@ -1433,7 +1429,7 @@ GroupViewer.prototype.updateInplaceEdit = function () {
                     ipe.init(typeInfo.config);
                     ipe.typeInfo = typeInfo;
                     this.inplaceEditName = selName;
-                    this.getChild('visuals').getChild(that.inplaceEditName).setVisible(false);
+                    this.getChild('visuals').getChild(that.inplaceEditName).setStyleAttributes({color: {r: 0, g: 0, b: 0, a: 0}});
                     that.emit('inplaceEditChanged');
                 }
             }
