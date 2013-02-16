@@ -20,6 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 */
+"use strict";
 var pillow = require('pillow'),
     jqtpl = require('jqtpl'),
     path = require('path'),
@@ -41,77 +42,60 @@ function apply(to, from) {
     return to;
 }
 
-/**
-    Publishes the html that allows to run the package in a browser
-    using a standalone statically loaded html.
-*/
-function generateVisualComponentHtml(
-    options,
-    details,
-    packageMap,
-    deps,
-    cssFileMap,
-    type,
-    title,
-    monitor
-) {
-    // we need to load all components
-    var dependencies = [ ],
-        cssFiles = [],
-        iconFile = path.join(details.dirname, type + '.favicon.png'),
-        icon = details.stats[iconFile] ? (details.name + '/' + type + '.favicon.png') : null;
-    if (deps) {
-        Object.keys(deps).forEach(function (d) {
-            dependencies.push(d + '/' + d + '.js');
-        });
-        Object.keys(cssFileMap).forEach(function (k) {
-            var details = cssFileMap[k].details,
-                vfn = details.name + k.slice(details.dirname.length);
-            cssFiles.push(vfn.split('\\').join('/'));
-        });
-    }
-    // return the generated buffer
-    return jqtpl.tmpl('visualComponent', {
-        dependencies: dependencies,
-        css: cssFiles,
-        factory: details.name,
-        type: type,
-        jquery: options.jquery ? path.basename(options.jquery) : null,
-        monitor: monitor,
-        icon: icon,
-        title: title,
-        fonts: options.fonts || []
-    });
+function getMakeHtmlFunction(type, title, monitor, writeHtmlBuf) {
+    return function (
+        cxt,
+        cb
+    ) {
+        var options = cxt.options,
+            details = cxt.details,
+            packageMap = cxt.packageMap,
+            mostRecentJSDate = cxt.mostRecentJSDate,
+            deps = cxt.deps,
+            depsFileMap = cxt.depsFileMap,
+            cssFileMap = cxt.cssFileMap,
+            cssMostRecentDate = cxt.cssMostRecentDate,
+            // we need to load all components
+            dependencies = [ ],
+            cssFiles = [],
+            iconFile = path.join(details.dirname, type + '.favicon.png'),
+            icon = details.stats[iconFile] ? (details.name + '/' + type + '.favicon.png') : null;
+        if (deps) {
+            Object.keys(deps).forEach(function (d) {
+                dependencies.push(d + '/' + d + '.js');
+            });
+            Object.keys(cssFileMap).forEach(function (k) {
+                var details = cssFileMap[k].details,
+                    vfn = details.name + k.slice(details.dirname.length);
+                cssFiles.push(vfn.split('\\').join('/'));
+            });
+        }
+        // return the generated buffer
+        writeHtmlBuf(jqtpl.tmpl('visualComponent', {
+            dependencies: dependencies,
+            css: cssFiles,
+            factory: details.name,
+            type: type,
+            jquery: options.jquery ? path.basename(options.jquery) : null,
+            monitor: monitor,
+            icon: icon,
+            title: title,
+            fonts: options.fonts || []
+        }));
+        cb(null);
+    };
 }
 
 function makeAndGenerateHtml(options, factory, type, monitor, minify, cb) {
     var htmlBuf,
         extendedOptions = apply(
             {
-                extra: function (opt, details, packageMap, deps, cssFileMap, cb) {
-                    if (factory === details.name) {
-                        htmlBuf = generateVisualComponentHtml(
-                            opt,
-                            details,
-                            packageMap,
-                            deps,
-                            cssFileMap,
-                            type,
-                            type,
-                            monitor
-                        );
-                    }
-                    cb(null);
+                makeRules: {
+                    makeHtml: getMakeHtmlFunction(type, type, monitor, function (buf) { htmlBuf = buf; })
                 }
             },
             options
         );
-    // SUPER DUPER HACK
-    // FIXME: because we regenerate the html we NEED the make to happen...
-    // this is fucking ugly (but at least, it is only needed when we
-    // regenerate html on a package)
-    extendedOptions.nomake = [];
-    delete extendedOptions.nomakeFast;
     pillow.makePackage(
         extendedOptions,
         factory,
@@ -122,7 +106,6 @@ function makeAndGenerateHtml(options, factory, type, monitor, minify, cb) {
             return cb(null, htmlBuf);
         }
     );
-
 }
 
 function serveVisualComponent(forEdit, monitor) {
@@ -140,6 +123,7 @@ function serveVisualComponent(forEdit, monitor) {
     };
 }
 
+/*
 function publishVisualComponent(req, res, cxt) {
     var options = cxt.options,
         match = cxt.match,
@@ -217,7 +201,7 @@ function publishVisualComponent(req, res, cxt) {
         }
     );
 }
-
+*/
 function monitor(req, res, cxt) {
     var options = cxt.options,
         match = cxt.match,
@@ -256,7 +240,8 @@ function redirectToMonitored(req, res, cxt) {
 }
 
 exports.serveVisualComponent = serveVisualComponent;
-exports.publishVisualComponent = publishVisualComponent;
+// broken
+//exports.publishVisualComponent = publishVisualComponent;
 exports.monitor = monitor;
 exports.redirectToMonitored = redirectToMonitored;
 exports.makeAndGenerateHtml = makeAndGenerateHtml;

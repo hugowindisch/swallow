@@ -506,7 +506,7 @@ function makePackage(options, packageName, cb) {
                 console.log(e);
                 return packageBuilt(e);
             }
-            processMultiplePackageDetails(options, deps, packageBuilt);
+            processPackageDetails(options, packages[packageName], packages, packageBuilt);
         });
         // there is only one listener? we must initiate the package loading
         if (options.currentlySearchingPackages.listeners('found').length === 1) {

@@ -20,8 +20,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
+/*jslint regexp: true, nomen: true */
 /*globals __dirname, __filename */
-/*jslint regexp: false, nomen: false */
+"use strict";
 var pillow = require('pillow'),
     jqtpl = require('jqtpl'),
     fs = require('fs'),
@@ -95,10 +96,11 @@ function getUrls(forMiddleWare) {
         filter: /^\/swallow\/make\/(.*)$/,
         handler: pillow.makeAndServe
     });
-    urls.push({
+// FIXME: BROKEN
+/*    urls.push({
         filter: /^\/swallow\/publish\/([a-z][a-zA-Z0-9_]+)\.([A-Z][a-zA-Z0-9]+)$/,
         handler: servevisualcomponent.publishVisualComponent
-    });
+    }); */
     // sets the currently monitored application
     urls.push({
         filter: /^\/swallow\/monitor\/([a-z][a-zA-Z0-9_]+)\.([A-Z][a-zA-Z0-9]+)$/,

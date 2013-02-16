@@ -585,34 +585,6 @@ function makeJQuery(
         cb(null);
     }
 }
-// regenerate extra stuff if any
-function makeExtra(
-    cxt,
-    cb
-) {
-    var options = cxt.options,
-        details = cxt.details,
-        packageMap = cxt.packageMap,
-        mostRecentJSDate = cxt.mostRecentJSDate,
-        deps = cxt.deps,
-        depsFileMap = cxt.depsFileMap,
-        cssFileMap = cxt.cssFileMap,
-        cssMostRecentDate = cxt.cssMostRecentDate;
-
-    // support extra processing
-    if (options.extra) {
-        options.extra(
-            options,
-            details,
-            packageMap,
-            deps,
-            cssFileMap,
-            cb
-        );
-    } else {
-        cb(null);
-    }
-}
 function make(cxt, cb) {
     cxt.makeDependencies(
         'makeJSFilesThenDOXFile',
@@ -622,7 +594,6 @@ function make(cxt, cb) {
         'makeHtml',
         'makePillow',
         'makeJQuery',
-        'makeExtra',
         cb
     );
 }
@@ -635,6 +606,5 @@ exports.makeRules = {
     makeAssets: makeAssets,
     makeHtml: makeHtml,
     makePillow: makePillow,
-    makeJQuery: makeJQuery,
-    makeExtra: makeExtra
+    makeJQuery: makeJQuery
 };
