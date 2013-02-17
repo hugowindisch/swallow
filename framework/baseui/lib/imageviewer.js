@@ -21,7 +21,7 @@
     IN THE SOFTWARE.
 
 */
-
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     config = require('config'),
@@ -40,7 +40,10 @@ var visual = require('visual'),
                 }
             }
         }
-    };
+    },
+    mvvm = require('mvvm'),
+    availableBindings = mvvm.getDefaultBindings({ url: mvvm.bidiPropBinding('url') });
+
 
 function ImageViewer(config) {
     this.scaling = 'constrain';
@@ -54,6 +57,8 @@ function ImageViewer(config) {
 }
 
 ImageViewer.prototype = new (domvisual.DOMElement)();
+
+mvvm.MVVM.initialize(ImageViewer, availableBindings);
 
 ImageViewer.prototype.getActiveTheme = visual.getGetActiveTheme(
     'baseui',
@@ -71,7 +76,8 @@ ImageViewer.createPreview = function () {
 ImageViewer.prototype.getConfigurationSheet = function () {
     return {
         url: require('config').imageUrlConfig('Image'),
-        scaling: null
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings),
+        noDataConfig: config.skinningConfig('Skinning', visual.getStyleListFromTheme(ImageViewer.prototype.theme, 'baseui', 'ImageViewer'))
     };
 };
 

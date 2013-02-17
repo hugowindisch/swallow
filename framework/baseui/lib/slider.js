@@ -29,9 +29,9 @@ var visual = require('visual'),
     vec3 = glmatrix.vec3,
     isFunction = utils.isFunction,
     mvvm = require('mvvm'),
-    availableBindings = {
+    availableBindings = mvvm.getDefaultBindings({
         value: mvvm.bidiPropBinding('value')
-    },
+    }),
     group = {
         // authoring dimension
         dimensions: [ 100, 24, 0],
@@ -173,7 +173,8 @@ Slider.prototype.getConfigurationSheet = function () {
         minValue: inputConfig('Min value'),
         maxValue: inputConfig('Max value'),
         value: inputConfig('Value'),
-        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings),
+        noDataConfig: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Slider.prototype.theme, 'baseui', 'Slider'))
     };
 };
 

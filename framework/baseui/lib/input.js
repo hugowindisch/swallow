@@ -74,7 +74,8 @@ Input.prototype.getConfigurationSheet = function () {
         text: config.inputConfig('Text'),
         placeholder: config.inputConfig('Placeholder'),
         password: config.booleanConfig('Password'),
-        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings),
+        noDataConfig: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Input.prototype.theme, 'baseui', 'Input'))
     };
 };
 

@@ -20,7 +20,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
-
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
@@ -72,7 +72,10 @@ var visual = require('visual'),
                 }
             }
         }
-    };
+    },
+    mvvm = require('mvvm'),
+    availableBindings = mvvm.getDefaultBindings({ value: mvvm.bidiPropBinding('value') });
+
 
 function CheckBox(config) {
     var that = this;
@@ -96,6 +99,8 @@ function CheckBox(config) {
 }
 
 CheckBox.prototype = new (domvisual.DOMElement)();
+
+mvvm.MVVM.initialize(CheckBox, availableBindings);
 
 CheckBox.prototype.getActiveTheme = visual.getGetActiveTheme(
     'baseui',
@@ -135,7 +140,8 @@ CheckBox.createPreview = function () {
 
 CheckBox.prototype.getConfigurationSheet = function () {
     return {
-        value: null
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings),
+        noDataConfig: config.skinningConfig('Skinning', visual.getStyleListFromTheme(CheckBox.prototype.theme, 'baseui', 'CheckBox'))
     };
 };
 

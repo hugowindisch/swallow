@@ -316,6 +316,7 @@ function getDefaultBindings(extraBindings) {
         position: bidiPropBinding('position'),
         mouseover: eventBinding('mouseover'),
         mouseout: eventBinding('mouseout'),
+        click: eventBinding('click'),
         'with': withBinding()
     });
 }

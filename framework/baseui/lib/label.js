@@ -21,6 +21,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
@@ -29,7 +30,7 @@ var visual = require('visual'),
     availableBindings = mvvm.getDefaultBindings({
         text: mvvm.bidiPropBinding('text')
     });
-    
+
 
 function Label(config) {
     domvisual.DOMElement.call(this, config);
@@ -75,7 +76,8 @@ Label.prototype.getConfigurationSheet = function () {
         text: config.inputConfig('Text'),
         textAlign: null,
         bold: config.booleanConfig('Bold'),
-        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings),
+        noDataConfig: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Label.prototype.theme, 'baseui', 'Label'))
     };
 };
 

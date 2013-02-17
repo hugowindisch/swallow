@@ -25,10 +25,7 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
     mvvm = require('mvvm'),
-    availableBindings = {
-        text: mvvm.bidiPropBinding('text'),
-        click: mvvm.eventBinding('click')
-    },
+    availableBindings = mvvm.getDefaultBindings({ text: mvvm.bidiPropBinding('text') }),
     group = {
         // authoring dimension
         dimensions: [ 400, 200, 0],
@@ -149,8 +146,8 @@ Button.prototype.getConfigurationSheet = function () {
     var config = require('config');
     return {
         text: config.inputConfig('Text'),
-        noDataConfig: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Button.prototype.theme, 'baseui', 'Button')),
-        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings),
+        noDataConfig: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Button.prototype.theme, 'baseui', 'Button'))
     };
 };
 Button.prototype.setText = function (text) {

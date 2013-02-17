@@ -26,12 +26,12 @@ var visual = require('visual'),
     domvisual = require('domvisual'),
     config = require('config'),
     mvvm = require('mvvm'),
-    availableBindings = {
+    availableBindings = mvvm.getDefaultBindings({
         r: mvvm.bidiPropBinding('r'),
         g: mvvm.bidiPropBinding('g'),
         b: mvvm.bidiPropBinding('b'),
         a: mvvm.bidiPropBinding('a')
-    };
+    });
 
 
 function ColorViewer(config) {
