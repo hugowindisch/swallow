@@ -15,8 +15,10 @@ function ${clsname}(config) {
 ${clsname}.prototype = visual.inheritVisual(domvisual.DOMElement, group, packageName, className);
 mvvm.MVVM.initialize(${clsname}, availableBindings);
 ${clsname}.prototype.getConfigurationSheet = function () {
+    var config = require('config');
     return {
-        mVVMBindingInfo: require('config').bindingsConfig('Bindings', availableBindings)
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings),
+        noDataConfig: config.skinningConfig('Skinning', visual.getStyleListFromTheme(${clsname}.prototype.theme, packageName, className))
     };
 };
 

@@ -24,7 +24,6 @@
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
-    config = require('config'),
     mvvm = require('mvvm'),
     availableBindings = {
         text: mvvm.bidiPropBinding('text'),
@@ -147,13 +146,13 @@ Button.createPreview = function () {
 };
 
 Button.prototype.getConfigurationSheet = function () {
+    var config = require('config');
     return {
         text: config.inputConfig('Text'),
-        dummy: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Button.prototype.theme, 'baseui', 'Button')),
+        noDataConfig: config.skinningConfig('Skinning', visual.getStyleListFromTheme(Button.prototype.theme, 'baseui', 'Button')),
         mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
     };
 };
-Button.prototype.setDummy = function () {};
 Button.prototype.setText = function (text) {
     var txtChild = new domvisual.DOMElement();
     txtChild.setInnerText(text);

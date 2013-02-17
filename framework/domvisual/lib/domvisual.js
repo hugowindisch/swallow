@@ -636,6 +636,11 @@ DOMVisual.prototype.setStyleDimensionsAdjustment = function (v3) {
     return this;
 };
 
+
+DOMVisual.prototype.setNoDataConfig = function () {
+    return this;
+};
+
 /*
 * DOM update (we essentially treat the DOM as an output thing)
 * @api private
