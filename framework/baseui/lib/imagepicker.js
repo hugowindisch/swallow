@@ -21,6 +21,7 @@
     IN THE SOFTWARE.
 
 */
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
@@ -79,11 +80,12 @@ ImagePicker.prototype.setUrls = function (urls) {
     return this;
 };
 
-ImagePicker.prototype.setSelectedUrl = function (url) {
+ImagePicker.prototype.setValue = ImagePicker.prototype.setSelectedUrl = function (url) {
     this.setSelectedItem(url);
     return this;
 };
-ImagePicker.prototype.getSelectedUrl = function () {
+
+ImagePicker.prototype.getValue = ImagePicker.prototype.getSelectedUrl = function () {
     return this.getSelectedItem();
 };
 
@@ -92,8 +94,8 @@ ImagePicker.prototype.getConfigurationSheet = function () {
 };
 
 ImagePicker.prototype.createViewer = function (item) {
-    var vert = 40, cell;
-    function onLoad() {
+    var vert = 40, cell, onLoad;
+    onLoad = function () {
         var imageDimensions = this.getComputedDimensions();
         this.setHtmlFlowing({
             width: (vert * imageDimensions[0] / imageDimensions[1]) + 'px',
@@ -101,11 +103,10 @@ ImagePicker.prototype.createViewer = function (item) {
             display: 'inline-block',
             whiteSpace: 'nowrap'
         });
-    }
+    };
 
     cell = new (domvisual.DOMImg)({url: item});
-    cell.setDimensions([20, 20, 0]
-    ).once('load', onLoad);
+    cell.setDimensions([20, 20, 0]).once('load', onLoad);
 
     cell.showSelectionBox = function (selected) {
         this.setStyle(selected ? 'imageSelected' : 'image');

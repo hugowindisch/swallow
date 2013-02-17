@@ -19,6 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
+"use strict";
 var glmatrix = require('glmatrix'),
     utils = require('utils'),
     visual = require('visual'),
@@ -114,6 +115,11 @@ Group.prototype.normalizeDocument = function () {
     if (!d.theme) {
         d.theme = {};
     }
+    d.title = d.title || '';
+    d.keywords = d.keywords || '';
+    d.hResize = d.hResize || true;
+    d.vResize = d.vResize || true;
+
     this.normalizeDocumentSkin();
 };
 /**
@@ -238,9 +244,8 @@ Group.prototype.createBoundThemeFromData = function (optionalThemeData, optional
         this.getTheme = function (factory, type) {
             if (factory === docFactory && docType === type) {
                 return theme;
-            } else {
-                return skin.getTheme(factory, type);
             }
+            return skin.getTheme(factory, type);
         };
     }
 
@@ -587,7 +592,7 @@ Group.prototype.cmdSetPositionSnapping = function (name, snapping) {
                         cs[n] = 'px';
                     }
                 } else if (s !== 'unknown') {
-                    prev[n] = cs[n] ? cs[n] : 'unknown';
+                    prev[n] = cs[n] || 'unknown';
                     cs[n] = s;
                 }
             });
@@ -803,20 +808,45 @@ Group.prototype.cmdSetVisualOrder = function (nameOrderMap, message) {
 Group.prototype.cmdSetComponentProperties = function (
     dimensions,
     description,
-    gridSize
+    gridSize,
+    title,
+    keywords,
+    icon,
+    hResize,
+    vResize
 ) {
     var that = this;
     function doUndo() {
         var documentData = that.documentData,
             dim = documentData.dimensions,
             descr = documentData.description,
-            gs = documentData.gridSize;
+            gs = documentData.gridSize,
+            ti = documentData.title,
+            kw = documentData.keywords,
+            ic = documentData.icon,
+            hr = documentData.hResize,
+            vr = documentData.vResize;
+
         documentData.dimensions = dimensions;
         documentData.description = description;
         documentData.gridSize = gridSize;
+        documentData.title = title;
+        documentData.keywords = keywords;
+        if (icon) {
+            documentData.icon = icon;
+        } else {
+            delete documentData.icon;
+        }
+        documentData.hResize = hResize;
+        documentData.vResize = vResize;
         dimensions = dim;
         description = descr;
         gridSize = gs;
+        title = ti;
+        keywords = kw;
+        icon = ic;
+        hResize = hr;
+        vResize = vr;
     }
     return new Command(
         doUndo,
@@ -873,7 +903,7 @@ Group.prototype.cmdRemoveStyle = function (name) {
 Group.prototype.cmdRemoveStyleAndReferences = function (factory, type, style) {
     var that = this,
         documentData = this.documentData,
-        cmdGroup = this.cmdCommandGroup('cmdRemoveStyleAndReferences', 'Remove Style ' + name, { model: this, name: name});
+        cmdGroup = this.cmdCommandGroup('cmdRemoveStyleAndReferences', 'Remove Style ' + type, { model: this, name: type});
     // remove all references to this style from visuals
     forEachProperty(documentData.children, function (c, childName) {
         var config = deepCopy(c.config),

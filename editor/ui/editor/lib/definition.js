@@ -831,7 +831,7 @@ exports.definition = {
             children: {}
         },
         ComponentInfo: {
-            dimensions: [ 360, 540, 0],
+            dimensions: [ 360, 390, 0],
             positions: {
                 wLabel: {
                     order: 0,
@@ -901,27 +901,27 @@ exports.definition = {
                 },
                 icon: {
                     order: 12,
-                    matrix: [ 340, 0, 0, 0,  0, 300, 0, 0,  0, 0, 1, 0,  5, 180, 0, 1],
+                    matrix: [ 340, 0, 0, 0,  0, 150, 0, 0,  0, 0, 1, 0,  5, 180, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 hResizeLabel: {
                     order: 13,
-                    matrix: [ 200, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   30, 485, 0, 1],
+                    matrix: [ 200, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   30, 335, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 hResizeCheck: {
                     order: 14,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   5, 485, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   5, 335, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 vResizeLabel: {
                     order: 15,
-                    matrix: [ 200, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   30, 510, 0, 1],
+                    matrix: [ 200, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   30, 360, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 },
                 vResizeCheck: {
                     order: 16,
-                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   5, 510, 0, 1],
+                    matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   5, 360, 0, 1],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },

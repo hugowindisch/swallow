@@ -21,6 +21,7 @@
     IN THE SOFTWARE.
 
 */
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     utils = require('utils'),
@@ -29,6 +30,8 @@ var visual = require('visual'),
     isFunction = utils.isFunction;
 
 function ListBox(config) {
+    this.items = [];
+    this.selected = {};
     domvisual.DOMElement.call(this, config);
     this.setOverflow([ 'hidden', 'auto']);
     this.setStyle('bg');
@@ -122,12 +125,14 @@ ListBox.prototype.setItems = function (items, createViewer) {
 
 ListBox.prototype.findItem = function (item) {
     var ret = null;
-    forEach(this.items, function (v, n) {
-        if (v === item) {
-            ret = n;
-            return true;
-        }
-    });
+    if (this.items) {
+        forEach(this.items, function (v, n) {
+            if (v === item) {
+                ret = n;
+                return true;
+            }
+        });
+    }
     return ret;
 };
 ListBox.prototype.setSelectedItem = function (item) {
@@ -219,7 +224,9 @@ ListBox.prototype.updateChildren = function () {
     for (i = 0; i < l; i += 1) {
         item = items[i];
         cell = this.createViewer(item);
-        cell.on('click', getOnClick(i)
+        cell.on(
+            'click',
+            getOnClick(i)
         ).setCursor('pointer').showSelectionBox(false);
         this.cells.push(cell);
         container.addChild(cell);

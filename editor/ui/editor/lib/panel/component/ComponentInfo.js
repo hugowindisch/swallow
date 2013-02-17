@@ -19,10 +19,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('/editor/lib/definition').definition.groups,
     utils = require('utils'),
+    http = require('http'),
     limitRange = utils.limitRange,
     ImageOption = require('../ImageOption').ImageOption;
 
@@ -39,6 +41,23 @@ ComponentInfo.prototype.init = function (editor) {
         viewer = editor.getViewer(),
         children = this.children;
 
+    function loadImageUrls() {
+        var docInfo = editor.getDocInfo(),
+            data = '';
+        http.get(
+            '/swallow/package/' + docInfo.factory + '/image',
+            function (res) {
+                res.on('data', function (d) {
+                    data += d;
+                });
+                res.on('end', function () {
+                    var jsonData = JSON.parse(data);
+                    that.getChild('icon').setUrls(jsonData);
+                });
+            }
+        );
+    }
+
     function updateDoc() {
         var group = viewer.getGroup(),
             documentData = group.documentData,
@@ -46,7 +65,12 @@ ComponentInfo.prototype.init = function (editor) {
         group.doCommand(group.cmdSetComponentProperties(
             [limitRange(children.w.getText(), 1, 100000), limitRange(children.h.getText(), 1, 10000), 1],
             children.description.getText(),
-            gridSize
+            gridSize,
+            children.title.getValue(),
+            children.keywords.getValue(),
+            children.icon.getValue(),
+            children.hResizeCheck.getValue(),
+            children.vResizeCheck.getValue()
         ));
     }
 
@@ -59,6 +83,12 @@ ComponentInfo.prototype.init = function (editor) {
             children.h.setText(documentData.dimensions[1]);
             children.description.setText(documentData.description);
             children.grid.setValue(documentData.gridSize);
+            children.title.setValue(documentData.title);
+            children.keywords.setValue(documentData.keywords);
+            children.icon.setValue(documentData.icon);
+            children.hResizeCheck.setValue(documentData.hResize);
+            children.vResizeCheck.setValue(documentData.vResize);
+            loadImageUrls();
         }
     }
 
@@ -67,6 +97,11 @@ ComponentInfo.prototype.init = function (editor) {
     children.description.on('change', updateDoc);
     children.grid.on('change', updateDoc);
     viewer.on('updateSelectionControlBox', updateControls);
+    children.title.on('change', updateDoc);
+    children.keywords.on('change', updateDoc);
+    children.icon.on('change', updateDoc);
+    children.hResizeCheck.on('change', updateDoc);
+    children.vResizeCheck.on('change', updateDoc);
     updateControls();
 };
 

@@ -59,30 +59,50 @@ function getMakeHtmlFunction(type, title, monitor, writeHtmlBuf) {
             dependencies = [ ],
             cssFiles = [],
             iconFile = path.join(details.dirname, type + '.favicon.png'),
-            icon = details.stats[iconFile] ? (details.name + '/' + type + '.favicon.png') : null;
-        if (deps) {
-            Object.keys(deps).forEach(function (d) {
-                dependencies.push(d + '/' + d + '.js');
-            });
-            Object.keys(cssFileMap).forEach(function (k) {
-                var details = cssFileMap[k].details,
-                    vfn = details.name + k.slice(details.dirname.length);
-                cssFiles.push(vfn.split('\\').join('/'));
-            });
+            icon = details.stats[iconFile] ? (details.name + '/' + type + '.favicon.png') : null,
+            loadingVis = false,
+            vis = {};
+        function whenReady() {
+            if (deps) {
+                Object.keys(deps).forEach(function (d) {
+                    dependencies.push(d + '/' + d + '.js');
+                });
+                Object.keys(cssFileMap).forEach(function (k) {
+                    var details = cssFileMap[k].details,
+                        vfn = details.name + k.slice(details.dirname.length);
+                    cssFiles.push(vfn.split('\\').join('/'));
+                });
+            }
+            // return the generated buffer
+            writeHtmlBuf(jqtpl.tmpl('visualComponent', {
+                dependencies: dependencies,
+                css: cssFiles,
+                factory: details.name,
+                type: type,
+                jquery: options.jquery ? path.basename(options.jquery) : null,
+                monitor: monitor,
+                icon: vis.icon || icon,
+                title: vis.title || title,
+                description: vis.description,
+                keywords: vis.keywords,
+                fonts: options.fonts || []
+            }));
+            cb(null);
         }
-        // return the generated buffer
-        writeHtmlBuf(jqtpl.tmpl('visualComponent', {
-            dependencies: dependencies,
-            css: cssFiles,
-            factory: details.name,
-            type: type,
-            jquery: options.jquery ? path.basename(options.jquery) : null,
-            monitor: monitor,
-            icon: icon,
-            title: title,
-            fonts: options.fonts || []
-        }));
-        cb(null);
+        details.other.forEach(function (f) {
+            if (!loadingVis && (f.indexOf(type + '.vis') !== -1)) {
+                loadingVis = true;
+                fs.readFile(f, function (err, dat) {
+                    if (!err) {
+                        vis = JSON.parse(dat);
+                    }
+                    whenReady();
+                });
+            }
+        });
+        if (!loadingVis) {
+            whenReady();
+        }
     };
 }
 
