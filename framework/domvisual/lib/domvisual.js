@@ -1135,6 +1135,7 @@ DOMVisual.prototype.runFullScreen = function () {
             // and the code is not loaded if the dependency is not there)
             stage = require('stage');
             stage.enableAutoRouting();
+            stage.setResizePolicy(this.hResize, this.vResize, this.layout.dimensions[0], this.layout.dimensions[1]);
         } catch (e) {
         }
     }

@@ -33,7 +33,28 @@ var stage = require('domvisual').getStage(),
     transition;
 
 // sets the resize policy of the stage
-function setResizePolicy(hResize, vResize) {
+function setResizePolicy(hResize, vResize, w, h) {
+    w = w || 200;
+    h = h || 200;
+    var layout = {
+            dimensions: [w, h, 0],
+            positions: {
+                root: {
+                    matrix: [
+                        w, 0, 0, 0, 0, h, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+                    ],
+                    snapping: {
+                        left: 'px',
+                        right: hResize ? 'px' : 'auto',
+                        width: hResize ? 'auto' : 'px',
+                        top: 'px',
+                        bottom: vResize ? 'px' : 'auto',
+                        height: vResize ? 'auto' : 'px'
+                    }
+                }
+            }
+        };
+    stage.setLayout(layout);
 }
 
 // sets the transition for entering pages

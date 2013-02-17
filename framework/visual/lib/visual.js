@@ -1292,6 +1292,8 @@ function inheritVisual(Base, groupData, factoryName, typeName) {
     proto.privateStyles = groupData.privateStyles;
     proto.privateVisual = groupData.privateVisual;
     proto.enableAutoRouting = true;
+    proto.hResize = groupData.hResize;
+    proto.vResize = groupData.vResize;
     proto.getDescription = function () {
         return groupData.description;
     };

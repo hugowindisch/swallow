@@ -21,7 +21,8 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
-
+/*jslint nomen: true */
+"use strict";
 var path = require('path'),
     fs = require('fs'),
     async = require('async'),
@@ -266,21 +267,24 @@ function getPackageDependencies(packageMap, packageName, includeTestDeps) {
         var p = packageMap[name],
             dep;
         if (p) {
-            res[name] = p;
-            // normal dependencies
-            dep = p.json.dependencies;
-            if (dep) {
-                Object.keys(dep).forEach(function (k) {
-                    // FIXME we should validate versions
-                    gd(res, k);
-                });
-            }
-            // test dependencies
-            dep = p.json.testDependencies;
-            if (includeTestDeps && dep) {
-                dep.forEach(function (k) {
-                    gd(res, k);
-                });
+            // don't re process if already there (circular deps)
+            if (!res[name]) {
+                res[name] = p;
+                // normal dependencies
+                dep = p.json.dependencies;
+                if (dep) {
+                    Object.keys(dep).forEach(function (k) {
+                        // FIXME we should validate versions
+                        gd(res, k);
+                    });
+                }
+                // test dependencies
+                dep = p.json.testDependencies;
+                if (includeTestDeps && dep) {
+                    dep.forEach(function (k) {
+                        gd(res, k);
+                    });
+                }
             }
         } else {
             throw new Error("Missing Package " + name);
