@@ -1124,8 +1124,20 @@ function getStage() {
 * @api private
 */
 DOMVisual.prototype.runFullScreen = function () {
+    var stage;
     getStage().addChild(this);
     this.setPosition('root');
+    // try to setup the stage if needed
+    if (this.enableAutoRouting) {
+        try {
+            // the stage must be in the component's dependencies
+            // for this to work (the stage behavior is optional,
+            // and the code is not loaded if the dependency is not there)
+            stage = require('stage');
+            stage.enableAutoRouting();
+        } catch (e) {
+        }
+    }
     dirty.update();
     return this;
 };

@@ -694,6 +694,24 @@ Visual.prototype.getChildAtOrder = function (d) {
     forEachProperty(this.children, function (c) {
         if (c.order === d) {
             ch = c;
+            return true;
+        }
+    });
+    return ch;
+};
+
+/**
+* Returns a child at a given position.
+* @param {String} the position
+* @returns the child at the specified position
+* @type Visual
+*/
+Visual.prototype.getChildAtPosition = function (pos) {
+    var ch;
+    forEachProperty(this.children, function (c) {
+        if (c.position === pos) {
+            ch = c;
+            return true;
         }
     });
     return ch;
@@ -1273,6 +1291,7 @@ function inheritVisual(Base, groupData, factoryName, typeName) {
     proto.theme = new Theme(groupData.theme, skin);
     proto.privateStyles = groupData.privateStyles;
     proto.privateVisual = groupData.privateVisual;
+    proto.enableAutoRouting = true;
     proto.getDescription = function () {
         return groupData.description;
     };
