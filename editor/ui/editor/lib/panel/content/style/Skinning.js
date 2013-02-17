@@ -19,6 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
+"use strict";
 var visual = require('visual'),
     domvisual = require('domvisual'),
     groups = require('/editor/lib/definition').definition.groups,
@@ -52,7 +53,9 @@ function Skinning(config) {
     styleFeature.on('select', function (featureName) {
         var styleEdit = that.getChild('styleEdit'),
             f = styleFeatures[featureName],
-            attributes = f.attributes;
+            attributes = f.attributes,
+            pt = that.editor.getViewer().getPreviewTheme(),
+            defaultData = {};
         if (styleEdit) {
             that.removeChild(styleEdit);
         }
@@ -60,6 +63,11 @@ function Skinning(config) {
             // create a new local style if needed
             if (that.editedStyle === null) {
                 that.makeExtendedStyle(null);
+            } else if (typeof that.editedStyle === 'object') {
+                defaultData = pt.getSkin().getTheme(that.editedStyle.factory, that.editedStyle.type).getStyleData(that.editedStyle.style).jsData || {};
+            }
+            if (that.editedStyleData.jsData) {
+                apply(defaultData, that.editedStyleData.jsData);
             }
             styleEdit = new (f.FeatureEditor)(f.config);
             if (styleEdit.setEditor) {
@@ -67,7 +75,7 @@ function Skinning(config) {
             }
             styleEdit.setStyleData(styleAttributesToEditorAttributes(
                 attributes,
-                that.editedStyleData.jsData || {}
+                defaultData
             ));
             that.addChild(styleEdit, 'styleEdit', 2);
             styleEdit.setHtmlFlowing(flowing, true);
@@ -214,7 +222,6 @@ Skinning.prototype.previewLocalStyleFeature = function (features) {
     this.editor.getViewer().previewStyleChange(localTheme);
     stylePreview.previewStyleChange(localTheme);
     this.getChild('stylePicker').previewStyleChange(localTheme);
-
 };
 
 
