@@ -41,6 +41,7 @@
 
     controllers receive (scope, expression, params..)
 */
+/*globals window */
 "use strict";
 var controllers = {},
     utils = require('utils'),
@@ -86,4 +87,11 @@ registerController('log', function (arg) {
 registerController('showJSON', function (arg) {
     /*globals alert */
     alert(JSON.stringify(arg, null, 4));
+});
+registerController('setRoute', function (factory, type) {
+    try {
+        var stage = require('stage');
+        window.location.hash = '#' + factory + '.' + type;
+    } catch (e) {
+    }
 });

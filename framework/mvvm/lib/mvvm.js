@@ -38,6 +38,10 @@ var utils = require('utils'),
 globalEvents.on('browserEvent', function () {
     BindingMap.refresh();
 });
+// FIXME: small hack... the first time, we don't get an event
+setTimeout(function () {
+    BindingMap.refresh();
+}, 1);
 
 function bindMVVM(vis, scope) {
     var mvvm = vis.mvvm,
