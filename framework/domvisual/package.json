@@ -4,7 +4,6 @@
     "dependencies" : {
         "visual" : ">=0.0.1",
         "utils": ">=0.0.1",
-        "config": ">=0.0.1",
         "mvvm": ">=0.0.1"
     },
     "engines": {

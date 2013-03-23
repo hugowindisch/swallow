@@ -27,7 +27,6 @@ var visual = require('visual'),
     dirty = require('/visual/lib/dirty'),
     position = require('/visual/lib/position'),
     glmatrix = require('glmatrix'),
-    config = require('config'),
     events = require('events'),
     EventEmitter = events.EventEmitter,
     styles = require('./styles'),
@@ -1245,6 +1244,7 @@ DOMElement.getInplaceEditor = function () {
 * @type Object
 */
 DOMElement.prototype.getConfigurationSheet = function () {
+    var config = require('config');
     return {
         "class": null,
         "style": require('config').styleConfig('Style:'),
@@ -1328,6 +1328,7 @@ DOMImg.prototype.getNaturalDimensions = function () {
 * @type Object
 */
 DOMImg.prototype.getConfigurationSheet = function () {
+    var config = require('config');
     return {
         "title": require('config').inputConfigFullLine('Title (tooltip)'),
         "url": require('config').imageUrlConfig('Image (you can also drop images here)'),
@@ -1380,6 +1381,7 @@ DOMVideo.prototype.setUrl = function (url) {
 * @type Object
 */
 DOMVideo.prototype.getConfigurationSheet = function () {
+    var config = require('config');
     return {
         "class": null,
         "url": require('config').inputConfig('Url'),
