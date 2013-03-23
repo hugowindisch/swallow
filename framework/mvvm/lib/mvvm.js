@@ -262,6 +262,9 @@ function eventBinding(event) {
     //
     return function (vis, mvvm, expr) {
         var parsedExpr = expression.parse(expr);
+        if (event === 'click') {
+            vis.setCursor('hand');
+        }
         function listener() {
             //controller.runController(mvvm.scope, expression);
             mvvm.scope.evaluate(parsedExpr);
