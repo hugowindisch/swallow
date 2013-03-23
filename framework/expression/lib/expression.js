@@ -23,7 +23,7 @@ case 6: this.$ = yy.constant(yytext.slice(1, -1));
 break;
 case 7: this.$ = yy.constant(yytext.slice(1, -1)); 
 break;
-case 8: this.$ = { name: $$[$0-2], value: $$[$0] }; 
+case 8: this.$ = { name: yy.constant($$[$0-2]), value: $$[$0] }; 
 break;
 case 9: this.$ = { name: $$[$0-2], value: $$[$0] }; 
 break;

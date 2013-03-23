@@ -138,7 +138,7 @@ string
 
 objectMember
     : KEYWORD ':' e
-        { $$ = { name: $1, value: $3 }; }
+        { $$ = { name: yy.constant($1), value: $3 }; }
     | string ':' e,
         { $$ = { name: $1, value: $3 }; }
     ;

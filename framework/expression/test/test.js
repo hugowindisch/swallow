@@ -51,6 +51,7 @@ exports.run = function (test, done) {
     test(assert.equal, exec('o.x', scope), scope.o.x, "scope.o.x");
     test(assert.equal, exec('o.abc(a)', scope), scope.o.abc(scope.a), "scope.o.abc(scope.a)");
     test(assert.deepEqual, exec('{ "a": 1, "b": 2 }', scope), { a: 1, b: 2 }, "{ a: 1, b: 2 }");
+    test(assert.deepEqual, exec('{ a: 1, b: 2 }', scope), { a: 1, b: 2 }, "{ a: 1, b: 2 }");
     //test(assert.equal, exec('a ++'), scope.a++);
     test(assert.equal, exec('[ 1, 2, 3].length', scope), [ 1, 2, 3].length, "[ 1, 2, 3].length");
     test(assert.equal, exec('~3', scope), ~3, '~3');
