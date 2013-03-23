@@ -55,7 +55,11 @@ function setResizePolicy(hResize, vResize, w, h) {
             ]);
             da = c.getDimensionsAdjustedForContent();
             if (da) {
-                c.setDimensions(da);
+                c.setDimensions([
+                    hResize ? dimensions[0] : da[0],
+                    vResize ? dimensions[1] : da[1],
+                    da[2]
+                ]);
             }
         });
     };
