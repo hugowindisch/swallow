@@ -52,13 +52,12 @@ function setResizePolicy(hResize, vResize, w, h) {
                 vResize ? dimensions[1] : dim[1],
                 dim[2]
             ]);
+            c.setDimensions(c.getDimensionsAdjustedForContent());
         });
     };
-    stage.forEachChild(function (c) {
-        c.isUnconstrained = function () {
-            return !(hResize && vResize);
-        };
-    });
+    stage.requestDimensions = function (dim) {
+        stage.applyLayout();
+    }
     stage.setOverflow(['hidden', 'auto']);
     stage.setLayout(null);
 }
