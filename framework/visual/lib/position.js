@@ -20,6 +20,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
+"use strict";
 var utils = require('utils'),
     glmatrix = require('glmatrix'),
     vec3 = glmatrix.vec3,
@@ -107,10 +108,11 @@ function rectToMatrix(r) {
 * @param {Number} An opacity to apply on that position
 * @memberOf visual
 */
-function Position(matrix, snapping, opacity) {
+function Position(matrix, snapping, opacity, order) {
     this.matrix = matrix;
     this.snapping = snapping;
     this.opacity = opacity;
+    this.order = order;
     var srcRect = this.srcRect = getEnclosingRect(matrix);
     this.srcExt = vec3.subtract(srcRect[1], srcRect[0], vec3.create());
 }
@@ -334,7 +336,7 @@ Layout.prototype.build = function (positionData) {
     forEachProperty(positionData, function (pos, posname) {
         that.setPosition(
             posname,
-            new Position(pos.matrix, pos.snapping, pos.opacity)
+            new Position(pos.matrix, pos.snapping, pos.opacity, pos.order)
         );
     });
 };

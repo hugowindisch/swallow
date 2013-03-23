@@ -46,18 +46,22 @@ function setResizePolicy(hResize, vResize, w, h) {
     stage.applyLayout = function () {
         var dimensions = stage.dimensions;
         stage.forEachChild(function (c) {
-            var dim = c.dimensions;
+            var dim = c.dimensions,
+                da;
             c.setDimensions([
                 hResize ? dimensions[0] : dim[0],
                 vResize ? dimensions[1] : dim[1],
                 dim[2]
             ]);
-            c.setDimensions(c.getDimensionsAdjustedForContent());
+            da = c.getDimensionsAdjustedForContent();
+            if (da) {
+                c.setDimensions(da);
+            }
         });
     };
     stage.requestDimensions = function (dim) {
         stage.applyLayout();
-    }
+    };
     stage.setOverflow(['hidden', 'auto']);
     stage.setLayout(null);
 }
@@ -85,8 +89,9 @@ function showPage(factory, type, params) {
         }
     }
     function pageIn(vp) {
-        var cDim = deepCopy(vp.dimensions);
-        root.addChild(vp);
+        var cDim = deepCopy(vp.dimensions),
+            depth = root.layout && root.layout.positions[show] && root.layout.positions[show].order;
+        root.addChild(vp, null, depth);
         if (root.layout && root.layout.positions[enter]) {
             vp.clearTransition();
             vp.setPosition(enter);
