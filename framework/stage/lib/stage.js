@@ -20,17 +20,26 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
-/*globals window */
+/*globals window, unescape */
 "use strict";
 var stage = require('domvisual').getStage(),
     visual = require('visual'),
     utils = require('utils'),
     deepCopy = utils.deepCopy,
+    deepEqual = utils.deepEqual,
+    isArray = utils.isArray,
+    isString = utils.isString,
+    forEach = utils.forEach,
     enter = 'enter',
     show = 'show',
     exit = 'exit',
     duration = 300,
-    transition;
+    transition,
+    visibleFactory = null,
+    visibleType = null,
+    visiblePage = null,
+    visibleParams = {};
+
 
 // sets the resize policy of the stage
 function setResizePolicy(hResize, vResize, w, h) {
@@ -44,7 +53,7 @@ function setResizePolicy(hResize, vResize, w, h) {
                 dim[2]
             ]);
         });
-    }
+    };
     stage.forEachChild(function (c) {
         c.isUnconstrained = function () {
             return !(hResize && vResize);
@@ -59,14 +68,11 @@ function setTransition(enterPos, showPos, exitPos, dur, trans) {
 }
 
 // this is the showPage functionnality
-function showPage(factory, type) {
+function showPage(factory, type, params) {
     var Constr,
         c,
         cDim,
-        root = stage.getChildAtPosition('root'),
-        visibleFactory = null,
-        visibleType = null,
-        visiblePage = null;
+        root = stage.getChildAtPosition('root');
     function pageOut(vp) {
         if (root.layout && root.layout.positions.exit) {
             vp.setTransition(300);
@@ -82,8 +88,6 @@ function showPage(factory, type) {
     function pageIn(vp) {
         var cDim = deepCopy(vp.dimensions);
         root.addChild(vp);
-        root.adjustDimensionsToContent(cDim);
-
         if (root.layout && root.layout.positions[enter]) {
             vp.clearTransition();
             vp.setPosition(enter);
@@ -91,14 +95,16 @@ function showPage(factory, type) {
                 if (vp.parent && vp.position !== exit) {
                     vp.setTransition(300);
                     vp.setPosition(show);
+                    vp.requestDimensions(cDim);
                     visual.update();
                 }
             }, 10);
         } else {
             vp.setPosition(show);
+            vp.requestDimensions(cDim);
         }
     }
-    if (visibleFactory !== factory || visibleType !== type) {
+    if (visibleFactory !== factory || visibleType !== type || !deepEqual(params, visibleParams)) {
         // remove the existing page
         if (visiblePage) {
             pageOut(visiblePage);
@@ -109,26 +115,54 @@ function showPage(factory, type) {
         // create the new one
         try {
             Constr = require(factory)[type];
-            c = new Constr();
-            pageIn(c);
-            visiblePage = c;
-            visibleFactory = factory;
-            visibleType = type;
+            c = new Constr(params);
         } catch (e) {
+            console.log('Could not create: ' + factory + '.' + type);
+            return;
         }
+        try {
+            pageIn(c);
+        } catch (e2) {
+            console.log('problem in pageIn ' + e2);
+        }
+        visiblePage = c;
+        visibleFactory = factory;
+        visibleType = type;
+        visibleParams = params;
     }
 }
 // load a location
 function loadLocation() {
-    var factory, type, toLoad;
+    var factory, type, parts, toLoad, args, plist, params = {};
     if (window.location.hash) {
-        toLoad = window.location.hash.split('.');
+        parts = window.location.hash.split('?');
+        toLoad = parts[0].split('.');
         if (toLoad.length === 2) {
-            factory = toLoad[0].slice(1);
-            type = toLoad[1];
+            factory = unescape(toLoad[0].slice(1));
+            type = unescape(toLoad[1]);
         }
+        if (parts.length > 1) {
+            plist = parts[1].split('&');
+            forEach(plist, function (p) {
+                var assign = p.split('='),
+                    k = assign[0],
+                    v = assign[1];
+                if (isString(v)) {
+                    v = unescape(v);
+                }
+                if (isArray(params[k])) {
+                    params[k].push(v);
+                } else if (params.hasOwnProperty(k)) {
+                    params[k] = [params[k], v];
+
+                } else {
+                    params[k] = v;
+                }
+            });
+        }
+
     }
-    showPage(factory, type);
+    showPage(factory, type, params);
     // FIXME: we should have a Visual.setInterval that would cleanly
     // remove the interval when the thing is removed from the stage,
     // and do the update automatically

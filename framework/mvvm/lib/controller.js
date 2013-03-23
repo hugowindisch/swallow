@@ -41,12 +41,14 @@
 
     controllers receive (scope, expression, params..)
 */
-/*globals window */
+/*globals window, escape */
 "use strict";
 var controllers = {},
     utils = require('utils'),
     forEach = utils.forEach,
+    forEachProperty = utils.forEachProperty,
     isArray = utils.isArray,
+    isObject = utils.isObject,
     stripWhite = utils.stripWhite,
     map = utils.map;
 
@@ -88,10 +90,22 @@ registerController('showJSON', function (arg) {
     /*globals alert */
     alert(JSON.stringify(arg, null, 4));
 });
-registerController('setRoute', function (factory, type) {
+registerController('setRoute', function (factory, type, query) {
+    var hash = '#',
+        qp = [],
+        stage = require('stage');
     try {
-        var stage = require('stage');
-        window.location.hash = '#' + factory + '.' + type;
+        hash = '#' + escape(factory) + '.' + escape(type);
+        if (isObject(query) && query) {
+            forEachProperty(query, function (v, k) {
+                qp.push(escape(k) + '=' + escape(v));
+            });
+            if (qp.length > 0) {
+                hash = hash + '?' + qp.join('&');
+            }
+        }
+
+        window.location.hash = hash;
     } catch (e) {
     }
 });
