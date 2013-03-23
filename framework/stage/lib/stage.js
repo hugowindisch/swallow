@@ -137,7 +137,7 @@ function showPage(factory, type, params) {
 }
 // load a location
 function loadLocation() {
-    var factory, type, parts, toLoad, args, plist, params = {};
+    var factory = null, type = null, parts, toLoad, args, plist, params = {};
     if (window.location.hash) {
         parts = window.location.hash.split('?');
         toLoad = parts[0].split('.');
