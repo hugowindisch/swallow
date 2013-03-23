@@ -117,8 +117,8 @@ Group.prototype.normalizeDocument = function () {
     }
     d.title = d.title || '';
     d.keywords = d.keywords || '';
-    d.hResize = d.hResize || true;
-    d.vResize = d.vResize || true;
+    d.hResize = d.hResize === false ? false : true;
+    d.vResize = d.vResize === false ? false : true;
 
     this.normalizeDocumentSkin();
 };
