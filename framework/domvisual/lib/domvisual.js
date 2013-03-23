@@ -36,6 +36,9 @@ var visual = require('visual'),
     updateDOMEventHooks = require('./domhooks').updateDOMEventHooks,
     keycodes = require('./keycodes'),
     preferences = require('./browser').getPreferences(),
+    globalEvents = require('./globalevents'),
+    mvvm,
+    availableBindings,
     Visual = visual.Visual,
     forEachProperty = utils.forEachProperty,
     forEach = utils.forEachProperty,
@@ -49,6 +52,10 @@ var visual = require('visual'),
     setDirty = dirty.setDirty,
     theStage;
 
+// this is done here to avoid chicken and egg problem
+exports.globalEvents = globalEvents;
+mvvm = require('mvvm');
+availableBindings = mvvm.getDefaultBindings();
 /**
 * This package implements subclasses of visual.Visual that can be used
 * in the context of the DOM.
@@ -1178,7 +1185,7 @@ function DOMElement(config, groupData) {
 }
 
 DOMElement.prototype = new DOMVisual();
-
+mvvm.MVVM.initialize(DOMElement, availableBindings);
 /**
 * Returns the description of this element (to be displayed in the editor).
 * @returns The textual descripton of this element.
@@ -1240,7 +1247,8 @@ DOMElement.getInplaceEditor = function () {
 DOMElement.prototype.getConfigurationSheet = function () {
     return {
         "class": null,
-        "style": require('config').styleConfig('Style:')
+        "style": require('config').styleConfig('Style:'),
+        mVVMBindingInfo: config.bindingsConfig('Bindings', availableBindings)
     };
 };
 
@@ -1758,4 +1766,3 @@ exports.hasTextAttributes = styles.hasTextAttributes;
 exports.makeKeyString = keycodes.makeKeyString;
 exports.decorateVk = keycodes.decorateVk;
 exports.getStage = getStage;
-exports.globalEvents = require('./globalevents');
