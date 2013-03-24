@@ -831,7 +831,7 @@ exports.definition = {
             children: {}
         },
         ComponentInfo: {
-            dimensions: [ 360, 390, 0],
+            dimensions: [ 360, 450, 0],
             positions: {
                 wLabel: {
                     order: 0,
@@ -922,6 +922,26 @@ exports.definition = {
                 vResizeCheck: {
                     order: 16,
                     matrix: [ 24, 0, 0, 0,  0, 24, 0, 0,  0, 0, 1, 0,   5, 360, 0, 1],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                defaultRouteLabel: {
+                    order: 7,
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 390, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                defaultRoute: {
+                    order: 8,
+                    matrix: [ 180, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   100, 390, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                modelLabel: {
+                    order: 7,
+                    matrix: [ 60, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   5, 420, 0, 1 ],
+                    snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
+                },
+                model: {
+                    order: 8,
+                    matrix: [ 180, 0, 0, 0,   0, 22, 0, 0,    0, 0, 1, 0,   100, 420, 0, 1 ],
                     snapping: { left: 'px', right: 'auto', width: 'px', top: 'px', bottom: 'auto', height: 'px' }
                 }
             },
@@ -1068,8 +1088,37 @@ exports.definition = {
                         value: true,
                         position: "vResizeCheck"
                     }
+                },
+                defaultRouteLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        "text": "route:",
+                        position: "defaultRouteLabel"
+                    }
+                },
+                defaultRoute: {
+                    factory: "baseui",
+                    type: "Input",
+                    config: {
+                        position: "defaultRoute"
+                    }
+                },
+                modelLabel: {
+                    factory: "baseui",
+                    type: "Label",
+                    config: {
+                        "text": "model:",
+                        position: "modelLabel"
+                    }
+                },
+                model: {
+                    factory: "baseui",
+                    type: "Input",
+                    config: {
+                        position: "model"
+                    }
                 }
-
             }
         },
         LayerInfo: {

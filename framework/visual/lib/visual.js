@@ -1294,6 +1294,8 @@ function inheritVisual(Base, groupData, factoryName, typeName) {
     proto.enableAutoRouting = true;
     proto.hResize = groupData.hResize;
     proto.vResize = groupData.vResize;
+    proto.defaultRoute = groupData.defaultRoute;
+    proto.model = groupData.model;
     proto.getDescription = function () {
         return groupData.description;
     };

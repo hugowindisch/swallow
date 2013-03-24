@@ -70,7 +70,9 @@ ComponentInfo.prototype.init = function (editor) {
             children.keywords.getValue(),
             children.icon.getValue(),
             children.hResizeCheck.getValue(),
-            children.vResizeCheck.getValue()
+            children.vResizeCheck.getValue(),
+            children.defaultRoute.getValue(),
+            children.model.getValue()
         ));
     }
 
@@ -88,6 +90,8 @@ ComponentInfo.prototype.init = function (editor) {
             children.icon.setValue(documentData.icon);
             children.hResizeCheck.setValue(documentData.hResize);
             children.vResizeCheck.setValue(documentData.vResize);
+            children.defaultRoute.setValue(documentData.defaultRoute);
+            children.model.setValue(documentData.model);
             loadImageUrls();
         }
     }
@@ -102,6 +106,8 @@ ComponentInfo.prototype.init = function (editor) {
     children.icon.on('change', updateDoc);
     children.hResizeCheck.on('change', updateDoc);
     children.vResizeCheck.on('change', updateDoc);
+    children.defaultRoute.on('change', updateDoc);
+    children.model.on('change', updateDoc);
     updateControls();
 };
 

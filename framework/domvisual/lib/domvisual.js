@@ -20,7 +20,7 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
-/*globals document */
+/*globals document, window */
 "use strict";
 var visual = require('visual'),
     utils = require('utils'),
@@ -1136,6 +1136,24 @@ function getStage() {
 */
 DOMVisual.prototype.runFullScreen = function () {
     var stage;
+    // ultra hack... FIXME
+    // We need to setup the model super early (we could then LOAD
+    // inside it but not really change it)... This is not sooo bad
+    // but... (ex: in knockout, setting up the model is the first thing
+    // that you do before even attaching it to the markup... angular
+    // is somewhat similar (your scope is setup once by the controller and
+    // then... the inner part of objects can be loaded but nothing more)
+    // SOME more thinking needed here, obviously.
+    // So
+    if (this.model && this.setMVVMData) {
+        try {
+            this.setMVVMData(JSON.parse(this.model));
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    // done ultra hack
+
     getStage().addChild(this);
     this.setPosition('root');
     // try to setup the stage if needed
@@ -1149,6 +1167,14 @@ DOMVisual.prototype.runFullScreen = function () {
             stage.setResizePolicy(this.hResize, this.vResize, this.layout.dimensions[0], this.layout.dimensions[1]);
         } catch (e) {
         }
+        // FIXME ULTRA HACK
+        // ================
+        // these are two super extra hacks until something better is
+        // found
+        if (this.defaultRoute) {
+            window.location.hash = this.defaultRoute;
+        }
+        // ================
     }
     dirty.update();
     return this;

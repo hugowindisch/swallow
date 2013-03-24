@@ -119,6 +119,8 @@ Group.prototype.normalizeDocument = function () {
     d.keywords = d.keywords || '';
     d.hResize = d.hResize === false ? false : true;
     d.vResize = d.vResize === false ? false : true;
+    d.defaultRoute = d.defaultRoute || '';
+    d.model = d.model || '';
 
     this.normalizeDocumentSkin();
 };
@@ -813,7 +815,9 @@ Group.prototype.cmdSetComponentProperties = function (
     keywords,
     icon,
     hResize,
-    vResize
+    vResize,
+    defaultRoute,
+    model
 ) {
     var that = this;
     function doUndo() {
@@ -825,13 +829,17 @@ Group.prototype.cmdSetComponentProperties = function (
             kw = documentData.keywords,
             ic = documentData.icon,
             hr = documentData.hResize,
-            vr = documentData.vResize;
+            vr = documentData.vResize,
+            dr = documentData.defaultRoute,
+            m = documentData.model;
 
         documentData.dimensions = dimensions;
         documentData.description = description;
         documentData.gridSize = gridSize;
         documentData.title = title;
         documentData.keywords = keywords;
+        documentData.defaultRoute = defaultRoute;
+        documentData.model = model;
         if (icon) {
             documentData.icon = icon;
         } else {
@@ -847,6 +855,8 @@ Group.prototype.cmdSetComponentProperties = function (
         icon = ic;
         hResize = hr;
         vResize = vr;
+        defaultRoute = dr;
+        model = m;
     }
     return new Command(
         doUndo,
