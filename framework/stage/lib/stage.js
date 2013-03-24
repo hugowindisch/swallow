@@ -33,7 +33,7 @@ var stage = require('domvisual').getStage(),
     enter = 'enter',
     show = 'show',
     exit = 'exit',
-    duration = 300,
+    duration = 600,
     transition,
     visibleFactory = null,
     visibleType = null,
@@ -72,6 +72,10 @@ function setResizePolicy(hResize, vResize, w, h) {
 
 // sets the transition for entering pages
 function setTransition(enterPos, showPos, exitPos, dur, trans) {
+    enter = enterPos || enter;
+    show = showPos || show;
+    exit = exitPos || exit;
+    duration = dur || 0;
 }
 
 // this is the showPage functionnality
@@ -81,8 +85,9 @@ function showPage(factory, type, params) {
         cDim,
         root = stage.getChildAtPosition('root');
     function pageOut(vp) {
+        vp.requestDimensions(null);
         if (root.layout && root.layout.positions.exit) {
-            vp.setTransition(300);
+            vp.setTransition(duration);
             vp.setPosition(exit);
             // what IF transitions are NOT supported!!!
             vp.on('transitionend', function () {
@@ -99,11 +104,12 @@ function showPage(factory, type, params) {
         if (root.layout && root.layout.positions[enter]) {
             vp.clearTransition();
             vp.setPosition(enter);
+            vp.requestDimensions(cDim);
             setTimeout(function () {
                 if (vp.parent && vp.position !== exit) {
-                    vp.setTransition(300);
+                    vp.setTransition(duration);
                     vp.setPosition(show);
-                    vp.requestDimensions(cDim);
+                    vp.setOpacity(1);
                     visual.update();
                 }
             }, 10);
