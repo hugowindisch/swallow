@@ -20,6 +20,20 @@
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
     IN THE SOFTWARE.
 */
+
+/*
+    Note: sometimes, I ask myself: why this? Why not base everything on
+    the normal css layout system. Here are some answers:
+
+    a) because, why not try something else
+    b) we can choose between "SCALE" or "SIZE" (redimension by scaling or
+    redimension by sizing)
+    c) we can easily center things in any direction (aligning to center with
+    css is such an unintuitive mess)
+    d) we can implement as many layout algorithms as we want (even if...
+    so far... we only use one that is very very similar to what css does)
+*/
+
 "use strict";
 var utils = require('utils'),
     glmatrix = require('glmatrix'),
