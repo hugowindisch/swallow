@@ -1,4 +1,3 @@
-The
 
 ##mvvm bindings versus params
 It is not clear why those are actually different. Could they be fully integrated?
@@ -45,7 +44,7 @@ be checked in in git, etc.) We now have what's needed to easily do this in
 the build process.
 
 
-##UX overhaul
+##Usability
 most of what is there, I fundamentally like. But the result is not sooo pleasant
 to use to say the least.
 
@@ -56,6 +55,7 @@ LEFT BAR: full (as it is now) or tabbed?
 
 + VISUAL (graphic design) improvement
 
+##Visual Apperance
 
 #Releases
 First MVVM release
