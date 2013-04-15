@@ -243,7 +243,7 @@ Visual.prototype.setDimensions = function (v3) {
 * @api private
 */
 Visual.prototype.isUnconstrained = function () {
-    return this.position === undefined || this.htmlFlowingApplySizing;
+    return Boolean(this.position === undefined || this.htmlFlowingApplySizing);
 };
 
 /**
@@ -303,7 +303,7 @@ Visual.prototype.getDimensionsAdjustedForContent = function () {
                     that.layout,
                     c
                 );
-                if (ret === undefined || newd[0] < ret[0] || newd[1] < ret[1]) {
+                if (ret === undefined || newd[0] > ret[0] || newd[1] > ret[1]) {
                     ret = newd;
                 }
             }

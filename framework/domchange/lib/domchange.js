@@ -41,7 +41,7 @@ function pollingImplementation() {
                 // get the computed dimensions
                 dim = m.vis.getComputedDimensions();
                 if (dim[0] !== m.dim[0] || dim[1] !== m.dim[1]) {
-                    m.vis.emit('domchange');
+                    m.vis.emit('domchange', dim.slice(0));
                     m.dim = dim;
                     changed = true;
                 }
@@ -117,7 +117,7 @@ function mutationObserverImplementation() {
                 vis.mutationObserver.disconnect();
                 var dim = vis.getComputedDimensions();
                 if (dim[0] !== prevDim[0] || dim[1] !== prevDim[1]) {
-                    vis.emit('domchange');
+                    vis.emit('domchange', dim.slice(0));
                     visual.update();
                     prevDim = dim;
                 }
