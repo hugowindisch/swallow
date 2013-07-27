@@ -287,7 +287,7 @@ Skinning.prototype.setData = function (st) {
     var group = this.editor.getViewer().getGroup(),
         styleEdit = this.getChild('styleEdit');
     // this is a style as in (factory, type, style)
-    this.editedStyle = st;
+    this.editedStyle = st || null;
     // if the style is a local style
     if (this.editedStyle !== null) {
         this.editedStyleData = this.getSkinData(this.editedStyle.factory, this.editedStyle.type, this.editedStyle.style);
